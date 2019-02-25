@@ -25,6 +25,7 @@
 #define BCTabHeight ([Tool isIphoneXSerise]?34:0)
 
 #define R(value) (value * BCWidth/375)
+
 #define LEFT_Margin 15
 #define TOP_Margin 10
 #endif /* DefineFrame_h */
