@@ -19,7 +19,7 @@
     
 //    hah 
     [self setProgameRootViewController];
-    
+    // 测试上传
     return YES;
 }
 
