@@ -14,6 +14,8 @@
 #import "BCNavigationViewController.h"
 
 
+#import "CoinLoginViewController.h"
+
 @interface BCMainTabViewController ()
 
 @end
@@ -53,7 +55,9 @@
     
     
     
-    CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
+    CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+ 
+    
     BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
     workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"icon_workbench_normal@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"icon_workbench_focus@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     

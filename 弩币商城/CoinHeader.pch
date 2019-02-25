@@ -16,6 +16,7 @@
 #import <MJRefresh.h>
 #import <YYModel.h>
 
+
 #import "General/DefineNoti.h"
 #import "General/DefineFont.h"
 #import "General/DefineColor.h"
@@ -103,6 +104,8 @@
 //获取沙盒 Cache
 #define kPathCache [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]
 
-
+// 根据尺寸适配
+#define SetX(x) x / 375.0 * [UIScreen mainScreen].bounds.size.width
+#define SetY(y) y / 667.0 *  [UIScreen mainScreen].bounds.size.height
 
 #endif /* CoinHeader_pch */
