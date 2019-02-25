@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    hah 
+//     
     [self setProgameRootViewController];
     // 测试上传
     return YES;
