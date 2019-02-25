@@ -34,7 +34,7 @@
     CoinHomeViewController *propertyVC = [[CoinHomeViewController alloc] init];
     BCNavigationViewController *propertyNav = [[BCNavigationViewController alloc] initWithRootViewController:propertyVC];
    
-    propertyNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[[UIImage imageNamed:@"icon_property_normal@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"icon_property_focus@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    propertyNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[[UIImage imageNamed:@"首页未选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"首页选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     
     
@@ -69,7 +69,8 @@
     
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:TabTitleNormalColor,NSFontAttributeName:Text11Font} forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, -4)];
+    
+    [[UITabBarItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, 1)];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:TabTitleSeletedolor,NSFontAttributeName:Text11Font} forState:UIControlStateSelected];
     

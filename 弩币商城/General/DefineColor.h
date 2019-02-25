@@ -25,10 +25,14 @@
 
 #define  Color213 COLOR(213, 213, 213)
 
+#define  Color242 COLOR(242, 242, 242)
+#define DIVI_COLOR COLOR(238, 238, 238)
+
+#define TITLE_COLOR COLOR(51, 51, 51)
 
 //底部tabbar颜色
-#define TabTitleSeletedolor   ACOLOR(217, 193, 115, 1)
-#define TabTitleNormalColor   ACOLOR(204, 204, 204, 1)
+#define TabTitleSeletedolor   ACOLOR(236, 81, 84, 1)
+#define TabTitleNormalColor   ACOLOR(93, 93, 93, 1)
 
 
 
