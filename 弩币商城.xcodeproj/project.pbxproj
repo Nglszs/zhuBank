@@ -1,0 +1,921 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		041A2B0722237A3700F6E4F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B0622237A3700F6E4F7 /* AppDelegate.m */; };
+		041A2B0D22237A3700F6E4F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0B22237A3700F6E4F7 /* Main.storyboard */; };
+		041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0E22237A3900F6E4F7 /* Assets.xcassets */; };
+		041A2B1222237A3900F6E4F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */; };
+		041A2B1522237A3900F6E4F7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B1422237A3900F6E4F7 /* main.m */; };
+		041A2B1F22237A3900F6E4F7 /* ____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B1E22237A3900F6E4F7 /* ____Tests.m */; };
+		041A2B2A22237A3900F6E4F7 /* ____UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B2922237A3900F6E4F7 /* ____UITests.m */; };
+		041A2B3F22237F3500F6E4F7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B3C22237F3500F6E4F7 /* Reachability.m */; };
+		041A2B4222237F9400F6E4F7 /* BCManagerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B4122237F9400F6E4F7 /* BCManagerTool.m */; };
+		041A2B462223800500F6E4F7 /* CoinBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B452223800500F6E4F7 /* CoinBaseViewController.m */; };
+		041A2B492223801400F6E4F7 /* BCNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B482223801400F6E4F7 /* BCNavigationViewController.m */; };
+		041A2B652223808700F6E4F7 /* NSObject+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B4C2223808700F6E4F7 /* NSObject+Common.m */; };
+		041A2B662223808700F6E4F7 /* NSDictionary+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B4D2223808700F6E4F7 /* NSDictionary+Common.m */; };
+		041A2B672223808700F6E4F7 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B502223808700F6E4F7 /* UIViewController+Common.m */; };
+		041A2B682223808700F6E4F7 /* AppDelegate+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B522223808700F6E4F7 /* AppDelegate+Common.m */; };
+		041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B542223808700F6E4F7 /* UIView+Common.m */; };
+		041A2B6A2223808700F6E4F7 /* UITextField+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B552223808700F6E4F7 /* UITextField+Common.m */; };
+		041A2B6B2223808700F6E4F7 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B562223808700F6E4F7 /* NSString+Common.m */; };
+		041A2B6C2223808700F6E4F7 /* UIImageView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B572223808700F6E4F7 /* UIImageView+Common.m */; };
+		041A2B6D2223808700F6E4F7 /* UITapGestureRecognizer+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B592223808700F6E4F7 /* UITapGestureRecognizer+Common.m */; };
+		041A2B6E2223808700F6E4F7 /* UIButton+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B5B2223808700F6E4F7 /* UIButton+Common.m */; };
+		041A2B6F2223808700F6E4F7 /* NSTimer+WWLUnRetain.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B5D2223808700F6E4F7 /* NSTimer+WWLUnRetain.m */; };
+		041A2B702223808700F6E4F7 /* NSArray+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B5F2223808700F6E4F7 /* NSArray+Common.m */; };
+		041A2B712223808700F6E4F7 /* UITextView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B622223808700F6E4F7 /* UITextView+Common.m */; };
+		041A2B922223812C00F6E4F7 /* BCHUDAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B912223812C00F6E4F7 /* BCHUDAlert.m */; };
+		041A2B992223850D00F6E4F7 /* CoinHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B982223850D00F6E4F7 /* CoinHomeViewController.m */; };
+		041A2B9F2223857C00F6E4F7 /* CoinClassfyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B9E2223857C00F6E4F7 /* CoinClassfyViewController.m */; };
+		041A2BA22223859000F6E4F7 /* CoinMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA12223859000F6E4F7 /* CoinMoneyViewController.m */; };
+		041A2BA5222385A000F6E4F7 /* CoinPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA4222385A000F6E4F7 /* CoinPersonViewController.m */; };
+		041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */; };
+		59EF6AD5F3389F54B7A5F4C9 /* libPods-弩币商城UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */; };
+		5B54F94BD2650ED6CBE49C5C /* libPods-弩币商城Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */; };
+		BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C760E15965B01E01034A11E /* libPods-弩币商城.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		041A2B1B22237A3900F6E4F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 041A2AFA22237A3700F6E4F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 041A2B0122237A3700F6E4F7;
+			remoteInfo = "弩币商城";
+		};
+		041A2B2622237A3900F6E4F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 041A2AFA22237A3700F6E4F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 041A2B0122237A3700F6E4F7;
+			remoteInfo = "弩币商城";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		041A2B0222237A3700F6E4F7 /* 弩币商城.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "弩币商城.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		041A2B0522237A3700F6E4F7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		041A2B0622237A3700F6E4F7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		041A2B0C22237A3700F6E4F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		041A2B0E22237A3900F6E4F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		041A2B1122237A3900F6E4F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		041A2B1322237A3900F6E4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		041A2B1422237A3900F6E4F7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		041A2B1A22237A3900F6E4F7 /* 弩币商城Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "弩币商城Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		041A2B1E22237A3900F6E4F7 /* ____Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "____Tests.m"; sourceTree = "<group>"; };
+		041A2B2022237A3900F6E4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		041A2B2522237A3900F6E4F7 /* 弩币商城UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "弩币商城UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		041A2B2922237A3900F6E4F7 /* ____UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "____UITests.m"; sourceTree = "<group>"; };
+		041A2B2B22237A3900F6E4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		041A2B3722237D6200F6E4F7 /* CoinHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinHeader.pch; sourceTree = "<group>"; };
+		041A2B3922237F3500F6E4F7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		041A2B3A22237F3500F6E4F7 /* DefineFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefineFont.h; sourceTree = "<group>"; };
+		041A2B3B22237F3500F6E4F7 /* DefineNoti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefineNoti.h; sourceTree = "<group>"; };
+		041A2B3C22237F3500F6E4F7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		041A2B3D22237F3500F6E4F7 /* DefineColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefineColor.h; sourceTree = "<group>"; };
+		041A2B3E22237F3500F6E4F7 /* DefineFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefineFrame.h; sourceTree = "<group>"; };
+		041A2B4022237F9400F6E4F7 /* BCManagerTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCManagerTool.h; sourceTree = "<group>"; };
+		041A2B4122237F9400F6E4F7 /* BCManagerTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCManagerTool.m; sourceTree = "<group>"; };
+		041A2B442223800500F6E4F7 /* CoinBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBaseViewController.h; sourceTree = "<group>"; };
+		041A2B452223800500F6E4F7 /* CoinBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinBaseViewController.m; sourceTree = "<group>"; };
+		041A2B472223801400F6E4F7 /* BCNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCNavigationViewController.h; sourceTree = "<group>"; };
+		041A2B482223801400F6E4F7 /* BCNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCNavigationViewController.m; sourceTree = "<group>"; };
+		041A2B4B2223808600F6E4F7 /* NSArray+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Common.h"; sourceTree = "<group>"; };
+		041A2B4C2223808700F6E4F7 /* NSObject+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Common.m"; sourceTree = "<group>"; };
+		041A2B4D2223808700F6E4F7 /* NSDictionary+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Common.m"; sourceTree = "<group>"; };
+		041A2B4E2223808700F6E4F7 /* NSObject+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Common.h"; sourceTree = "<group>"; };
+		041A2B4F2223808700F6E4F7 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
+		041A2B502223808700F6E4F7 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
+		041A2B512223808700F6E4F7 /* AppDelegate+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Common.h"; sourceTree = "<group>"; };
+		041A2B522223808700F6E4F7 /* AppDelegate+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Common.m"; sourceTree = "<group>"; };
+		041A2B532223808700F6E4F7 /* UITapGestureRecognizer+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITapGestureRecognizer+Common.h"; sourceTree = "<group>"; };
+		041A2B542223808700F6E4F7 /* UIView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Common.m"; sourceTree = "<group>"; };
+		041A2B552223808700F6E4F7 /* UITextField+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Common.m"; sourceTree = "<group>"; };
+		041A2B562223808700F6E4F7 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
+		041A2B572223808700F6E4F7 /* UIImageView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Common.m"; sourceTree = "<group>"; };
+		041A2B582223808700F6E4F7 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
+		041A2B592223808700F6E4F7 /* UITapGestureRecognizer+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITapGestureRecognizer+Common.m"; sourceTree = "<group>"; };
+		041A2B5A2223808700F6E4F7 /* UITextView+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Common.h"; sourceTree = "<group>"; };
+		041A2B5B2223808700F6E4F7 /* UIButton+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Common.m"; sourceTree = "<group>"; };
+		041A2B5C2223808700F6E4F7 /* UIImageView+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Common.h"; sourceTree = "<group>"; };
+		041A2B5D2223808700F6E4F7 /* NSTimer+WWLUnRetain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+WWLUnRetain.m"; sourceTree = "<group>"; };
+		041A2B5E2223808700F6E4F7 /* NSTimer+WWLUnRetain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+WWLUnRetain.h"; sourceTree = "<group>"; };
+		041A2B5F2223808700F6E4F7 /* NSArray+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Common.m"; sourceTree = "<group>"; };
+		041A2B602223808700F6E4F7 /* UIButton+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Common.h"; sourceTree = "<group>"; };
+		041A2B612223808700F6E4F7 /* UITextField+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Common.h"; sourceTree = "<group>"; };
+		041A2B622223808700F6E4F7 /* UITextView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Common.m"; sourceTree = "<group>"; };
+		041A2B632223808700F6E4F7 /* NSDictionary+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Common.h"; sourceTree = "<group>"; };
+		041A2B642223808700F6E4F7 /* UIView+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Common.h"; sourceTree = "<group>"; };
+		041A2B902223812C00F6E4F7 /* BCHUDAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCHUDAlert.h; sourceTree = "<group>"; };
+		041A2B912223812C00F6E4F7 /* BCHUDAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCHUDAlert.m; sourceTree = "<group>"; };
+		041A2B972223850D00F6E4F7 /* CoinHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinHomeViewController.h; sourceTree = "<group>"; };
+		041A2B982223850D00F6E4F7 /* CoinHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinHomeViewController.m; sourceTree = "<group>"; };
+		041A2B9D2223857C00F6E4F7 /* CoinClassfyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinClassfyViewController.h; sourceTree = "<group>"; };
+		041A2B9E2223857C00F6E4F7 /* CoinClassfyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassfyViewController.m; sourceTree = "<group>"; };
+		041A2BA02223859000F6E4F7 /* CoinMoneyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMoneyViewController.h; sourceTree = "<group>"; };
+		041A2BA12223859000F6E4F7 /* CoinMoneyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMoneyViewController.m; sourceTree = "<group>"; };
+		041A2BA3222385A000F6E4F7 /* CoinPersonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinPersonViewController.h; sourceTree = "<group>"; };
+		041A2BA4222385A000F6E4F7 /* CoinPersonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinPersonViewController.m; sourceTree = "<group>"; };
+		041A2BA62223863600F6E4F7 /* BCMainTabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCMainTabViewController.h; sourceTree = "<group>"; };
+		041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCMainTabViewController.m; sourceTree = "<group>"; };
+		31A7F92D886737E1E0FF97BA /* Pods-弩币商城Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城Tests/Pods-弩币商城Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-弩币商城UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城.debug.xcconfig"; sourceTree = "<group>"; };
+		6AC469B9D84692AE5A503FE9 /* Pods-弩币商城UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城UITests/Pods-弩币商城UITests.release.xcconfig"; sourceTree = "<group>"; };
+		7C760E15965B01E01034A11E /* libPods-弩币商城.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-弩币商城.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-弩币商城Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C17C8E6ED8A00F751FE4F819 /* Pods-弩币商城.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城.release.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城.release.xcconfig"; sourceTree = "<group>"; };
+		F6BA8488D6C5F2ADC22D3FA4 /* Pods-弩币商城Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城Tests/Pods-弩币商城Tests.release.xcconfig"; sourceTree = "<group>"; };
+		FDC5B80DA47F5A1C27FD7B07 /* Pods-弩币商城UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城UITests/Pods-弩币商城UITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		041A2AFF22237A3700F6E4F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B1722237A3900F6E4F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B54F94BD2650ED6CBE49C5C /* libPods-弩币商城Tests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B2222237A3900F6E4F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59EF6AD5F3389F54B7A5F4C9 /* libPods-弩币商城UITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		041A2AF922237A3700F6E4F7 = {
+			isa = PBXGroup;
+			children = (
+				041A2B0422237A3700F6E4F7 /* 弩币商城 */,
+				041A2B1D22237A3900F6E4F7 /* 弩币商城Tests */,
+				041A2B2822237A3900F6E4F7 /* 弩币商城UITests */,
+				041A2B0322237A3700F6E4F7 /* Products */,
+				CA746CEE5A89F49BFA982ACF /* Pods */,
+				8FBD1B6C0B88118CE050C200 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		041A2B0322237A3700F6E4F7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B0222237A3700F6E4F7 /* 弩币商城.app */,
+				041A2B1A22237A3900F6E4F7 /* 弩币商城Tests.xctest */,
+				041A2B2522237A3900F6E4F7 /* 弩币商城UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		041A2B0422237A3700F6E4F7 /* 弩币商城 */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B0522237A3700F6E4F7 /* AppDelegate.h */,
+				041A2B0622237A3700F6E4F7 /* AppDelegate.m */,
+				041A2B96222384E900F6E4F7 /* Home */,
+				041A2B9A2223852A00F6E4F7 /* Classfy */,
+				041A2B9B2223854E00F6E4F7 /* Coin */,
+				041A2B9C2223855700F6E4F7 /* PersonCenter */,
+				041A2B4322237FE900F6E4F7 /* BaseClass */,
+				041A2B8F2223810F00F6E4F7 /* CustomAlert */,
+				041A2B3822237F1100F6E4F7 /* General */,
+				041A2B4A2223805E00F6E4F7 /* CateGroys */,
+				041A2B0B22237A3700F6E4F7 /* Main.storyboard */,
+				041A2B0E22237A3900F6E4F7 /* Assets.xcassets */,
+				041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */,
+				041A2B1322237A3900F6E4F7 /* Info.plist */,
+				041A2B3722237D6200F6E4F7 /* CoinHeader.pch */,
+				041A2B1422237A3900F6E4F7 /* main.m */,
+			);
+			path = "弩币商城";
+			sourceTree = "<group>";
+		};
+		041A2B1D22237A3900F6E4F7 /* 弩币商城Tests */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B1E22237A3900F6E4F7 /* ____Tests.m */,
+				041A2B2022237A3900F6E4F7 /* Info.plist */,
+			);
+			path = "弩币商城Tests";
+			sourceTree = "<group>";
+		};
+		041A2B2822237A3900F6E4F7 /* 弩币商城UITests */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B2922237A3900F6E4F7 /* ____UITests.m */,
+				041A2B2B22237A3900F6E4F7 /* Info.plist */,
+			);
+			path = "弩币商城UITests";
+			sourceTree = "<group>";
+		};
+		041A2B3822237F1100F6E4F7 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B4022237F9400F6E4F7 /* BCManagerTool.h */,
+				041A2B4122237F9400F6E4F7 /* BCManagerTool.m */,
+				041A2B3E22237F3500F6E4F7 /* DefineFrame.h */,
+				041A2B3D22237F3500F6E4F7 /* DefineColor.h */,
+				041A2B3A22237F3500F6E4F7 /* DefineFont.h */,
+				041A2B3B22237F3500F6E4F7 /* DefineNoti.h */,
+				041A2B3922237F3500F6E4F7 /* Reachability.h */,
+				041A2B3C22237F3500F6E4F7 /* Reachability.m */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		041A2B4322237FE900F6E4F7 /* BaseClass */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B442223800500F6E4F7 /* CoinBaseViewController.h */,
+				041A2B452223800500F6E4F7 /* CoinBaseViewController.m */,
+				041A2BA62223863600F6E4F7 /* BCMainTabViewController.h */,
+				041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */,
+				041A2B472223801400F6E4F7 /* BCNavigationViewController.h */,
+				041A2B482223801400F6E4F7 /* BCNavigationViewController.m */,
+			);
+			path = BaseClass;
+			sourceTree = "<group>";
+		};
+		041A2B4A2223805E00F6E4F7 /* CateGroys */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B512223808700F6E4F7 /* AppDelegate+Common.h */,
+				041A2B522223808700F6E4F7 /* AppDelegate+Common.m */,
+				041A2B4B2223808600F6E4F7 /* NSArray+Common.h */,
+				041A2B5F2223808700F6E4F7 /* NSArray+Common.m */,
+				041A2B632223808700F6E4F7 /* NSDictionary+Common.h */,
+				041A2B4D2223808700F6E4F7 /* NSDictionary+Common.m */,
+				041A2B4E2223808700F6E4F7 /* NSObject+Common.h */,
+				041A2B4C2223808700F6E4F7 /* NSObject+Common.m */,
+				041A2B582223808700F6E4F7 /* NSString+Common.h */,
+				041A2B562223808700F6E4F7 /* NSString+Common.m */,
+				041A2B5E2223808700F6E4F7 /* NSTimer+WWLUnRetain.h */,
+				041A2B5D2223808700F6E4F7 /* NSTimer+WWLUnRetain.m */,
+				041A2B602223808700F6E4F7 /* UIButton+Common.h */,
+				041A2B5B2223808700F6E4F7 /* UIButton+Common.m */,
+				041A2B5C2223808700F6E4F7 /* UIImageView+Common.h */,
+				041A2B572223808700F6E4F7 /* UIImageView+Common.m */,
+				041A2B532223808700F6E4F7 /* UITapGestureRecognizer+Common.h */,
+				041A2B592223808700F6E4F7 /* UITapGestureRecognizer+Common.m */,
+				041A2B612223808700F6E4F7 /* UITextField+Common.h */,
+				041A2B552223808700F6E4F7 /* UITextField+Common.m */,
+				041A2B5A2223808700F6E4F7 /* UITextView+Common.h */,
+				041A2B622223808700F6E4F7 /* UITextView+Common.m */,
+				041A2B642223808700F6E4F7 /* UIView+Common.h */,
+				041A2B542223808700F6E4F7 /* UIView+Common.m */,
+				041A2B4F2223808700F6E4F7 /* UIViewController+Common.h */,
+				041A2B502223808700F6E4F7 /* UIViewController+Common.m */,
+			);
+			path = CateGroys;
+			sourceTree = "<group>";
+		};
+		041A2B8F2223810F00F6E4F7 /* CustomAlert */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B902223812C00F6E4F7 /* BCHUDAlert.h */,
+				041A2B912223812C00F6E4F7 /* BCHUDAlert.m */,
+			);
+			path = CustomAlert;
+			sourceTree = "<group>";
+		};
+		041A2B96222384E900F6E4F7 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B972223850D00F6E4F7 /* CoinHomeViewController.h */,
+				041A2B982223850D00F6E4F7 /* CoinHomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		041A2B9A2223852A00F6E4F7 /* Classfy */ = {
+			isa = PBXGroup;
+			children = (
+				041A2B9D2223857C00F6E4F7 /* CoinClassfyViewController.h */,
+				041A2B9E2223857C00F6E4F7 /* CoinClassfyViewController.m */,
+			);
+			path = Classfy;
+			sourceTree = "<group>";
+		};
+		041A2B9B2223854E00F6E4F7 /* Coin */ = {
+			isa = PBXGroup;
+			children = (
+				041A2BA02223859000F6E4F7 /* CoinMoneyViewController.h */,
+				041A2BA12223859000F6E4F7 /* CoinMoneyViewController.m */,
+			);
+			path = Coin;
+			sourceTree = "<group>";
+		};
+		041A2B9C2223855700F6E4F7 /* PersonCenter */ = {
+			isa = PBXGroup;
+			children = (
+				041A2BA3222385A000F6E4F7 /* CoinPersonViewController.h */,
+				041A2BA4222385A000F6E4F7 /* CoinPersonViewController.m */,
+			);
+			path = PersonCenter;
+			sourceTree = "<group>";
+		};
+		8FBD1B6C0B88118CE050C200 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7C760E15965B01E01034A11E /* libPods-弩币商城.a */,
+				98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */,
+				4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA746CEE5A89F49BFA982ACF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */,
+				C17C8E6ED8A00F751FE4F819 /* Pods-弩币商城.release.xcconfig */,
+				31A7F92D886737E1E0FF97BA /* Pods-弩币商城Tests.debug.xcconfig */,
+				F6BA8488D6C5F2ADC22D3FA4 /* Pods-弩币商城Tests.release.xcconfig */,
+				FDC5B80DA47F5A1C27FD7B07 /* Pods-弩币商城UITests.debug.xcconfig */,
+				6AC469B9D84692AE5A503FE9 /* Pods-弩币商城UITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		041A2B0122237A3700F6E4F7 /* 弩币商城 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 041A2B2E22237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城" */;
+			buildPhases = (
+				AB6EA54DFFB3319D3A37A1E0 /* [CP] Check Pods Manifest.lock */,
+				041A2AFE22237A3700F6E4F7 /* Sources */,
+				041A2AFF22237A3700F6E4F7 /* Frameworks */,
+				041A2B0022237A3700F6E4F7 /* Resources */,
+				4E7D3BD9982134B1C61E399C /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "弩币商城";
+			productName = "弩币商城";
+			productReference = 041A2B0222237A3700F6E4F7 /* 弩币商城.app */;
+			productType = "com.apple.product-type.application";
+		};
+		041A2B1922237A3900F6E4F7 /* 弩币商城Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 041A2B3122237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城Tests" */;
+			buildPhases = (
+				3F0E865D6F4286F7EA25B868 /* [CP] Check Pods Manifest.lock */,
+				041A2B1622237A3900F6E4F7 /* Sources */,
+				041A2B1722237A3900F6E4F7 /* Frameworks */,
+				041A2B1822237A3900F6E4F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				041A2B1C22237A3900F6E4F7 /* PBXTargetDependency */,
+			);
+			name = "弩币商城Tests";
+			productName = "弩币商城Tests";
+			productReference = 041A2B1A22237A3900F6E4F7 /* 弩币商城Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		041A2B2422237A3900F6E4F7 /* 弩币商城UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 041A2B3422237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城UITests" */;
+			buildPhases = (
+				4F17955488C0D03973181722 /* [CP] Check Pods Manifest.lock */,
+				041A2B2122237A3900F6E4F7 /* Sources */,
+				041A2B2222237A3900F6E4F7 /* Frameworks */,
+				041A2B2322237A3900F6E4F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				041A2B2722237A3900F6E4F7 /* PBXTargetDependency */,
+			);
+			name = "弩币商城UITests";
+			productName = "弩币商城UITests";
+			productReference = 041A2B2522237A3900F6E4F7 /* 弩币商城UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		041A2AFA22237A3700F6E4F7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "詹姆斯";
+				TargetAttributes = {
+					041A2B0122237A3700F6E4F7 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					041A2B1922237A3900F6E4F7 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 041A2B0122237A3700F6E4F7;
+					};
+					041A2B2422237A3900F6E4F7 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 041A2B0122237A3700F6E4F7;
+					};
+				};
+			};
+			buildConfigurationList = 041A2AFD22237A3700F6E4F7 /* Build configuration list for PBXProject "弩币商城" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 041A2AF922237A3700F6E4F7;
+			productRefGroup = 041A2B0322237A3700F6E4F7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				041A2B0122237A3700F6E4F7 /* 弩币商城 */,
+				041A2B1922237A3900F6E4F7 /* 弩币商城Tests */,
+				041A2B2422237A3900F6E4F7 /* 弩币商城UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		041A2B0022237A3700F6E4F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				041A2B1222237A3900F6E4F7 /* LaunchScreen.storyboard in Resources */,
+				041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */,
+				041A2B0D22237A3700F6E4F7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B1822237A3900F6E4F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B2322237A3900F6E4F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3F0E865D6F4286F7EA25B868 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-弩币商城Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4E7D3BD9982134B1C61E399C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4F17955488C0D03973181722 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-弩币商城UITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB6EA54DFFB3319D3A37A1E0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-弩币商城-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		041A2AFE22237A3700F6E4F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				041A2B712223808700F6E4F7 /* UITextView+Common.m in Sources */,
+				041A2B652223808700F6E4F7 /* NSObject+Common.m in Sources */,
+				041A2B9F2223857C00F6E4F7 /* CoinClassfyViewController.m in Sources */,
+				041A2B6C2223808700F6E4F7 /* UIImageView+Common.m in Sources */,
+				041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */,
+				041A2B662223808700F6E4F7 /* NSDictionary+Common.m in Sources */,
+				041A2B6B2223808700F6E4F7 /* NSString+Common.m in Sources */,
+				041A2B672223808700F6E4F7 /* UIViewController+Common.m in Sources */,
+				041A2B1522237A3900F6E4F7 /* main.m in Sources */,
+				041A2B492223801400F6E4F7 /* BCNavigationViewController.m in Sources */,
+				041A2B6D2223808700F6E4F7 /* UITapGestureRecognizer+Common.m in Sources */,
+				041A2B6A2223808700F6E4F7 /* UITextField+Common.m in Sources */,
+				041A2B462223800500F6E4F7 /* CoinBaseViewController.m in Sources */,
+				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,
+				041A2B992223850D00F6E4F7 /* CoinHomeViewController.m in Sources */,
+				041A2B4222237F9400F6E4F7 /* BCManagerTool.m in Sources */,
+				041A2B702223808700F6E4F7 /* NSArray+Common.m in Sources */,
+				041A2BA5222385A000F6E4F7 /* CoinPersonViewController.m in Sources */,
+				041A2BA22223859000F6E4F7 /* CoinMoneyViewController.m in Sources */,
+				041A2B6E2223808700F6E4F7 /* UIButton+Common.m in Sources */,
+				041A2B3F22237F3500F6E4F7 /* Reachability.m in Sources */,
+				041A2B6F2223808700F6E4F7 /* NSTimer+WWLUnRetain.m in Sources */,
+				041A2B922223812C00F6E4F7 /* BCHUDAlert.m in Sources */,
+				041A2B0722237A3700F6E4F7 /* AppDelegate.m in Sources */,
+				041A2B682223808700F6E4F7 /* AppDelegate+Common.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B1622237A3900F6E4F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				041A2B1F22237A3900F6E4F7 /* ____Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		041A2B2122237A3900F6E4F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				041A2B2A22237A3900F6E4F7 /* ____UITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		041A2B1C22237A3900F6E4F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 041A2B0122237A3700F6E4F7 /* 弩币商城 */;
+			targetProxy = 041A2B1B22237A3900F6E4F7 /* PBXContainerItemProxy */;
+		};
+		041A2B2722237A3900F6E4F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 041A2B0122237A3700F6E4F7 /* 弩币商城 */;
+			targetProxy = 041A2B2622237A3900F6E4F7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		041A2B0B22237A3700F6E4F7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				041A2B0C22237A3700F6E4F7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				041A2B1122237A3900F6E4F7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		041A2B2C22237A3900F6E4F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		041A2B2D22237A3900F6E4F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		041A2B2F22237A3900F6E4F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
+				INFOPLIST_FILE = "弩币商城/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		041A2B3022237A3900F6E4F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C17C8E6ED8A00F751FE4F819 /* Pods-弩币商城.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
+				INFOPLIST_FILE = "弩币商城/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		041A2B3222237A3900F6E4F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31A7F92D886737E1E0FF97BA /* Pods-弩币商城Tests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				INFOPLIST_FILE = "弩币商城Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/弩币商城.app/弩币商城";
+			};
+			name = Debug;
+		};
+		041A2B3322237A3900F6E4F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6BA8488D6C5F2ADC22D3FA4 /* Pods-弩币商城Tests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				INFOPLIST_FILE = "弩币商城Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/弩币商城.app/弩币商城";
+			};
+			name = Release;
+		};
+		041A2B3522237A3900F6E4F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDC5B80DA47F5A1C27FD7B07 /* Pods-弩币商城UITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				INFOPLIST_FILE = "弩币商城UITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "弩币商城";
+			};
+			name = Debug;
+		};
+		041A2B3622237A3900F6E4F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AC469B9D84692AE5A503FE9 /* Pods-弩币商城UITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L39FJL2R5J;
+				INFOPLIST_FILE = "弩币商城UITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Jack.----UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "弩币商城";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		041A2AFD22237A3700F6E4F7 /* Build configuration list for PBXProject "弩币商城" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				041A2B2C22237A3900F6E4F7 /* Debug */,
+				041A2B2D22237A3900F6E4F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		041A2B2E22237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				041A2B2F22237A3900F6E4F7 /* Debug */,
+				041A2B3022237A3900F6E4F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		041A2B3122237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				041A2B3222237A3900F6E4F7 /* Debug */,
+				041A2B3322237A3900F6E4F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		041A2B3422237A3900F6E4F7 /* Build configuration list for PBXNativeTarget "弩币商城UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				041A2B3522237A3900F6E4F7 /* Debug */,
+				041A2B3622237A3900F6E4F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 041A2AFA22237A3700F6E4F7 /* Project object */;
+}

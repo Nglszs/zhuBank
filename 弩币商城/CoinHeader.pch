@@ -1,0 +1,108 @@
+//
+//  CoinHeader.pch
+//  弩币商城
+//
+//  Created by Jack on 2019/2/25.
+//  Copyright © 2019年 詹姆斯. All rights reserved.
+//
+
+#ifndef CoinHeader_pch
+#define CoinHeader_pch
+
+#import <Toast.h>
+#import <AFNetworking.h>
+#import <UIImageView+WebCache.h>
+#import <IQKeyboardManager.h>
+#import <MJRefresh.h>
+#import <YYModel.h>
+
+#import "General/DefineNoti.h"
+#import "General/DefineFont.h"
+#import "General/DefineColor.h"
+#import "General/DefineFrame.h"
+#import "General/BCManagerTool.h"
+#import "CustomAlert/BCHUDAlert.h"
+
+
+
+#import "CateGroys/UIView+Common.h"
+#import "CateGroys/NSObject+Common.h"
+#import "CateGroys/UIImageView+Common.h"
+#import "CateGroys/UIButton+Common.h"
+#import "CateGroys/NSArray+Common.h"
+#import "CateGroys/NSDictionary+Common.h"
+#import "CateGroys/NSString+Common.h"
+#import "CateGroys/NSTimer+WWLUnRetain.h"
+#import "CateGroys/UITapGestureRecognizer+Common.h"
+#import "CateGroys/UITextView+Common.h"
+#import "CateGroys/UITextField+Common.h"
+#import "CateGroys/UIViewController+Common.h"
+
+//正则需要的条件
+
+#define kAlphaNum   @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+#define kAlpha      @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+#define kNumbers    @"0123456789"
+
+//系统单利
+#define USER_DEFAULTS          [NSUserDefaults standardUserDefaults]
+#define NOTIFICATION_CENTER    [NSNotificationCenter defaultCenter]
+#define SHARE_APPLICATION      [UIApplication sharedApplication]
+
+
+//网络框架单利
+#define Tool [BCManagerTool defaultManagerTool]
+#define BASE_URL @"http://118.190.156.133:80/YM/"
+
+//加载图片 BCImage(head.jpg)
+#define BCImage(imageName) [UIImage imageNamed:[NSString stringWithFormat:@"%@",@#imageName]]
+
+//弱引用
+#define WS(weakSelf)  __weak __typeof(self)weakSelf = self;
+
+
+
+/**
+ *  全局环境控制
+ *
+ *  0:测试环境  1:发布环境
+ */
+#define MY_Test 0
+
+#if (MY_Test == 0)
+
+
+#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n",[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);//去掉时间格式
+
+
+#endif
+
+#if (MY_Test == 1)
+
+#define NSLog(...)
+
+#endif
+
+
+
+
+//----------------------------- Toast弹窗 ------------------------//
+#define VCToast(msg,seconds) [self.view makeToast:msg duration:seconds position:CSToastPositionCenter]
+
+#define ViewToast(msg,seconds) [self makeToast:msg duration:seconds position:CSToastPositionCenter]
+
+
+
+//获取temp,每次启动都会清理
+#define kPathTemp NSTemporaryDirectory()
+
+//获取沙盒 Document，这个是常用的
+
+#define KfilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
+
+//获取沙盒 Cache
+#define kPathCache [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]
+
+
+
+#endif /* CoinHeader_pch */
