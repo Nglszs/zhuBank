@@ -20,4 +20,6 @@
 //显示系统底部选择栏
 
 - (void)showSystemSheetTitle:(NSString *)title message:(NSString *)message buttonTitle:(NSArray *)buttonArray handler:(void(^)(NSUInteger buttonIndex)) handler;
+// 设置返回样式
+- (void)SetReturnButton;
 @end

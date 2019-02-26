@@ -75,4 +75,21 @@
     
     [self presentViewController:sheetController animated:YES completion:nil];
 }
+
+- (void)SetReturnButton{
+    UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    btn.frame = CGRectMake(0, 0, 25, 25);
+    [btn addTarget:self action:@selector(BackAction) forControlEvents:(UIControlEventTouchUpInside)];
+    UIView * view = [[UIView alloc] initWithFrame: btn.bounds];
+    [view addSubview:btn];
+    [btn setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateNormal)];
+    [btn setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateHighlighted)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
+    btn.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+}
+
+- (void)BackAction{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

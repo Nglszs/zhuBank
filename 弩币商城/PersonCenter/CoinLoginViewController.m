@@ -8,6 +8,7 @@
 
 #import "CoinLoginViewController.h"
 #import "CoinLoginView.h"
+#import "CoinRegisterViewController.h"
 @interface CoinLoginViewController ()
 @property (nonatomic,strong)CoinLoginView * RootView;
 @end
@@ -17,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self.RootView.RegisterButton addTarget:self action:@selector(GoRegisterButtonAction:) forControlEvents:(UIControlEventTouchUpInside)];
 }
 
 - (void)loadView{
@@ -25,4 +26,9 @@
     self.view = self.RootView;
 }
 
+
+- (void)GoRegisterButtonAction:(UIButton *)button{
+    CoinRegisterViewController * vc = [CoinRegisterViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 @end

@@ -16,7 +16,6 @@
 @property (nonatomic,strong)UITextField * PasswordTF;
 @property (nonatomic,strong)UIButton * LoginButton;
 @property (nonatomic,strong)UIButton * ForgetPasswordButton;
-@property (nonatomic,strong)UIButton * RegisterButton;
 
 @end
 
@@ -56,7 +55,7 @@
         make.centerX.equalTo(self);
         make.top.equalTo(self.BackgroundImageView.mas_bottom).offset(SetY(60));
         make.width.mas_equalTo(SetX(285));
-        make.height.mas_equalTo(1);
+        make.height.mas_equalTo(0.5);
     }];
     
     UIImageView * UserNameLogoImageView = [UIImageView new];
@@ -145,7 +144,5 @@
         
     }];
     self.LoginButton.adjustsImageWhenHighlighted = NO;
-    
-    
 }
 @end
