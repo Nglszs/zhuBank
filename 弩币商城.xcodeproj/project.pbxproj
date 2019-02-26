@@ -51,7 +51,7 @@
 		0C5A857122250F2900C4F2DA /* CoinSearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A857022250F2900C4F2DA /* CoinSearchResultViewController.m */; };
 		0CDAB70D222534EF0056DBD8 /* CoinClassfyLeftTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */; };
 
- 6a421532dc948af36f8ac984646bc6700b1e7c70
+
 		59EF6AD5F3389F54B7A5F4C9 /* libPods-弩币商城UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */; };
 		5B54F94BD2650ED6CBE49C5C /* libPods-弩币商城Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */; };
 		BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C760E15965B01E01034A11E /* libPods-弩币商城.a */; };
@@ -166,7 +166,7 @@
 		0CDAB70B222534EF0056DBD8 /* CoinClassfyLeftTVCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinClassfyLeftTVCell.h; sourceTree = "<group>"; };
 		0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassfyLeftTVCell.m; sourceTree = "<group>"; };
 
- 6a421532dc948af36f8ac984646bc6700b1e7c70
+
 		31A7F92D886737E1E0FF97BA /* Pods-弩币商城Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城Tests/Pods-弩币商城Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-弩币商城UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城.debug.xcconfig"; sourceTree = "<group>"; };
@@ -368,7 +368,7 @@
 				040F1CEF2224D34C009DD7FC /* CoinGoodDetailViewController.h */,
 				040F1CF02224D34C009DD7FC /* CoinGoodDetailViewController.m */,
 				040F1CF22225233F009DD7FC /* View */,
- 6a421532dc948af36f8ac984646bc6700b1e7c70
+
 			);
 			path = Home;
 			sourceTree = "<group>";
