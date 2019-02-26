@@ -8,6 +8,7 @@
 
 #import "CoinHomeViewController.h"
 #import "CarouselView.h"
+#import "CoinGoodDetailViewController.h"
 
 @interface CoinHomeViewController ()
 
@@ -451,7 +452,9 @@
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
         
-      
+        [_backScrollView addTapGestureWithBlock:^{
+              [self.navigationController pushViewController:[CoinGoodDetailViewController new] animated:YES];
+        }];
         
     }
     
