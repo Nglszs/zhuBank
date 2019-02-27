@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef NS_ENUM(NSUInteger, SetNavItem) {
+    LeftNavItem,
+    RightNavItem,
+};
 @interface UIViewController (Common)
 
 
@@ -22,4 +25,8 @@
 - (void)showSystemSheetTitle:(NSString *)title message:(NSString *)message buttonTitle:(NSArray *)buttonArray handler:(void(^)(NSUInteger buttonIndex)) handler;
 // 设置返回样式
 - (void)SetReturnButton;
+
+- (void)setNavitem:(NSString *)title type:(SetNavItem)type;
+
+- (void)setNavitemImage:(NSString *)imageString type:(SetNavItem)type;
 @end

@@ -89,6 +89,62 @@
     
 }
 
+- (void)setNavitem:(NSString *)title type:(SetNavItem)type{
+    if (title == nil) {
+        if (type == LeftNavItem) {
+            self.navigationItem.leftBarButtonItem = nil;
+        }else{
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
+        return;
+    }
+    SEL jj;
+    if (type == LeftNavItem) {
+        jj = @selector(LeftItemAction);
+    }else{
+        jj = @selector(RightItemAction);
+    }
+    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithTitle:title style:(UIBarButtonItemStyleDone) target:self action:jj];
+    UILabel * label = [UILabel new];
+    
+    label.font = TextFont(15);
+    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:label.font,NSFontAttributeName, nil] forState:UIControlStateNormal];
+    if (type == LeftNavItem) {
+        self.navigationItem.leftBarButtonItem = item;
+    }else{
+        self.navigationItem.rightBarButtonItem = item;
+    }
+    
+}
+- (void)setNavitemImage:(NSString *)imageString type:(SetNavItem)type{
+    SEL jj;
+    if (type == LeftNavItem) {
+        jj = @selector(LeftItemAction);
+    }else{
+        jj = @selector(RightItemAction);
+    }
+    
+    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed:imageString] style:(UIBarButtonItemStyleDone) target:self action:jj];
+    if (type == LeftNavItem) {
+        self.navigationItem.leftBarButtonItem = item;
+    }else{
+        self.navigationItem.rightBarButtonItem = item;
+    }
+    
+}
+
+- (void)LeftItemAction{
+    
+    
+}
+- (void)RightItemAction{
+    
+    
+}
+
+
+
 - (void)BackAction{
     [self.navigationController popViewControllerAnimated:YES];
 }
