@@ -9,6 +9,9 @@
 #import "CoinGoodDetailViewController.h"
 #import "CarouselView.h"
 #import "BCCouponView.h"
+#import "BCDivideView.h"
+#import "BCGoodView.h"
+
 @interface CoinGoodDetailViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @end
@@ -292,7 +295,7 @@
     }];
     
     
-   
+//   规格
     UIView *easeView1 = [[UIView alloc] init];
     [self.backScrollView addSubview:easeView1];
     [easeView1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -301,6 +304,21 @@
         make.top.equalTo(leftL1.mas_top);
         make.height.mas_equalTo(36);
         make.width.mas_equalTo(BCWidth - 85);
+    }];
+    
+    
+    
+    //    点击打开规格
+    
+    [easeView1 addTapGestureWithBlock:^{
+        
+        
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:@""];
+        [self.view addSubview:vv];
+        [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
+            
+            vv.top = 0;
+        }];
     }];
     
     
@@ -353,6 +371,19 @@
         make.width.mas_equalTo(BCWidth - 85);
     }];
     
+    
+    //    点击打开分期
+    
+    [easeView2 addTapGestureWithBlock:^{
+        
+        
+        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:@""];
+        [self.view addSubview:vv];
+        [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
+            
+            vv.top = 0;
+        }];
+    }];
     
     UILabel *rightL1 = [[UILabel alloc] init];
     rightL1.text = @"由商城自营发货并提供售后服务，不支持7天无理由退货，支持换货";
