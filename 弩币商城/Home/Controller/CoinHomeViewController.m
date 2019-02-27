@@ -13,7 +13,7 @@
 @interface CoinHomeViewController ()
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
-
+@property (nonatomic, strong) UIView *navView;//导航栏
 @end
 
 @implementation CoinHomeViewController
@@ -21,9 +21,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      
-     
+    if (@available(iOS 11.0, *)) {
+        UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
      
      [self.view addSubview:self.backScrollView];
+    
+    
+    
     
     [self initView];
     
@@ -32,14 +37,76 @@
     [self initThridView];
     
     [self initFourView];
+    
+    
+    [self initNavView];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+   
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    
+    
+    
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [super viewWillDisappear:animated];
+  
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    
+    
+}
+
+#pragma mark 初始化导航栏
+-(void)initNavView {
+    
+    _navView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCNaviHeight)];
+    _navView.backgroundColor = [UIColor clearColor];
+    
+    [self.view addSubview:_navView];
+    
+    
+    UIButton *topBtn = [[UIButton alloc] initWithFrame:CGRectMake(LEFT_Margin, BCNaviHeight - 40, BCWidth - 60 - LEFT_Margin, 30)];
+    topBtn.backgroundColor = White;
+    topBtn.layer.cornerRadius = 10;
+    topBtn.clipsToBounds = YES;
+    [_navView addSubview:topBtn];
+    
+    
+    
+    UIImageView *seachImageView = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_Margin, 2.5, 17, 25)];
+    seachImageView.image = BCImage(搜索框logo);
+    
+    [topBtn addSubview:seachImageView];
+    
+    
+    UIImageView *seachImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(seachImageView.right + 15, 8, 14, 14)];
+    seachImageView1.image = BCImage(放大镜);
+    
+    [topBtn addSubview:seachImageView1];
+    
+    
+    
+    
+//    登录按钮
+    UIButton *loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(BCWidth - 60, topBtn.top, 60, 30)];
+    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    [loginBtn setTitleColor:White forState:UIControlStateNormal];
+    loginBtn.titleLabel.font = Regular(15);
+    [_navView addSubview:loginBtn];
+    
+}
 - (void)initView {
     
     
 //    轮播图
   
-    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 150) displayImages:@[BCImage(首页banner),BCImage(首页banner),BCImage(首页banner)] andClickEnable:YES];
+    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[BCImage(首页banner),BCImage(首页banner),BCImage(首页banner)] andClickEnable:YES];
    
     [self.backScrollView addSubview:view];
     
