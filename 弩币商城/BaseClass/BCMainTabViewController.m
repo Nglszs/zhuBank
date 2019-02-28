@@ -55,7 +55,7 @@
     
     
     
-    CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+    CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
  
     
     BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
