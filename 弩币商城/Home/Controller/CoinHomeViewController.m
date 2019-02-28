@@ -519,9 +519,7 @@
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
         
-        [_backScrollView addTapGestureWithBlock:^{
-              [self.navigationController pushViewController:[CoinGoodDetailViewController new] animated:YES];
-        }];
+       
         
     }
     
