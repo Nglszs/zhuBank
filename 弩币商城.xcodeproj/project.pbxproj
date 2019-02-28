@@ -751,7 +751,7 @@
 				0C38B1912227ADC100572C75 /* CoinSelectAddressViewController.m in Sources */,
 
 				0466B0212227C10000B07CF8 /* CoinChangePayCodeViewController.m in Sources */,
-a0cf1dff7454bf9a2967198c728fe1040d49d3eb
+
 				041A2B1522237A3900F6E4F7 /* main.m in Sources */,
 				041A2B492223801400F6E4F7 /* BCNavigationViewController.m in Sources */,
 				0CCAF7692226916A006F1791 /* CoinHomeViewController.m in Sources */,
