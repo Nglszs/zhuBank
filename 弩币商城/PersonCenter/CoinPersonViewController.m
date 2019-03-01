@@ -7,8 +7,9 @@
 //
 
 #import "CoinPersonViewController.h"
-#import "CoinChangePhoneViewController.h"
-
+#import "BCUseCouPonView.h"
+#import "CoinSetViewController.h"
+#import "CoinMyCouponViewController.h"
 @interface CoinPersonViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
@@ -90,7 +91,7 @@
 //    设置
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exitButton setImage:[UIImage imageNamed:@"编辑"] forState:UIControlStateNormal];
+    [exitButton setImage:[UIImage imageNamed:@"set"] forState:UIControlStateNormal];
    
     [topV addSubview:exitButton];
     [exitButton addTarget:self action:@selector(clickSet:) forControlEvents:UIControlEventTouchUpInside];
@@ -101,6 +102,10 @@
         make.width.height.mas_equalTo(25);
     }];
     
+    [exitButton addtargetBlock:^(UIButton *button) {
+       
+        [self.navigationController pushViewController:[CoinSetViewController new] animated:YES];
+    }];
     
     
     
@@ -416,7 +421,8 @@
     switch (button.tag) {
         case 100://地址管理
         {
-            [self.navigationController pushViewController:[CoinChangePhoneViewController new] animated:YES];
+           
+           
         }
             break;
         case 101://我的银行卡
@@ -427,6 +433,7 @@
         case 102://我的优惠券
         {
             
+            [self.navigationController pushViewController:[CoinMyCouponViewController new] animated:YES];
         }
             break;
         case 103://关于我们

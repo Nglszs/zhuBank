@@ -26,6 +26,19 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>使用您的相机来拍照</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>App需要开启麦克风权限，开启后才可以录制视频</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>请开启相册权限，开启后才可以保存图片</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>您还没有开启相册权限，开启后允许访问相册图片</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

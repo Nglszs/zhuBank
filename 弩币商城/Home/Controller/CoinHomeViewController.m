@@ -274,7 +274,7 @@
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.mas_equalTo(365);
+        make.top.mas_equalTo(385);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
@@ -431,7 +431,7 @@
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.mas_equalTo(645);
+        make.top.mas_equalTo(665);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
@@ -473,7 +473,7 @@
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.mas_equalTo(815);
+        make.top.mas_equalTo(835);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
