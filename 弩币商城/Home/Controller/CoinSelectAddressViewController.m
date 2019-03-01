@@ -19,7 +19,7 @@
     [super viewDidLoad];
     self.title = @"选择地址";
     [self initView];
-    
+    [self SetReturnButton];
 }
 
 

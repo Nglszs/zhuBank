@@ -91,8 +91,7 @@
 
 - (void)showWarnHUD:(NSString *)content {
     
-    
-    BCHUDAlert *aa = [[BCHUDAlert alloc] initWithHudType:2 content:content delayMiss:2];
+    BCHUDAlert * aa = [[BCHUDAlert alloc] initWithHudType:2 content:content delayMiss:2];
     
 }
 

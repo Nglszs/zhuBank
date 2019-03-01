@@ -9,6 +9,8 @@
 #import "CoinLoginViewController.h"
 #import "CoinLoginView.h"
 #import "CoinRegisterViewController.h"
+
+#import "CoinFindPassWordViewController.h"
 @interface CoinLoginViewController ()
 @property (nonatomic,strong)CoinLoginView * RootView;
 @end
@@ -19,6 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.RootView.RegisterButton addTarget:self action:@selector(GoRegisterButtonAction:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.RootView.ForgetPasswordButton addTarget:self action:@selector(ForgetPasswordButtonAction) forControlEvents:(UIControlEventTouchUpInside)];
+    
 }
 
 - (void)loadView{
@@ -29,6 +33,10 @@
 
 - (void)GoRegisterButtonAction:(UIButton *)button{
     CoinRegisterViewController * vc = [CoinRegisterViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void)ForgetPasswordButtonAction{
+    CoinLoginViewController * vc = [CoinLoginViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end

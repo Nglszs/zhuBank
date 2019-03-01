@@ -76,14 +76,18 @@
     [self presentViewController:sheetController animated:YES completion:nil];
 }
 
+- (void)SetNavTitleColor{
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:Regular(17),  NSForegroundColorAttributeName:COLOR(51, 51, 51)}];
+    
+}
 - (void)SetReturnButton{
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     btn.frame = CGRectMake(0, 0, 25, 25);
     [btn addTarget:self action:@selector(BackAction) forControlEvents:(UIControlEventTouchUpInside)];
     UIView * view = [[UIView alloc] initWithFrame: btn.bounds];
     [view addSubview:btn];
-    [btn setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateNormal)];
-    [btn setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateHighlighted)];
+    [btn setImage:[UIImage imageNamed:@"Back"] forState:(UIControlStateNormal)];
+    [btn setImage:[UIImage imageNamed:@"Back"] forState:(UIControlStateHighlighted)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
     btn.imageView.contentMode = UIViewContentModeScaleAspectFill;
     

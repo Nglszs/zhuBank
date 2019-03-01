@@ -7,7 +7,8 @@
 //
 
 #import "CoinChangeAddressView.h"
-@interface CoinChangeAddressView()
+#import "BRAddressPickerView.h"
+@interface CoinChangeAddressView()<UITextFieldDelegate>
 @property (nonatomic,strong)UITextField * NameTF;
 @property (nonatomic,strong)UITextField * PhoneNumberTF;
 @property (nonatomic,strong)UITextField * CityTF;
@@ -50,6 +51,18 @@
         make.right.equalTo(self).offset(-16);
         make.height.mas_equalTo(0.5);
     }];
+    self.backgroundColor = [UIColor whiteColor];
+    
+    UIButton * affirmButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [affirmButton setBackgroundColor:COLOR(255, 0, 0) forState:(UIControlStateNormal)];
+    [self addSubview:affirmButton];
+    [affirmButton setTitle:@"确认" forState:(UIControlStateNormal)];
+    affirmButton.titleLabel.font = Regular(17);
+    [affirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self);
+        make.height.mas_equalTo(50);
+    }];
+    affirmButton.adjustsImageWhenHighlighted = NO;
     
 }
 
@@ -66,12 +79,16 @@
     
     UILabel * label = [[UILabel alloc] init];
     label.text = leftString;
+    
     label.textColor = COLOR(51, 51, 51);
     label.font = Regular(13);
     [view addSubview:label];
+    CGFloat width = [self calculateRowWidth:leftString];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.centerY.equalTo(view);
+        make.width.mas_equalTo(width);
     }];
+   
     textField.font = Regular(13);
     [view addSubview:textField];
     if (placeholder) {
@@ -80,12 +97,21 @@
     textField.textColor = COLOR(51, 51, 51);
     CGFloat hh = 0;
     if (textField == self.CityTF) {
-        hh = 40;
+        hh = -40;
+        UIImageView * imageView = [[UIImageView alloc] init];
+        imageView.image = [UIImage imageNamed:@"查看更多"];
+        [view addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(-26);
+            make.centerY.equalTo(view);
+            make.width.mas_equalTo(12);
+            make.height.mas_equalTo(20);
+        }];
     }
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(label.mas_right).offset(5);
         make.centerY.equalTo(label);
-        make.right.lessThanOrEqualTo(view).offset(hh);
+        make.right.equalTo(view).offset(hh);
     }];
     UIView * lineView = [[UIView alloc] init];
     lineView.backgroundColor = COLOR(0, 0, 0);
@@ -94,8 +120,31 @@
         make.left.bottom.right.equalTo(view);
         make.height.mas_equalTo(0.5);
     }];
+    textField.delegate = self;
     
     
 }
 
+- (CGFloat)calculateRowWidth:(NSString *)string {
+     NSDictionary *dic = @{NSFontAttributeName: Regular(13)};
+     CGRect rect = [string boundingRectWithSize:CGSizeMake(0, MAXFLOAT)/*计算宽度时要确定高度*/ options:NSStringDrawingUsesLineFragmentOrigin |  NSStringDrawingUsesFontLeading attributes:dic context:nil];
+      return rect.size.width;
+    
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    if (textField == self.CityTF) {
+        [BRAddressPickerView showAddressPickerWithDefaultSelected:nil resultBlock:^(BRProvinceModel *province, BRCityModel *city, BRAreaModel *area) {
+             self.CityTF.text = [NSString stringWithFormat:@"%@ %@ %@",province.name,city.name,area.name];
+        }];
+        return NO;
+    }
+    return YES;
+}
 @end

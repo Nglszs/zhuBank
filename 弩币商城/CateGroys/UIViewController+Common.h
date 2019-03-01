@@ -29,4 +29,6 @@ typedef NS_ENUM(NSUInteger, SetNavItem) {
 - (void)setNavitem:(NSString *)title type:(SetNavItem)type;
 
 - (void)setNavitemImage:(NSString *)imageString type:(SetNavItem)type;
+
+- (void)SetNavTitleColor;
 @end

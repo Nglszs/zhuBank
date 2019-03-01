@@ -39,7 +39,7 @@
 #import "CateGroys/UITextView+Common.h"
 #import "CateGroys/UITextField+Common.h"
 #import "CateGroys/UIViewController+Common.h"
-
+#import "UIViewController+Common.h"
 //正则需要的条件
 
 #define kAlphaNum   @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

@@ -13,6 +13,7 @@
 #import "CoinConfirmCommoditListCell.h"
 #import "CoinConfirmCommodityMessageCell.h"
 #import "CoinSelectAddressViewController.h"
+#import "CoinInvoiceViewController.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 
@@ -29,6 +30,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self initTableView];
     [self initFooterView];
+    [self SetReturnButton];
 }
 - (void)initTableView{
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStyleGrouped)];
@@ -202,6 +204,12 @@
     // 地址选择
     if (indexPath.section == 0 && indexPath.row == 0) {
         CoinSelectAddressViewController * vc = [CoinSelectAddressViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    // 发票信息
+    if (indexPath.section == 2 && indexPath.row == 1) {
+        CoinInvoiceViewController * vc = [CoinInvoiceViewController new];
         [self.navigationController pushViewController:vc animated:YES];
     }
     

@@ -11,6 +11,7 @@
 @property (nonatomic,strong)UILabel * NameLabel;
 @property (nonatomic,strong)UILabel * PhoneNumberLabel;
 @property (nonatomic,strong)UILabel * AddressLabel;
+
 @end
 @implementation CoinSelectAddresCell
 
@@ -47,6 +48,8 @@
     }];
     UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"编辑"]];
     [self.contentView addSubview:imageView];
+    
+    
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-30);

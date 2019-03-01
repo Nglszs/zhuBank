@@ -8,6 +8,8 @@
 
 #import "CoinPersonViewController.h"
 #import "CoinChangePhoneViewController.h"
+#import "CoinAboutUsViewController.h"
+#import "CoinFindPassWordViewController.h"
 
 @interface CoinPersonViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -431,7 +433,8 @@
             break;
         case 103://关于我们
         {
-            
+            CoinFindPassWordViewController * vc = [CoinFindPassWordViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
         default:

@@ -1,8 +1,8 @@
 //
-//  CoinLoginView.h
+//  CoinFindPassWordView.h
 //  弩币商城
 //
-//  Created by 暴瑞瑞 on 2019/2/25.
+//  Created by 暴瑞瑞 on 2019/3/1.
 //  Copyright © 2019年 詹姆斯. All rights reserved.
 //
 
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CoinLoginView : UIView
-@property (nonatomic,strong)UIButton * RegisterButton;
+@interface CoinFindPassWordView : UIView
+
 @end
 
 NS_ASSUME_NONNULL_END

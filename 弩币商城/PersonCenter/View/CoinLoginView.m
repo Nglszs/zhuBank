@@ -15,7 +15,7 @@
 @property (nonatomic,strong)UITextField * UserNameTF;
 @property (nonatomic,strong)UITextField * PasswordTF;
 @property (nonatomic,strong)UIButton * LoginButton;
-@property (nonatomic,strong)UIButton * ForgetPasswordButton;
+
 
 @end
 
