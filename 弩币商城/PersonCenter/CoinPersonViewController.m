@@ -7,16 +7,16 @@
 //
 
 #import "CoinPersonViewController.h"
-<<<<<<< HEAD
+
 #import "CoinChangePhoneViewController.h"
 #import "CoinAboutUsViewController.h"
 #import "CoinFindPassWordViewController.h"
 
-=======
+
 #import "BCUseCouPonView.h"
 #import "CoinSetViewController.h"
 #import "CoinMyCouponViewController.h"
->>>>>>> cb25e86b07ec36d02476ff3d49c6a9138216fecd
+
 @interface CoinPersonViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
