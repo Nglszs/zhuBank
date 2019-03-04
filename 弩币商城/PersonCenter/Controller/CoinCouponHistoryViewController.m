@@ -117,7 +117,13 @@
 - (void)clickTopButton:(UIButton *)btn {
     
     [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
-    //    backImageView.left = button.center.x - 27 ;
+    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.width.equalTo(btn);
+        make.top.mas_equalTo(39);
+        make.height.mas_equalTo(3);
+        
+    }];
 }
 #pragma mark 懒加载加载需要的视图
 - (UIView *)headView {
@@ -135,7 +141,7 @@
         
         NSArray *titleArr1 = @[@"已使用",@"已过期"];
         for(int i = 0; i < titleArr1.count; i++) {
-            UIButton *segmentButton1 = [[UIButton alloc] initWithFrame:CGRectMake(BCWidth/3 * i,0,BCWidth/3,40)];
+            UIButton *segmentButton1 = [[UIButton alloc] init];
             
             segmentButton1.titleLabel.font = Regular(15);
             [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
@@ -146,7 +152,26 @@
             [segmentButton1 addTarget:self action:@selector(clickTopButton:) forControlEvents:UIControlEventTouchUpInside];
             
             [_headView addSubview:segmentButton1];
+            [segmentButton1 mas_makeConstraints:^(MASConstraintMaker *make) {
+                
+                make.left.mas_equalTo((BCWidth - 100 - 180 + 50) * i + 90);
+                make.top.mas_equalTo(0);
+                make.width.mas_equalTo(50);
+                make.height.mas_equalTo(40);
+            }];
             
+            if (i == 0) {
+                backImageView = [[UIImageView alloc] init];
+                backImageView.backgroundColor = COLOR(252, 148, 37);
+                [_headView addSubview:backImageView];
+                [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    
+                    make.left.width.equalTo(segmentButton1);
+                    make.top.mas_equalTo(39);
+                    make.height.mas_equalTo(3);
+                    
+                }];
+            }
             
         }
         
@@ -158,9 +183,7 @@
         
         //           滑竿
         
-        backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(39, 39, 53, 3)];
-        backImageView.backgroundColor = COLOR(252, 148, 37);
-        [_headView addSubview:backImageView];
+       
         
     }
     
@@ -228,5 +251,23 @@
     
     return _payTableView;
 }
-
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    
+    
+    //     点击按钮
+    NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
+    
+    
+    UIButton *btn = [self.headView viewWithTag:200 + index];
+    
+    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.width.equalTo(btn);
+        make.top.mas_equalTo(39);
+        make.height.mas_equalTo(3);
+        
+    }];
+    
+}
 @end

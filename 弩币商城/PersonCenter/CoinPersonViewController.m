@@ -11,7 +11,7 @@
 #import "CoinChangePhoneViewController.h"
 #import "CoinAboutUsViewController.h"
 #import "CoinFindPassWordViewController.h"
-
+#import "CoinMyOrderViewController.h"
 
 #import "BCUseCouPonView.h"
 #import "CoinSetViewController.h"
@@ -285,6 +285,11 @@
     backBtn1.contentHorizontalAlignment = 2;
     [backBtn1 setImage:BCImage(查看更多) forState:UIControlStateNormal];
     [topV addSubview:backBtn1];
+    [backBtn1 addtargetBlock:^(UIButton *button) {
+       
+        
+        [self.navigationController pushViewController:[CoinMyOrderViewController new] animated:YES];
+    }];
     
     [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -322,8 +327,8 @@
         [backBtn setTitle:titleA[i] forState:UIControlStateNormal];
         [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
         backBtn.titleLabel.font = Regular(15);
-        
-      
+        backBtn.tag = 300 + i;
+        [backBtn addTarget:self action:@selector(clickNotPay:) forControlEvents:UIControlEventTouchUpInside];
         
         [backBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@",imageA[i]]] forState:UIControlStateNormal];
         [topV addSubview:backBtn];
@@ -414,12 +419,16 @@
     
     
 }
-#pragma mark 点击设置按钮
-- (void)clickSet:(UIButton *)button {
+
+
+#pragma mark 点击代付款待收货
+- (void)clickNotPay:(UIButton *)btn {
     
-    
-    
+    CoinMyOrderViewController *orderVC = [CoinMyOrderViewController new];
+    orderVC.isNotPay = btn.tag==300?1:3;
+     [self.navigationController pushViewController:orderVC animated:YES];
 }
+
 
 #pragma mark 点击底部4个按钮
 - (void)clickButton:(UIButton *)button {

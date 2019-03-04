@@ -19,6 +19,11 @@
 		040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B048322294EE20082D7B1 /* CoinCouponCanViewController.m */; };
 		040B048722294F760082D7B1 /* CoinCouponCanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B048622294F760082D7B1 /* CoinCouponCanTableViewCell.m */; };
 		040F1CF8222523F1009DD7FC /* BCCouponView.m in Sources */ = {isa = PBXBuildFile; fileRef = 040F1CF7222523F1009DD7FC /* BCCouponView.m */; };
+		0417858B222CEA1500B8A234 /* CoinMyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858A222CEA1500B8A234 /* CoinMyOrderViewController.m */; };
+		0417858E222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */; };
+		0417858F222CF2E900B8A234 /* CoinMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */; };
+		04178592222CFE5A00B8A234 /* CoinOrderSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04178591222CFE5A00B8A234 /* CoinOrderSuccessViewController.m */; };
+		04178595222D02DE00B8A234 /* WOWONoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04178593222D02DE00B8A234 /* WOWONoDataView.m */; };
 		041A2B0722237A3700F6E4F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B0622237A3700F6E4F7 /* AppDelegate.m */; };
 		041A2B0D22237A3700F6E4F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0B22237A3700F6E4F7 /* Main.storyboard */; };
 		041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0E22237A3900F6E4F7 /* Assets.xcassets */; };
@@ -139,6 +144,14 @@
 		040B048622294F760082D7B1 /* CoinCouponCanTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinCouponCanTableViewCell.m; sourceTree = "<group>"; };
 		040F1CF6222523F1009DD7FC /* BCCouponView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCCouponView.h; sourceTree = "<group>"; };
 		040F1CF7222523F1009DD7FC /* BCCouponView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCCouponView.m; sourceTree = "<group>"; };
+		04178589222CEA1500B8A234 /* CoinMyOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMyOrderViewController.h; sourceTree = "<group>"; };
+		0417858A222CEA1500B8A234 /* CoinMyOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMyOrderViewController.m; sourceTree = "<group>"; };
+		0417858C222CEFDB00B8A234 /* CoinMyOrderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMyOrderTableViewCell.h; sourceTree = "<group>"; };
+		0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMyOrderTableViewCell.m; sourceTree = "<group>"; };
+		04178590222CFE5A00B8A234 /* CoinOrderSuccessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinOrderSuccessViewController.h; sourceTree = "<group>"; };
+		04178591222CFE5A00B8A234 /* CoinOrderSuccessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinOrderSuccessViewController.m; sourceTree = "<group>"; };
+		04178593222D02DE00B8A234 /* WOWONoDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOWONoDataView.m; sourceTree = "<group>"; };
+		04178594222D02DE00B8A234 /* WOWONoDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOWONoDataView.h; sourceTree = "<group>"; };
 		041A2B0222237A3700F6E4F7 /* 弩币商城.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "弩币商城.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		041A2B0522237A3700F6E4F7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		041A2B0622237A3700F6E4F7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -347,6 +360,10 @@
 				040B048022294D2E0082D7B1 /* CoinCouponHistoryViewController.m */,
 				040B048222294EE20082D7B1 /* CoinCouponCanViewController.h */,
 				040B048322294EE20082D7B1 /* CoinCouponCanViewController.m */,
+				04178589222CEA1500B8A234 /* CoinMyOrderViewController.h */,
+				0417858A222CEA1500B8A234 /* CoinMyOrderViewController.m */,
+				04178590222CFE5A00B8A234 /* CoinOrderSuccessViewController.h */,
+				04178591222CFE5A00B8A234 /* CoinOrderSuccessViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -531,6 +548,8 @@
 				041A2B912223812C00F6E4F7 /* BCHUDAlert.m */,
 				041A2BAA2223C67800F6E4F7 /* CarouselView.h */,
 				041A2BA92223C67800F6E4F7 /* CarouselView.m */,
+				04178594222D02DE00B8A234 /* WOWONoDataView.h */,
+				04178593222D02DE00B8A234 /* WOWONoDataView.m */,
 			);
 			path = CustomAlert;
 			sourceTree = "<group>";
@@ -698,6 +717,8 @@
 				0C6D3ACE2229143C00C6280F /* CoinMyCardView.m */,
 				0C6D3AD32229419F00C6280F /* CoinFindPassWordView.h */,
 				0C6D3AD42229419F00C6280F /* CoinFindPassWordView.m */,
+				0417858C222CEFDB00B8A234 /* CoinMyOrderTableViewCell.h */,
+				0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -949,16 +970,19 @@
 				040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */,
 				041A2B6C2223808700F6E4F7 /* UIImageView+Common.m in Sources */,
 				041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */,
+				0417858E222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m in Sources */,
 				041A2B662223808700F6E4F7 /* NSDictionary+Common.m in Sources */,
 				0CCAF74822266E1E006F1791 /* CoinConfirmCommodityOrderCell.m in Sources */,
 				041A2BAB2223C67800F6E4F7 /* CarouselView.m in Sources */,
 				041A2B6B2223808700F6E4F7 /* NSString+Common.m in Sources */,
+				0417858B222CEA1500B8A234 /* CoinMyOrderViewController.m in Sources */,
 				0CCAF76C222691B1006F1791 /* CoinConfirmOrderViewController.m in Sources */,
 				0CCAF7662226916A006F1791 /* CoinSearchResultViewController.m in Sources */,
 				041A2B672223808700F6E4F7 /* UIViewController+Common.m in Sources */,
 				0C38B1942227B0A300572C75 /* CoinSelectAddresCell.m in Sources */,
 				0C37C1B52228CB3C009001F4 /* NSDate+BRPickerView.m in Sources */,
 				0C37C1B82228CB3C009001F4 /* BRAddressModel.m in Sources */,
+				04178592222CFE5A00B8A234 /* CoinOrderSuccessViewController.m in Sources */,
 				040B047B222944340082D7B1 /* CoinMyCouponTableViewCell.m in Sources */,
 				0C38B1912227ADC100572C75 /* CoinSelectAddressViewController.m in Sources */,
 				0466B0212227C10000B07CF8 /* CoinChangePayCodeViewController.m in Sources */,
@@ -977,6 +1001,7 @@
 				0C37C1B72228CB3C009001F4 /* BBaseView.m in Sources */,
 				0C6D3AD52229419F00C6280F /* CoinFindPassWordView.m in Sources */,
 				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,
+				04178595222D02DE00B8A234 /* WOWONoDataView.m in Sources */,
 				0C38B1972227C1AA00572C75 /* CoinChangeAddressViewController.m in Sources */,
 				0C4291F92223D80500254434 /* CoinLoginView.m in Sources */,
 				0C454AA322265AA600BDFC8D /* CoinConfirmOrderAddressCell.m in Sources */,
@@ -1032,6 +1057,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				041A2B2A22237A3900F6E4F7 /* ____UITests.m in Sources */,
+				0417858F222CF2E900B8A234 /* CoinMyOrderTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
