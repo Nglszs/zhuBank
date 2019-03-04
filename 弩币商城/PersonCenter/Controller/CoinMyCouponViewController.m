@@ -14,6 +14,7 @@
 @interface CoinMyCouponViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
      UIImageView *backImageView;//滑竿
+    UIButton *newBtn,*newBtn1;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 
@@ -133,7 +134,14 @@
 - (void)clickTopButton:(UIButton *)btn {
     
     [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
-//    backImageView.left = button.center.x - 27 ;
+
+    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+       
+        make.left.width.equalTo(btn);
+        make.top.mas_equalTo(39);
+        make.height.mas_equalTo(3);
+        
+    }];
 }
 #pragma mark 懒加载加载需要的视图
 - (UIView *)headView {
@@ -149,9 +157,10 @@
        
         
         
-        NSArray *titleArr1 = @[@"全部(11)",@"现金抵用券（2）",@"运费抵用券（1）"];
+        NSArray *titleArr1 = @[@"全部(11)",@"现金抵用券(2)",@"运费抵用券(1)"];
+        
         for(int i = 0; i < titleArr1.count; i++) {
-            UIButton *segmentButton1 = [[UIButton alloc] initWithFrame:CGRectMake(BCWidth/3 * i,0,BCWidth/3,40)];
+            UIButton *segmentButton1 = [[UIButton alloc] init];
            
             segmentButton1.titleLabel.font = Regular(15);
             [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
@@ -159,10 +168,37 @@
             
             
             segmentButton1.tag = 200 + i;
+            
+           
+           
             [segmentButton1 addTarget:self action:@selector(clickTopButton:) forControlEvents:UIControlEventTouchUpInside];
             
-            [_headView addSubview:segmentButton1];
+            if (i == 0) {
+                newBtn = segmentButton1;
+            } else if(i== 1) {
+                
+                newBtn1 = segmentButton1;
+            }
+        
             
+            [_headView addSubview:segmentButton1];
+            [segmentButton1 mas_makeConstraints:^(MASConstraintMaker *make) {
+               
+                if (i == 0) {
+                    make.left.mas_equalTo(LEFT_Margin);
+                } else if (i == 1) {
+                    
+                    make.left.equalTo(newBtn.mas_right).offset(30);
+                } else {
+                    make.left.equalTo(newBtn1.mas_right).offset(30);
+                    
+                }
+                
+                
+               
+                make.top.mas_equalTo(0);
+                make.height.mas_equalTo(40);
+            }];
            
         }
         
@@ -174,9 +210,16 @@
         
         //           滑竿
         
-        backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(39, 39, 53, 3)];
+        backImageView = [[UIImageView alloc] init];
         backImageView.backgroundColor = COLOR(252, 148, 37);
         [_headView addSubview:backImageView];
+        [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+           
+            make.left.width.equalTo(newBtn);
+            make.top.mas_equalTo(39);
+            make.height.mas_equalTo(3);
+            
+        }];
         
     }
     
@@ -263,5 +306,27 @@
     }
     
     return _playTableView;
+}
+
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    
+    
+//     点击按钮
+        NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
+    
+    
+        UIButton *btn = [self.headView viewWithTag:200 + index];
+    
+    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.width.equalTo(btn);
+        make.top.mas_equalTo(39);
+        make.height.mas_equalTo(3);
+        
+    }];
+    
 }
 @end
