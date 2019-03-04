@@ -55,6 +55,7 @@
 		0466B0242227C4FE00B07CF8 /* CoinChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0466B0232227C4FE00B07CF8 /* CoinChangePasswordViewController.m */; };
 		048BD704222629A900910A1F /* BCDivideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD703222629A900910A1F /* BCDivideView.m */; };
 		048BD70722265DD400910A1F /* BCGoodView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD70622265DD400910A1F /* BCGoodView.m */; };
+		0C1EB34E222CCC2B00625293 /* CoinBorrowMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1EB34D222CCC2B00625293 /* CoinBorrowMoneyViewController.m */; };
 		0C37C1B42228CB3C009001F4 /* BRStringPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37C1A32228CB3C009001F4 /* BRStringPickerView.m */; };
 		0C37C1B52228CB3C009001F4 /* NSDate+BRPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37C1A82228CB3C009001F4 /* NSDate+BRPickerView.m */; };
 		0C37C1B62228CB3C009001F4 /* BRDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37C1A92228CB3C009001F4 /* BRDatePickerView.m */; };
@@ -92,6 +93,9 @@
 		0CCAF7692226916A006F1791 /* CoinHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF7652226916A006F1791 /* CoinHomeViewController.m */; };
 		0CCAF76C222691B1006F1791 /* CoinConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF76B222691B1006F1791 /* CoinConfirmOrderViewController.m */; };
 		0CDAB70D222534EF0056DBD8 /* CoinClassfyLeftTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */; };
+		0CF0FEEA222D0249001728F3 /* BorrowMoneyReasonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */; };
+		0CF0FEED222D12C8001728F3 /* CoinMemberBuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEEC222D12C8001728F3 /* CoinMemberBuyViewController.m */; };
+		0CF0FEF0222D219F001728F3 /* CoinMemberSucceedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEEF222D219F001728F3 /* CoinMemberSucceedViewController.m */; };
 		59EF6AD5F3389F54B7A5F4C9 /* libPods-弩币商城UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */; };
 		5B54F94BD2650ED6CBE49C5C /* libPods-弩币商城Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */; };
 		BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C760E15965B01E01034A11E /* libPods-弩币商城.a */; };
@@ -216,6 +220,8 @@
 		048BD703222629A900910A1F /* BCDivideView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCDivideView.m; sourceTree = "<group>"; };
 		048BD70522265DD400910A1F /* BCGoodView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCGoodView.h; sourceTree = "<group>"; };
 		048BD70622265DD400910A1F /* BCGoodView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCGoodView.m; sourceTree = "<group>"; };
+		0C1EB34C222CCC2B00625293 /* CoinBorrowMoneyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBorrowMoneyViewController.h; sourceTree = "<group>"; };
+		0C1EB34D222CCC2B00625293 /* CoinBorrowMoneyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinBorrowMoneyViewController.m; sourceTree = "<group>"; };
 		0C37C1A22228CB3C009001F4 /* BRStringPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRStringPickerView.h; sourceTree = "<group>"; };
 		0C37C1A32228CB3C009001F4 /* BRStringPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRStringPickerView.m; sourceTree = "<group>"; };
 		0C37C1A42228CB3C009001F4 /* BRPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRPickerView.h; sourceTree = "<group>"; };
@@ -293,6 +299,12 @@
 		0CCAF76B222691B1006F1791 /* CoinConfirmOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoinConfirmOrderViewController.m; path = "弩币商城/Home/CoinConfirmOrderViewController.m"; sourceTree = SOURCE_ROOT; };
 		0CDAB70B222534EF0056DBD8 /* CoinClassfyLeftTVCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinClassfyLeftTVCell.h; sourceTree = "<group>"; };
 		0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassfyLeftTVCell.m; sourceTree = "<group>"; };
+		0CF0FEE8222D0249001728F3 /* BorrowMoneyReasonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BorrowMoneyReasonView.h; sourceTree = "<group>"; };
+		0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BorrowMoneyReasonView.m; sourceTree = "<group>"; };
+		0CF0FEEB222D12C8001728F3 /* CoinMemberBuyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMemberBuyViewController.h; sourceTree = "<group>"; };
+		0CF0FEEC222D12C8001728F3 /* CoinMemberBuyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMemberBuyViewController.m; sourceTree = "<group>"; };
+		0CF0FEEE222D219F001728F3 /* CoinMemberSucceedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMemberSucceedViewController.h; sourceTree = "<group>"; };
+		0CF0FEEF222D219F001728F3 /* CoinMemberSucceedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMemberSucceedViewController.m; sourceTree = "<group>"; };
 		31A7F92D886737E1E0FF97BA /* Pods-弩币商城Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城Tests/Pods-弩币商城Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-弩币商城UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-弩币商城.debug.xcconfig"; path = "Pods/Target Support Files/Pods-弩币商城/Pods-弩币商城.debug.xcconfig"; sourceTree = "<group>"; };
@@ -564,6 +576,13 @@
 			children = (
 				041A2BA02223859000F6E4F7 /* CoinMoneyViewController.h */,
 				041A2BA12223859000F6E4F7 /* CoinMoneyViewController.m */,
+				0C1EB34C222CCC2B00625293 /* CoinBorrowMoneyViewController.h */,
+				0C1EB34D222CCC2B00625293 /* CoinBorrowMoneyViewController.m */,
+				0CF0FEEB222D12C8001728F3 /* CoinMemberBuyViewController.h */,
+				0CF0FEEC222D12C8001728F3 /* CoinMemberBuyViewController.m */,
+				0CF0FEEE222D219F001728F3 /* CoinMemberSucceedViewController.h */,
+				0CF0FEEF222D219F001728F3 /* CoinMemberSucceedViewController.m */,
+				0CF0FEE7222D017E001728F3 /* View */,
 			);
 			path = Coin;
 			sourceTree = "<group>";
@@ -698,6 +717,15 @@
 				0C6D3ACE2229143C00C6280F /* CoinMyCardView.m */,
 				0C6D3AD32229419F00C6280F /* CoinFindPassWordView.h */,
 				0C6D3AD42229419F00C6280F /* CoinFindPassWordView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0CF0FEE7222D017E001728F3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0CF0FEE8222D0249001728F3 /* BorrowMoneyReasonView.h */,
+				0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -944,6 +972,7 @@
 				0C37C1BA2228CB3C009001F4 /* BRAddressPickerView.m in Sources */,
 				0C37C1B62228CB3C009001F4 /* BRDatePickerView.m in Sources */,
 				0CCAF75B2226911F006F1791 /* CoinSearchViewController.m in Sources */,
+				0CF0FEF0222D219F001728F3 /* CoinMemberSucceedViewController.m in Sources */,
 				040B048722294F760082D7B1 /* CoinCouponCanTableViewCell.m in Sources */,
 				0466B0242227C4FE00B07CF8 /* CoinChangePasswordViewController.m in Sources */,
 				040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */,
@@ -971,9 +1000,12 @@
 				041A2B6A2223808700F6E4F7 /* UITextField+Common.m in Sources */,
 				0C6D3AC9222903E300C6280F /* BankCardCell.m in Sources */,
 				0C6D3AD22229417800C6280F /* CoinFindPassWordViewController.m in Sources */,
+				0CF0FEED222D12C8001728F3 /* CoinMemberBuyViewController.m in Sources */,
 				0C6D3AD8222945AD00C6280F /* CoinAboutUsViewController.m in Sources */,
 				041A2B462223800500F6E4F7 /* CoinBaseViewController.m in Sources */,
+				0CF0FEEA222D0249001728F3 /* BorrowMoneyReasonView.m in Sources */,
 				0C4291F32223D72F00254434 /* CoinLoginViewController.m in Sources */,
+				0C1EB34E222CCC2B00625293 /* CoinBorrowMoneyViewController.m in Sources */,
 				0C37C1B72228CB3C009001F4 /* BBaseView.m in Sources */,
 				0C6D3AD52229419F00C6280F /* CoinFindPassWordView.m in Sources */,
 				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,

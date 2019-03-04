@@ -112,8 +112,9 @@
     UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithTitle:title style:(UIBarButtonItemStyleDone) target:self action:jj];
     UILabel * label = [UILabel new];
     
-    label.font = TextFont(15);
+    label.font = TextFont(12);
     [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:label.font,NSFontAttributeName, nil] forState:UIControlStateNormal];
+     [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:label.font,NSFontAttributeName, nil] forState:UIControlStateHighlighted];
     if (type == LeftNavItem) {
         self.navigationItem.leftBarButtonItem = item;
     }else{

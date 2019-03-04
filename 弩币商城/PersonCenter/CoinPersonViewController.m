@@ -7,12 +7,9 @@
 //
 
 #import "CoinPersonViewController.h"
-
 #import "CoinChangePhoneViewController.h"
 #import "CoinAboutUsViewController.h"
 #import "CoinFindPassWordViewController.h"
-
-
 #import "BCUseCouPonView.h"
 #import "CoinSetViewController.h"
 #import "CoinMyCouponViewController.h"
