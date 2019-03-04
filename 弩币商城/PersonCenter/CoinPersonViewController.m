@@ -10,11 +10,10 @@
 #import "CoinChangePhoneViewController.h"
 #import "CoinAboutUsViewController.h"
 #import "CoinFindPassWordViewController.h"
-<<<<<<< HEAD
-=======
+
 #import "CoinMyOrderViewController.h"
 
->>>>>>> bffc21b0ccb5568497eb2b6e6bd5662a7c882cf7
+
 #import "BCUseCouPonView.h"
 #import "CoinSetViewController.h"
 #import "CoinMyCouponViewController.h"
