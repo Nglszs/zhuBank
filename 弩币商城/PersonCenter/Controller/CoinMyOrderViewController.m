@@ -9,7 +9,7 @@
 #import "CoinMyOrderViewController.h"
 #import "CoinMyOrderTableViewCell.h"
 #import "CoinOrderSuccessViewController.h"
-
+#import "CoinOrderDetailsViewController.h"
 @interface CoinMyOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -30,8 +30,6 @@
     [super viewDidLoad];
       self.navigationItem.title = @"我的订单";
     
-    
-    
     [self.view addSubview:self.headView];
     
     [self.view addSubview:self.backScrollView];
@@ -43,7 +41,7 @@
     [self.backScrollView addSubview:self.notEnableTableView];
     [self.backScrollView addSubview:self.finshTableView];
     
-    
+    [self SetReturnButton];
     if (_isNotPay == 1) {
         
      [self.backScrollView   setContentOffset:CGPointMake(BCWidth, 0) animated:NO];
@@ -206,6 +204,20 @@
     
     
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+    if (tableView == self.finshTableView) {
+        vc.type = BROrderFinsh;
+    }else if (tableView == self.notPayTableView){
+        vc.type = BROrderNotPay;
+    }else if (tableView == self.notDispatchTabview){
+        vc.type = BROrderNotDispatch;
+    }else if (tableView == self.notEnableTableView){
+        vc.type = BROrderNotEnable;
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 
 #pragma mark 确认订单

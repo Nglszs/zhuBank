@@ -10,14 +10,11 @@
 #import "CoinChangePhoneViewController.h"
 #import "CoinAboutUsViewController.h"
 #import "CoinFindPassWordViewController.h"
-
 #import "CoinMyOrderViewController.h"
-
-
 #import "BCUseCouPonView.h"
 #import "CoinSetViewController.h"
 #import "CoinMyCouponViewController.h"
-
+#import "CoinMyCardViewController.h"
 @interface CoinPersonViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
@@ -26,12 +23,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    
-    
+     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
 }
 
@@ -405,8 +397,6 @@
         }];
         [backBtn imagePositionStyle:ImagePositionStyleDefault spacing:7];
         
-        
-        
         UIImageView *rightImage = [[UIImageView alloc] init];
         rightImage.image = BCImage(查看更多);
         [topV addSubview:rightImage];
@@ -444,7 +434,8 @@
             break;
         case 101://我的银行卡
         {
-            
+            CoinMyCardViewController * vc = [CoinMyCardViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
         case 102://我的优惠券
@@ -455,7 +446,7 @@
             break;
         case 103://关于我们
         {
-            CoinFindPassWordViewController * vc = [CoinFindPassWordViewController new];
+            CoinAboutUsViewController * vc = [CoinAboutUsViewController new];
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;

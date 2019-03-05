@@ -8,6 +8,7 @@
 
 #import "CoinFindPassWordViewController.h"
 #import "CoinFindPassWordView.h"
+#import "CoinUpdatePassWordViewController.h"
 @interface CoinFindPassWordViewController ()
 @property (nonatomic,strong)CoinFindPassWordView * RootView;
 @end
@@ -22,6 +23,11 @@
     [super viewDidLoad];
     self.title = @"找回密码";
     [self SetNavTitleColor];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    CoinUpdatePassWordViewController * vc = [CoinUpdatePassWordViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

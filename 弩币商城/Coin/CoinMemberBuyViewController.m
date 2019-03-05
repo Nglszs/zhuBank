@@ -7,7 +7,7 @@
 //
 
 #import "CoinMemberBuyViewController.h"
-
+#import "CoinMemberSucceedViewController.h"
 @interface CoinMemberBuyViewController ()
 
 @end
@@ -115,10 +115,17 @@
         make.height.mas_equalTo(40);
     }];
     payButton.adjustsImageWhenHighlighted = NO;
+    [payButton addTarget:self action:@selector(paySuccess) forControlEvents:(UIControlEventTouchUpInside)];
+}
+
+- (void)paySuccess{
+    CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)SelectBtnAction:(UIButton *)btn{
     
     btn.selected = !btn.selected;
 }
+
 
 @end
