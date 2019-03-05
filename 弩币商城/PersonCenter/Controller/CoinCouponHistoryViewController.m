@@ -15,6 +15,7 @@
 
 {
     UIImageView *backImageView;//滑竿
+     UIButton *selectedBtn;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 
@@ -29,10 +30,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view addSubview:self.headView];
+   
     
     
     self.navigationItem.title = @"优惠券历史记录";
+     [self.view addSubview:self.headView];
     [self.view addSubview:self.backScrollView];
     
     
@@ -116,6 +118,17 @@
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
     
+    if (btn!= selectedBtn) {
+        
+        selectedBtn.selected = NO;
+        btn.selected = YES;
+        selectedBtn = btn;
+        
+    }else{
+        
+        selectedBtn.selected = YES;
+    }
+    
     [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
     [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         
@@ -145,7 +158,8 @@
             
             segmentButton1.titleLabel.font = Regular(15);
             [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
-            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateNormal];
+              [segmentButton1 setTitleColor:COLOR(153, 153, 153) forState:UIControlStateNormal];
+            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateSelected];
             
             
             segmentButton1.tag = 200 + i;
@@ -171,6 +185,9 @@
                     make.height.mas_equalTo(3);
                     
                 }];
+                
+                segmentButton1.selected = YES;
+                selectedBtn = segmentButton1;
             }
             
         }
@@ -261,13 +278,7 @@
     
     UIButton *btn = [self.headView viewWithTag:200 + index];
     
-    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.width.equalTo(btn);
-        make.top.mas_equalTo(39);
-        make.height.mas_equalTo(3);
-        
-    }];
+    [self clickTopButton:btn];
     
 }
 @end

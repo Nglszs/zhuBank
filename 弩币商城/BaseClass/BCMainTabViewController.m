@@ -43,7 +43,7 @@
     
     CoinClassfyViewController *rentVC = [[CoinClassfyViewController alloc] init];
     BCNavigationViewController *rentNav = [[BCNavigationViewController alloc] initWithRootViewController:rentVC];
-    rentNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"分类" image:[[UIImage imageNamed:@"icon_rent_normal@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"icon_rent_focus@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    rentNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"分类" image:[[UIImage imageNamed:@"分类未选中的状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"分类选中的状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     
     
@@ -51,7 +51,7 @@
     
     CoinMoneyViewController *bussVC = [[CoinMoneyViewController alloc] init];
     BCNavigationViewController *bussNav = [[BCNavigationViewController alloc] initWithRootViewController:bussVC];
-    bussNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"努库银票" image:[[UIImage imageNamed:@"icon_merchants_normal@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"icon_merchants_focus@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    bussNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"努库银票" image:[[UIImage imageNamed:@"帑库银票未选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"帑库银票选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     
     
@@ -59,7 +59,7 @@
  
     
     BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
-    workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"icon_workbench_normal@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"icon_workbench_focus@0.5x"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     
     

@@ -15,6 +15,7 @@
 {
      UIImageView *backImageView;//滑竿
     UIButton *newBtn,*newBtn1;
+     UIButton *selectedBtn;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 
@@ -133,6 +134,19 @@
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
     
+    
+    if (btn!= selectedBtn) {
+        
+        selectedBtn.selected = NO;
+        btn.selected = YES;
+        selectedBtn = btn;
+        
+    }else{
+        
+        selectedBtn.selected = YES;
+    }
+    
+    
     [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
 
     [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -164,7 +178,8 @@
            
             segmentButton1.titleLabel.font = Regular(15);
             [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
-            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateNormal];
+              [segmentButton1 setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
+            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateSelected];
             
             
             segmentButton1.tag = 200 + i;
@@ -186,6 +201,8 @@
                
                 if (i == 0) {
                     make.left.mas_equalTo(LEFT_Margin);
+                    segmentButton1.selected = YES;
+                    selectedBtn = segmentButton1;
                 } else if (i == 1) {
                     
                     make.left.equalTo(newBtn.mas_right).offset(30);
@@ -199,6 +216,9 @@
                 make.top.mas_equalTo(0);
                 make.height.mas_equalTo(40);
             }];
+            
+            
+           
            
         }
         
@@ -320,13 +340,6 @@
     
         UIButton *btn = [self.headView viewWithTag:200 + index];
     
-    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.width.equalTo(btn);
-        make.top.mas_equalTo(39);
-        make.height.mas_equalTo(3);
-        
-    }];
-    
+    [self clickTopButton:btn];
 }
 @end

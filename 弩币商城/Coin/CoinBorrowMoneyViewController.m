@@ -8,7 +8,7 @@
 
 #import "CoinBorrowMoneyViewController.h"
 #import "BorrowMoneyReasonView.h"
-#import "CoinMemberBuyViewController.h"
+#import "CoinBrowseStatusViewController.h"
 @interface CoinBorrowMoneyViewController ()
 
 @end
@@ -47,8 +47,10 @@
     [footButton addTarget:self action:@selector(goBuy:) forControlEvents:(UIControlEventTouchUpInside)];
 }
 - (void)goBuy:(UIButton *)btn{
-    CoinMemberBuyViewController * vc = [CoinMemberBuyViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+  
+    
+    [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
+    
 }
 
 

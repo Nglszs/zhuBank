@@ -41,7 +41,9 @@
     [self.backScrollView addSubview:self.notEnableTableView];
     [self.backScrollView addSubview:self.finshTableView];
     
+
     [self SetReturnButton];
+
     if (_isNotPay == 1) {
         
      [self.backScrollView   setContentOffset:CGPointMake(BCWidth, 0) animated:NO];
@@ -440,13 +442,7 @@
     
     UIButton *btn = [self.headView viewWithTag:200 + index];
     
-    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.width.equalTo(btn);
-        make.top.mas_equalTo(37);
-        make.height.mas_equalTo(1);
-        
-    }];
+    [self clickTopButton:btn];
     
 }
 @end
