@@ -9,7 +9,7 @@
 #import "CoinHomeViewController.h"
 #import "CarouselView.h"
 #import "CoinGoodDetailViewController.h"
-
+#import "CoinCertifyViewController.h"
 @interface CoinHomeViewController ()
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -518,7 +518,11 @@
         _backScrollView.backgroundColor = White;
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
-        
+        [_backScrollView addTapGestureWithBlock:^{
+            
+            
+            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
+        }];
        
         
     }

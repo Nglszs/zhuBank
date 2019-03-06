@@ -54,6 +54,7 @@
 		041A2BA5222385A000F6E4F7 /* CoinPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA4222385A000F6E4F7 /* CoinPersonViewController.m */; };
 		041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */; };
 		041A2BAB2223C67800F6E4F7 /* CarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA92223C67800F6E4F7 /* CarouselView.m */; };
+		04223279222F63D700F5E662 /* CoinCertifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04223278222F63D700F5E662 /* CoinCertifyViewController.m */; };
 		044F0256222E0693000BAA9F /* CoinBrowseStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F0255222E0693000BAA9F /* CoinBrowseStatusViewController.m */; };
 		044F0259222E1768000BAA9F /* CoinBrowseRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F0258222E1768000BAA9F /* CoinBrowseRecordViewController.m */; };
 		044F025C222E440A000BAA9F /* CoinBrowseRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F025B222E440A000BAA9F /* CoinBrowseRecordTableViewCell.m */; };
@@ -231,6 +232,8 @@
 		041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCMainTabViewController.m; sourceTree = "<group>"; };
 		041A2BA92223C67800F6E4F7 /* CarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselView.m; sourceTree = "<group>"; };
 		041A2BAA2223C67800F6E4F7 /* CarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselView.h; sourceTree = "<group>"; };
+		04223277222F63D700F5E662 /* CoinCertifyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinCertifyViewController.h; sourceTree = "<group>"; };
+		04223278222F63D700F5E662 /* CoinCertifyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinCertifyViewController.m; sourceTree = "<group>"; };
 		044F0254222E0693000BAA9F /* CoinBrowseStatusViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBrowseStatusViewController.h; sourceTree = "<group>"; };
 		044F0255222E0693000BAA9F /* CoinBrowseStatusViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinBrowseStatusViewController.m; sourceTree = "<group>"; };
 		044F0257222E1768000BAA9F /* CoinBrowseRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBrowseRecordViewController.h; sourceTree = "<group>"; };
@@ -641,6 +644,8 @@
 				044F0258222E1768000BAA9F /* CoinBrowseRecordViewController.m */,
 				044F025D222E4919000BAA9F /* CoinReturnBrowseViewController.h */,
 				044F025E222E4919000BAA9F /* CoinReturnBrowseViewController.m */,
+				04223277222F63D700F5E662 /* CoinCertifyViewController.h */,
+				04223278222F63D700F5E662 /* CoinCertifyViewController.m */,
 				0CF0FEE7222D017E001728F3 /* View */,
 			);
 			path = Coin;
@@ -793,13 +798,10 @@
 			children = (
 				0CF0FEE8222D0249001728F3 /* BorrowMoneyReasonView.h */,
 				0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */,
-
 				0CC42A7B222D535C008B1181 /* RecommendCommodityCell.h */,
 				0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */,
-
 				044F025A222E440A000BAA9F /* CoinBrowseRecordTableViewCell.h */,
 				044F025B222E440A000BAA9F /* CoinBrowseRecordTableViewCell.m */,
-
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1089,6 +1091,7 @@
 				0CC42A7D222D535C008B1181 /* RecommendCommodityCell.m in Sources */,
 				0C4291F32223D72F00254434 /* CoinLoginViewController.m in Sources */,
 				0C1EB34E222CCC2B00625293 /* CoinBorrowMoneyViewController.m in Sources */,
+				04223279222F63D700F5E662 /* CoinCertifyViewController.m in Sources */,
 				0C37C1B72228CB3C009001F4 /* BBaseView.m in Sources */,
 				0C6D3AD52229419F00C6280F /* CoinFindPassWordView.m in Sources */,
 				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,

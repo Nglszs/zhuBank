@@ -94,7 +94,7 @@
     [exitButton setImage:[UIImage imageNamed:@"set"] forState:UIControlStateNormal];
    
     [topV addSubview:exitButton];
-    [exitButton addTarget:self action:@selector(clickSet:) forControlEvents:UIControlEventTouchUpInside];
+   
     [exitButton mas_makeConstraints:^(MASConstraintMaker *make) {
        
         make.right.mas_equalTo(-LEFT_Margin);
