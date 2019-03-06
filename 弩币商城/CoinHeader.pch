@@ -69,6 +69,8 @@
  *
  *  0:测试环境  1:发布环境
  */
+
+
 #define MY_Test 0
 
 #if (MY_Test == 0)
@@ -76,12 +78,14 @@
 
 #define NSLog(FORMAT, ...) fprintf(stderr,"%s\n",[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);//去掉时间格式
 
-
+#define BCBaseUrl @"http://test2.tkgo.cn/api/"
 #endif
 
 #if (MY_Test == 1)
 
 #define NSLog(...)
+
+#define BCBaseUrl @""
 
 #endif
 

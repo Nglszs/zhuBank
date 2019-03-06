@@ -15,6 +15,8 @@
 #import "CoinSetViewController.h"
 #import "CoinMyCouponViewController.h"
 #import "CoinMyCardViewController.h"
+#import "CoinLimitViewController.h"
+#import "CoinByStagesViewController.h"
 @interface CoinPersonViewController ()
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
@@ -162,10 +164,15 @@
         make.size.mas_equalTo(CGSizeMake(70, 25));
     }];
     
+    [backBtn1 addTarget:self action:@selector(ExamineLimit) forControlEvents:(UIControlEventTouchUpInside)];
     
 }
 
 
+- (void)ExamineLimit{
+    CoinLimitViewController * VC = [CoinLimitViewController new];
+    [self.navigationController pushViewController:VC animated:YES];
+}
 - (void)initDiviView{
     UIView *topV = [[UIView alloc] init];
     topV.backgroundColor = White;
@@ -188,7 +195,8 @@
     for (int i = 0; i < 2; i++) {
         
         UIButton *backBtn= [[UIButton alloc] init];
-        
+        backBtn.tag = 1000 + i;
+        [backBtn addTarget:self action:@selector(goList:) forControlEvents:(UIControlEventTouchUpInside)];
         [backBtn setTitle:titleA[i] forState:UIControlStateNormal];
         [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
         backBtn.titleLabel.font = Regular(15);
@@ -224,6 +232,14 @@
     }
 }
 
+- (void)goList:(UIButton *)btn{
+    if (btn.tag == 1000) {
+        // 分期记录
+        CoinByStagesViewController * vc = [CoinByStagesViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+}
 
 - (void)initOrderView {
     

@@ -10,7 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BRPayType) {
+    BRPayBuyMember, // 购买会员
+    BRPayRepayment, // 分期还款
+};
 @interface CoinMemberBuyViewController : CoinBaseViewController
+
+@property (nonatomic,assign)BRPayType type;
 
 @end
 

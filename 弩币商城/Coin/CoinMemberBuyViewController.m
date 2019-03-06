@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"购买帑库金钻会员卡";
+    self.title = (self.type == BRPayRepayment ? @"购买帑库金钻会员卡" : @"还款");
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
@@ -32,14 +32,42 @@
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.view).offset(32);
     }];
+    
+    if (self.type == BRPayRepayment) {
+        UILabel * label = [UILabel new];
+        label.text  = @"还款期数：【1/6期】iPhone 8 plus";
+        label.textColor = COLOR(51, 51, 51);
+        label.font = Regular(13);
+        [self.view addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view).offset(LEFT_Margin);
+            make.right.equalTo(self.view);
+            make.top.equalTo(MoneyLabel.mas_bottom).offset(10);
+        }];
+        
+        UIView * LineView = [UIView new];
+        LineView.backgroundColor = COLOR(238, 238, 238);
+        [self.view addSubview:LineView];
+        [LineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(10);
+            make.top.equalTo(label.mas_bottom).offset(10);
+        }];
+    }
+    
     UILabel * titleLabel = [UILabel new];
     titleLabel.text = @"选择支付方式";
     titleLabel.textColor = COLOR(51, 51, 51);
     titleLabel.font = Regular(16);
     [self.view addSubview:titleLabel];
+    CGFloat top = 40;
+    
+    if (self.type == BRPayRepayment) {
+        top = 60;
+    }
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(LEFT_Margin);
-        make.top.equalTo(MoneyLabel.mas_bottom).offset(40);
+        make.top.equalTo(MoneyLabel.mas_bottom).offset(top);
     }];
     
     for (int i = 0; i < 2; i++) {
@@ -104,16 +132,18 @@
     }
     
     UIButton * payButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    [payButton setTitle:@"去支付" forState:(UIControlStateNormal)];
+    [payButton setTitle:@"立即支付" forState:(UIControlStateNormal)];
     [self.view addSubview:payButton];
     payButton.titleLabel.font = Regular(16);
     [payButton setBackgroundColor:COLOR(0, 160, 233) forState:(UIControlStateNormal)];
     [payButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(38);
         make.right.equalTo(self.view).offset(-38);
-        make.top.equalTo(self.view).offset(255);
+        make.top.equalTo(self.view).offset(285);
         make.height.mas_equalTo(40);
     }];
+    payButton.layer.cornerRadius = 10;
+    payButton.clipsToBounds = YES;
     payButton.adjustsImageWhenHighlighted = NO;
     [payButton addTarget:self action:@selector(paySuccess) forControlEvents:(UIControlEventTouchUpInside)];
 }

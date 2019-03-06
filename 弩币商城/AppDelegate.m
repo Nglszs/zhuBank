@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "CateGroys/AppDelegate+Common.h"
+#import "HttpTool.h"
 @interface AppDelegate ()
 
 @end
@@ -18,8 +19,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
    [self setProgameRootViewController];
     // 测试上传
+    [HttpTool sharedHttpTool];
     return YES;
 }
+
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
