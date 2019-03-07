@@ -16,7 +16,7 @@
 #import <MJRefresh.h>
 #import <YYModel.h>
 #import <Masonry.h>
-
+#import "HttpTool.h"
 
 #import "General/DefineNoti.h"
 #import "General/DefineFont.h"
@@ -40,6 +40,7 @@
 #import "CateGroys/UITextField+Common.h"
 #import "CateGroys/UIViewController+Common.h"
 #import "UIViewController+Common.h"
+#import "CoinH5ViewController.h"
 //正则需要的条件
 
 #define kAlphaNum   @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -113,4 +114,9 @@
 #define SetX(x) x / 375.0 * [UIScreen mainScreen].bounds.size.width
 #define SetY(y) y / 667.0 *  [UIScreen mainScreen].bounds.size.height
 
+
+
+// 网络框架
+
+#define KTooL [HttpTool sharedHttpTool]
 #endif /* CoinHeader_pch */

@@ -12,24 +12,37 @@
 #import "BCDivideView.h"
 #import "BCGoodView.h"
 
-@interface CoinGoodDetailViewController ()
+@interface CoinGoodDetailViewController ()<UIScrollViewDelegate>
+{
+    UIImageView *backImageView;//滑竿
+    UIButton *selectedBtn;
+}
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
+@property (nonatomic, strong) UIView *headView;//头部标签
+
 @end
 
 @implementation CoinGoodDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    self.navigationItem.titleView = self.headView;
    
     [self.view addSubview:self.backScrollView];
     
-    
+   
     
     [self initView];
+    
+    [self initSecondView];
     
     [self initBottomView];
     
     [self initBottomButton];
+    
+    [self getData];
 }
 
 
@@ -478,7 +491,126 @@
     
     
 }
-#pragma mark 懒加载
+
+#pragma mark 商品详情页
+- (void)initSecondView {
+    
+    
+    
+}
+
+#pragma mark 点击顶部按钮
+- (void)clickTopButton:(UIButton *)btn {
+    
+    if (btn!= selectedBtn) {
+        
+        selectedBtn.selected = NO;
+        btn.selected = YES;
+        selectedBtn = btn;
+        
+    }else{
+        
+        selectedBtn.selected = YES;
+    }
+    
+    [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
+    [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.width.equalTo(btn);
+        make.top.mas_equalTo(39);
+        make.height.mas_equalTo(3);
+        
+    }];
+}
+
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if ([[responseObject objectNilForKey:@"status"]integerValue] == 1) {
+            
+            
+        } else {
+            
+            VCToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        VCToast(error.description, 1);
+    }];
+    
+}
+
+#pragma mark 懒加载加载需要的视图
+- (UIView *)headView {
+    if (!_headView) {
+        
+        
+        
+        _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , BCWidth - 50, 40)];
+      
+        _headView.backgroundColor = ThemeColor;
+        
+        
+        
+        
+        
+        NSArray *titleArr1 = @[@"商品",@"详情"];
+        for(int i = 0; i < titleArr1.count; i++) {
+            UIButton *segmentButton1 = [[UIButton alloc] init];
+            
+            segmentButton1.titleLabel.font = Regular(17);
+            [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
+            [segmentButton1 setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
+            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateSelected];
+            
+            
+            segmentButton1.tag = 200 + i;
+            [segmentButton1 addTarget:self action:@selector(clickTopButton:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_headView addSubview:segmentButton1];
+            [segmentButton1 mas_makeConstraints:^(MASConstraintMaker *make) {
+                
+                make.left.mas_equalTo( i*150 + 50);
+                make.top.mas_equalTo(0);
+                make.width.mas_equalTo(50);
+                make.height.mas_equalTo(40);
+            }];
+            
+            if (i == 0) {
+                backImageView = [[UIImageView alloc] init];
+                backImageView.backgroundColor = COLOR(252, 148, 37);
+                [_headView addSubview:backImageView];
+                [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    
+                    make.left.width.equalTo(segmentButton1);
+                    make.top.mas_equalTo(39);
+                    make.height.mas_equalTo(3);
+                    
+                }];
+                
+                segmentButton1.selected = YES;
+                selectedBtn = segmentButton1;
+            }
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        //           滑竿
+        
+        
+        
+    }
+    
+    return _headView;
+}
 
 - (UIScrollView *)backScrollView {
     if (!_backScrollView) {
@@ -490,8 +622,8 @@
         _backScrollView.showsVerticalScrollIndicator=NO;
         _backScrollView.pagingEnabled=YES;
         _backScrollView.bounces=NO;
-
-        
+        _backScrollView.scrollEnabled = NO;
+        _backScrollView.delegate = self;
       
         _backScrollView.contentSize=CGSizeMake(BCWidth * 2, 0);
         
@@ -509,5 +641,19 @@
     NSAttributedString *attrText = [[NSAttributedString alloc] initWithString:text attributes:attributeDic];
     
     return attrText;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    
+    
+    //     点击按钮
+    NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
+    
+    
+    UIButton *btn = [self.headView viewWithTag:200 + index];
+    
+    [self clickTopButton:btn];
+    
 }
 @end

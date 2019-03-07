@@ -10,10 +10,18 @@
 #import "CarouselView.h"
 #import "CoinGoodDetailViewController.h"
 #import "CoinCertifyViewController.h"
-@interface CoinHomeViewController ()
+#import "CoinNotDevelopViewController.h"
+
+@interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
+
+{
+    NSString *banaUrl;//轮播图链接
+    NSString *huluUrl;//葫芦回收链接
+}
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @property (nonatomic, strong) UIView *navView;//导航栏
+@property (nonatomic, strong) NSMutableArray *goodArray;//商品数据
 @end
 
 @implementation CoinHomeViewController
@@ -28,7 +36,7 @@
      [self.view addSubview:self.backScrollView];
     
     
-    
+    _goodArray = [NSMutableArray arrayWithCapacity:1];
     
     [self initView];
     
@@ -40,6 +48,9 @@
     
     
     [self initNavView];
+    
+    
+    [self getData];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -62,6 +73,70 @@
     
 }
 
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"Index/homepage" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if ([[responseObject objectNilForKey:@"status"]integerValue] == 1) {
+            
+            [_goodArray addObjectsFromArray:[[responseObject objectNilForKey:@"data"] objectForKey:@"goods_list"]];
+            
+            NSArray *arr = [[responseObject objectNilForKey:@"data"] objectForKey:@"banner_list"];
+            banaUrl = [[arr firstObject] objectForKey:@"ad_link"];
+            huluUrl = [[responseObject objectNilForKey:@"data"] objectForKey:@"hulu_receive_url"];
+//            刷新界面
+            [self refreshView];
+        } else {
+            
+           VCToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        VCToast(error.description, 1);
+    }];
+    
+}
+
+- (void)refreshView {
+    
+    for (int i = 0; i < _goodArray.count; i++) {
+//
+        UIImageView *image = [self.backScrollView viewWithTag:100 + i];
+         UILabel *title = [self.backScrollView viewWithTag:200 + i];
+         UILabel *price = [self.backScrollView viewWithTag:300 + i];
+         UILabel *fenqi = [self.backScrollView viewWithTag:400 + i];
+        
+        [image sd_setImageWithURL:[NSURL URLWithString:[[_goodArray objectAtIndex:i] objectForKey:@"original_img"] ]];
+        title.text = [[_goodArray objectAtIndex:i] objectForKey:@"goods_name"];
+        
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld起",[[[_goodArray objectAtIndex:i] objectForKey:@"shop_price"] integerValue] ]];
+        NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular12Font};
+        [str setAttributes:firstAttributes range:NSMakeRange(str.length - 1,1)];
+        
+        price.attributedText = str;
+        
+        
+        
+        NSDictionary * firstAttributes1 = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[[_goodArray objectAtIndex:i] objectForKey:@"fenqi_info"] attributes:firstAttributes1];
+        
+        fenqi.attributedText = str1;
+        
+        
+//        跳转商品详情界面
+        [image addTapGestureWithBlock:^{
+           
+            CoinGoodDetailViewController *vc = [[CoinGoodDetailViewController alloc] init];
+            vc.goodID = [[_goodArray objectAtIndex:i] objectForKey:@"goods_id"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+        
+    }
+    
+}
 #pragma mark 初始化导航栏
 -(void)initNavView {
     
@@ -106,8 +181,8 @@
     
 //    轮播图
   
-    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[BCImage(首页banner),BCImage(首页banner),BCImage(首页banner)] andClickEnable:YES];
-   
+    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[BCImage(首页banner)] andClickEnable:YES];
+    view.delegete = self;
     [self.backScrollView addSubview:view];
     
     
@@ -150,6 +225,10 @@
     backBtn.contentHorizontalAlignment = 2;
     [backBtn setImage:BCImage(查看更多) forState:UIControlStateNormal];
     [self.backScrollView addSubview:backBtn];
+    [backBtn addtargetBlock:^(UIButton *button) {
+       
+         self.tabBarController.selectedIndex = 1;
+    }];
     
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        
@@ -165,7 +244,10 @@
     for (int i = 0; i < 2; i++) {
         
         UIImageView *imageV = [[UIImageView alloc] init];
+        imageV.tag = 100 + i;
         imageV.backgroundColor = ImageColor;
+        imageV.contentMode = UIViewContentModeScaleAspectFill;
+        imageV.clipsToBounds = YES;
         [self.backScrollView addSubview:imageV];
         [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
           
@@ -181,6 +263,7 @@
         UILabel *titleL = [[UILabel alloc] init];
         titleL.text = @"HUAWEI Mate 20 Pro";
         titleL.textColor = TITLE_COLOR;
+        titleL.tag = 200 + i;
         titleL.font = Regular(12);
         [self.backScrollView addSubview:titleL];
         
@@ -207,15 +290,13 @@
         }];
         
         
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"5399起"];
-        NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular12Font};
-        [str setAttributes:firstAttributes range:NSMakeRange(str.length - 1,1)];
+       
         
         UILabel *priceL = [[UILabel alloc] init];
-      
+        priceL.tag = 300 + i;
         priceL.textColor = COLOR(251, 82, 24);
         priceL.font = Regular(18);
-        priceL.attributedText = str;
+       
         [self.backScrollView addSubview:priceL];
         [priceL mas_makeConstraints:^(MASConstraintMaker *make) {
            
@@ -246,10 +327,10 @@
 //        下划线
         
        
-        NSDictionary * firstAttributes1 = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
-        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:@"1000*6期" attributes:firstAttributes1];
+       
         UILabel *segLabel = [[UILabel alloc] init];
-        segLabel.attributedText = str1;
+        segLabel.tag = 400 + i;
+       
         segLabel.textColor = COLOR(153, 153, 153);
         segLabel.font = Regular(12);
         [self.backScrollView addSubview:segLabel];
@@ -265,7 +346,7 @@
     
 }
 
-#pragma 严选专区
+#pragma  mark 严选专区
 
 - (void)initSecondView {
     
@@ -351,11 +432,17 @@
     
     
 //    两个商品
+      NSArray *imageArr1 = @[@"羊毛被 拷贝",@"宝 拷贝"];
     for (int i = 0; i < 2; i++) {
         
         UIImageView *imageV = [[UIImageView alloc] init];
-        imageV.backgroundColor = ImageColor;
+       
+        imageV.image =[UIImage imageNamed:[NSString stringWithFormat:@"%@",imageArr1[i]]];
         [self.backScrollView addSubview:imageV];
+        [imageV addTapGestureWithBlock:^{
+           
+            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
+        }];
         [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.top.equalTo(divideView.mas_bottom).offset(80);
@@ -463,6 +550,11 @@
         make.width.mas_equalTo(BCWidth - 30);
         make.height.mas_equalTo(100);
     }];
+    [moneyImageV addTapGestureWithBlock:^{
+       
+        self.tabBarController.selectedIndex = 2;
+    }];
+    
     
 }
 
@@ -504,7 +596,15 @@
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
         make.height.mas_equalTo(132);
-        make.bottom.equalTo(self.backScrollView).offset(-170);
+        make.bottom.equalTo(self.backScrollView).offset(-150);
+    }];
+    
+    [moneyImageV addTapGestureWithBlock:^{
+       
+        CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+        vc.url = huluUrl;
+        [self.navigationController pushViewController:vc animated:YES];
+        
     }];
     
 }
@@ -513,15 +613,15 @@
     
     if (!_backScrollView) {
         _backScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight )];
-//        _backScrollView.delegate = self;
-//
+
+       
         _backScrollView.backgroundColor = White;
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
             
-            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
+    
         }];
        
         
@@ -532,6 +632,17 @@
 }
 
 
+
+#pragma mark 点击轮播图
+- (void)didClickImageLoopIndex:(NSInteger)index{
+    
+    
+    CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+    vc.url = banaUrl;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+}
 
 
 @end

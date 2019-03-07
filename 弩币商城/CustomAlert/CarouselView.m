@@ -96,11 +96,20 @@
     pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
     pageControl.currentPageIndicatorTintColor = White;
     [pageControl addTarget:self action:@selector(changePageControl:) forControlEvents:UIControlEventValueChanged];
-    [self addSubview:pageControl];
+    if (imageArr.count > 1) {
+          [self addSubview:pageControl];
+        //开启定时器
+        
+        [self loadTime];
+        
+    } else {
+        
+        
+        testScrollview.scrollEnabled = NO;
+    }
+  
     
-    //开启定时器
-    
-    [self loadTime];
+   
 
 }
 

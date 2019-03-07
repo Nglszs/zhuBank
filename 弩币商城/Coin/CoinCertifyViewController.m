@@ -53,11 +53,11 @@
         make.width.mas_equalTo(BCWidth);
     }];
    
-    NSArray *titleA = @[@"真实姓名：",@"身份证号："];
-     NSArray *titleA1 = @[@"请输入您的手机号码",@"请输入您的身份证号"];
+    NSArray *titleA = @[@"真实姓名：",@"身份证号：",@"户籍地址："];
+     NSArray *titleA1 = @[@"请输入您的手机号码",@"请输入您的身份证号",@"请输入您的户籍所在地"];
     
     
-    for (int i = 0; i < 2; i ++) {
+    for (int i = 0; i < titleA.count; i ++) {
         
         
         UILabel *titleL = [[UILabel alloc] init];
@@ -121,7 +121,7 @@
     [backV addSubview:backBtn1];
     [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(LEFT_Margin);
-        make.top.mas_equalTo(138);
+        make.top.mas_equalTo(188);
         make.height.mas_equalTo(40);
         make.width.mas_equalTo(BCWidth - 30);
     }];

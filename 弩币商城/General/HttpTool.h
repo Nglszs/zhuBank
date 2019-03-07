@@ -15,6 +15,7 @@ typedef void(^BRRequestFailure)(NSURLSessionDataTask * task,NSError * error);
 @interface HttpTool : NSObject
 
 
+
 +(instancetype)sharedHttpTool;
 
 - (void)HttpPostWithUrl:(NSString *)urlString parameters:(id )parameters loadString:(NSString *)loadString success:(BRRequestSuccess)success failure:(BRRequestFailure)failure;

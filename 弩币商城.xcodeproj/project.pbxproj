@@ -55,6 +55,8 @@
 		041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */; };
 		041A2BAB2223C67800F6E4F7 /* CarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2BA92223C67800F6E4F7 /* CarouselView.m */; };
 		04223279222F63D700F5E662 /* CoinCertifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04223278222F63D700F5E662 /* CoinCertifyViewController.m */; };
+		044AF6CF223100AF00ABA8AC /* CoinH5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044AF6CE223100AF00ABA8AC /* CoinH5ViewController.m */; };
+		044AF6D2223104FB00ABA8AC /* CoinNotDevelopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044AF6D1223104FB00ABA8AC /* CoinNotDevelopViewController.m */; };
 		044F0256222E0693000BAA9F /* CoinBrowseStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F0255222E0693000BAA9F /* CoinBrowseStatusViewController.m */; };
 		044F0259222E1768000BAA9F /* CoinBrowseRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F0258222E1768000BAA9F /* CoinBrowseRecordViewController.m */; };
 		044F025C222E440A000BAA9F /* CoinBrowseRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F025B222E440A000BAA9F /* CoinBrowseRecordTableViewCell.m */; };
@@ -238,6 +240,10 @@
 		041A2BAA2223C67800F6E4F7 /* CarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselView.h; sourceTree = "<group>"; };
 		04223277222F63D700F5E662 /* CoinCertifyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinCertifyViewController.h; sourceTree = "<group>"; };
 		04223278222F63D700F5E662 /* CoinCertifyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinCertifyViewController.m; sourceTree = "<group>"; };
+		044AF6CD223100AF00ABA8AC /* CoinH5ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinH5ViewController.h; sourceTree = "<group>"; };
+		044AF6CE223100AF00ABA8AC /* CoinH5ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinH5ViewController.m; sourceTree = "<group>"; };
+		044AF6D0223104FB00ABA8AC /* CoinNotDevelopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinNotDevelopViewController.h; sourceTree = "<group>"; };
+		044AF6D1223104FB00ABA8AC /* CoinNotDevelopViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinNotDevelopViewController.m; sourceTree = "<group>"; };
 		044F0254222E0693000BAA9F /* CoinBrowseStatusViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBrowseStatusViewController.h; sourceTree = "<group>"; };
 		044F0255222E0693000BAA9F /* CoinBrowseStatusViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinBrowseStatusViewController.m; sourceTree = "<group>"; };
 		044F0257222E1768000BAA9F /* CoinBrowseRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinBrowseRecordViewController.h; sourceTree = "<group>"; };
@@ -571,6 +577,10 @@
 				041A2BA72223863600F6E4F7 /* BCMainTabViewController.m */,
 				041A2B472223801400F6E4F7 /* BCNavigationViewController.h */,
 				041A2B482223801400F6E4F7 /* BCNavigationViewController.m */,
+				044AF6CD223100AF00ABA8AC /* CoinH5ViewController.h */,
+				044AF6CE223100AF00ABA8AC /* CoinH5ViewController.m */,
+				044AF6D0223104FB00ABA8AC /* CoinNotDevelopViewController.h */,
+				044AF6D1223104FB00ABA8AC /* CoinNotDevelopViewController.m */,
 				0C4291F42223D7D400254434 /* MCMainView.h */,
 				0C4291F52223D7D400254434 /* MCMainView.m */,
 			);
@@ -1114,6 +1124,7 @@
 				0C1EB34E222CCC2B00625293 /* CoinBorrowMoneyViewController.m in Sources */,
 				04223279222F63D700F5E662 /* CoinCertifyViewController.m in Sources */,
 				0C37C1B72228CB3C009001F4 /* BBaseView.m in Sources */,
+				044AF6CF223100AF00ABA8AC /* CoinH5ViewController.m in Sources */,
 				0C6D3AD52229419F00C6280F /* CoinFindPassWordView.m in Sources */,
 				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,
 				04178595222D02DE00B8A234 /* WOWONoDataView.m in Sources */,
@@ -1133,6 +1144,7 @@
 				0C37C1B42228CB3C009001F4 /* BRStringPickerView.m in Sources */,
 				0C6D3ADB22295C1E00C6280F /* CoinRegisterView.m in Sources */,
 				0C37C1BD2228CE65009001F4 /* CoinInvoiceViewController.m in Sources */,
+				044AF6D2223104FB00ABA8AC /* CoinNotDevelopViewController.m in Sources */,
 				040B046B2228FEAA0082D7B1 /* CoinChangeNickNameViewController.m in Sources */,
 				040B046E222900F20082D7B1 /* CoinSetSexViewController.m in Sources */,
 				0C38B19A2227C23500572C75 /* CoinChangeAddressView.m in Sources */,
