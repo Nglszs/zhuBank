@@ -11,11 +11,16 @@
 #import "CoinClassfyCollectionCell.h"
 #import "UIViewController+Common.h"
 #import "CoinConfirmOrderViewController.h"
-@interface CoinClassfyViewController ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+#import "HttpTool.h"
+#import "CoinSearchViewController.h"
+#import "CoinClassLeftModel.h"
+@interface CoinClassfyViewController ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UISearchBarDelegate>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)UICollectionView * CollectionView;
 @property (nonatomic,strong)NSIndexPath * selectIndex;
 @property (nonatomic,strong)UISearchBar * searchBar;
+@property (nonatomic,strong)NSArray * LeftDataArray;
+@property (nonatomic,strong)NSArray * RightDataArray;
 @end
 
 @implementation CoinClassfyViewController
@@ -23,13 +28,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
+    [self request];
 }
 
 - (void)initView{
     [self initTableView];
     [self initCollectionView];
     [self initSearchBar];
-    [self initNavItem];
+    [self setNavitemImage:@"密码" type:RightNavItem];
 }
 
 - (void)initTableView{
@@ -76,6 +82,7 @@
        self.searchBar.backgroundImage = [[UIImage alloc] init];
     self.searchBar.barTintColor = [UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1];
      self.searchBar.backgroundColor = [UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1];
+    self.searchBar.delegate = self;
       [titleView addSubview:self.searchBar];
      self.navigationItem.titleView = titleView;
     
@@ -83,16 +90,18 @@
     searchField.backgroundColor = COLOR(242, 242, 242);
 }
 
-- (void)initNavItem{
-    [self setNavitemImage:@"密码" type:RightNavItem];
-    
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    CoinSearchViewController * vc = [CoinSearchViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+    return NO;
 }
+
 #pragma mark  tableview  delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return [self.LeftDataArray count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CoinClassfyLeftTVCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinClassfyLeftTVCell"];
@@ -106,23 +115,37 @@
         cell.isSelect = NO;
     }
     cell.selectionStyle =   UITableViewCellSelectionStyleNone;
+    CoinClassLeftModel * model = self.LeftDataArray[indexPath.row];
+    cell.title = model.name;
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == self.selectIndex.row) {
+        return;
+    }
     self.selectIndex = indexPath;
+    CoinClassLeftModel * model =  self.LeftDataArray[indexPath.row];
+    self.RightDataArray = model.tmenu;
+    [self.CollectionView reloadData];
     [self.tableView reloadData];
 }
 #pragma mark    CollectionView   delegate
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    return 2;
+    return self.RightDataArray.count;
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 9;
+    CoinClassRightModel * model = self.RightDataArray[section];
+    return model.sub_menu.count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     CoinClassfyCollectionCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CoinClassfyCollectionCell" forIndexPath:indexPath];
+    CoinClassRightModel * model = self.RightDataArray[indexPath.section];
+    CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
+    cell.name = model2.name;
+    cell.image = model2.image;
     return cell;
     
 }
@@ -146,11 +169,15 @@
         
     }
     UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerView" forIndexPath:indexPath];
+    for (UIView * view in headerView.subviews) {
+        [view removeFromSuperview];
+    }
     headerView.backgroundColor = COLOR(238, 238, 238);
     UILabel * label = [UILabel new];
     label.textColor = COLOR(102, 102, 102);
     label.font = TextFont(13);
-    label.text = @"手机";
+    CoinClassRightModel * model = self.RightDataArray[indexPath.section];
+    label.text = model.name;
     [headerView addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headerView);
@@ -165,5 +192,25 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     CoinConfirmOrderViewController * vc = [CoinConfirmOrderViewController new];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)request{
+   
+    [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Goods/categoryList" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        if (!BCArrayIsEmpty(responseObject[@"data"])) {
+            self.LeftDataArray = [NSArray yy_modelArrayWithClass:[CoinClassLeftModel class] json:responseObject[@"data"]];
+            if (!BCArrayIsEmpty(self.LeftDataArray)) {
+                CoinClassLeftModel * model = self.LeftDataArray[0];
+                self.RightDataArray = model.tmenu;
+            }
+          
+          
+            [self.tableView reloadData];
+            [self.CollectionView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
 }
 @end

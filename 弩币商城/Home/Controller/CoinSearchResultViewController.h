@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinSearchResultViewController : CoinBaseViewController
-
+//搜索关键字
+@property (nonatomic,copy)NSString * keyword;
 @end
 
 NS_ASSUME_NONNULL_END

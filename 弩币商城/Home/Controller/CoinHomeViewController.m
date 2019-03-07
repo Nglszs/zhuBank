@@ -10,6 +10,7 @@
 #import "CarouselView.h"
 #import "CoinGoodDetailViewController.h"
 #import "CoinCertifyViewController.h"
+#import "BCManagerTool.h"
 @interface CoinHomeViewController ()
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -40,6 +41,7 @@
     
     
     [self initNavView];
+
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

@@ -30,7 +30,7 @@
         make.width.height.mas_equalTo(44);
         make.top.equalTo(self.contentView).offset(10);
     }];
-    self.CommodityImage.backgroundColor = [UIColor redColor];
+    
     self.titleLabel = [UILabel new];
     self.titleLabel.text = @"苹果";
     [self.contentView addSubview:self.titleLabel];
@@ -43,6 +43,15 @@
         make.left.right.equalTo(self.contentView);
     }];
     
-    
 }
+
+- (void)setName:(NSString *)name{
+    _name = name;
+    self.titleLabel.text = name;
+}
+- (void)setImage:(NSString *)image{
+    _image = image;
+    [self.CommodityImage sd_setImageWithURL:[NSURL URLWithString:image]];
+}
+
 @end

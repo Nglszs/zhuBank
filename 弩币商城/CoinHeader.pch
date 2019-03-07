@@ -61,8 +61,17 @@
 
 //弱引用
 #define WS(weakSelf)  __weak __typeof(self)weakSelf = self;
+// 腾讯滑块验证APPID
+#define TencentCaptchAppID @"2017255836"
 
+// 判断字符串是否为空
+#define BCStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length]< 1 ? YES : NO )
+// 判断数组是否为空
+#define BCArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || [array count] == 0)
+// 判断字典是否为空
+#define BCDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
 
+#define BCStatus  [[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"1"]
 
 /**
  *  全局环境控制
