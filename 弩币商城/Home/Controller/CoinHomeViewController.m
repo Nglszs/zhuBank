@@ -10,6 +10,7 @@
 #import "CarouselView.h"
 #import "CoinGoodDetailViewController.h"
 #import "CoinCertifyViewController.h"
+
 #import "CoinNotDevelopViewController.h"
 
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
@@ -48,9 +49,10 @@
     
     
     [self initNavView];
-    
+
     
     [self getData];
+
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

@@ -8,6 +8,7 @@
 
 #import "BCManagerTool.h"
 #import "Reachability.h"
+#import <TCWebCodesSDK/TCWebCodesBridge.h>
 
 @implementation BCManagerTool
 static NSString *boundaryStr = @"--";
@@ -394,4 +395,30 @@ static BCManagerTool *_instanceTool;
     
     
 }
+
++ (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(BOOL VerifySuccessfully))success{
+    [[TCWebCodesBridge sharedBridge]loadTencentCaptcha:view appid:TencentCaptchAppID callback:^(NSDictionary *resultJSON) {
+        if(0==[resultJSON[@"ret"] intValue]) {
+            /**
+             验证成功
+             返回内容：
+             resultJSON[@"appid"]为回传的业务appid
+             resultJSON[@"ticket"]为验证码票据
+             resultJSON[@"randstr"]为随机串
+             */
+            success(YES);
+        } else {
+            /**
+             验证失败
+             返回内容：
+             ret=-1001为验证码js加载错误
+             ret=-1002一般为网络错误
+             ret=-1为返回票据数据解析错误，业务可根据需要重试处理
+             ret的其他返回值，为验证失败，比如用户主动关闭了验证码弹框
+             */
+            success(NO);
+        }
+    }];
+}
+
 @end

@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinClassfyCollectionCell : UICollectionViewCell
 
+@property (nonatomic,copy)NSString * name;
+@property (nonatomic,copy)NSString * image;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -105,6 +105,9 @@
 		0C9A5060222D69C6006045AC /* CoinUpdatePassWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9A505F222D69C6006045AC /* CoinUpdatePassWordView.m */; };
 		0CAC51F0222D6E1500578F02 /* CoinPassWordSucceedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC51EF222D6E1500578F02 /* CoinPassWordSucceedViewController.m */; };
 		0CBDBE61222F6874006E94A8 /* CoinByStagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBDBE60222F6874006E94A8 /* CoinByStagesViewController.m */; };
+		0CC1C6CD2230AB1700924D98 /* TCWebCodesSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC1C6CC2230AB1700924D98 /* TCWebCodesSDK.framework */; };
+		0CC1C6D12230E33C00924D98 /* CoinClassLeftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC1C6D02230E33C00924D98 /* CoinClassLeftModel.m */; };
+		0CC1C6D52230FE4F00924D98 /* CoinSearchResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */; };
 		0CC42A7D222D535C008B1181 /* RecommendCommodityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */; };
 		0CCAF74822266E1E006F1791 /* CoinConfirmCommodityOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF74722266E1E006F1791 /* CoinConfirmCommodityOrderCell.m */; };
 		0CCAF74B22267D3F006F1791 /* CoinConfirmCommodityDistributionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF74A22267D3F006F1791 /* CoinConfirmCommodityDistributionCell.m */; };
@@ -341,6 +344,11 @@
 		0CAC51EF222D6E1500578F02 /* CoinPassWordSucceedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinPassWordSucceedViewController.m; sourceTree = "<group>"; };
 		0CBDBE5F222F6874006E94A8 /* CoinByStagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinByStagesViewController.h; sourceTree = "<group>"; };
 		0CBDBE60222F6874006E94A8 /* CoinByStagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinByStagesViewController.m; sourceTree = "<group>"; };
+		0CC1C6CC2230AB1700924D98 /* TCWebCodesSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TCWebCodesSDK.framework; sourceTree = "<group>"; };
+		0CC1C6CF2230E33C00924D98 /* CoinClassLeftModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinClassLeftModel.h; sourceTree = "<group>"; };
+		0CC1C6D02230E33C00924D98 /* CoinClassLeftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassLeftModel.m; sourceTree = "<group>"; };
+		0CC1C6D32230FE4F00924D98 /* CoinSearchResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinSearchResultModel.h; sourceTree = "<group>"; };
+		0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinSearchResultModel.m; sourceTree = "<group>"; };
 		0CC42A7B222D535C008B1181 /* RecommendCommodityCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecommendCommodityCell.h; sourceTree = "<group>"; };
 		0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendCommodityCell.m; sourceTree = "<group>"; };
 		0CCAF74622266E1E006F1791 /* CoinConfirmCommodityOrderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinConfirmCommodityOrderCell.h; sourceTree = "<group>"; };
@@ -352,11 +360,9 @@
 		0CCAF74F2226911E006F1791 /* CoinSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoinSearchViewController.h; path = Controller/CoinSearchViewController.h; sourceTree = "<group>"; };
 		0CCAF7532226911E006F1791 /* CoinSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoinSearchViewController.m; path = Controller/CoinSearchViewController.m; sourceTree = "<group>"; };
 		0CCAF75E2226916A006F1791 /* CoinSearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinSearchResultViewController.m; sourceTree = "<group>"; };
-		0CCAF75F2226916A006F1791 /* CoinSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinSearchResultCell.h; sourceTree = "<group>"; };
 		0CCAF7602226916A006F1791 /* CoinGoodDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinGoodDetailViewController.m; sourceTree = "<group>"; };
 		0CCAF7612226916A006F1791 /* CoinHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinHomeViewController.h; sourceTree = "<group>"; };
 		0CCAF7622226916A006F1791 /* CoinGoodDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinGoodDetailViewController.h; sourceTree = "<group>"; };
-		0CCAF7632226916A006F1791 /* CoinSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinSearchResultCell.m; sourceTree = "<group>"; };
 		0CCAF7642226916A006F1791 /* CoinSearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinSearchResultViewController.h; sourceTree = "<group>"; };
 		0CCAF7652226916A006F1791 /* CoinHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinHomeViewController.m; sourceTree = "<group>"; };
 		0CCAF76A222691B1006F1791 /* CoinConfirmOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoinConfirmOrderViewController.h; path = "弩币商城/Home/CoinConfirmOrderViewController.h"; sourceTree = SOURCE_ROOT; };
@@ -385,6 +391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CC1C6CD2230AB1700924D98 /* TCWebCodesSDK.framework in Frameworks */,
 				BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -639,6 +646,7 @@
 				0CCAF74F2226911E006F1791 /* CoinSearchViewController.h */,
 				0CCAF7532226911E006F1791 /* CoinSearchViewController.m */,
 				048BD701222628F100910A1F /* Controller */,
+				0CC1C6D22230FE2C00924D98 /* Model */,
 				040F1CF22225233F009DD7FC /* View */,
 			);
 			path = Home;
@@ -653,6 +661,7 @@
 				0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */,
 				0C454A9B22261F5700BDFC8D /* CoinClassfyCollectionCell.h */,
 				0C454A9C22261F5700BDFC8D /* CoinClassfyCollectionCell.m */,
+				0CC1C6CE2230E29F00924D98 /* Model */,
 			);
 			path = Classfy;
 			sourceTree = "<group>";
@@ -724,8 +733,6 @@
 				0CCAF7652226916A006F1791 /* CoinHomeViewController.m */,
 				0CCAF7622226916A006F1791 /* CoinGoodDetailViewController.h */,
 				0CCAF7602226916A006F1791 /* CoinGoodDetailViewController.m */,
-				0CCAF75F2226916A006F1791 /* CoinSearchResultCell.h */,
-				0CCAF7632226916A006F1791 /* CoinSearchResultCell.m */,
 				0CCAF7642226916A006F1791 /* CoinSearchResultViewController.h */,
 				0CCAF75E2226916A006F1791 /* CoinSearchResultViewController.m */,
 				0CCAF76A222691B1006F1791 /* CoinConfirmOrderViewController.h */,
@@ -743,6 +750,7 @@
 		0C37C1932228C955009001F4 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				0CC1C6CC2230AB1700924D98 /* TCWebCodesSDK.framework */,
 				0C37C1A02228CB3C009001F4 /* BRPickerView */,
 			);
 			path = Vender;
@@ -821,6 +829,24 @@
 				0C9A505F222D69C6006045AC /* CoinUpdatePassWordView.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0CC1C6CE2230E29F00924D98 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0CC1C6CF2230E33C00924D98 /* CoinClassLeftModel.h */,
+				0CC1C6D02230E33C00924D98 /* CoinClassLeftModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0CC1C6D22230FE2C00924D98 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0CC1C6D32230FE4F00924D98 /* CoinSearchResultModel.h */,
+				0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		0CF0FEE7222D017E001728F3 /* View */ = {
@@ -1085,6 +1111,7 @@
 				040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */,
 				041A2B6C2223808700F6E4F7 /* UIImageView+Common.m in Sources */,
 				041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */,
+				0CC1C6D12230E33C00924D98 /* CoinClassLeftModel.m in Sources */,
 				0417858E222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m in Sources */,
 				041A2B662223808700F6E4F7 /* NSDictionary+Common.m in Sources */,
 				0CCAF74822266E1E006F1791 /* CoinConfirmCommodityOrderCell.m in Sources */,
@@ -1128,6 +1155,7 @@
 				0C6D3AD52229419F00C6280F /* CoinFindPassWordView.m in Sources */,
 				041A2B692223808700F6E4F7 /* UIView+Common.m in Sources */,
 				04178595222D02DE00B8A234 /* WOWONoDataView.m in Sources */,
+				0CC1C6D52230FE4F00924D98 /* CoinSearchResultModel.m in Sources */,
 				0C38B1972227C1AA00572C75 /* CoinChangeAddressViewController.m in Sources */,
 				0C4291F92223D80500254434 /* CoinLoginView.m in Sources */,
 				0C454AA322265AA600BDFC8D /* CoinConfirmOrderAddressCell.m in Sources */,
@@ -1349,6 +1377,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/弩币商城/Vender",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
 				INFOPLIST_FILE = "弩币商城/Info.plist";
@@ -1369,6 +1401,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/弩币商城/Vender",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
 				INFOPLIST_FILE = "弩币商城/Info.plist";

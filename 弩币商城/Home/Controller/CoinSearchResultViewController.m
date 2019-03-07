@@ -8,15 +8,26 @@
 
 #import "CoinSearchResultViewController.h"
 #import "CoinSearchResultCell.h"
+#import "CoinSearchResultModel.h"
+#import "HttpTool.h"
+
+#import <MJRefresh/MJRefresh.h>
+
 @interface CoinSearchResultViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 @property (nonatomic,strong)UISearchBar * searchBar;
+@property (nonatomic,strong)NSArray * DataArray;
+@property (nonatomic,strong)UITableView * tableView;
+@property (nonatomic,assign)int page;
 @end
 
 @implementation CoinSearchResultViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   [self initView];
+    [self initView];
+    [self SetReturnButton];
+    [self RequestKeyword:self.keyword];
+    self.page = 1;
 }
 
 // 初始化视图
@@ -24,8 +35,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self initButton];
     [self initTableView];
-    [self initNav];
-    
+    [self initSearchBar];
 }
 
 // 头部按钮
@@ -77,7 +87,12 @@
     UITableView * tabView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];
     tabView.delegate = self;
     tabView.dataSource = self;
-    
+    tabView.tableFooterView = [UIView new];
+    tabView.mj_footer =  [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        self.page++;
+        [self RequestKeyword:self.keyword];
+    }];
+    self.tableView = tabView;
     [self.view addSubview:tabView];
     [tabView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(self.view);
@@ -91,13 +106,14 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return self.DataArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CoinSearchResultCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinSearchResultCell"];
     if (cell == nil) {
         cell = [[CoinSearchResultCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinSearchResultCell"];
     }
+    cell.model = self.DataArray[indexPath.row];
     cell.selectionStyle = 0;
     return cell;
 }
@@ -107,16 +123,57 @@
 }
 
 // 初始化导航栏
-- (void)initNav{
-    UISearchBar * searchbar = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f, 0.0f,BCWidth -100, 30)];
-      searchbar.delegate = self;
-    [searchbar setTintColor:[UIColor redColor]];[searchbar setPlaceholder:@"搜索游记、旅行地与用户"];UIBarButtonItem * searchButton = [[UIBarButtonItem alloc]initWithCustomView:searchbar];
-    searchbar.barTintColor = [UIColor redColor];
-     self.navigationItem.rightBarButtonItem = searchButton;
+- (void)initSearchBar{
+    UIView*titleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,BCWidth-70,30)];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, BCWidth - 70, 30)];
     
+    self.searchBar.text = self.keyword;
+    
+    self.searchBar.layer.cornerRadius = 15;
+    
+    self.searchBar.layer.masksToBounds = YES;
+    self.searchBar.backgroundImage = [[UIImage alloc] init];
+    self.searchBar.barTintColor = [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1];
+    self.searchBar.backgroundColor = [UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1];
+    self.searchBar.delegate = self;
+    [titleView addSubview:self.searchBar];
+    self.navigationItem.titleView = titleView;
+    
+    UITextField*searchField = [_searchBar valueForKey:@"_searchField"];
+    searchField.textColor = COLOR(51, 51, 51);
+    searchField.backgroundColor = COLOR(242, 242, 242);
+}
 
-   
-    
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
+    [self RequestKeyword:searchBar.text];
+    return YES;
+}
+
+- (void)RequestKeyword:(NSString *)keyword{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"keyword"] = self.keyword;
+    dict[@"sort"] = @"sales_sum";
+    dict[@"way"] = @"1";
+    dict[@"page"] = [NSString stringWithFormat:@"%d",self.page];
+    [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Search/results" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+       
+        if (BCStatus) {
+            NSArray * array = responseObject[@"data"][@"goods_list"];
+            if (!BCArrayIsEmpty(array)) {
+                self.DataArray =  [NSArray yy_modelArrayWithClass:[CoinSearchResultModel class] json:array];
+                [self.tableView reloadData];
+            }else{
+                [self.tableView.mj_footer resetNoMoreData];
+            }
+        }else{
+              [self.tableView.mj_footer resetNoMoreData];
+        }
+      
+        [self.tableView.mj_footer endRefreshing];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
     
 }
 @end

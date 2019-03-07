@@ -8,9 +8,13 @@
 
 #import "CoinSearchViewController.h"
 #import "CoinSearchResultViewController.h"
-@interface CoinSearchViewController ()
+#import <TCWebCodesSDK/TCWebCodesBridge.h>
+#import "HttpTool.h"
+
+@interface CoinSearchViewController ()<UITextFieldDelegate>
 
 @property (nonatomic,strong)UITextField * SearchTF;
+@property (nonatomic,copy)NSString * keyword;
 @end
 
 @implementation CoinSearchViewController
@@ -21,6 +25,9 @@
     self.navigationController.navigationBar.hidden = NO;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:COLOR(51, 51, 51)}];
     [self initView];
+    [self SetReturnButton];
+    [self Request];
+    
 }
 
 // 布局
@@ -41,9 +48,17 @@
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     btn.backgroundColor = COLOR(225, 37, 22);
     [SearchView addSubview:btn];
+    
+    UIImageView * imageView = [UIImageView new];
+    imageView.image = BCImage(搜索放大镜);
+    [btn addSubview:imageView];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(SearchView);
         make.width.mas_equalTo(80);
+    }];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(btn);
+        make.width.height.mas_equalTo(32);
     }];
     [btn addTarget:self action:@selector(GoSearch:) forControlEvents:(UIControlEventTouchUpInside)];
     
@@ -51,8 +66,10 @@
     self.SearchTF.placeholder = @"搜索商品";
     
     [self.SearchTF setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
-    [self.SearchTF setValue:[UIFont boldSystemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+    [self.SearchTF setValue:[UIFont boldSystemFontOfSize:14]
+                 forKeyPath:@"_placeholderLabel.font"];
     [SearchView addSubview:self.SearchTF];
+    self.SearchTF.delegate = self;
     self.SearchTF.returnKeyType = UIReturnKeySearch;
     
     [self.SearchTF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,7 +88,7 @@
         make.top.equalTo(SearchView.mas_bottom).offset(20);
         
     }];
-    [self SetLabel:@[@"苹果",@"华为",@"小米",@"oppo",@"三星"]];
+ 
    
 }
 
@@ -108,13 +125,43 @@
     label.userInteractionEnabled = YES;
    
     label.textColor = COLOR(136, 136, 136);
+    label.userInteractionEnabled = YES;
     label.textAlignment = NSTextAlignmentCenter;
+    MJWeakSelf;
+    [label addTapGestureWithBlock:^{
+        weakSelf.keyword = label.text;
+    }];
     return label;
 }
 
 - (void)GoSearch:(UIButton *)button{
-    CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.SearchTF.text.length > 0) {
+        self.keyword = self.SearchTF.text;
+    }
 }
 
+- (void)Request{
+    [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Search/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray * array = responseObject[@"data"][@"hot_goods"];
+        if (!BCArrayIsEmpty(array)) {
+            [self SetLabel:array];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    
+    self.keyword = textField.text;
+    return YES;
+}
+- (void)setKeyword:(NSString *)keyword{
+    CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
+    vc.keyword = keyword;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 @end

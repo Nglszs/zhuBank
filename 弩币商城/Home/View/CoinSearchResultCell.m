@@ -7,6 +7,7 @@
 //
 
 #import "CoinSearchResultCell.h"
+#import "CoinSearchResultModel.h"
 @interface CoinSearchResultCell()
 @property (nonatomic,strong)UIImageView * CommodityImage;
 @property (nonatomic,strong)UILabel * CommodityNameLabel;
@@ -25,7 +26,6 @@
 
 - (void)initView{
     self.CommodityImage = [UIImageView new];
-    self.CommodityImage.backgroundColor = [UIColor grayColor];
     [self.contentView addSubview:self.CommodityImage];
     [self.CommodityImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(10);
@@ -36,8 +36,7 @@
     
     self.CommodityNameLabel = [UILabel new];
     self.CommodityNameLabel.numberOfLines = 2;
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"华为（HUAWEI） mate20pro手机全网通（UD屏内指纹版）" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
-    self.CommodityNameLabel.attributedText = string;
+   
     [self.contentView addSubview:self.CommodityNameLabel];
     [self.CommodityNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.CommodityImage.mas_right).offset(20);
@@ -48,11 +47,7 @@
     
     self.ByStagesLabel = [[UILabel alloc] init];
  
-    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:@"￥1100.00*6期" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize: 14],NSForegroundColorAttributeName: [UIColor redColor]}];
-    
-    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange(8, 3)];
-    
-    self.ByStagesLabel.attributedText = string2;
+   
     [self.contentView addSubview:self.ByStagesLabel];
     [self.ByStagesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.CommodityImage);
@@ -77,6 +72,26 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
+
+- (void)setModel:(CoinSearchResultModel *)model{
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:model.goods_name attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
+    self.CommodityNameLabel.attributedText = string;
+    
+    self.CommodityPriceLabel.text = model.shop_price;
+    
+    NSString * str = model.fenqi_info;
+    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:str attributes:@{NSFontAttributeName: [UIFont systemFontOfSize: 14],NSForegroundColorAttributeName: [UIColor redColor]}];
+    NSArray * array = [str componentsSeparatedByString:@"*"];
+    
+    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange(str.length - [[array lastObject] length] - 1, [[array lastObject] length] + 1)];
+    
+    self.ByStagesLabel.attributedText = string2;
+    
+    
+    [self.CommodityImage sd_setImageWithURL:[NSURL URLWithString:model.original_img]];
+    
 }
 
 @end

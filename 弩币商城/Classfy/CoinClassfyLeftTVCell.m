@@ -52,5 +52,10 @@
     self.contentView.backgroundColor = isSelect?COLOR(238, 238, 238) : [UIColor whiteColor];
 }
 
+- (void)setTitle:(NSString *)title{
+    _title = title;
+    self.label.text = title;
+}
+
 
 @end
