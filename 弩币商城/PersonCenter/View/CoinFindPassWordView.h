@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinFindPassWordView : UIView
 
+@property (nonatomic,strong)UITextField * PhoneTF;
+@property (nonatomic,strong)UITextField * messageCodeField;
+@property (nonatomic,strong)UIButton * btn;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -71,7 +71,7 @@
 #define BCArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || [array count] == 0)
 // 判断字典是否为空
 #define BCDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
-
+// 判断返回值status
 #define BCStatus  [[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"1"]
 
 /**

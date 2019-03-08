@@ -9,12 +9,9 @@
 #import "CoinLoginView.h"
 
 
-@interface CoinLoginView()
+@interface CoinLoginView()<UITextFieldDelegate>
 @property (nonatomic,strong)UIImageView * BackgroundImageView;
 @property (nonatomic,strong)UIImageView * LogoImageView;
-@property (nonatomic,strong)UITextField * UserNameTF;
-@property (nonatomic,strong)UITextField * PasswordTF;
-@property (nonatomic,strong)UIButton * LoginButton;
 
 
 @end
@@ -77,7 +74,7 @@
         make.right.equalTo(userNameLineView);
         make.centerY.equalTo(UserNameLogoImageView);
     }];
-    
+    self.UserNameTF.keyboardType =  UIKeyboardTypeNumberPad;
     UIView * PasswordLineView = [UIView new];
     [self addSubview:PasswordLineView];
     PasswordLineView.backgroundColor = userNameLineView.backgroundColor;
@@ -102,6 +99,7 @@
     self.PasswordTF.placeholder = @"请输入密码";
     [self.PasswordTF setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
     [self.PasswordTF setValue:[UIFont boldSystemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+    self.PasswordTF.secureTextEntry = YES;
     [self.PasswordTF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.UserNameTF);
         make.centerY.equalTo(PasswordLogoImageView);
@@ -144,5 +142,9 @@
         
     }];
     self.LoginButton.adjustsImageWhenHighlighted = NO;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 @end

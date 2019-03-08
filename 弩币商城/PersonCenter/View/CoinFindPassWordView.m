@@ -9,7 +9,7 @@
 #import "CoinFindPassWordView.h"
 
 @interface CoinFindPassWordView()
-@property (nonatomic,strong)UITextField * messageCodeField;
+
 @property (nonatomic,strong)UIButton * codeButton;
 @property (nonatomic,strong)NSTimer * countDownTimer;
 
@@ -118,7 +118,7 @@
     _countTextField.placeholder = @"请输入您的手机号码";
     
     _countTextField.font = Regular(15);
-    
+    self.PhoneTF = _countTextField;
     
     UIImageView *leftI = [[UIImageView alloc]initWithFrame:CGRectMake(12, 0, 18, 22)];
     leftI.image = BCImage(手机);
@@ -221,6 +221,7 @@
     
     //    下一步
     UIButton * backBtn1 = [[UIButton alloc] init];
+    self.btn = backBtn1;
     backBtn1.titleLabel.font = Regular(17);
     [backBtn1 setTitle:@"下一步" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
@@ -244,7 +245,7 @@
 
 #pragma mark 点击验证码倒计时
 - (void)clickCodeButton {
-    
+    [self endEditing:YES];
     
     //    if (![self isMobileNumber:_phoneField.text]) {
     //
@@ -255,8 +256,18 @@
     //    }
     
     //    网络请求成功后调用下方代码
-    [self changeTimeState];
     
+    MJWeakSelf;
+    [BCManagerTool loadTencentCaptcha:self callback:^(NSString *Ticket, NSString *Randstr) {
+        if (!BCStringIsEmpty(Ticket) && !BCStringIsEmpty(Randstr)) {
+            [KTooL GetCodeWithMobile:self.PhoneTF.text action:2 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
+                if (isSucces) {
+                      [weakSelf changeTimeState];
+                }
+            }];
+        }
+      
+    }];
     
     
 }
@@ -289,7 +300,7 @@
             weakSelf.countDownTimer = nil;
             
             
-            
+              _codeButton.userInteractionEnabled = YES;
             [weakSelf.codeButton setTitle:@"重新发送" forState:UIControlStateNormal];
             
             

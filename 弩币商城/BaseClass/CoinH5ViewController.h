@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)WKWebView *commWebView;
 @property(nonatomic,copy) NSString *url;
 @property (nonatomic, copy) void(^backBlock)(void);
+@property (nonatomic,copy)NSString * titleStr;
 @end
 
 NS_ASSUME_NONNULL_END

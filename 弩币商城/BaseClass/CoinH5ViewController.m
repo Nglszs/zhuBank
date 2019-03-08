@@ -18,9 +18,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    [self SetReturnButton];
 self.commWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight-BCNaviHeight) ];
-
+    self.title = self.titleStr;
 NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]
                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                       timeoutInterval:15.0];
@@ -135,4 +135,9 @@ NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:[NSURL URL
 }
 */
 
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
 @end

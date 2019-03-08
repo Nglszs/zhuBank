@@ -21,7 +21,8 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self.RootView.UpDateButton addtargetBlock:^(UIButton *button) {
-        [self.navigationController pushViewController:[CoinPassWordSucceedViewController new] animated:YES];
+        [self Request];
+        
     }];
 }
 
@@ -30,14 +31,20 @@
     self.RootView = [[CoinUpdatePassWordView alloc] initWithFrame:BCBound];
     self.view = self.RootView;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)Request{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"mobile"] = self.mobile;
+    dict[@"password"] = self.RootView.password1.text;
+    dict[@"confirm_pwd"] = self.RootView.password2.text;
+    [KTooL HttpPostWithUrl:@"User/set_login_pwd" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            [self.navigationController pushViewController:[CoinPassWordSucceedViewController new] animated:YES];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
 }
-*/
 
 @end

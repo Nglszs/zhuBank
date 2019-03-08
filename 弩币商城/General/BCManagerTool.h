@@ -179,6 +179,8 @@ typedef void(^ BCFailureBlock)  (NSString *errorResult);
  @param view 要加载到哪一个View
  @param success 加载成功或者失败，失败返回NO
  */
-+ (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(BOOL VerifySuccessfully))success;
++ (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(NSString * Ticket,NSString * Randstr))success;
+
++ (NSString *)getCurrentDeviceModel;
 
 @end

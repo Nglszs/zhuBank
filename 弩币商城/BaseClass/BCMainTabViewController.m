@@ -12,7 +12,7 @@
 #import "CoinClassfyViewController.h"
 #import "CoinPersonViewController.h"
 #import "BCNavigationViewController.h"
-
+#import "CoinLoginViewController.h"
 
 #import "CoinLoginViewController.h"
 
@@ -55,8 +55,9 @@
     
     
     
-    CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
- 
+   
+    NSString * token = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];
+    UIViewController * workVC = BCStringIsEmpty(token) ? [[CoinLoginViewController alloc] init] : [[CoinPersonViewController alloc] init];
     
     BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
     workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];

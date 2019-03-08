@@ -54,7 +54,31 @@ static HttpTool * tool;
     if (![urlString hasPrefix:@"http"]) {
         urlString = [NSString stringWithFormat:@"%@%@",BCBaseUrl,urlString];
     }
-    [self.manager POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    if (parameters == nil) {
+        parameters = [NSDictionary dictionary];
+    }
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    // 公共参数
+//    dict[@"user_id"] =
+    dict[@"reg_from"] = @"3";
+//    dict[@"token"] =
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    dict[@"version"] = app_Version;
+    dict[@"device"] = [self getUUID];
+    
+    [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"8"]) {
+            //您的账号已在别处登录
+            [self GoLogin];
+            return;
+        }
+        
+        if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"9"]) {
+            // 登录过期，请重新登录
+            [self GoLogin];
+            return;
+        }
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(task,error);
@@ -70,13 +94,30 @@ static HttpTool * tool;
     if (![urlString hasPrefix:@"http"]) {
         urlString = [NSString stringWithFormat:@"%@%@",BCBaseUrl,urlString];
     }
-    [self.manager GET:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    
+    if (parameters == nil) {
+        parameters = [NSDictionary dictionary];
+    }
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    // 公共参数
+    //    dict[@"user_id"] =
+    dict[@"reg_from"] = @"3";
+    //    dict[@"token"] =
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    dict[@"version"] = app_Version;
+    dict[@"device"] = [self getUUID];
+    
+    [self.manager GET:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(task,error);
     }];
 }
 
+- (void)GoLogin{
+    
+}
 - (BOOL)isConnectionAvalible {
     
     BOOL isExistenceNetwork = NO;
@@ -154,4 +195,33 @@ static HttpTool * tool;
     [USER_DEFAULTS synchronize];
 }
 
+- (NSString *)getUUID{
+    
+    CFUUIDRef puuid = CFUUIDCreate(nil);
+    CFStringRef uuidString = CFUUIDCreateString(nil, puuid);
+    NSString *result = (NSString *)CFBridgingRelease(CFStringCreateCopy(NULL, uuidString));
+    NSMutableString *tmpResult = result.mutableCopy;
+
+    NSRange range = [tmpResult rangeOfString:@"-"];
+    while (range.location != NSNotFound) {
+        [tmpResult deleteCharactersInRange:range];
+        range = [tmpResult rangeOfString:@"-"];
+    }
+    return tmpResult;
+    
+}
+
+- (void)GetCodeWithMobile:(NSString *)mobile action:(int)action Ticket:(NSString *)Ticket randstr:(NSString *)Randstr success:(void(^)(BOOL isSucces))success{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"mobile"] = mobile;
+    dict[@"action"] = [NSString stringWithFormat:@"%d",action];
+    dict[@"Ticket"] = Ticket;
+    dict[@"Randstr"] = Randstr;
+    [KTooL HttpPostWithUrl:@"User/send_sms" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        success(BCStatus);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
 @end
