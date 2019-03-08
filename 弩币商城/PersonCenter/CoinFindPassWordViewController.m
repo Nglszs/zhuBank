@@ -23,11 +23,29 @@
     [super viewDidLoad];
     self.title = @"找回密码";
     [self SetNavTitleColor];
+    [self SetReturnButton];
+    [self.RootView.btn addTarget:self action:@selector(GoSetPassword) forControlEvents:(UIControlEventTouchUpInside)];
+}
+- (void)GoSetPassword{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"mobile"] = self.RootView.PhoneTF.text;
+    dict[@"action"] =  @"2";
+    dict[@"verify_code"] = self.RootView.messageCodeField.text;
+    [KTooL HttpPostWithUrl:@"User/check_sms" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            CoinUpdatePassWordViewController * vc = [CoinUpdatePassWordViewController new];
+            vc.mobile = self.RootView.PhoneTF.text;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+   
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    CoinUpdatePassWordViewController * vc = [CoinUpdatePassWordViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 

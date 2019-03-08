@@ -103,8 +103,10 @@
         make.top.equalTo(CenterLabel.mas_bottom).offset(SetY(54));
     }];
     
-    [self SetTextField:[UITextField new] leftImage:@"密码" placeholdeStr:@"输入新密码" belowLineY:SetY(270)];
-     [self SetTextField:[UITextField new] leftImage:@"密码" placeholdeStr:@"确认新密码" belowLineY:SetY(305)];
+    self.password1 = [UITextField new];
+    self.password2 = [UITextField new];
+    [self SetTextField:self.password1 leftImage:@"密码" placeholdeStr:@"输入新密码" belowLineY:SetY(270)];
+    [self SetTextField:self.password2 leftImage:@"密码" placeholdeStr:@"确认新密码" belowLineY:SetY(305)];
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     btn.backgroundColor = COLOR(255, 0, 0);
     [self addSubview:btn];
@@ -150,6 +152,7 @@
     textField.placeholder = placeholdeStr;
     [textField setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
     [textField setValue:[UIFont boldSystemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+    textField.secureTextEntry = YES;
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageView.mas_right).offset(10);
         make.right.equalTo(BGView);

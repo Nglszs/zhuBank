@@ -88,6 +88,7 @@
             NSArray *arr = [[responseObject objectNilForKey:@"data"] objectForKey:@"banner_list"];
             banaUrl = [[arr firstObject] objectForKey:@"ad_link"];
             huluUrl = [[responseObject objectNilForKey:@"data"] objectForKey:@"hulu_receive_url"];
+            
 //            刷新界面
             [self refreshView];
         } else {

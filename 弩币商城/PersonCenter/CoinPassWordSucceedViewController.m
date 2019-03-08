@@ -49,6 +49,9 @@
     btn.clipsToBounds = YES;
     btn.backgroundColor = COLOR(255, 0, 0);
     [self.view addSubview:btn];
+    [btn addtargetBlock:^(UIButton *button) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(label);
         make.top.equalTo(label.mas_bottom).offset(40);

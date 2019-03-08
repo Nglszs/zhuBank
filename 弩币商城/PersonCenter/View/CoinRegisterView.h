@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinRegisterView : UIView
 @property (nonatomic,strong)UIButton * RegisterButton;
+@property (nonatomic,strong)UITextField * PhoneNumberTF;
+@property (nonatomic,strong)UITextField * CodeTF;
+@property (nonatomic,strong)UITextField * PassWordTF1;
+@property (nonatomic,strong)UITextField * PassWordTF2;
+@property (nonatomic,strong)UIButton * GetCodeButton;
+@property (nonatomic,strong)UILabel * userProtocol;// 用户协议
+@property (nonatomic,strong)UILabel * privacyProtocol;
 @end
 
 NS_ASSUME_NONNULL_END

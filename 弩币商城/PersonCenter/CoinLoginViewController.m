@@ -9,8 +9,10 @@
 #import "CoinLoginViewController.h"
 #import "CoinLoginView.h"
 #import "CoinRegisterViewController.h"
+#import "CoinPersonViewController.h"
 
 #import "CoinFindPassWordViewController.h"
+#import "BCNavigationViewController.h"
 @interface CoinLoginViewController ()
 @property (nonatomic,strong)CoinLoginView * RootView;
 @end
@@ -22,7 +24,13 @@
     [super viewDidLoad];
     [self.RootView.RegisterButton addTarget:self action:@selector(GoRegisterButtonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     [self.RootView.ForgetPasswordButton addTarget:self action:@selector(ForgetPasswordButtonAction) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.RootView.LoginButton addTarget:self action:@selector(LoginButtonAction) forControlEvents:(UIControlEventTouchUpInside)];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)loadView{
@@ -36,7 +44,41 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)ForgetPasswordButtonAction{
-    CoinLoginViewController * vc = [CoinLoginViewController new];
+    CoinFindPassWordViewController * vc = [CoinFindPassWordViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)LoginButtonAction{
+//    if (![self isMobileNumber:self.RootView.UserNameTF.text]) {
+//    
+//        return;
+//    }
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"mobile"] = self.RootView.UserNameTF.text;
+    dict[@"password"] = self.RootView.PasswordTF.text;
+    dict[@"phone_type"] = [BCManagerTool getCurrentDeviceModel];
+    dict[@"system_version"] =  [[UIDevice currentDevice] systemVersion];
+    [KTooL HttpPostWithUrl:@"User/login" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            NSString *  token = responseObject[@"data"][@"token"];
+            NSString *  user_id =  responseObject[@"data"][@"user_id"];
+            [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_Token];
+            [[NSUserDefaults standardUserDefaults] setObject:user_id forKey:USER_ID];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+             CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
+            NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
+            BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
+            workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [arr replaceObjectAtIndex:3 withObject:workNav];
+            [self.tabBarController setViewControllers:arr];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+
+
+
+
 @end

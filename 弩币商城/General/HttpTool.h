@@ -59,6 +59,16 @@ typedef void(^BRRequestFailure)(NSURLSessionDataTask * task,NSError * error);
  */
 - (void)deleteObjectForKey:(NSString *)key;
 
+
+/**
+ 获取验证码
+
+ @param mobile 手机号
+ @param action 1:注册、绑定新手机号码；2：忘记登录密码  、忘记支付密码、修改登录密码、修改绑定手机号、设置交易密码
+ @param Ticket 图形验证码票据
+ @param Randstr 随机字符串
+ */
+- (void)GetCodeWithMobile:(NSString *)mobile action:(int)action Ticket:(NSString *)Ticket randstr:(NSString *)Randstr success:(void(^)(BOOL isSucces))success;
 @end
 
 

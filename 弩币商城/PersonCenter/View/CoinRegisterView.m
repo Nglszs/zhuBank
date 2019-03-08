@@ -10,13 +10,7 @@
 @interface CoinRegisterView()
 @property (nonatomic,strong)UIImageView * BackgroundImageView;
 @property (nonatomic,strong)UIImageView * LogoImageView;
-
-@property (nonatomic,strong)UITextField * PhoneNumberTF;
-@property (nonatomic,strong)UITextField * CodeTF;
-@property (nonatomic,strong)UITextField * PassWordTF1;
-@property (nonatomic,strong)UITextField * PassWordTF2;
-@property (nonatomic,strong)UIButton * GetCodeButton;
-
+@property (nonatomic,strong)NSTimer * countDownTimer;
 
 @end
 @implementation CoinRegisterView
@@ -80,18 +74,37 @@
     label.numberOfLines = 0;
     [self addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
-make.top.equalTo(self.RegisterButton.mas_bottom).offset(11);
+        make.centerX.equalTo(self).offset(-90);
+ make.top.equalTo(self.RegisterButton.mas_bottom).offset(11);
     }];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"注册即视为同意《用户注册协议》《隐私保护政策》" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Regular" size: 11],NSForegroundColorAttributeName: [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
-    
-    [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:227/255.0 green:47/255.0 blue:33/255.0 alpha:1.0]} range:NSMakeRange(7, 7)];
-    [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:227/255.0 green:47/255.0 blue:33/255.0 alpha:1.0]} range:NSMakeRange(14, 1)];
-    
-    [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:227/255.0 green:47/255.0 blue:33/255.0 alpha:1.0]} range:NSMakeRange(15, 1)];
-    
-    [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:227/255.0 green:47/255.0 blue:33/255.0 alpha:1.0]} range:NSMakeRange(16, 7)];
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"注册即视为同意" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Regular" size: 11],NSForegroundColorAttributeName: [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
     label.attributedText = string;
+    
+    UILabel * label1 = [UILabel new];
+    label1.text = @"《用户注册协议》";
+    label1.textColor = COLOR(227, 47, 33);
+    label1.font = Regular(11);
+    [self addSubview:label1];
+    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(label);
+        make.left.equalTo(label.mas_right);
+    }];
+    
+    
+    UILabel * label2 = [UILabel new];
+    label2.text = @"《隐私保护政策》";
+    label2.textColor = COLOR(227, 47, 33);
+    label2.font = Regular(11);
+    [self addSubview:label2];
+    [label2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(label);
+        make.left.equalTo(label1.mas_right);
+    }];
+    label1.userInteractionEnabled = YES;
+    label2.userInteractionEnabled = YES;
+    self.userProtocol = label1;
+    self.privacyProtocol = label2;
+    
 }
 
 - (void)SetTextField:(UITextField *)textField leftImage:(NSString *)imageName placeholdeStr:(NSString *)placeholdeStr belowLineY:(CGFloat)belowLineY{
@@ -137,14 +150,22 @@ make.top.equalTo(self.RegisterButton.mas_bottom).offset(11);
         
         self.GetCodeButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
         [BGView addSubview:self.GetCodeButton];
-        [self.GetCodeButton setBackgroundImage:[UIImage imageNamed:@"获取验证码"] forState:(UIControlStateNormal)];
+        [_GetCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
         self.GetCodeButton.adjustsImageWhenHighlighted = NO;
         
         [self.GetCodeButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(imageView);
             make.right.equalTo(BGView).offset(-5);
+            make.width.mas_equalTo(60);
+            make.height.mas_equalTo(15);
         }];
         [self.GetCodeButton addTarget:self action:@selector(GetCodeAction:) forControlEvents:(UIControlEventTouchUpInside)];
+        _GetCodeButton.backgroundColor = ThemeColor;
+        [_GetCodeButton setTitleColor:COLOR(255, 141, 29) forState:(UIControlStateNormal)];
+        _GetCodeButton.titleLabel.font = Regular(10);
+        _GetCodeButton.layer.borderWidth = 1;
+        _GetCodeButton.layer.borderColor = COLOR(255, 141, 29).CGColor;
+        _GetCodeButton.layer.cornerRadius = 5;
     }
     
 }
@@ -155,6 +176,22 @@ make.top.equalTo(self.RegisterButton.mas_bottom).offset(11);
         return;
     }
     
+    // 调取滑动验证
+    MJWeakSelf;
+    [BCManagerTool loadTencentCaptcha:self callback:^(NSString *Ticket, NSString *Randstr) {
+        if (!BCStringIsEmpty(Ticket) && !BCStringIsEmpty(Randstr)) {
+            
+            [KTooL GetCodeWithMobile:self.PhoneNumberTF.text action:1 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
+                if (isSucces) {
+                    [weakSelf changeTimeState];
+                }
+            }];
+            
+        }
+       
+    }];
+    
+    
 }
 
 - (BOOL)isPhoneNumber:(NSString *)string{
@@ -163,4 +200,40 @@ make.top.equalTo(self.RegisterButton.mas_bottom).offset(11);
     return [mobilePredicate evaluateWithObject:string];
 }
 
+
+- (void)changeTimeState {
+    
+    
+    __block  NSInteger time = 59; //倒计时时间
+    
+    
+    WS(weakSelf);
+    
+    //    [_codeButton setTitleColor:White forState:UIControlStateNormal];
+    //    _codeButton.layer.borderColor = White.CGColor;
+    _GetCodeButton.userInteractionEnabled = NO;
+    _countDownTimer = [NSTimer wwl_scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer *timer) {
+        
+        NSInteger seconds = time % 60;
+        time --;
+        
+        
+        [weakSelf.GetCodeButton setTitle:[NSString stringWithFormat:@"%.2ld秒后重试", seconds] forState:UIControlStateNormal];
+        
+        
+        if (time == 0) {
+            //设置按钮的样式
+            [weakSelf.countDownTimer invalidate];
+            weakSelf.countDownTimer = nil;
+             [weakSelf.GetCodeButton setTitle:@"重新发送" forState:UIControlStateNormal];
+         
+        }
+        
+    }];
+    
+    
+    [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
+    [_countDownTimer fire];
+    
+}
 @end
