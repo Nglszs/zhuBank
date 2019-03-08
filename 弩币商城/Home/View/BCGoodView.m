@@ -13,13 +13,19 @@
 {
     UIView *divideV;//分期界面
     UIButton *selectedBtn,*diviBtn,*diviNumBtn;  //按钮单选逻辑
-    
-   
+    NSDictionary *dataDic;
+    NSString *goodID;
     NSInteger shopNumber;//选择商品数量
      CGFloat maxValue;//商品最大值
+    
+    UIImageView *leftI;
+    UILabel *moneyL;
+    UILabel *moneyL1;//分期
+    UILabel *countL;
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID {
     
+    goodID = ID;
     return [self initWithFrame:frame];
 }
 
@@ -28,11 +34,45 @@
     
     if (self = [super initWithFrame:frame]) {
         maxValue = 99;
-        [self initView];
-        
+       
+        [self getData];
         
     }
     return self;
+}
+
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"goods/spec_page" parameters:@{@"goods_id":goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if (BCStatus) {
+           
+            dataDic = [responseObject objectNilForKey:@"data"];
+           
+           
+         
+            
+           
+        
+            
+            
+            
+          
+            
+            
+             [self initView];
+            
+        } else {
+            
+            ViewToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        ViewToast(error.description, 1);
+    }];
+    
 }
 - (void)initView {
     
@@ -48,7 +88,7 @@
     [self addSubview:backView];
     
     
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 - BCNaviHeight, BCWidth, 440)];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
     headView.backgroundColor = White;
     [self addSubview:headView];
     
@@ -62,8 +102,14 @@
     [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UIImageView *leftI = [[UIImageView alloc] init];
+    NSDictionary *newDic = [dataDic objectNilForKey:@"goods_info"];
+    
+    NSDictionary *newDic1 = [dataDic objectNilForKey:@"fenqi_info"];
+    
+     maxValue = [[newDic objectNilForKey:@"store_count"] floatValue];
+    leftI = [[UIImageView alloc] init];
     leftI.backgroundColor = ImageColor;
+     [leftI sd_setImageWithURL:[NSURL URLWithString:[newDic objectNilForKey:@"original_img"]]];
     [headView addSubview:leftI];
     [leftI mas_makeConstraints:^(MASConstraintMaker *make) {
        
@@ -75,8 +121,9 @@
     
     
 //     价格等等
-    UILabel *moneyL = [[UILabel alloc] init];
-    moneyL.text = @"¥ 300";
+    moneyL = [[UILabel alloc] init];
+    moneyL.text =  [NSString stringWithFormat:@"¥ %ld",[[newDic objectNilForKey:@"goods_price"] integerValue]];
+    
     moneyL.textColor = COLOR(254, 0, 0);
     moneyL.font = Regular(17);
     [headView addSubview:moneyL];
@@ -88,11 +135,16 @@
     }];
     
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"￥1100*6期"];
-    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName:COLOR(102, 102, 102)};
-    [str setAttributes:firstAttributes range:NSMakeRange(5,3)];
+    NSString *fenqi = [NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic1 objectNilForKey:@"per_money"] floatValue],[newDic1 objectNilForKey:@"periods"]];
     
-    UILabel *moneyL1 = [[UILabel alloc] init];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:fenqi];
+    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName:COLOR(102, 102, 102)};
+    
+    NSString *stt = [NSString stringWithFormat:@"%.2f",[[newDic1 objectNilForKey:@"per_money"] floatValue]];
+    
+    [str setAttributes:firstAttributes range:NSMakeRange(stt.length + 4,fenqi.length - stt.length - 4)];
+    
+   moneyL1  = [[UILabel alloc] init];
    
     moneyL1.textColor = COLOR(254, 0, 0);
     moneyL1.font = Regular(13);
@@ -106,11 +158,12 @@
     }];
     
 //    // 标题
-    UILabel *countL = [[UILabel alloc] initWithFrame:headView.bounds];
+    countL = [[UILabel alloc] initWithFrame:headView.bounds];
     countL.textAlignment = NSTextAlignmentCenter;
     countL.font = Regular(11);
     countL.textColor = COLOR(102, 102, 102);
-    countL.text = @"剩余库存：12";
+    countL.text = [NSString stringWithFormat:@"剩余库存：%@",[newDic objectNilForKey:@"store_count"] ];
+   
     [headView addSubview:countL];
     [countL mas_makeConstraints:^(MASConstraintMaker *make) {
 
@@ -182,6 +235,8 @@
     
 //      颜色
 
+    NSDictionary *sepDic = [dataDic objectNilForKey:@"spec_info"];
+    
     UILabel *leftL2 = [[UILabel alloc] init];
     leftL2.textColor = TITLE_COLOR;
     leftL2.font = Regular(13);
@@ -195,15 +250,16 @@
     }];
 
 //
-    NSArray *titleArr = @[@"亮黑色",@"宝蓝色",@"深蓝色",@"星空灰",@"红色",@"黄色"];
+    NSArray *titleArr = [sepDic objectForKey:@"颜色"];
 
     for (int i = 0; i < titleArr.count ; i++) {
+        NSDictionary *colorDic = titleArr[i];
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
         [activityBtn setTitleColor:White forState:UIControlStateSelected];
         [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
         [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
-        [activityBtn setTitle:titleArr[i] forState:UIControlStateNormal];
+        [activityBtn setTitle:[colorDic objectNilForKey:@"item"] forState:UIControlStateNormal];
         [activityBtn.titleLabel setFont:Regular(12)];
         activityBtn.layer.borderWidth = 1;
         activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
@@ -244,7 +300,7 @@
 
 
 
-    NSArray *titleArr1 = @[@"公开版",@"公开版",@"公开版"];
+    NSArray *titleArr1 = @[@"公开版"];
 
     for (int i = 0; i < titleArr1.count ; i++) {
         UIButton *activityBtn = [UIButton new];
@@ -293,14 +349,17 @@
     
     
     
-        NSArray *titleA = @[@"6G+64G",@"6G+128G"];
-        for (int i = 0; i < 2 ; i++) {
+        NSArray *titleA = [sepDic objectNilForKey:@"版本"];
+        for (int i = 0; i < titleA.count ; i++) {
+            
+               NSDictionary *sizeDic = titleA[i];
+            
             UIButton *activityBtn = [UIButton new];
             [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
             [activityBtn setTitleColor:White forState:UIControlStateSelected];
             [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
             [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
-            [activityBtn setTitle:titleA[i] forState:UIControlStateNormal];
+            [activityBtn setTitle:[sizeDic objectNilForKey:@"item"] forState:UIControlStateNormal];
             [activityBtn.titleLabel setFont:Regular(12)];
             activityBtn.layer.borderWidth = 1;
             activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
@@ -472,9 +531,10 @@
     NSString *minValueString = nil;
     NSString *maxValueString = nil;
     
-    minValueString = [NSString stringWithFormat:@"%.f",0.0];
+    minValueString = [NSString stringWithFormat:@"%.f",1.0];
     maxValueString = [NSString stringWithFormat:@"%.f",maxValue];
     
+    NSLog(@"]]]%f",[_countTextField.text floatValue]);
     if ( [_countTextField.text floatValue] < 0.00) {
         
         
@@ -501,7 +561,7 @@
     
     if (btn.tag == 50) {//减
         
-        shopNumber = MAX(0, --number);
+        shopNumber = MAX(1, --number);
         _countTextField.text = [NSString stringWithFormat:@"%ld",shopNumber];
         
     } else {//加

@@ -89,6 +89,11 @@
     
 }
 
-
+- (void)dealloc {
+    
+    [NOTIFICATION_CENTER removeObserver:self];
+    
+    NSLog(@"%@已被释放",NSStringFromClass([self class]));
+}
 
 @end

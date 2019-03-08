@@ -10,8 +10,9 @@
 #import "CarouselView.h"
 #import "CoinGoodDetailViewController.h"
 #import "CoinCertifyViewController.h"
-
 #import "CoinNotDevelopViewController.h"
+
+#import "CoinSearchViewController.h"
 
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
 
@@ -86,10 +87,13 @@
             [_goodArray addObjectsFromArray:[[responseObject objectNilForKey:@"data"] objectForKey:@"goods_list"]];
             
             NSArray *arr = [[responseObject objectNilForKey:@"data"] objectForKey:@"banner_list"];
-            if (arr.count > 0) {
+           
+            if (arr.count > 0 && !BCArrayIsEmpty(arr)) {
+                
                 banaUrl = [[arr firstObject] objectForKey:@"ad_link"];
 
             }
+            
             huluUrl = [[responseObject objectNilForKey:@"data"] objectForKey:@"hulu_receive_url"];
             
 //            刷新界面
@@ -157,6 +161,11 @@
     topBtn.layer.cornerRadius = 10;
     topBtn.clipsToBounds = YES;
     [_navView addSubview:topBtn];
+//    跳转到搜索界面
+    [topBtn addtargetBlock:^(UIButton *button) {
+       
+        [self.navigationController pushViewController:[CoinSearchViewController new] animated:YES];
+    }];
     
     
     
@@ -187,7 +196,7 @@
     
 //    轮播图
   
-    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[BCImage(首页banner)] andClickEnable:YES];
+    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[@"首页banner"] andClickEnable:YES];
     view.delegete = self;
     [self.backScrollView addSubview:view];
     

@@ -43,7 +43,7 @@
     [self addSubview:backView];
     
     
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 - BCNaviHeight, BCWidth, 440)];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
     headView.backgroundColor = White;
     [self addSubview:headView];
     

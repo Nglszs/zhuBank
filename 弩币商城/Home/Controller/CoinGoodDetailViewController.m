@@ -16,6 +16,8 @@
 {
     UIImageView *backImageView;//滑竿
     UIButton *selectedBtn;
+    NSDictionary *dataDic;
+    UIScrollView *_scView;//显示图片详情
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -28,11 +30,29 @@
     [super viewDidLoad];
     
     
-    self.navigationItem.titleView = self.headView;
+   
+    
+ 
    
     [self.view addSubview:self.backScrollView];
-    
    
+     [self.view addSubview: self.headView];
+    
+    UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    btn.frame = CGRectMake(LEFT_Margin, BCNaviHeight - 35, 25, 25);
+    
+    
+    [btn setImage:[UIImage imageNamed:@"Back"] forState:(UIControlStateNormal)];
+    [btn setImage:[UIImage imageNamed:@"Back"] forState:(UIControlStateHighlighted)];
+    [self.view addSubview:btn];
+    [btn setEnlargeEdge:10];
+    [btn addtargetBlock:^(UIButton *button) {
+    
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    
+    
     
     [self initView];
     
@@ -44,13 +64,33 @@
     
     [self getData];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    
+    
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    
+    
+}
 
 
 - (void)initView {
     
     //    轮播图
     
-    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 358) displayImages:@[BCImage(首页banner),BCImage(首页banner),BCImage(首页banner)] andClickEnable:YES];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 358)];
     
     [self.backScrollView addSubview:view];
     
@@ -64,7 +104,7 @@
     [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
     
     UILabel *priceL = [[UILabel alloc] init];
-    
+    priceL.tag = 200;
     priceL.textColor = COLOR(254, 36, 72);
     priceL.font = Regular(17);
     priceL.attributedText = str;
@@ -83,6 +123,7 @@
     segLabel.attributedText = str1;
     segLabel.textColor = COLOR(153, 153, 153);
     segLabel.font = Regular(11);
+    segLabel.tag = 300;
     [self.backScrollView addSubview:segLabel];
     [segLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -97,6 +138,7 @@
     
     UILabel *titleL = [[UILabel alloc] init];
     titleL.text = @"分期：￥1100*6期";
+    titleL.tag = 500;
     titleL.textColor = COLOR(166, 166, 166);
     titleL.textAlignment = NSTextAlignmentRight;
     titleL.font = Regular(12);
@@ -113,8 +155,8 @@
     
     
 //    商品标题
-    NSArray *titleA = @[@"正品",@"自营",@"包邮"];
-    for (int i = 0; i < 3 ; i++) {
+    NSArray *titleA = @[@"正品",@"自营"];
+    for (int i = 0; i < 2 ; i++) {
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(254, 36, 72) forState:UIControlStateNormal];
         [activityBtn setTitle:titleA[i] forState:UIControlStateNormal];
@@ -143,7 +185,7 @@
     nameLabel.font = Regular(16);
     nameLabel.attributedText = [self setLabelIndent:14*titleA.count text:@"华为(HUAWEI) mate20pro手机樱粉金 8G+128G 全网通"];
   
-
+    nameLabel.tag = 100;
     nameLabel.numberOfLines = 0;
     [self.backScrollView addSubview:nameLabel];
    
@@ -164,7 +206,7 @@
         UILabel *titleL1 = [[UILabel alloc] init];
         titleL1.text = arr[i];
         titleL1.textColor = COLOR(166, 166, 166);
-        
+        titleL1.tag = 400 + i;
         titleL1.font = Regular(12);
         [self.backScrollView addSubview:titleL1];
         
@@ -200,12 +242,14 @@
     
     //    分割区
     
+    UILabel *nameLabel = [self.backScrollView viewWithTag:100];
+    
     UIImageView *divideView = [[UIImageView alloc] init];
     divideView.backgroundColor = DIVI_COLOR;
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.mas_equalTo(480);
+        make.top.equalTo(nameLabel.mas_bottom).offset(40);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
@@ -234,6 +278,7 @@
     
 //    优惠券标题
     UIView *easeView = [[UIView alloc] init];
+    easeView.tag = 600;
     [self.backScrollView addSubview:easeView];
     [easeView mas_makeConstraints:^(MASConstraintMaker *make) {
        
@@ -267,29 +312,6 @@
         make.left.mas_equalTo(BCWidth - 85 - 25);
         make.centerY.equalTo(easeView);
     }];
-    
-    NSArray *titleA = @[@"满3000减300",@"满2000减200"];
-    for (int i = 0; i < 2 ; i++) {
-        UIButton *activityBtn = [UIButton new];
-        [activityBtn setTitleColor:COLOR(254, 36, 72) forState:UIControlStateNormal];
-        [activityBtn setTitle:titleA[i] forState:UIControlStateNormal];
-        [activityBtn.titleLabel setFont:Regular(12)];
-        activityBtn.layer.borderWidth = 1;
-        activityBtn.layer.borderColor = COLOR(254, 36, 72).CGColor;
-        
-        activityBtn.layer.cornerRadius = 5;
-        [easeView addSubview:activityBtn];
-        
-        
-        [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(easeView);
-            make.left.mas_equalTo(i*(88 + 10) + 10);
-            
-            make.size.mas_equalTo(CGSizeMake(88, 20));
-        }];
-        
-    }
-    
     
     
    
@@ -327,7 +349,7 @@
     [easeView1 addTapGestureWithBlock:^{
         
         
-        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:@""];
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -340,6 +362,7 @@
     rightL.text = @"樱粉金 8G+128G 全网通";
     rightL.textColor = COLOR(103, 103, 103);
     rightL.font = Regular(13);
+    rightL.tag = 700;
     [easeView1 addSubview:rightL];
     [rightL mas_makeConstraints:^(MASConstraintMaker *make) {
        
@@ -449,7 +472,7 @@
     [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
        
         make.left.mas_equalTo(0);
-        make.top.mas_equalTo(self.backScrollView.height - 50 - BCNaviHeight);
+        make.top.mas_equalTo(self.backScrollView.height - 50);
         make.height.mas_equalTo(50);
         make.width.mas_equalTo(BCWidth);
         
@@ -474,6 +497,11 @@
     }];
     [backBtn imagePositionStyle:ImagePositionStyleTop spacing:7];
     
+    [backBtn addtargetBlock:^(UIButton *button) {
+       
+        NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",@"111"];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    }];
     
     
 //    立即购买
@@ -497,6 +525,11 @@
 - (void)initSecondView {
     
     
+    _scView = [[UIScrollView alloc] initWithFrame:CGRectMake(BCWidth, BCNaviHeight, BCWidth, BCHeight - BCNaviHeight)];
+
+    _scView.showsHorizontalScrollIndicator = NO;//隐藏水平滚动条
+    _scView.showsVerticalScrollIndicator = NO;//
+    [self.backScrollView addSubview:_scView];
     
 }
 
@@ -518,8 +551,8 @@
     [backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         
         make.left.width.equalTo(btn);
-        make.top.mas_equalTo(39);
-        make.height.mas_equalTo(3);
+       make.top.equalTo(btn.mas_bottom).offset(1);
+        make.height.mas_equalTo(1);
         
     }];
 }
@@ -530,8 +563,9 @@
     [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
-        if ([[responseObject objectNilForKey:@"status"]integerValue] == 1) {
-            
+        if (BCStatus) {
+            dataDic = [responseObject objectNilForKey:@"data"];
+            [self refreshView];
             
         } else {
             
@@ -544,17 +578,153 @@
     
 }
 
+
+- (void)refreshView {
+    
+    NSArray *imageArr = [dataDic objectNilForKey:@"image_urls"];
+    
+    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 358) displayImages:imageArr andClickEnable:NO];
+    
+    [self.backScrollView addSubview:view];
+    
+    
+//    商品信息
+    NSDictionary *dic = [dataDic objectNilForKey:@"goods_info"];
+    UILabel *nameLabel = [self.backScrollView viewWithTag:100];
+    nameLabel.attributedText = [self setLabelIndent:14*2 text:[dic objectNilForKey:@"goods_name"]];
+    
+//    价格
+    
+    UILabel *priceL = [self.backScrollView viewWithTag:200];
+    
+     NSDictionary *dic1 = [dataDic objectNilForKey:@"spec_info"];
+    
+    NSString *price;
+    
+    if (BCStringIsEmpty([dic1 objectNilForKey:@"spec_price"])) {//先判断有没有规格价，有则显示，无则显示shop价格
+        
+        price = [dic objectNilForKey:@"shop_price"];
+        
+    } else {
+        
+        price = [dic1 objectNilForKey:@"spec_price"];
+        
+    }
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥ %ld",[price integerValue]]];
+    NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+    [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
+    
+    priceL.attributedText = str;
+    
+    
+    UILabel *marketL = [self.backScrollView viewWithTag:300];
+    NSDictionary * firstAttributes1 = @{NSStrikethroughStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle],NSFontAttributeName:Regular(9)};
+    NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥%@",[dic objectNilForKey:@"market_price"]] attributes:firstAttributes1];
+    marketL.attributedText = str1;
+    
+    
+//    销量
+    
+    for (int i = 0; i < 2; i ++) {
+        
+        UILabel *label = [self.backScrollView viewWithTag:400 + i];
+        if (i == 0) {//销量
+            
+            label.text = [NSString stringWithFormat:@"月销%@笔",[dic objectNilForKey:@"sales_sum"]];
+            
+        } else {
+            
+            if ([[dic objectNilForKey:@"is_free_shipping"] integerValue] == 1) {//是否包邮
+                
+                label.text = @"快递:包邮";
+            } else {
+                
+                
+                label.text = [NSString stringWithFormat:@"快递:%@元",[dic objectNilForKey:@"freight"]];
+            }
+            
+            
+            
+        }
+    }
+    
+    
+//    是否分期
+    UILabel *titleL = [self.backScrollView viewWithTag:500];
+    if ([[dic objectNilForKey:@"is_fenqi"] integerValue] != 1) {
+        titleL.hidden = YES;
+    } else {
+        
+        NSDictionary *newDic = [dic objectNilForKey:@"fenqi_info"];
+        titleL.text =[NSString stringWithFormat:@"分期 ¥%@*%@期",[newDic objectNilForKey:@"per_money"],[newDic objectNilForKey:@"periods"]];
+        
+        
+    }
+    
+//    优惠券
+    UIView *easeView = [self.backScrollView viewWithTag:600];
+    
+     NSArray * tagsArray = [[dataDic objectNilForKey:@"coupons_info"] componentsSeparatedByString:@" "];
+  
+   
+    
+    for (int i = 0; i < tagsArray.count - 1 ; i++) {
+        UIButton *activityBtn = [UIButton new];
+        [activityBtn setTitleColor:COLOR(254, 36, 72) forState:UIControlStateNormal];
+        [activityBtn setTitle:tagsArray[i] forState:UIControlStateNormal];
+        [activityBtn.titleLabel setFont:Regular(12)];
+        activityBtn.layer.borderWidth = 1;
+        activityBtn.layer.borderColor = COLOR(254, 36, 72).CGColor;
+        
+        activityBtn.layer.cornerRadius = 5;
+        [easeView addSubview:activityBtn];
+        
+        
+        [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(easeView);
+            make.left.mas_equalTo(i*(88 + 10) + 10);
+            
+            make.size.mas_equalTo(CGSizeMake(88, 20));
+        }];
+        
+    }
+    
+    
+//  规格
+    UILabel *sizeL = [self.backScrollView viewWithTag:700];
+    sizeL.text = [dic1 objectNilForKey:@"spec_param"];
+    
+    
+//    图片详情
+   NSString *images = [[dic objectNilForKey:@"goods_content"] firstObject];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:images]];
+    UIImage *img = [UIImage imageWithData:data];
+    CGFloat imgHeight = img.size.height;
+    CGFloat imgWidth = img.size.width;
+    CGFloat imgH = imgHeight * (BCWidth / imgWidth);
+    
+   UIImageView *_showImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,BCWidth , imgH)];
+    //设置imageView的背景图
+    [_showImg setImage:img];
+    //给imageView设置区域
+    _showImg.contentMode = UIViewContentModeScaleAspectFill;
+    //把视图添加到当前的滚动视图中
+    [_scView addSubview:_showImg];
+    _scView.contentSize = CGSizeMake(0,imgH);//设置滚动视图的大小
+    
+}
 #pragma mark 懒加载加载需要的视图
 - (UIView *)headView {
     if (!_headView) {
         
         
         
-        _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , BCWidth - 50, 40)];
+        _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , BCWidth , BCNaviHeight)];
       
         _headView.backgroundColor = ThemeColor;
         
-        
+       
         
         
         
@@ -564,8 +734,8 @@
             
             segmentButton1.titleLabel.font = Regular(17);
             [segmentButton1 setTitle:titleArr1[i] forState:UIControlStateNormal];
-            [segmentButton1 setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
-            [segmentButton1 setTitleColor:COLOR(252, 148, 37) forState:UIControlStateSelected];
+            [segmentButton1 setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
+            [segmentButton1 setTitleColor:TITLE_COLOR forState:UIControlStateSelected];
             
             
             segmentButton1.tag = 200 + i;
@@ -574,21 +744,21 @@
             [_headView addSubview:segmentButton1];
             [segmentButton1 mas_makeConstraints:^(MASConstraintMaker *make) {
                 
-                make.left.mas_equalTo( i*150 + 50);
-                make.top.mas_equalTo(0);
+                make.left.mas_equalTo( i*(BCWidth - 170 - 100 + 50) + 85);
+                make.top.mas_equalTo(BCNaviHeight - 45);
                 make.width.mas_equalTo(50);
                 make.height.mas_equalTo(40);
             }];
             
             if (i == 0) {
                 backImageView = [[UIImageView alloc] init];
-                backImageView.backgroundColor = COLOR(252, 148, 37);
+                backImageView.backgroundColor = TITLE_COLOR;
                 [_headView addSubview:backImageView];
                 [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
                     
                     make.left.width.equalTo(segmentButton1);
-                    make.top.mas_equalTo(39);
-                    make.height.mas_equalTo(3);
+                    make.top.equalTo(segmentButton1.mas_bottom).offset(1);
+                    make.height.mas_equalTo(1);
                     
                 }];
                 
@@ -623,7 +793,7 @@
         _backScrollView.showsVerticalScrollIndicator=NO;
         _backScrollView.pagingEnabled=YES;
         _backScrollView.bounces=NO;
-        _backScrollView.scrollEnabled = NO;
+       
         _backScrollView.delegate = self;
       
         _backScrollView.contentSize=CGSizeMake(BCWidth * 2, 0);
@@ -657,4 +827,6 @@
     [self clickTopButton:btn];
     
 }
+
+
 @end

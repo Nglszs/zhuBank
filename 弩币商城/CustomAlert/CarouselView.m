@@ -73,7 +73,12 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width * i, 0, self.bounds.size.width, self.bounds.size.height)];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
-        imageView.image =[newImageArr objectAtIndex:i];
+        if ([[newImageArr objectAtIndex:i] hasPrefix:@"http"]) {
+            
+            [imageView sd_setImageWithURL:[NSURL URLWithString:[newImageArr objectAtIndex:i]]];
+        } else {
+            imageView.image = [UIImage imageNamed:[newImageArr objectAtIndex:i]];
+        }
         [testScrollview addSubview:imageView];
         
         if (isClick) {
@@ -199,5 +204,20 @@
         }
     
     
+}
+
+-(BOOL)isURL:(NSString *)url {
+    if(url.length < 1)
+        return NO;
+    if (url.length>4 && [[url substringToIndex:4] isEqualToString:@"www."]) {
+        url = [NSString stringWithFormat:@"http://%@",url];
+    } else {
+        url = url;
+    }
+    NSString *urlRegex = @"(https|http|ftp|rtsp|igmp|file|rtspt|rtspu)://((((25[0-5]|2[0-4]\\d|1?\\d?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1?\\d?\\d))|([0-9a-z_!~*'()-]*\\.?))([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\.([a-z]{2,6})(:[0-9]{1,4})?([a-zA-Z/?_=]*)\\.\\w{1,5}";
+    
+    NSPredicate* urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegex];
+    
+    return [urlTest evaluateWithObject:url];
 }
 @end
