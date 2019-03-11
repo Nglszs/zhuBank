@@ -20,6 +20,7 @@
     self.title = @"选择地址";
     [self initView];
     [self SetReturnButton];
+    
 }
 
 
@@ -67,6 +68,7 @@
     cell.selectionStyle = 0;
     return cell;
 }
+
 
 
 

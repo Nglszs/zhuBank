@@ -22,7 +22,7 @@
     self.navigationBar.translucent = NO;
     [self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:19],NSForegroundColorAttributeName:TITLE_COLOR}];
+    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17],NSForegroundColorAttributeName:TITLE_COLOR}];
     
 //    self.interactivePopGestureRecognizer.delegate = self;
     
@@ -36,7 +36,7 @@
     {
         viewController.hidesBottomBarWhenPushed = YES;
         
-       
+        [viewController SetReturnButton];
        
     }
     [super pushViewController:viewController animated:animated];

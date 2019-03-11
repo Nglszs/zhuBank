@@ -13,6 +13,7 @@
 @property (nonatomic,strong)UITextField * PhoneNumberTF;
 @property (nonatomic,strong)UITextField * CityTF;
 @property (nonatomic,strong)UITextField * AddressTF;
+@property (nonatomic,strong)NSMutableArray * CityArray;
 @end
 @implementation CoinChangeAddressView
 
@@ -21,10 +22,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self initView];
+        [self request];
     }
     return self;
 }
 - (void)initView{
+    self.CityArray = [NSMutableArray array];
     self.NameTF = [UITextField new];
     self.PhoneNumberTF = [UITextField new];
     self.CityTF = [UITextField new];
@@ -140,11 +143,36 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == self.CityTF) {
-        [BRAddressPickerView showAddressPickerWithDefaultSelected:nil resultBlock:^(BRProvinceModel *province, BRCityModel *city, BRAreaModel *area) {
-             self.CityTF.text = [NSString stringWithFormat:@"%@ %@ %@",province.name,city.name,area.name];
+        [BRAddressPickerView showAddressPickerWithShowType:(BRAddressPickerModeArea) dataSource:self.CityArray defaultSelected:nil isAutoSelect:nil themeColor:nil resultBlock:^(BRProvinceModel *province, BRCityModel *city, BRAreaModel *area) {
+            
+        } cancelBlock:^{
+            
         }];
+        
         return NO;
     }
     return YES;
 }
+
+
+- (void)request{
+    [KTooL HttpPostWithUrl:@"Order/all_region" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.dataArray = [NSArray yy_modelArrayWithClass:[CoinAddressCityModel class] json:responseObject[@"data"]];
+            for (int i = 0 ; i < self.dataArray.count; i++) {
+                CoinAddressCityModel * model = self.dataArray[i];
+                // 赋值给省
+                BRProvinceModel * m1 = [BRProvinceModel new];
+                m1.name = model.name;
+                m1.code = model.idStr;
+                [self.CityArray addObject:m1];
+                
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
 @end

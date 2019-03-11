@@ -8,8 +8,10 @@
 
 #import "CoinChangeAddressViewController.h"
 #import "CoinChangeAddressView.h"
+
 @interface CoinChangeAddressViewController ()
 @property (nonatomic,strong)CoinChangeAddressView * RootView;
+
 @end
 
 @implementation CoinChangeAddressViewController
@@ -17,12 +19,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"编辑/新建地址";
+    [self SetNavTitleColor];
 }
 
 - (void)loadView{
     self.RootView = [[CoinChangeAddressView alloc] initWithFrame:BCBound];
     self.view = self.RootView;
 }
+
 
 
 @end
