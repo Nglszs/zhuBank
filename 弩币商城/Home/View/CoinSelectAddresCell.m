@@ -46,11 +46,14 @@
         make.left.equalTo(self.NameLabel.mas_right).offset(20);
         make.centerY.equalTo(self.NameLabel);
     }];
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"编辑"]];
-    [self.contentView addSubview:imageView];
+    
+    self.editBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [self.editBtn setBackgroundImage:BCImage(编辑) forState:(UIControlStateNormal)];
+    self.editBtn.adjustsImageWhenHighlighted = NO;
+    [self.contentView addSubview:_editBtn];
     
     
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-30);
         make.width.mas_equalTo(19);
@@ -61,11 +64,12 @@
     self.AddressLabel.textColor = COLOR(51, 51, 51);
     self.AddressLabel.text = @"江苏省 南京市 鼓楼区 中山东路";
     self.AddressLabel.font = Regular(13);
+    self.AddressLabel.numberOfLines = 2;
     [self.contentView addSubview:self.AddressLabel];
     [self.AddressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.PhoneNumberLabel);
-        make.right.lessThanOrEqualTo(imageView.mas_left);
-        make.top.equalTo(self.PhoneNumberLabel.mas_bottom).offset(11);
+        make.right.lessThanOrEqualTo(self.editBtn.mas_left);
+        make.top.equalTo(self.PhoneNumberLabel.mas_bottom).offset(8);
     }];
     
 }
@@ -77,6 +81,14 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
+}
+
+- (void)setDataDict:(NSDictionary *)dataDict{
+    _dataDict = dataDict;
+    self.NameLabel.text = dataDict[@"consignee"];
+    self.PhoneNumberLabel.text = [NSString stringWithFormat:@"电话：%@",dataDict[@"mobile"]];
+    self.AddressLabel.text = [NSString stringWithFormat:@"%@ %@",dataDict[@"address_area"],dataDict[@"address"]];
+  
 }
 
 @end

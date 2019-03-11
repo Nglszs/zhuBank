@@ -421,6 +421,8 @@
                 self.selectProvinceModel = self.provinceModelArr[_provinceIndex];
                 self.selectCityModel = self.cityModelArr[0];
                 self.selectAreaModel = self.areaModelArr[0];
+                
+                
             }
                 break;
             default:

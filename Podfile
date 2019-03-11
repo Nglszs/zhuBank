@@ -12,6 +12,9 @@ target '弩币商城' do
   pod 'Masonry'
   pod 'YYModel'
   pod 'Toast'
+pod 'AlipaySDK-iOS'
+pod 'SVProgressHUD'
+pod 'WechatOpenSDK'
 
   target '弩币商城Tests' do
     inherit! :search_paths

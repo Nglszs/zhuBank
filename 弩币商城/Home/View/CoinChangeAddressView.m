@@ -14,6 +14,9 @@
 @property (nonatomic,strong)UITextField * CityTF;
 @property (nonatomic,strong)UITextField * AddressTF;
 @property (nonatomic,strong)NSMutableArray * CityArray;
+@property (nonatomic,copy)NSString * province;
+@property (nonatomic,copy)NSString * city;
+@property (nonatomic,copy)NSString * district;
 @end
 @implementation CoinChangeAddressView
 
@@ -32,21 +35,21 @@
     self.PhoneNumberTF = [UITextField new];
     self.CityTF = [UITextField new];
     self.AddressTF = [UITextField new];
- 
+    self.PhoneNumberTF.keyboardType = UIKeyboardTypeNumberPad;
     [self SetTextFiled:self.NameTF leftString:@"收货人：" topSpace:(45 * 1) placeholder:nil];
-    self.NameTF.text = @"梁丽丽";
+    
   
     [self SetTextFiled:self.PhoneNumberTF leftString:@"手机号码：" topSpace:(45 * 2) placeholder:nil];
-      self.PhoneNumberTF.text = @"132123456789";
+    
     
     [self SetTextFiled:self.CityTF leftString:@"所在地区：" topSpace:(45 * 3) placeholder:nil];
-    self.CityTF.text = @"江苏省 南京市 鼓楼区";
+    
     
     [self SetTextFiled:self.AddressTF leftString:@"所在地区：" topSpace:(45 * 4) placeholder:nil];
-    self.AddressTF.text = @"中山路";
+    
     
     UIView * lineView = [UIView new];
-    lineView.backgroundColor = COLOR(0, 0, 0);
+    lineView.backgroundColor = COLOR(181, 181, 181);
     [self addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(16);
@@ -57,6 +60,7 @@
     self.backgroundColor = [UIColor whiteColor];
     
     UIButton * affirmButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    self.affirmButton = affirmButton;
     [affirmButton setBackgroundColor:COLOR(255, 0, 0) forState:(UIControlStateNormal)];
     [self addSubview:affirmButton];
     [affirmButton setTitle:@"确认" forState:(UIControlStateNormal)];
@@ -117,7 +121,7 @@
         make.right.equalTo(view).offset(hh);
     }];
     UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(0, 0, 0);
+    lineView.backgroundColor = COLOR(181, 181, 181);
     [view addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(view);
@@ -145,6 +149,10 @@
     if (textField == self.CityTF) {
         [BRAddressPickerView showAddressPickerWithShowType:(BRAddressPickerModeArea) dataSource:self.CityArray defaultSelected:nil isAutoSelect:nil themeColor:nil resultBlock:^(BRProvinceModel *province, BRCityModel *city, BRAreaModel *area) {
             
+            self.CityTF.text = [NSString stringWithFormat:@"%@ %@ %@",province.name,city.name,area.name];
+            self.province = province.code;
+            self.city = city.code;
+            self.district = area.code;
         } cancelBlock:^{
             
         }];
@@ -162,10 +170,30 @@
             for (int i = 0 ; i < self.dataArray.count; i++) {
                 CoinAddressCityModel * model = self.dataArray[i];
                 // 赋值给省
-                BRProvinceModel * m1 = [BRProvinceModel new];
-                m1.name = model.name;
-                m1.code = model.idStr;
-                [self.CityArray addObject:m1];
+                NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+                dict[@"code"] = model.idStr;
+                dict[@"name"] = model.name;
+                [self.CityArray addObject:dict];
+                
+                // 赋值给市
+                NSMutableArray * array2 = [NSMutableArray array];
+                for (CoinAddressCityChildModel * model2 in model.child_info) {
+                    NSMutableDictionary * dict2 = [NSMutableDictionary dictionary];
+                    dict2[@"name"] = model2.name;
+                    dict2[@"code"] = model2.idStr;
+                    [array2 addObject:dict2];
+                    
+                    NSMutableArray * array3 = [NSMutableArray array];
+                    // 赋值区
+                    for (CoinAddressCityChild2Mode * model3 in model2.child_info2) {
+                        NSMutableDictionary * dict3 = [NSMutableDictionary dictionary];
+                        dict3[@"name"] = model3.name;
+                        dict3[@"code"] = model3.idStr;
+                        [array3 addObject:dict3];
+                    }
+                    dict2[@"arealist"] = array3;
+                }
+                dict[@"citylist"] = array2;
                 
             }
         }
@@ -175,4 +203,80 @@
     
 }
 
+- (void)AddAddress:(void (^)(BOOL))isSucceed
+{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    if (BCStringIsEmpty(self.province)) {
+        ViewToast(@"请选择地址", 1);
+        return;
+    }
+    dict[@"province"] = self.province;// 省
+    dict[@"city"] = self.city;//  市
+    dict[@"district"] = self.district; //区
+    dict[@"consignee"] = self.NameTF.text;
+    dict[@"mobile"] = self.PhoneNumberTF.text;
+    dict[@"address"] = self.AddressTF.text;
+    [KTooL HttpPostWithUrl:@"Order/new_address_submit" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            ViewToast(@"添加成功", 2);
+        }
+        isSucceed(BCStatus);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+         isSucceed(NO);
+    }];
+    
+}
+- (void)EditAddress:(void (^)(BOOL))isSucceed{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"address_id"] = self.address_id;
+    dict[@"province"] = self.province;// 省
+    dict[@"city"] = self.city;//  市
+    dict[@"district"] = self.district; //区
+    dict[@"consignee"] = self.NameTF.text;
+    dict[@"mobile"] = self.PhoneNumberTF.text;
+    dict[@"address"] = self.AddressTF.text;
+    [KTooL HttpPostWithUrl:@"Order/edit_address_submit" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        isSucceed(BCStatus);
+        if (!BCStatus) {
+            ViewToast(responseObject[@"msg"], 2);
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        isSucceed(NO);
+    }];
+    
+}
+
+- (void)requestAddress{
+   
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"address_id"] = self.address_id;
+
+    [KTooL HttpPostWithUrl:@"Order/edit_address" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            NSDictionary * dict = responseObject[@"data"];
+            if (!BCDictIsEmpty(dict)) {
+                [self upDataUI:dict];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
+- (void)upDataUI:(NSDictionary *)dict{
+    self.NameTF.text = dict[@"consignee"];
+    self.PhoneNumberTF.text = dict[@"mobile"];
+    self.CityTF.text = dict[@"address_area"];
+    self.AddressTF.text = dict[@"address"];
+}
+
+- (void)setAddress_id:(NSString *)address_id{
+    _address_id = address_id;
+    if (!BCStringIsEmpty(address_id)) {
+         [self requestAddress];
+    }
+   
+}
 @end

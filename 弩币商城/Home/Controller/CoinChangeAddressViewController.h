@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinChangeAddressViewController : CoinBaseViewController
 
+@property (nonatomic,copy)NSString * address_id;
 @end
 
 NS_ASSUME_NONNULL_END
