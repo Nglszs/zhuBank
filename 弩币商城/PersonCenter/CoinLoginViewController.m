@@ -63,7 +63,7 @@
             NSString *  token = responseObject[@"data"][@"token"];
             NSString *  user_id =  responseObject[@"data"][@"user_id"];
             [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_Token];
-            [[NSUserDefaults standardUserDefaults] setObject:user_id forKey:USER_ID];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",user_id] forKey:USER_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
              CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];

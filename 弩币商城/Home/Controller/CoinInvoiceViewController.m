@@ -147,6 +147,5 @@ self.view.backgroundColor = [UIColor whiteColor];
         btn.selected = !btn.selected;
     }];
     
-    
 }
 @end

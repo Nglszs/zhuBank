@@ -118,6 +118,8 @@
 		0CCAF7692226916A006F1791 /* CoinHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF7652226916A006F1791 /* CoinHomeViewController.m */; };
 		0CCAF76C222691B1006F1791 /* CoinConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF76B222691B1006F1791 /* CoinConfirmOrderViewController.m */; };
 		0CDAB70D222534EF0056DBD8 /* CoinClassfyLeftTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */; };
+		0CDF1A3B2235F51300A72C34 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C18AA79222FCE51001026DD /* HttpTool.m */; };
+		0CDF1A3E2235FFF200A72C34 /* CoinAddressCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF1A3D2235FFF200A72C34 /* CoinAddressCityModel.m */; };
 		0CF0FEEA222D0249001728F3 /* BorrowMoneyReasonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */; };
 		0CF0FEED222D12C8001728F3 /* CoinMemberBuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEEC222D12C8001728F3 /* CoinMemberBuyViewController.m */; };
 		0CF0FEF0222D219F001728F3 /* CoinMemberSucceedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0FEEF222D219F001728F3 /* CoinMemberSucceedViewController.m */; };
@@ -369,6 +371,8 @@
 		0CCAF76B222691B1006F1791 /* CoinConfirmOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoinConfirmOrderViewController.m; path = "弩币商城/Home/CoinConfirmOrderViewController.m"; sourceTree = SOURCE_ROOT; };
 		0CDAB70B222534EF0056DBD8 /* CoinClassfyLeftTVCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinClassfyLeftTVCell.h; sourceTree = "<group>"; };
 		0CDAB70C222534EF0056DBD8 /* CoinClassfyLeftTVCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassfyLeftTVCell.m; sourceTree = "<group>"; };
+		0CDF1A3C2235FFF200A72C34 /* CoinAddressCityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinAddressCityModel.h; sourceTree = "<group>"; };
+		0CDF1A3D2235FFF200A72C34 /* CoinAddressCityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinAddressCityModel.m; sourceTree = "<group>"; };
 		0CF0FEE8222D0249001728F3 /* BorrowMoneyReasonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BorrowMoneyReasonView.h; sourceTree = "<group>"; };
 		0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BorrowMoneyReasonView.m; sourceTree = "<group>"; };
 		0CF0FEEB222D12C8001728F3 /* CoinMemberBuyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMemberBuyViewController.h; sourceTree = "<group>"; };
@@ -845,6 +849,8 @@
 			children = (
 				0CC1C6D32230FE4F00924D98 /* CoinSearchResultModel.h */,
 				0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */,
+				0CDF1A3C2235FFF200A72C34 /* CoinAddressCityModel.h */,
+				0CDF1A3D2235FFF200A72C34 /* CoinAddressCityModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1109,6 +1115,7 @@
 				040B048722294F760082D7B1 /* CoinCouponCanTableViewCell.m in Sources */,
 				0466B0242227C4FE00B07CF8 /* CoinChangePasswordViewController.m in Sources */,
 				040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */,
+				0CDF1A3E2235FFF200A72C34 /* CoinAddressCityModel.m in Sources */,
 				041A2B6C2223808700F6E4F7 /* UIImageView+Common.m in Sources */,
 				041A2BA82223863600F6E4F7 /* BCMainTabViewController.m in Sources */,
 				0CC1C6D12230E33C00924D98 /* CoinClassLeftModel.m in Sources */,
@@ -1220,6 +1227,7 @@
 			files = (
 				041A2B2A22237A3900F6E4F7 /* ____UITests.m in Sources */,
 				0417858F222CF2E900B8A234 /* CoinMyOrderTableViewCell.m in Sources */,
+				0CDF1A3B2235F51300A72C34 /* HttpTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

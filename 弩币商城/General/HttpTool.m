@@ -59,9 +59,16 @@ static HttpTool * tool;
     }
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     // 公共参数
-//    dict[@"user_id"] =
+    NSString * user_id  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+    if (!BCStringIsEmpty(user_id)) {
+        dict[@"user_id"] = user_id;
+    }
+    
+    NSString * token  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];
+    if (!BCStringIsEmpty(token)) {
+        dict[@"token"] = token;
+    }
     dict[@"reg_from"] = @"3";
-//    dict[@"token"] =
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     dict[@"version"] = app_Version;

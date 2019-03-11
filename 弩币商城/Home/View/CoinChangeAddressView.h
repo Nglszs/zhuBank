@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CoinAddressCityModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinChangeAddressView : UIView
-
+@property (nonatomic,copy)NSArray<CoinAddressCityModel *>  * dataArray;
 @end
 
 NS_ASSUME_NONNULL_END
