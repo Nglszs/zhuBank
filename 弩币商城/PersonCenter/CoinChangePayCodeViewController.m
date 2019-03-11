@@ -9,22 +9,26 @@
 #import "CoinChangePayCodeViewController.h"
 
 @interface CoinChangePayCodeViewController ()<UITextFieldDelegate>
-
+{
+    
+    UITextField *firstT,*secondT,*thirdT;
+}
 @end
 
 @implementation CoinChangePayCodeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.navigationItem.title= _isChangePay?@"修改交易密码":@"设置交易密码";
     [self  initView];
 }
 
 - (void)initView {
     
     
+    
     NSArray *titleA;
-    if (_isChangePay) {
+    if (!_isChangePay) {
        
         titleA = @[@"请输入6位数字",@"请确认新密码"];
         
@@ -41,7 +45,7 @@
         _countTextField.delegate = self;
         _countTextField.textColor = COLOR(102, 102, 102);
         _countTextField.placeholder = titleA[i];
-        
+        _countTextField.secureTextEntry = YES;
         _countTextField.font = Regular(15);
         
         
@@ -52,6 +56,23 @@
             
             if (i == 0) {
                leftI.image = BCImage(密码1);
+                firstT = _countTextField;
+            } else if ( i == 1) {
+                
+                secondT = _countTextField;
+            } else {
+                
+                thirdT = _countTextField;
+            }
+            
+        } else {
+            
+            if (i == 0) {
+               
+                firstT = _countTextField;
+            } else if ( i == 1) {
+                
+                secondT = _countTextField;
             }
             
         }
@@ -100,7 +121,7 @@
     [self.view addSubview:backBtn1];
     [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        if (_isChangePay) {
+        if (!_isChangePay) {
             make.top.mas_equalTo(127);
         } else {
              make.top.mas_equalTo(180);
@@ -111,6 +132,71 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        
+        if (!_isChangePay) {//设置
+            
+            [KTooL HttpPostWithUrl:@"UserCenter/set_paypwd" parameters:@{@"paypwd":firstT.text,@"conform_paypwd":secondT.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                
+                NSLog(@"===%@",responseObject);
+                
+                
+                if (BCStatus) {
+                    
+                    VCToast(@"修改成功", 1);
+                    [NOTIFICATION_CENTER postNotificationName:Reresh_UserInfo object:nil];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        int index = (int)[[self.navigationController viewControllers]indexOfObject:self];
+                        if (index>2) {
+                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index-2)] animated:YES];
+                        }else
+                        {
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                        }
+                        
+                    });
+                    
+                } else {
+                    
+                    VCToast([responseObject objectNilForKey:@"msg"], 1);
+                }
+                
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                
+            }];
+            
+        } else {
+            
+            
+            
+            [KTooL HttpPostWithUrl:@"UserCenter/reset_pwd" parameters:@{@"type":@"2",@"old_pwd":firstT.text,@"new_pwd":secondT.text,@"confirm_pwd":thirdT.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                
+                NSLog(@"===%@",responseObject);
+                
+                
+                if (BCStatus) {
+                    
+                    VCToast(@"修改成功", 1);
+                   [NOTIFICATION_CENTER postNotificationName:Reresh_UserInfo object:nil];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        int index = (int)[[self.navigationController viewControllers]indexOfObject:self];
+                        if (index>2) {
+                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index-2)] animated:YES];
+                        }else
+                        {
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                        }
+                        
+                    });
+                    
+                } else {
+                    
+                    VCToast([responseObject objectNilForKey:@"msg"], 1);
+                }
+                
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                
+            }];
+        }
         
         
     }];
@@ -125,16 +211,16 @@
     }
     
     
-//    if (textField == _phoneField && textField.text.length >= 11) {
-//        
-//        
-//        
-//        
-//        return NO;
-//        
-//        
-//        
-//    }
+    if (textField.text.length >= 6) {
+        
+        
+        
+        
+        return NO;
+        
+        
+        
+    }
     
     //禁止输入空格
     NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];

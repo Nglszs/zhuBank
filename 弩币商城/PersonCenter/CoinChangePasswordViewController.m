@@ -7,9 +7,13 @@
 //
 
 #import "CoinChangePasswordViewController.h"
+#import "CoinChangeSuccessViewController.h"
 
 @interface CoinChangePasswordViewController ()<UITextFieldDelegate>
-
+{
+    
+    UITextField *firstT,*secondT,*thirdT;
+}
 @end
 
 @implementation CoinChangePasswordViewController
@@ -43,11 +47,11 @@
         
         UITextField *_countTextField = [[UITextField alloc] init];
         
-        _countTextField.keyboardType = UIKeyboardTypeNumberPad;
+      
         _countTextField.delegate = self;
         _countTextField.textColor = COLOR(102, 102, 102);
         _countTextField.placeholder = titleA[i];
-        
+        _countTextField.secureTextEntry = YES;
         _countTextField.font = Regular(15);
         
         
@@ -58,6 +62,13 @@
             
             if (i == 0) {
                 leftI.image = BCImage(密码1);
+                firstT = _countTextField;
+            } else if ( i == 1) {
+                
+                secondT = _countTextField;
+            } else {
+                
+                thirdT = _countTextField;
             }
             
         }
@@ -115,52 +126,70 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
-        
+        [KTooL HttpPostWithUrl:@"UserCenter/reset_pwd" parameters:@{@"type":@"1",@"old_pwd":firstT.text,@"new_pwd":secondT.text,@"confirm_pwd":thirdT.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            
+            NSLog(@"===%@",responseObject);
+            
+            
+            if (BCStatus) {
+                
+                CoinChangeSuccessViewController *vc = [[CoinChangeSuccessViewController alloc] init];
+                vc.isChangePhone = NO;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            } else {
+                
+                VCToast([responseObject objectNilForKey:@"msg"], 1);
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            
+        }];
         
     }];
 }
 
 #pragma mark textfield 代理
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    
-    
-    if (string.length <= 0) {
-        return YES;
-    }
-    
-    
-    //    if (textField == _phoneField && textField.text.length >= 11) {
-    //
-    //
-    //
-    //
-    //        return NO;
-    //
-    //
-    //
-    //    }
-    
-    //禁止输入空格
-    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
-    
-    if (![string isEqualToString:tem]) {
-        return NO;
-    }
-    
-    
-    
-    //  只能输入数字
-    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
-    NSString *filtered =
-    [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
-    
-    
-    
-    
-    return  [string isEqualToString:filtered];
-    
-    
-    
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//
+//
+//    if (string.length <= 0) {
+//        return YES;
+//    }
+//
+//
+//    //    if (textField == _phoneField && textField.text.length >= 11) {
+//    //
+//    //
+//    //
+//    //
+//    //        return NO;
+//    //
+//    //
+//    //
+//    //    }
+//
+////    //禁止输入空格
+////    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
+////
+////    if (![string isEqualToString:tem]) {
+////        return NO;
+////    }
+////
+////
+//
+//
+//    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:kAlphaNum] invertedSet];
+//    NSString *filtered =
+//    [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+//
+//
+//
+//
+//    return  [string isEqualToString:filtered];
+//
+//
+//
+//}
 
 @end

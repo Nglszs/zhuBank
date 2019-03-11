@@ -80,6 +80,31 @@
         make.width.mas_equalTo(185);
     }];
     
+    [backBtn1 addtargetBlock:^(UIButton *button) {
+       
+        [KTooL HttpPostWithUrl:@"UserCenter/reset_nickname" parameters:@{@"nickname":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            
+            NSLog(@"===%@",responseObject);
+            
+            
+            if (BCStatus) {
+                
+                VCToast(@"修改成功", 1);
+                [NOTIFICATION_CENTER postNotificationName:Reresh_UserInfo object:nil];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+                
+            } else {
+                
+                
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }];
     
 }
 /*
