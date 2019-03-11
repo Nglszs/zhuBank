@@ -11,7 +11,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinChangeAddressView : UIView
+@property (nonatomic,strong)UIButton * affirmButton;
+
+@property (nonatomic,copy)NSString * address_id;
 @property (nonatomic,copy)NSArray<CoinAddressCityModel *>  * dataArray;
+
+- (void)AddAddress:(void(^)(BOOL isSucceed))isSucceed;
+
+- (void)EditAddress:(void(^)(BOOL isSucceed))isSucceed;
 @end
 
 NS_ASSUME_NONNULL_END

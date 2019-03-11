@@ -11,6 +11,7 @@
 #import "CoinChangeAddressViewController.h"
 @interface CoinSelectAddressViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView *tableView;
+@property (nonatomic,strong)NSArray * dataArray;
 @end
 
 @implementation CoinSelectAddressViewController
@@ -20,7 +21,12 @@
     self.title = @"选择地址";
     [self initView];
     [self SetReturnButton];
+   
     
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     [self request];
 }
 
 
@@ -29,6 +35,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [UIView new];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
@@ -51,6 +58,7 @@
 
 - (void)addAddressAction:(UIButton *)btn{
     CoinChangeAddressViewController * vc = [[CoinChangeAddressViewController alloc] init];
+    vc.address_id = @"";
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -58,18 +66,37 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return self.dataArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 80;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CoinSelectAddresCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinSelectAddresCell"];
+    cell.dataDict = self.dataArray[indexPath.row];
     cell.selectionStyle = 0;
+    cell.editBtn.tag = 1000 + indexPath.row;
+    [cell.editBtn addTarget:self action:@selector(editBtnAction:) forControlEvents:(UIControlEventTouchUpInside)];
     return cell;
 }
 
 
+- (void)request{
+    [KTooL HttpPostWithUrl:@"Order/select_address" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (BCStatus) {
+            self.dataArray = responseObject[@"data"];
+        }
+        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
 
-
+- (void)editBtnAction:(UIButton *)btn{
+    CoinChangeAddressViewController * vc = [[CoinChangeAddressViewController alloc] init];
+    vc.address_id = self.dataArray[btn.tag - 1000][@"address_id"];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 @end

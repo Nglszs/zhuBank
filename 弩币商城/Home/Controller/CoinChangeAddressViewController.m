@@ -12,14 +12,20 @@
 @interface CoinChangeAddressViewController ()
 @property (nonatomic,strong)CoinChangeAddressView * RootView;
 
+
+
 @end
 
 @implementation CoinChangeAddressViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.address_id = [NSString stringWithFormat:@"%@",self.address_id];
     self.title = @"编辑/新建地址";
     [self SetNavTitleColor];
+    [self.RootView.affirmButton addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
+    self.RootView.address_id = self.address_id;
+    
 }
 
 - (void)loadView{
@@ -28,5 +34,24 @@
 }
 
 
-
+- (void)buttonAction:(UIButton *)btn{
+   
+    if (BCStringIsEmpty(self.address_id)) {
+        WS(weakSelf);
+        [self.RootView AddAddress:^(BOOL isSucceed) {
+            if (isSucceed) {
+                  [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+          
+        }];
+    }else{
+         WS(weakSelf);
+        self.RootView.address_id =  self.address_id;
+        [self.RootView EditAddress:^(BOOL isSucceed) {
+            if (isSucceed) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        }];
+    }
+}
 @end
