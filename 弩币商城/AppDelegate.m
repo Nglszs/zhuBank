@@ -24,6 +24,7 @@
     // NOTE: 调用支付结果开始支付
   
     
+//    每次进来的都要刷新用户数据
     
      [WXApi registerApp:@"wxd930ea5d5a258f4f"];
     return YES;

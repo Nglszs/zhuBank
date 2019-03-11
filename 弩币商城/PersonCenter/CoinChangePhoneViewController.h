@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
  yes 是修改手机号，no是修改交易密码
  */
 @property(nonatomic, assign) BOOL isChangePhone;
+
+
+/**
+ yes是设置交易密码，no是修改
+ */
+@property (nonatomic, assign) BOOL isSetPay;
 @end
 
 NS_ASSUME_NONNULL_END

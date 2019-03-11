@@ -13,11 +13,14 @@
 #import "CoinChangePhoneViewController.h"
 #import "CoinChangePayCodeViewController.h"
 #import "CoinChangePasswordViewController.h"
+#import "CoinLoginViewController.h"
+#import "BCNavigationViewController.h"
+#import "CoinSelectAddressViewController.h"
 
 @interface CoinSetViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 {
-    
+    NSDictionary *dataDic;
     NSArray *leftArr;
 }
 @property (nonatomic, strong) UITableView *playTableview;
@@ -32,7 +35,7 @@
     [super viewDidLoad];
     
     
-    
+    [NOTIFICATION_CENTER addObserver:self selector:@selector(getData) name:Reresh_UserInfo object:nil];
    
     leftArr = @[@"头像",@"昵称",@"性别",@"生日",@"手机",@"修改登录密码",@"交易密码",@"收货地址"];
     [self.view addSubview:self.playTableview];
@@ -53,7 +56,49 @@
         make.width.mas_equalTo(BCWidth - 30);
     }];
     
+    [backBtn1 addtargetBlock:^(UIButton *button) {
+        [USER_DEFAULTS removeObjectForKey:USER_ID];
+        [USER_DEFAULTS removeObjectForKey:USER_Token];
+        [USER_DEFAULTS synchronize];
+        
+        CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
+        BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
+        workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [arr replaceObjectAtIndex:3 withObject:workNav];
+        [self.tabBarController setViewControllers:arr];
+        
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    }];
     
+    [self getData];
+    
+}
+
+#pragma mark 获取个人信息
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/setting" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+       
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            [self.playTableview reloadData];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
 }
 #pragma mark tableview 代理
 
@@ -190,7 +235,7 @@
             
             
             _headImageView = [[UIImageView alloc] init];
-            _headImageView.image = BCImage(头像);
+           [_headImageView sd_setImageWithURL:[NSURL URLWithString:[dataDic objectNilForKey:@"head_pic"]] placeholderImage:BCImage(头像)];
             _headImageView.layer.cornerRadius = 26;
             _headImageView.clipsToBounds = YES;
             [cell.contentView addSubview:_headImageView];
@@ -201,6 +246,22 @@
                 make.width.height.mas_equalTo(52);
                 
             }];
+        } else if (indexPath.row == 1) {//昵称
+            
+            rightL.text = [dataDic objectNilForKey:@"nickname"];
+            
+        } else if (indexPath.row == 2) {//性别
+            
+             rightL.text = [dataDic objectNilForKey:@"sex"];
+            
+        } else if (indexPath.row == 3) {//生日
+            
+             rightL.text = [dataDic objectNilForKey:@"birthday"];
+            
+        } else if (indexPath.row == 4) {//手机
+            
+             rightL.text = [dataDic objectNilForKey:@"mobile"];
+            
         }
         
         leftL.text = leftArr[indexPath.row];
@@ -256,6 +317,26 @@
                     
                     NSLog(@"%@",indexPath);
                     
+                    [KTooL HttpPostWithUrl:@"UserCenter/birthday" parameters:@{@"birthday":indexPath} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                        
+                        NSLog(@"===%@",responseObject);
+                        
+                        
+                        if (BCStatus) {
+                            
+                            VCToast(@"修改成功", 1);
+                           
+                            [self getData];
+                            
+                        } else {
+                            
+                            
+                        }
+                        
+                    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                        
+                    }];
+                    
                 };
                 
             }
@@ -263,7 +344,10 @@
                 break;
             case 4:
             {
-                 [self.navigationController pushViewController:[CoinChangePhoneViewController new] animated:YES];
+                
+                CoinChangePhoneViewController *vc = [[CoinChangePhoneViewController alloc] init];
+                vc.isChangePhone = YES;
+                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;
             default:
@@ -281,12 +365,23 @@
                 break;
             case 1:
             {
-                [self.navigationController pushViewController:[CoinChangePayCodeViewController new] animated:YES];
+                CoinChangePhoneViewController *vc = [[CoinChangePhoneViewController alloc] init];
+                vc.isChangePhone = NO;
+                if ([[dataDic objectNilForKey:@"paypwd"] integerValue] == 0) {//未修改
+                    
+                    vc.isSetPay = NO;
+                    
+                } else {
+                    
+                    vc.isSetPay = YES;
+                }
+                [self.navigationController pushViewController:vc animated:YES];
+                
             }
                 break;
-            case 2:
+            case 2://我的地址
             {
-                [self.navigationController pushViewController:[CoinSetSexViewController new] animated:YES];
+                [self.navigationController pushViewController:[CoinSelectAddressViewController new] animated:YES];
             }
                 break;
             

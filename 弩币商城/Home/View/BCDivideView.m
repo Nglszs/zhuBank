@@ -12,9 +12,11 @@
 {
      UIView *divideV;//分期界面
      UIButton *selectedBtn,*diviBtn,*diviNumBtn;  //按钮单选逻辑
+    NSDictionary *dataDic;
+    NSString *goodID;
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID {
-    
+    goodID = ID;
     return [self initWithFrame:frame];
 }
 
@@ -22,12 +24,36 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
-        
-        [self initView];
+         [self getData];
+       
         
         
     }
     return self;
+}
+
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"goods/stage_select" parameters:@{@"goods_id":goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            
+            [self initView];
+            
+        } else {
+            
+            ViewToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        ViewToast(error.description, 1);
+    }];
+    
 }
 - (void)initView {
     
@@ -154,8 +180,9 @@
         make.top.equalTo(leftL1.mas_bottom).offset(18);
     }];
     
-    
-    NSArray *titleArr = @[@"零首付",@"10%",@"20%",@"30%",@"40%",@"50%"];
+  
+
+    NSArray *titleArr = [[dataDic objectForKey:@"list"] objectForKey:@"first_pay"];
     
     for (int i = 0; i < titleArr.count ; i++) {
         UIButton *activityBtn = [UIButton new];
@@ -203,9 +230,9 @@
     }];
     
     
-    NSArray *titleArr1 = @[@"2期",@"3期",@"6期",@"6期",@"6期",@"6期"];
+    NSArray *titleArr1 = [[dataDic objectForKey:@"list"] objectForKey:@"period_num"];
     
-    for (int i = 0; i < titleArr.count ; i++) {
+    for (int i = 0; i < titleArr1.count ; i++) {
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
         [activityBtn setTitleColor:White forState:UIControlStateSelected];

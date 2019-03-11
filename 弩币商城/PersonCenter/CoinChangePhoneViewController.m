@@ -8,6 +8,9 @@
 
 #import "CoinChangePhoneViewController.h"
 #import "CoinChangePasswordViewController.h"
+#import "CoinChangeSuccessViewController.h"
+#import "CoinChangePayCodeViewController.h"
+
 
 @interface CoinChangePhoneViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UITextField *phoneField,*messageCodeField;
@@ -29,6 +32,8 @@
 }
 
 - (void)initView {
+   
+    
     UILabel *titleL = [[UILabel alloc] init];
     if (_isChangePhone) {
           titleL.text = @"修改绑定手机号码";
@@ -56,7 +61,7 @@
     _countTextField.delegate = self;
     _countTextField.textColor = COLOR(102, 102, 102);
     _countTextField.placeholder = @"请输入您的手机号码";
-    
+    _phoneField = _countTextField;
     _countTextField.font = Regular(15);
    
     
@@ -176,8 +181,57 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        
+        if (_isChangePhone) {//修改手机号码
+            [KTooL HttpPostWithUrl:@"UserCenter/reset_mobile" parameters:@{@"new_mobile":_phoneField.text,@"verify_code":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                
+                NSLog(@"===%@",responseObject);
+                
+                
+                if (BCStatus) {
+                    
+                    CoinChangeSuccessViewController *vc = [[CoinChangeSuccessViewController alloc] init];
+                    vc.isChangePhone = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                } else {
+                    
+                    VCToast([responseObject objectNilForKey:@"msg"], 1);
+                }
+                
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                
+            }];
+            
+        }else {
+            
+            
+            [KTooL HttpPostWithUrl:@"User/check_sms" parameters:@{@"mobile":_phoneField.text,@"verify_code":_messageCodeField.text,@"action":@"2"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                
+                NSLog(@"===%@",responseObject);
+                
+                
+                if (BCStatus) {
+                    
+                    CoinChangePayCodeViewController *vc = [[CoinChangePayCodeViewController alloc] init];
+                  
+                    vc.isChangePay = _isSetPay;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                } else {
+                    
+                    VCToast([responseObject objectNilForKey:@"msg"], 1);
+                }
+                
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                
+            }];
+            
+           
+        }
        
-        [self.navigationController pushViewController:[CoinChangePasswordViewController new] animated:YES];
+       
+        
     }];
     
 }
@@ -186,16 +240,28 @@
 - (void)clickCodeButton {
     
     
-//    if (![self isMobileNumber:_phoneField.text]) {
-//
-//
-//        VCToast(@"手机号码错误", 1);
-//
-//        return;
-//    }
+    if (_phoneField.text.length <= 0) {
+
+
+        VCToast(@"手机号码不能为空", 1);
+
+        return;
+    }
     
     //    网络请求成功后调用下方代码
-    [self changeTimeState];
+    
+    MJWeakSelf;
+    [BCManagerTool loadTencentCaptcha:self.view callback:^(NSString *Ticket, NSString *Randstr) {
+        if (!BCStringIsEmpty(Ticket) && !BCStringIsEmpty(Randstr)) {
+            [KTooL GetCodeWithMobile:self.phoneField.text action:2 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
+                if (isSucces) {
+                    [weakSelf changeTimeState];
+                }
+            }];
+        }
+        
+    }];
+   
    
     
     
@@ -229,7 +295,7 @@
             weakSelf.countDownTimer = nil;
           
             
-            
+            weakSelf.codeButton.userInteractionEnabled = YES;
             [weakSelf.codeButton setTitle:@"重新发送" forState:UIControlStateNormal];
             
             

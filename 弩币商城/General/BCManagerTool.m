@@ -386,15 +386,17 @@ static BCManagerTool *_instanceTool;
 - (BOOL)isLogin {
     
    
+    if ([USER_DEFAULTS objectForKey:USER_Token]) {
+        
+        
+        return YES;
+    } else {
+        
+        
+        return NO;
+    }
     
-    BOOL login = [USER_DEFAULTS boolForKey:ISLogin];
-    
-    
-    
-    return login;
-    
-    
-    
+
 }
 
 + (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(NSString * Ticket,NSString * Randstr))success{

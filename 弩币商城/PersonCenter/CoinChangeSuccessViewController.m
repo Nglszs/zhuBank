@@ -7,6 +7,8 @@
 //
 
 #import "CoinChangeSuccessViewController.h"
+#import "CoinLoginViewController.h"
+#import "BCNavigationViewController.h"
 
 @interface CoinChangeSuccessViewController ()
 
@@ -170,6 +172,19 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
+        [USER_DEFAULTS removeObjectForKey:USER_ID];
+        [USER_DEFAULTS removeObjectForKey:USER_Token];
+        [USER_DEFAULTS synchronize];
+        
+        CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
+        BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
+        workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [arr replaceObjectAtIndex:3 withObject:workNav];
+        [self.tabBarController setViewControllers:arr];
+        
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
        
     }];
     

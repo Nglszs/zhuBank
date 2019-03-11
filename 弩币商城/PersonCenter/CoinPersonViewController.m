@@ -17,7 +17,12 @@
 #import "CoinMyCardViewController.h"
 #import "CoinLimitViewController.h"
 #import "CoinByStagesViewController.h"
+#import "CoinSelectAddressViewController.h"
+
 @interface CoinPersonViewController ()
+{
+    NSDictionary *dataDic;
+}
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
 
@@ -59,6 +64,8 @@
     
     [self initBottomView];
     
+    [self.backScrollView.mj_header beginRefreshing];
+    
 }
 
 - (void)initView {
@@ -78,6 +85,7 @@
 //  头像
     UIImageView *headI = [[UIImageView alloc] init];
     headI.image = BCImage(头像);
+    headI.tag = 100;
     headI.layer.cornerRadius = 35;
     headI.clipsToBounds = YES;
     [topV addSubview:headI];
@@ -115,6 +123,7 @@
     
     UILabel *titleL = [[UILabel alloc] init];
     titleL.text = @"Jack";
+    titleL.tag = 200;
     titleL.textColor = White;
     titleL.font = Regular(13);
     [self.backScrollView addSubview:titleL];
@@ -444,7 +453,7 @@
     switch (button.tag) {
         case 100://地址管理
         {
-           
+            [self.navigationController pushViewController:[CoinSelectAddressViewController new] animated:YES];
            
         }
             break;
@@ -471,6 +480,36 @@
     }
     
 }
+
+#pragma mark 获取个人信息
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        [_backScrollView.mj_header endRefreshing];
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            UIImageView *headI = [self.backScrollView viewWithTag:100];
+            
+            [headI sd_setImageWithURL:[NSURL URLWithString:[dataDic objectNilForKey:@"head_pic"]] placeholderImage:BCImage(头像)];
+            
+            UILabel *titleL = [self.backScrollView viewWithTag:200];
+            titleL.text = [dataDic objectNilForKey:@"nickname"];
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+}
 #pragma mark 懒加载
 - (UIScrollView *)backScrollView {
     
@@ -480,7 +519,21 @@
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
        
-      
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            
+            [self getData];
+           
+        }];
+         header.lastUpdatedTimeLabel.hidden = YES;
+        _backScrollView.mj_header = header;
+        
+//        self.collectionV.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//
+//
+//            weakSelf.footer++;
+//            [weakSelf getDataFromPage:weakSelf.footer];
+//
+//        }];
         
     }
     
