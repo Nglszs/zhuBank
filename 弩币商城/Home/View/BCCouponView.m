@@ -9,9 +9,13 @@
 #import "BCCouponView.h"
 
 @implementation BCCouponView
-
+{
+    NSString *goodID;
+    NSDictionary *dataDic;
+    
+}
 - (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID {
-  
+    goodID = ID;
     return [self initWithFrame:frame];
 }
 
@@ -19,12 +23,36 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
-       
-        [self initView];
+          [self getData];
+      
        
         
     }
     return self;
+}
+
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"goods/coupons_page" parameters:@{@"goods_id":goodID,@"goods_price":@"3480"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            
+            [self initView];
+            
+        } else {
+            
+            ViewToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        ViewToast(error.description, 1);
+    }];
+    
 }
 - (void)initView {
     
@@ -61,17 +89,21 @@
     }];
     
     
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:1];
+    [arr addObjectsFromArray:[dataDic objectNilForKey:@"cash_coupons_info"]];
+     [arr addObjectsFromArray:[dataDic objectNilForKey:@"transfer_coupons_info"]];
+    
 //    优惠券
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < arr.count; i++) {
     
 //        背景
         UIImageView *imageV = [[UIImageView alloc] init];
         [headView addSubview:imageV];
         
         
+        NSDictionary *dic = [arr objectAtIndex:i];
         
-        
-        if (i == 2) {
+        if ([[dic objectForKey:@"coupons_type"] isEqualToString:@"运费抵用券"]) {
             
             imageV.image = BCImage(可用优惠券运费bj);
             
@@ -86,7 +118,7 @@
             
             
             UILabel *moneyL = [[UILabel alloc] init];
-            moneyL.text = @"¥ 8";
+            moneyL.text = [NSString stringWithFormat:@"¥ %@",[dic objectForKey:@"money"]];
             moneyL.textColor = COLOR(171, 193, 65);
             moneyL.font = Regular(24);
             [imageV addSubview:moneyL];
@@ -111,7 +143,7 @@
             }];
             
             UILabel *timeL = [[UILabel alloc] init];
-            timeL.text = @"有效期2019.01.06-2019.03.31";
+            timeL.text = [NSString stringWithFormat:@"有效期 %@",[dic objectForKey:@"use_date"]];
             timeL.textColor = ACOLOR(171, 193, 65,.7);
             timeL.font = Regular(12);
             [imageV addSubview:timeL];
@@ -137,7 +169,7 @@
             
 //            标题  价格等等
             UILabel *moneyL = [[UILabel alloc] init];
-            moneyL.text = @"¥ 300";
+            moneyL.text = [NSString stringWithFormat:@"¥ %@",[dic objectForKey:@"money"]];
             moneyL.textColor = COLOR(254, 100, 38);
             moneyL.font = Regular(24);
             [imageV addSubview:moneyL];
@@ -163,7 +195,7 @@
             
             
             UILabel *useL = [[UILabel alloc] init];
-            useL.text = @"满3000 使用";
+            useL.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"condition"]];;
             useL.textColor = ACOLOR(254, 100, 38,.7);
             useL.font = Regular(12);
             [imageV addSubview:useL];
@@ -177,7 +209,7 @@
             
             
             UILabel *timeL = [[UILabel alloc] init];
-          timeL.text = @"有效期2019.01.06-2019.03.31";
+          timeL.text = [NSString stringWithFormat:@"有效期 %@",[dic objectForKey:@"use_date"]];
           timeL.textColor = ACOLOR(254, 100, 38,.7);
           timeL.font = Regular(12);
             [imageV addSubview:timeL];

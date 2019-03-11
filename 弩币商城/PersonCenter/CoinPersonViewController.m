@@ -18,6 +18,9 @@
 #import "CoinLimitViewController.h"
 #import "CoinByStagesViewController.h"
 @interface CoinPersonViewController ()
+{
+    NSDictionary *dataDic;
+}
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @end
 
@@ -471,6 +474,31 @@
     }
     
 }
+
+#pragma mark 获取个人信息
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        [_backScrollView.mj_header endRefreshing];
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+}
 #pragma mark 懒加载
 - (UIScrollView *)backScrollView {
     
@@ -480,7 +508,21 @@
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
        
-      
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            
+            [self getData];
+           
+        }];
+        
+        _backScrollView.mj_header = header;
+        
+//        self.collectionV.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//
+//
+//            weakSelf.footer++;
+//            [weakSelf getDataFromPage:weakSelf.footer];
+//
+//        }];
         
     }
     

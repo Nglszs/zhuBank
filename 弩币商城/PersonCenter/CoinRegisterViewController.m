@@ -97,9 +97,14 @@
             [arr replaceObjectAtIndex:3 withObject:workNav];
             [self.tabBarController setViewControllers:arr];
             
+        } else {
+            
+            VCToast([responseObject objectForKey:@"msg"], 1);
+            
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
+        NSLog(@"");
     }];
     
 }

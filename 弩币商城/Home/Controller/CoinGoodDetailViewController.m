@@ -143,6 +143,18 @@
     titleL.textAlignment = NSTextAlignmentRight;
     titleL.font = Regular(12);
     [self.backScrollView addSubview:titleL];
+    [titleL addTapGestureWithBlock:^{
+       
+        
+        //    点击打开分期
+        
+        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
+        [self.view addSubview:vv];
+        [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
+            
+            vv.top = 0;
+        }];
+    }];
     
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(BCWidth - LEFT_Margin - 100);
@@ -292,9 +304,15 @@
 //    点击打开优惠券
     
     [easeView addTapGestureWithBlock:^{
+        
+        if (![Tool isLogin]) {
+           
+            VCToast(@"请先登录才能查看优惠券", 1);
+            return ;
+        }
        
         
-        BCCouponView *vv = [[BCCouponView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andUserID:@""];
+        BCCouponView *vv = [[BCCouponView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andUserID:_goodID];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -409,18 +427,7 @@
     }];
     
     
-    //    点击打开分期
-    
-    [easeView2 addTapGestureWithBlock:^{
-        
-        
-        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:@""];
-        [self.view addSubview:vv];
-        [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
-            
-            vv.top = 0;
-        }];
-    }];
+   
     
     UILabel *rightL1 = [[UILabel alloc] init];
     rightL1.text = @"由商城自营发货并提供售后服务，不支持7天无理由退货，支持换货";
@@ -657,7 +664,7 @@
     } else {
         
         NSDictionary *newDic = [dic objectNilForKey:@"fenqi_info"];
-        titleL.text =[NSString stringWithFormat:@"分期 ¥%@*%@期",[newDic objectNilForKey:@"per_money"],[newDic objectNilForKey:@"periods"]];
+        titleL.text =[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic objectNilForKey:@"per_money"] floatValue],[newDic objectNilForKey:@"periods"]];
         
         
     }
