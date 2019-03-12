@@ -9,7 +9,10 @@
 #import "CoinCouponCanTableViewCell.h"
 
 @implementation CoinCouponCanTableViewCell
-
+{
+    
+    UILabel *timeL;
+}
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -68,7 +71,7 @@
     }];
     
     
-    UILabel *timeL = [[UILabel alloc] init];
+    timeL = [[UILabel alloc] init];
     timeL.text = @"1条评价 98%好评 ";
     timeL.textColor = COLOR(153, 153, 153);
     timeL.font = Regular(11);
@@ -93,6 +96,22 @@
         make.height.mas_equalTo(1);
     }];
    
+}
+
+- (void)setValueForCell:(NSDictionary *)data {
+    [self.CommodityImage sd_setImageWithURL:[data objectNilForKey:@"original_img"]];
+    self.CommodityNameLabel.text = [data objectNilForKey:@"goods_name"];
+     self.CommodityPriceLabel.text =[NSString stringWithFormat:@"¥%@",[data objectNilForKey:@"shop_price"]];
+    
+    
+    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@*%@期",[data objectNilForKey:@"per_money"],[data objectNilForKey:@"period_num"]] attributes:@{NSFontAttributeName: [UIFont systemFontOfSize: 14],NSForegroundColorAttributeName: [UIColor redColor]}];
+    
+    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange([[data objectNilForKey:@"per_money"] stringValue].length + 1, 3)];
+  self.ByStagesLabel.attributedText = string2;
+    
+    
+    timeL.text = [NSString stringWithFormat:@"%@条评价 %@%%好评 ",[data objectNilForKey:@"show_comment_count"],[[data objectNilForKey:@"comment_statistics"]objectForKey:@"high_rate"] ];
+    
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

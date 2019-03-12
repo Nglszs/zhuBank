@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinCouponCanViewController : CoinBaseViewController
 
+@property(nonatomic, strong) NSString *ID;//优惠券id
+
 @end
 
 NS_ASSUME_NONNULL_END
