@@ -9,6 +9,7 @@
 #import "HttpTool.h"
 #import <AFNetworking/AFNetworking.h>
 #import "Reachability.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 static HttpTool * tool;
 @interface HttpTool()
 @property (nonatomic,strong)AFHTTPSessionManager * manager;
@@ -85,6 +86,10 @@ static HttpTool * tool;
             // 登录过期，请重新登录
             [self GoLogin];
             return;
+        }
+        if (!BCStatus) {
+            [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
+            [SVProgressHUD dismissWithDelay:2];
         }
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

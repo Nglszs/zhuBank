@@ -14,6 +14,7 @@
 #import "HttpTool.h"
 #import "CoinSearchViewController.h"
 #import "CoinClassLeftModel.h"
+#import "CoinSearchResultViewController.h"
 @interface CoinClassfyViewController ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UISearchBarDelegate>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)UICollectionView * CollectionView;
@@ -35,7 +36,6 @@
     [self initTableView];
     [self initCollectionView];
     [self initSearchBar];
-    [self setNavitemImage:@"密码" type:RightNavItem];
 }
 
 - (void)initTableView{
@@ -190,7 +190,11 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    CoinConfirmOrderViewController * vc = [CoinConfirmOrderViewController new];
+    CoinClassRightModel * model = self.RightDataArray[indexPath.section];
+    CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
+    
+    CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
+    vc.keyword = model2.name;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

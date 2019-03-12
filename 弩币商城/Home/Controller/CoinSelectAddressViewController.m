@@ -83,7 +83,7 @@
 
 - (void)request{
     [KTooL HttpPostWithUrl:@"Order/select_address" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
+        
         if (BCStatus) {
             self.dataArray = responseObject[@"data"];
         }

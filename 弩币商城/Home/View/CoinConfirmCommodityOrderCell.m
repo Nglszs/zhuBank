@@ -35,21 +35,21 @@
         make.width.equalTo(self.CommoditImage.mas_height);
     }];
     self.CommoditNameLabel = [UILabel new];
-    self.CommoditNameLabel.text = @"华为（HUAWEI） mate20pro手机 全网通（UD屏内指纹版）";
+   
     self.CommoditNameLabel.numberOfLines = 2;
-    self.CommoditNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size: 11];
+    self.CommoditNameLabel.font = Regular(11);
     self.CommoditNameLabel.textColor = COLOR(0, 0, 0);
     [self.contentView addSubview:self.CommoditNameLabel];
     [self.CommoditNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.CommoditImage.mas_right).offset(15);
         make.top.equalTo(self.CommoditImage);
-        make.right.equalTo(self.contentView).offset(-71);
+        make.right.equalTo(self.contentView).offset(-100);
     }];
     
     self.CommoditSpecificationLabel = [UILabel new];
     self.CommoditSpecificationLabel.textColor = COLOR(153, 153, 153);
-    self.CommoditSpecificationLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size: 11];
-    self.CommoditSpecificationLabel.text = @"规格：8G+128G 全网通（UD屏内指纹版）";
+    self.CommoditSpecificationLabel.font = Regular(11);
+    
     [self.contentView addSubview:self.CommoditSpecificationLabel];
     [self.CommoditSpecificationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.CommoditImage);
@@ -77,6 +77,18 @@
         make.bottom.equalTo(self.CommoditSpecificationLabel);
         make.left.equalTo(self.CommoditNameLabel.mas_right);
     }];
+}
+
+- (void)setDataDict:(NSDictionary *)dataDict{
+    _dataDict = dataDict;
+    if (!BCDictIsEmpty(dataDict)) {
+        [self.CommoditImage sd_setImageWithURL:[NSURL URLWithString:dataDict[@"original_img"]]];
+        self.CommoditNameLabel.text = dataDict[@"goods_name"];
+        self.CommoditSpecificationLabel.text = dataDict[@"spec_key_name"];
+        self.CommoditPrice.text = [NSString stringWithFormat:@"￥ %@",dataDict[@"goods_price"]];
+        self.CommoditNumber.text = [NSString stringWithFormat:@"X%@",dataDict[@"num"]];
+    }
+    
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

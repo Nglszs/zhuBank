@@ -44,10 +44,10 @@
         make.height.mas_equalTo(20);
     }];
     self.NameLabel = [UILabel new];
-    self.NameLabel.text = @"某某某     123456789";
     [self.contentView addSubview:self.NameLabel];
     self.NameLabel.font = TextFont(13);
     self.NameLabel.textColor = COLOR(51, 51, 51);
+    self.NameLabel.text = @"收货地址";
     [self.NameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(36);
         make.top.equalTo(self.contentView).offset(12);
@@ -58,7 +58,7 @@
     self.AddressLabel.font = TextFont(12);
     self.AddressLabel.textColor = COLOR(134, 134, 134);
     self.AddressLabel.numberOfLines = 2;
-    self.AddressLabel.text = @"江苏省-南京市-秦淮区 某某某街道某某某小区几栋几零几";
+   
     [self.contentView addSubview:self.AddressLabel];
     [self.AddressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.NameLabel);
@@ -84,4 +84,12 @@
     
 }
 
+- (void)setDataDict:(NSDictionary *)dataDict{
+    _dataDict = dataDict;
+    if (!BCDictIsEmpty(dataDict)) {
+        self.NameLabel.text = [NSString stringWithFormat:@"%@  %@",dataDict[@"consignee"],dataDict[@"mobile"]];
+        self.AddressLabel.text = [NSString stringWithFormat:@"%@ %@",dataDict[@"address_area"],dataDict[@"address"]];
+        
+    }
+}
 @end

@@ -84,8 +84,11 @@
     NSString * str = model.fenqi_info;
     NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:str attributes:@{NSFontAttributeName: [UIFont systemFontOfSize: 14],NSForegroundColorAttributeName: [UIColor redColor]}];
     NSArray * array = [str componentsSeparatedByString:@"*"];
+    if (array.count == 2) {
+         [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange(str.length - [[array lastObject] length] - 1, [[array lastObject] length] + 1)];
+    }
     
-    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange(str.length - [[array lastObject] length] - 1, [[array lastObject] length] + 1)];
+   
     
     self.ByStagesLabel.attributedText = string2;
     

@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinConfirmOrderAddressCell : UITableViewCell
-
+@property (nonatomic,strong)NSDictionary * dataDict;
 @end
 
 NS_ASSUME_NONNULL_END

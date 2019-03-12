@@ -11,6 +11,7 @@
 #import "BCCouponView.h"
 #import "BCDivideView.h"
 #import "BCGoodView.h"
+#import "CoinConfirmOrderViewController.h"
 
 @interface CoinGoodDetailViewController ()<UIScrollViewDelegate>
 {
@@ -524,7 +525,12 @@
         make.height.mas_equalTo(50);
         make.width.mas_equalTo(120);
     }];
-    
+    [backBtn1 addTarget:self action:@selector(GoBuy) forControlEvents:(UIControlEventTouchUpInside)];
+}
+
+- (void)GoBuy{
+    CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
+    [self.navigationController pushViewController:VC animated:YES];
     
 }
 

@@ -16,7 +16,7 @@
 #import "CoinInvoiceViewController.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
-
+@property (nonatomic,strong)NSDictionary * DataDict;
 @end
 
 @implementation CoinConfirmOrderViewController
@@ -31,6 +31,7 @@
     [self initTableView];
     [self initFooterView];
     [self SetReturnButton];
+    [self Request];
 }
 - (void)initTableView{
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStyleGrouped)];
@@ -89,6 +90,7 @@
     [GoBuyButton setBackgroundColor:COLOR(254, 70, 70) forState:(UIControlStateNormal)];
     [GoBuyButton setTitle:@"提交分期订单" forState:(UIControlStateNormal)];
     GoBuyButton.titleLabel.font = MediumFont(15);
+    [GoBuyButton addTarget:self action:@selector(submitOrder) forControlEvents:(UIControlEventTouchUpInside)];
     [view addSubview:GoBuyButton];
     [GoBuyButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(view);
@@ -148,11 +150,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         CoinConfirmOrderAddressCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinConfirmOrderAddressCell" forIndexPath:indexPath];
+        if (self.DataDict) {
+            cell.dataDict = self.DataDict[@"address_info"];
+        }
         cell.selectionStyle =0;
         return cell;
     }
     if (indexPath.section == 1) {
         CoinConfirmCommodityOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinConfirmCommodityOrderCell" forIndexPath:indexPath];
+        
+        cell.dataDict = self.DataDict[@"goods_info"];
         cell.selectionStyle = 0;
         return cell;
     }
@@ -256,4 +263,49 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 0.01;
 }
+
+- (void)submitOrder{
+   /*
+    参数：
+    user_id 用户id
+    address_id 收货地址id
+    goods_id 商品id
+    goods_num 购买数量
+    item_id 规格id
+    action 行为 (默认：buy_now)
+    shou_pay 首付
+    per_money 每期还款数
+    qishu 期数
+    q_fenqi 是否分期
+    invoice_rise 发票抬头(默认为空 个人/单位)
+    invoice_content 发票内容(默认为空 商品明细/商品类别/不开发票)
+    方式：POST
+    地址：http://test2.tkgo.cn/Api/Order/submit_order
+    返回:
+    
+    判断状态
+    1： 成功 返回订单号(eg:201903011950366160)
+    */
+}
+
+- (void)Request{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"q_fenqi"] = @"1";
+    dict[@"goods_id"] = @"6";
+    dict[@"item_id"] = @"517";
+    dict[@"num"] = @"1";
+    dict[@"periods"] = @"6";
+    dict[@"stages"] = @"100";
+    [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (BCStatus) {
+            self.DataDict = responseObject[@"data"];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
 @end
