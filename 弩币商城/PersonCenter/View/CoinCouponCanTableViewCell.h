@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)UILabel * CommodityNameLabel;
 @property (nonatomic,strong)UILabel * CommodityPriceLabel;
 @property (nonatomic,strong)UILabel * ByStagesLabel;
+- (void)setValueForCell:(NSDictionary *)data;
 @end
 
 NS_ASSUME_NONNULL_END

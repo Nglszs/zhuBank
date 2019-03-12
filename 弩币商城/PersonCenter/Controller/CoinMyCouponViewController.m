@@ -16,6 +16,8 @@
      UIImageView *backImageView;//滑竿
     UIButton *newBtn,*newBtn1;
      UIButton *selectedBtn;
+    NSDictionary *dataDic;
+    NSMutableArray *dataArr,*secondArr,*thirdArr;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 
@@ -26,6 +28,7 @@
 @property (nonatomic, strong) UITableView *playTableView;
 @property (nonatomic, strong) UITableView *payTableView;//
 
+@property (nonatomic, strong) WOWONoDataView *alertdataView;
 @end
 
 @implementation CoinMyCouponViewController
@@ -34,6 +37,9 @@
     [super viewDidLoad];
     [self.view addSubview:self.headView];
     
+    dataArr = [NSMutableArray arrayWithCapacity:1];
+    secondArr = [NSMutableArray arrayWithCapacity:1];
+    thirdArr = [NSMutableArray arrayWithCapacity:1];
     
      self.navigationItem.title = @"优惠券";
     
@@ -50,44 +56,142 @@
   
     [self.backScrollView addSubview:self.playTableView];
     
+      [self getData:@"1"];
+      [self getData:@"2"];
+      [self getData:@"3"];
+    
 }
 
+
+#pragma mark 网络请求
+- (void)getData:(NSString *)type {
+    
+    
+    [dataArr removeAllObjects];
+    [secondArr removeAllObjects];
+    [thirdArr removeAllObjects];
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/my_coupons" parameters:@{@"type":type} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            
+            
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            NSArray *arr =[dataDic objectForKey:@"coupons_list"];
+            
+           
+           
+            UIButton *btn = [self.headView viewWithTag:200];
+             UIButton *btn1 = [self.headView viewWithTag:201];
+             UIButton *btn2 = [self.headView viewWithTag:202];
+            
+            [btn setTitle:[NSString stringWithFormat:@"全部(%@)",[dataDic objectForKey:@"all_coupons"]] forState:UIControlStateNormal];
+             [btn1 setTitle:[NSString stringWithFormat:@"现金抵用券(%@)",[dataDic objectForKey:@"cash_coupons"]] forState:UIControlStateNormal];
+             [btn2 setTitle:[NSString stringWithFormat:@"运费抵用券(%@)",[dataDic objectForKey:@"freight_coupons"]] forState:UIControlStateNormal];
+            
+            
+            if (arr.count <= 0) {
+                if (_alertdataView) {
+                    [_alertdataView removeFromSuperview];
+                    _alertdataView = nil;
+                }
+                self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"myyhq 拷贝" text:@"您还没有优惠券哦~" detailText:nil buttonTitle:nil];
+                
+                self.alertdataView.frame =self.view.bounds;
+                
+                [self.view addSubview:_alertdataView];
+                
+                 return ;
+            }
+            
+//           刷新数据
+            if ([type isEqualToString:@"1"]) {
+                 [dataArr addObjectsFromArray:arr];
+                [self.getTableView reloadData];
+                
+            } else if ([type isEqualToString:@"2"]) {
+                 [secondArr addObjectsFromArray:arr];
+                [self.payTableView reloadData];
+            } else {
+                 [thirdArr addObjectsFromArray:arr];
+                [self.playTableView reloadData];
+            }
+        
+        
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+}
 #pragma mark tableview 代理
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 3;
+    if (tableView == self.getTableView) {
+        return dataArr.count;
+    } else if (tableView == self.payTableView){
+        
+        
+        return secondArr.count;
+    } else {
+        
+        return thirdArr.count;
+    }
+    
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    
-    return 115;
-    
-    
-}
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
     if (tableView == self.getTableView) {//所有
-        static NSString *ID = @"kpo3";
-        CoinMyCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
-        if (!cell) {
-            cell = [[CoinMyCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        
+        NSInteger type = [[[dataArr objectAtIndex:indexPath.row] objectForKey:@"coupons_type"] integerValue];
+        if (type == 1) {//现金券
+            static NSString *ID = @"kpo3";
+            CoinMyCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
             
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
+            [cell setDataForCell:dic];
+            
+            return cell;
+        } else {
             
             
+            static NSString *ID = @"kpo31";
+            CoinExpressCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinExpressCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
+            NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
+            [cell setDataForCell:dic];
+            return cell;
         }
-        
-        
-        
-        
-        return cell;
     } else if (tableView == self.payTableView){//优惠券
         static NSString *ID = @"kpo2";
         CoinMyCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
@@ -100,7 +204,8 @@
         }
         
         
-        
+        NSDictionary *dic = [secondArr objectAtIndex:indexPath.row];
+        [cell setDataForCell:dic];
         
         return cell;
         
@@ -117,7 +222,8 @@
         }
         
         
-        
+        NSDictionary *dic = [thirdArr objectAtIndex:indexPath.row];
+        [cell setDataForCell:dic];
         
         return cell;
     }
@@ -128,8 +234,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
     
-    [self.navigationController pushViewController:[CoinCouponCanViewController new] animated:YES];
+    if (tableView == self.getTableView) {
+        
+        vc.ID = [[[dataArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+        
+    } else if (tableView == self.payTableView){
+        
+        
+       vc.ID = [[[secondArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+    } else {
+        
+       vc.ID = [[[thirdArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+    }
+    
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
@@ -146,6 +267,8 @@
         selectedBtn.selected = YES;
     }
     
+    
+   
     
     [self.backScrollView setContentOffset:CGPointMake(BCWidth * (btn.tag - 200), 0) animated:YES];
 

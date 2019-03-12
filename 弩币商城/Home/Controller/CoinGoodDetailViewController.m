@@ -710,22 +710,35 @@
     
     
 //    图片详情
-   NSString *images = [[dic objectNilForKey:@"goods_content"] firstObject];
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:images]];
-    UIImage *img = [UIImage imageWithData:data];
-    CGFloat imgHeight = img.size.height;
-    CGFloat imgWidth = img.size.width;
-    CGFloat imgH = imgHeight * (BCWidth / imgWidth);
-    
-   UIImageView *_showImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,BCWidth , imgH)];
-    //设置imageView的背景图
-    [_showImg setImage:img];
-    //给imageView设置区域
-    _showImg.contentMode = UIViewContentModeScaleAspectFill;
-    //把视图添加到当前的滚动视图中
-    [_scView addSubview:_showImg];
-    _scView.contentSize = CGSizeMake(0,imgH);//设置滚动视图的大小
-    
+   NSArray *images = [dic objectNilForKey:@"goods_content"];
+    CGFloat tmpHeight = 0;
+    for (int i = 0; i < images.count; i ++) {
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:images[i] ]];
+        UIImage *img = [UIImage imageWithData:data];
+       
+        if (!img) {
+            
+            continue;
+        }
+        NSLog(@"======11");
+        CGFloat imgHeight = img.size.height;
+        CGFloat imgWidth = img.size.width;
+        
+        CGFloat imgH = imgHeight * (BCWidth / imgWidth);
+        
+        UIImageView *_showImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, tmpHeight,BCWidth , imgH)];
+        
+        //设置imageView的背景图
+        [_showImg setImage:img];
+        //给imageView设置区域
+        _showImg.contentMode = UIViewContentModeScaleAspectFill;
+        //把视图添加到当前的滚动视图中
+        [_scView addSubview:_showImg];
+        _scView.contentSize = CGSizeMake(0,imgH + tmpHeight);//设置滚动视图的大小
+        
+        tmpHeight = imgH + tmpHeight;
+    }
+   
 }
 #pragma mark 懒加载加载需要的视图
 - (UIView *)headView {

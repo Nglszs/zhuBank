@@ -40,6 +40,9 @@
     leftArr = @[@"头像",@"昵称",@"性别",@"生日",@"手机",@"修改登录密码",@"交易密码",@"收货地址"];
     [self.view addSubview:self.playTableview];
     
+    NSLog(@"%@--%@",[USER_DEFAULTS objectForKey:USER_ID],
+          [USER_DEFAULTS objectForKey:USER_Token]);
+    
 //    退出登录
     UIButton *backBtn1 = [[UIButton alloc] init];
     backBtn1.titleLabel.font = Regular(17);

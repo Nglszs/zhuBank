@@ -8,22 +8,53 @@
 
 #import "CoinCouponCanViewController.h"
 #import "CoinCouponCanTableViewCell.h"
+#import "CoinGoodDetailViewController.h"
 
 @interface CoinCouponCanViewController ()<UITableViewDelegate,UITableViewDataSource>
-
+{
+    NSMutableArray *dataArr;
+    UITableView * tabView;
+}
 @end
 
 @implementation CoinCouponCanViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    dataArr = [NSMutableArray arrayWithCapacity:1];
     self.navigationItem.title = @"本券可购买商品";
      [self initTableView];
+    
+    [self getData];
 }
+#pragma mark 网络请求
+- (void)getData {
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/coupons_goods" parameters:@{@"cid":_ID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            dataArr = [responseObject objectNilForKey:@"data"];
+            
+            [tabView reloadData];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+        NSLog(@"");
+    }];
+}
+
 // 初始化tableView
 - (void)initTableView{
-    UITableView * tabView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];
+    tabView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];
     tabView.delegate = self;
     tabView.dataSource = self;
     tabView.separatorStyle =  UITableViewCellSeparatorStyleNone;
@@ -40,7 +71,7 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return dataArr.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CoinCouponCanTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinSearchResultCell"];
@@ -48,6 +79,8 @@
         cell = [[CoinCouponCanTableViewCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinSearchResultCell"];
     }
     cell.selectionStyle = 0;
+    NSDictionary *dic = [dataArr objectAtIndexCheck:indexPath.row];
+    [cell setValueForCell:dic];
     return cell;
 }
 
@@ -55,4 +88,13 @@
     return 130;
 }
 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    CoinGoodDetailViewController *vc = [[CoinGoodDetailViewController alloc] init];
+    vc.goodID = [[dataArr objectAtIndex:indexPath.row] objectForKey:@"goods_id"];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 @end
