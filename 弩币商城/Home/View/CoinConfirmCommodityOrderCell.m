@@ -26,7 +26,6 @@
 }
 - (void)initUI{
     self.CommoditImage = [[UIImageView alloc] init];
-    self.CommoditImage.backgroundColor = [UIColor redColor];
     [self.contentView addSubview:self.CommoditImage];
     [self.CommoditImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(20);

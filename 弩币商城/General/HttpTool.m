@@ -87,6 +87,7 @@ static HttpTool * tool;
             [self GoLogin];
             return;
         }
+        
         if (!BCStatus) {
             [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
             [SVProgressHUD dismissWithDelay:2];

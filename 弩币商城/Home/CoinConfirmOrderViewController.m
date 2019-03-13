@@ -17,6 +17,9 @@
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * DataDict;
+
+@property (nonatomic,strong)UILabel * ActualPriceLabel;
+@property (nonatomic,strong)UILabel * per_moneyLabel;
 @end
 
 @implementation CoinConfirmOrderViewController
@@ -63,32 +66,30 @@
     }];
     
     UILabel * MoneyLabel = [[UILabel alloc] init];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"实付金额:    ￥5790" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Medium" size: 15],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
+    self.ActualPriceLabel = MoneyLabel;
+    MoneyLabel.font = Regular(15);
+   
     
-    [string addAttributes:@{NSFontAttributeName: Regular(15)} range:NSMakeRange(8, 1)];
-    
-    [string addAttributes:@{NSFontAttributeName: Regular(15), NSForegroundColorAttributeName: [UIColor colorWithRed:254/255.0 green:70/255.0 blue:70/255.0 alpha:1.0]} range:NSMakeRange(9, 5)];
-    
-    MoneyLabel.attributedText = string;
     [view addSubview:MoneyLabel];
     [MoneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(view).offset(15);
-        make.top.equalTo(view).offset(9);
+        make.top.equalTo(view).offset(5);
         make.right.equalTo(view).offset(-SetX(150));
     }];
     UILabel * timeLabel = [UILabel new];
-    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:@"首付：¥0.00 月供：¥580.00 期数：12期" attributes:@{NSFontAttributeName: Regular(9),NSForegroundColorAttributeName: [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]}];
-    
-    timeLabel.attributedText = string2;
+    timeLabel.font = Regular(10);
+    timeLabel.textColor = COLOR(0, 0, 0);
+    self.per_moneyLabel = timeLabel;
     [view addSubview:timeLabel];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(MoneyLabel);
-        make.bottom.equalTo(MoneyLabel.mas_bottom).offset(13);
+        make.top.equalTo(MoneyLabel.mas_bottom).offset(3);
     }];
     
     UIButton * GoBuyButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [GoBuyButton setBackgroundColor:COLOR(254, 70, 70) forState:(UIControlStateNormal)];
     [GoBuyButton setTitle:@"提交分期订单" forState:(UIControlStateNormal)];
+    GoBuyButton.adjustsImageWhenHighlighted = NO;
     GoBuyButton.titleLabel.font = MediumFont(15);
     [GoBuyButton addTarget:self action:@selector(submitOrder) forControlEvents:(UIControlEventTouchUpInside)];
     [view addSubview:GoBuyButton];
@@ -108,12 +109,18 @@
     
     UIButton * ConsentButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [view2 addSubview:ConsentButton];
-    ConsentButton.backgroundColor = [UIColor redColor];
+   
+    [ConsentButton setBackgroundImage:BCImage(未选中) forState:(UIControlStateNormal)];
+    [ConsentButton setBackgroundImage:BCImage(选中) forState:(UIControlStateSelected)];
+    ConsentButton.adjustsImageWhenHighlighted = NO;
     [ConsentButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(MoneyLabel);
         make.centerY.equalTo(view2);
         make.width.mas_equalTo(14);
         make.height.mas_equalTo(14);
+    }];
+    [ConsentButton addtargetBlock:^(UIButton *button) {
+        button.selected = !button.selected;
     }];
     
     UILabel * AgreementLabel = [UILabel new];
@@ -123,7 +130,7 @@
     
     [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(2, 11)];
     
-    [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(15, 3)];
+    [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(15, 4)];
     
     AgreementLabel.attributedText = string3;
     [AgreementLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -173,9 +180,12 @@
     if (indexPath.section == 2 && indexPath.row == 1) {
         CoinConfirmCommoditListCell * cell = [tableView dequeueReusableCellWithIdentifier:@"invoice"];
         if (cell == nil) {
-            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"invoice" leftTitle:@"发票信息" leftTitleColor:COLOR(102, 102, 102) tagString:@"" rightStr:@"纸质-个人" rightStrColor:COLOR(153, 153, 153) isShowSelectImage:YES];
+            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"invoice" leftTitle:@"发票信息" leftTitleColor:COLOR(102, 102, 102) tagString:@"" rightStr:@"" rightStrColor:COLOR(153, 153, 153) isShowSelectImage:YES];
             cell.selectionStyle = 0;
          }
+        if (self.DataDict) {
+            cell.invoice_infoData = self.DataDict[@"invoice_info"];
+        }
         return cell;
     
     }
@@ -189,14 +199,48 @@
     // 优惠券
     if (indexPath.section == 3) {
         NSArray * array = @[@"优惠券",@"运费抵扣券",@"商品金额：",@"配送费用："];
-        NSArray * tageStrArray = @[@" 已选1张 ",@" 已选1张 ",@"",@""];
-        NSArray * rightArray = @[@"-￥300",@"-￥8",@"￥5788",@"￥10"];
+       
         NSString * Identifier = [NSString stringWithFormat:@"Identifier%ld",indexPath.row];
         CoinConfirmCommoditListCell * cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
         if (cell == nil) {
-            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:Identifier leftTitle:array[indexPath.row] leftTitleColor:COLOR(51, 51, 51) tagString:tageStrArray[indexPath.row] rightStr:rightArray[indexPath.row] rightStrColor:COLOR(254, 70, 70) isShowSelectImage:(indexPath.row <= 1)];
+            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:Identifier leftTitle:array[indexPath.row] leftTitleColor:COLOR(51, 51, 51) tagString:nil rightStr:nil rightStrColor:COLOR(254, 70, 70) isShowSelectImage:(indexPath.row <= 1)];
             cell.selectionStyle = 0;
         }
+        NSDictionary * coupons_info;
+        NSDictionary * order_info;
+        if (self.DataDict) {
+             coupons_info = self.DataDict[@"coupons_info"];
+            order_info = self.DataDict[@"order_info"];
+        }
+        
+        switch (indexPath.row) {
+            case 0:
+                if (coupons_info) {
+                    cell.coupons_transfer = coupons_info[@"coupons_reduce"];
+                    cell.coupons_reduce_id = coupons_info[@"coupons_reduce_id"];
+                }
+                
+                
+                break;
+            case 1:
+                if (coupons_info) {
+                    cell.coupons_transfer = coupons_info[@"coupons_transfer"];
+                    cell.coupons_reduce_id = coupons_info[@"coupons_transfer_id"];
+                }
+                break;
+            case 2:
+                if (order_info) {
+                    cell.total_price = order_info[@"total_price"];
+                }
+                break;
+            case 3:
+                if (order_info) {
+                    cell.transfer_price = order_info[@"transfer_price"];
+                }
+                
+                break;
+        }
+        
         return cell;
         
     }
@@ -286,25 +330,58 @@
     判断状态
     1： 成功 返回订单号(eg:201903011950366160)
     */
+    if (self.DataDict) {
+        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+        dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
+        dict[@"goods_id"] = self.DataDict[@"goods_info"][@"goods_id"];
+        dict[@"goods_num"] = self.DataDict[@"goods_info"][@"num"];
+        dict[@"item_id"] = self.DataDict[@"goods_info"][@"item_id"];
+        dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
+        dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
+        dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
+        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
+        [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+    }
 }
 
 - (void)Request{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-    dict[@"q_fenqi"] = @"1";
-    dict[@"goods_id"] = @"6";
-    dict[@"item_id"] = @"517";
-    dict[@"num"] = @"1";
-    dict[@"periods"] = @"6";
-    dict[@"stages"] = @"100";
+    dict[@"q_fenqi"] = self.q_fenqi;
+    dict[@"goods_id"] = self.goods_id;
+    dict[@"item_id"] = self.item_id;
+    dict[@"num"] = self.num;
+    dict[@"periods"] = self.periods;
+    dict[@"stages"] = self.stages;
     [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         if (BCStatus) {
             self.DataDict = responseObject[@"data"];
+            [self upFootView:self.DataDict[@"order_info"]];
             [self.tableView reloadData];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
+    
+}
+
+- (void)upFootView:(NSDictionary *)dataDict{
+    if (!BCDictIsEmpty(dataDict)) {
+        NSString * money = [NSString stringWithFormat:@"实付金额:    ￥%@",dataDict[@"total_price"]];
+        NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:money];
+        [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:254/255.0 green:70/255.0 blue:70/255.0 alpha:1.0] range:NSMakeRange(5, string.length - 5)];
+        self.ActualPriceLabel.attributedText = string;
+        
+        
+        NSString * q_fenqi = dataDict[@"is_fenqi"];
+        if ([q_fenqi integerValue] == 1) {
+            self.per_moneyLabel.text = [NSString stringWithFormat:@"首付：¥%@ 月供：¥%@ 期数：%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
+        }
+    }
     
 }
 
