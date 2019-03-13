@@ -407,6 +407,13 @@
     }];
 
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        if (self.backBlock ) {
+            NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
+            NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
+            NSLog(@"%@==%@",colorID,sizeID);
+            self.backBlock(@[_countTextField.text,[NSString stringWithFormat:@"%@_%@",colorID,sizeID]]);
+        }
+        
         [self removeCommentCuView];
     }];
 

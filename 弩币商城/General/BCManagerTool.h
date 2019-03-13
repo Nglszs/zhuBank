@@ -174,6 +174,12 @@ typedef void(^ BCFailureBlock)  (NSString *errorResult);
 
 
 /**
+ 是否是会员
+
+ @return nil
+ */
+- (BOOL)isVip;
+/**
  加载短信验证码
 
  @param view 要加载到哪一个View

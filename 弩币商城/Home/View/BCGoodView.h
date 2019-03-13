@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  商品数量输入框
  */
 @property (nonatomic, strong) UITextField *countTextField;
+@property (nonatomic,copy)void(^backBlock)(id result);
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(NSString *)ID;
 @end
 

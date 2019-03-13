@@ -19,6 +19,8 @@
     UIButton *selectedBtn;
     NSDictionary *dataDic;
     UIScrollView *_scView;//显示图片详情
+    NSArray *divideArr;
+    NSArray *sizeArr;
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -146,6 +148,10 @@
     [self.backScrollView addSubview:titleL];
     [titleL addTapGestureWithBlock:^{
        
+        if (![Tool isVip]) {
+            VCToast(@"会员才可以分期哦，请先购买会员", 1);
+            return ;
+        }
         
         //    点击打开分期
         
@@ -155,6 +161,12 @@
             
             vv.top = 0;
         }];
+        
+        vv.backBlock = ^(id  _Nonnull result) {
+          
+            NSLog(@"]]]]%@",result);
+            divideArr = result;
+        };
     }];
     
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -374,6 +386,12 @@
             
             vv.top = 0;
         }];
+        
+        vv.backBlock = ^(id  _Nonnull result) {
+            
+            NSLog(@")))%@",result);
+            sizeArr = result;
+        };
     }];
     
     
@@ -529,9 +547,60 @@
 }
 
 - (void)GoBuy{
-    CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
-    [self.navigationController pushViewController:VC animated:YES];
     
+    if (![Tool isLogin]) {
+        
+        VCToast(@"请先登录", 1);
+        return;
+    }
+    
+    if (sizeArr.count <= 0) {//如果规则页没选过则购买的时候弹出来
+        
+        
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
+        [self.view addSubview:vv];
+        [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
+            
+            vv.top = 0;
+        }];
+        
+        vv.backBlock = ^(id  _Nonnull result) {
+            
+            NSLog(@")))%@",result);
+            sizeArr = result;
+            
+            
+            
+//            选完规格才跳转
+            CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
+            VC.q_fenqi = divideArr.count<=0?@"0":@"1";
+            VC.goods_id = _goodID;
+            VC.num = [sizeArr objectAtIndex:0];
+            VC.item_id = [sizeArr lastObject];
+            if (divideArr.count > 0) {
+                VC.periods = [divideArr lastObject];
+                NSString *stage = [divideArr firstObject];
+                if ([stage isEqualToString:@"零首付"]) {
+                    VC.stages = @"0";
+                } else {
+                    
+                    NSString *newStr = [stage substringToIndex:1];
+                    VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+                }
+                
+            }
+            [self.navigationController pushViewController:VC animated:YES];
+            
+            
+            
+        };
+        
+        
+        
+        
+    }
+    
+   
 }
 
 #pragma mark 商品详情页

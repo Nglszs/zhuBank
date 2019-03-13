@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BCCouponView : UIView
 
-@property (nonatomic,copy)void(^backBlock)(void);
+@property (nonatomic,copy)void(^backBlock)(id result);
 - (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID;
 @end
 

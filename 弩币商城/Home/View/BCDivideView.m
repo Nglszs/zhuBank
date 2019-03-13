@@ -14,6 +14,7 @@
      UIButton *selectedBtn,*diviBtn,*diviNumBtn;  //按钮单选逻辑
     NSDictionary *dataDic;
     NSString *goodID;
+    NSString *stages,*numMonth;
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID {
     goodID = ID;
@@ -281,6 +282,9 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        if (self.backBlock && selectedBtn.tag == 101) {//当选择分期的时候才会返回
+            self.backBlock(@[diviBtn.currentTitle,diviNumBtn.currentTitle]);
+        }
         [self removeCommentCuView];
     }];
     
@@ -289,6 +293,7 @@
 
 #pragma mark 点击是否分期
 - (void)buttonClick:(UIButton *)button {
+    
     
     if (button!= selectedBtn) {
         
@@ -326,6 +331,7 @@
         diviBtn.selected = YES;
     }
     
+    NSLog(@"==%@",diviBtn.currentTitle);
 }
 
 - (void)clickDiviNum:(UIButton *)button{
@@ -340,6 +346,8 @@
         
         diviNumBtn.selected = YES;
     }
+    
+    NSLog(@"==%@",diviNumBtn.currentTitle);
 }
 //防止手势冲突
 - (void)move:(UIPanGestureRecognizer *)sender {
