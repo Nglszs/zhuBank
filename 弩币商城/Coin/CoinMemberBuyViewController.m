@@ -24,7 +24,7 @@
 
 - (void)initView{
     UILabel * MoneyLabel = [[UILabel alloc] init];
-    MoneyLabel.text = @"¥299.00";
+    MoneyLabel.text = [NSString stringWithFormat:@"￥%@",self.Money];
     MoneyLabel.textColor = COLOR(255, 87, 103);
     MoneyLabel.font = Regular(24);
     [self.view addSubview:MoneyLabel];
@@ -35,7 +35,7 @@
     
     if (self.type == BRPayRepayment) {
         UILabel * label = [UILabel new];
-        label.text  = @"还款期数：【1/6期】iPhone 8 plus";
+        label.text  = self.titleString;
         label.textColor = COLOR(51, 51, 51);
         label.font = Regular(13);
         [self.view addSubview:label];
@@ -157,5 +157,16 @@
     btn.selected = !btn.selected;
 }
 
-
+//立即还款
+- (void)pay{
+    
+  NSString * url = [NSString stringWithFormat:@"repay-now/%@",self.IdStr];
+    [KTooL HttpPostWithUrl:url parameters:@{@"id":self.IdStr,@"gateway":@"wechat"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+        
+    
+}
 @end

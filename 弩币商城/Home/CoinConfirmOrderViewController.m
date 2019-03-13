@@ -343,7 +343,7 @@
         [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
+            NSLog(@"%@",error.description);
         }];
     }
 }
