@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BCDivideView : UIView
+@property (nonatomic,copy)void(^backBlock)(id result);
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(NSString *)ID;
 @end
 

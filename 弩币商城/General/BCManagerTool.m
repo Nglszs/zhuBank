@@ -399,6 +399,12 @@ static BCManagerTool *_instanceTool;
 
 }
 
+- (BOOL)isVip {
+   
+ return [USER_DEFAULTS  boolForKey:@"isvip"];
+    
+}
+
 + (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(NSString * Ticket,NSString * Randstr))success{
     [[TCWebCodesBridge sharedBridge]loadTencentCaptcha:view appid:TencentCaptchAppID callback:^(NSDictionary *resultJSON) {
         if(0==[resultJSON[@"ret"] intValue]) {

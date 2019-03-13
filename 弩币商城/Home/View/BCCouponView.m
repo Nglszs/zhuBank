@@ -264,9 +264,9 @@
             [self removeFromSuperview];
         }];
         
-        if (_backBlock) {
-            _backBlock();
-        }
+//        if (_backBlock) {
+//            _backBlock(@"");
+//        }
     }
     
 }

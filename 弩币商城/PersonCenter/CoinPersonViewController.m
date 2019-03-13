@@ -500,6 +500,8 @@
             UILabel *titleL = [self.backScrollView viewWithTag:200];
             titleL.text = [dataDic objectNilForKey:@"nickname"];
             
+            [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
+            [USER_DEFAULTS synchronize];
             
         } else {
             
