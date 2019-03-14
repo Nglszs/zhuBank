@@ -9,9 +9,9 @@
 #import "CoinBaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+typedef void(^BCSelectInvoiceBlock)(NSString * invoice_rise,NSString * invoice_content);
 @interface CoinInvoiceViewController : CoinBaseViewController
-
+@property (nonatomic,copy)BCSelectInvoiceBlock block;
 @end
 
 NS_ASSUME_NONNULL_END

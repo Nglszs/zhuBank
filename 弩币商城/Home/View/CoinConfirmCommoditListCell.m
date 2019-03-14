@@ -82,7 +82,7 @@
     if (!BCDictIsEmpty(invoice_infoData)) {
         NSString *  invoice_rise = invoice_infoData[@"invoice_rise"];
         NSString * invoice_content = invoice_infoData[@"invoice_content"];
-        if (!invoice_rise && !invoice_content) {
+        if (!BCStringIsEmpty(invoice_rise) && !BCStringIsEmpty(invoice_content)) {
             self.RightLabel.text = [NSString stringWithFormat:@"%@ -%@",invoice_rise,invoice_content];
         }
     }
@@ -134,6 +134,7 @@
         }
     }
 }
+
 
 
 @end

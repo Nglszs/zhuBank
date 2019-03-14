@@ -92,6 +92,14 @@
         
     }];
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSDictionary * dict = self.dataArray[indexPath.row];
+    if (self.address) {
+        self.address(dict[@"address_id"], dict[@"consignee"], dict[@"mobile"], dict[@"address_area"],dict[@"address"]);
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
 - (void)editBtnAction:(UIButton *)btn{
     CoinChangeAddressViewController * vc = [[CoinChangeAddressViewController alloc] init];
