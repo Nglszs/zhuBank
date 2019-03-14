@@ -56,7 +56,6 @@
     }];
     self.CommoditPrice = [UILabel new];
     self.CommoditPrice.textColor = COLOR(254, 69, 69);
-    self.CommoditPrice.text = @"￥6088 ";
     self.CommoditPrice.textAlignment = NSTextAlignmentRight;
     self.CommoditPrice.font = TextFont(13);
     [self.contentView addSubview:self.CommoditPrice];
@@ -67,7 +66,6 @@
     }];
     
     self.CommoditNumber = [UILabel new];
-    self.CommoditNumber.text = @"x1";
     self.CommoditNumber.textAlignment = NSTextAlignmentRight;
     self.CommoditNumber.font = TextFont(13);
     [self.contentView addSubview:self.CommoditNumber];

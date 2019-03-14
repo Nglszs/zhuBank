@@ -18,6 +18,9 @@ typedef NS_ENUM(NSUInteger, BRPayType) {
 
 @property (nonatomic,assign)BRPayType type;
 
+@property (nonatomic,copy)NSString * Money;
+@property (nonatomic,copy)NSString * titleString;
+@property (nonatomic,copy)NSString * IdStr;
 @end
 
 NS_ASSUME_NONNULL_END

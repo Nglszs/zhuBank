@@ -19,6 +19,8 @@
 @property (nonatomic,strong)UIScrollView * backScrollView;
 @property (nonatomic,strong)UITableView * ProceedTableView;
 @property (nonatomic,strong)UITableView * finishTableView;
+@property (nonatomic,copy)NSArray *ProceedDataArray;
+@property (nonatomic,copy)NSArray * finishDataArray;
 @end
 
 @implementation CoinByStagesViewController
@@ -33,10 +35,12 @@
     [self.view addSubview:self.backScrollView];
     [self.backScrollView addSubview:self.finishTableView];
     [self.backScrollView addSubview:self.ProceedTableView];
+    [self requestFinish];
+    [self requestProceed];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return tableView == self.ProceedTableView ? self.ProceedDataArray.count : self.finishDataArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -51,21 +55,72 @@
     cell.textLabel.text = titlles[indexPath.row];
     cell.textLabel.textColor = COLOR(102, 102, 102);
     cell.textLabel.font = Regular(13);
-    cell.detailTextLabel.text = @"iPhone 8 plus";
     cell.detailTextLabel.textColor = COLOR(102, 102, 102);
     cell.detailTextLabel.font = Regular(13);
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 || indexPath.row == 1) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    NSDictionary * dict = tableView == self.ProceedTableView ? self.ProceedDataArray[indexPath.section] : self.finishDataArray[indexPath.section];
+    switch (indexPath.row) {
+        case 0:
+            cell.detailTextLabel.text = dict[@"goods_name"];
+            break;
+        case 1:
+                  cell.detailTextLabel.text = dict[@"fenqi_agree_num"];
+            break;
+        case 2:
+                  cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"fenqi_amount"]];
+            break;
+        case 3:
+                  cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
+            break;
+        case 4:
+                  cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",dict[@"percent"]];
+            break;
+        case 5:
+                  cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",dict[@"period"]];
+            break;
+        case 6:
+                  cell.detailTextLabel.text = dict[@"pay_time"];            break;
+        case 7:
+                  cell.detailTextLabel.text = dict[@"repay_end_time"];
+            break;
+            
+        case 8:
+            cell.detailTextLabel.text = dict[@"type"];
+            break;
+        case 9:
+            cell.detailTextLabel.text = dict[@"username"];
+            break;
+            
+        case 10:
+            cell.detailTextLabel.text = dict[@"bank_card"];
+            break;
+        case 11:
+            cell.detailTextLabel.text = dict[@"remaining"];
+            break;
     }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 35;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 40;
+    if (tableView == self.finishTableView) {
+        return 10;
+    }
+    return 50;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.01;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    if (tableView == self.finishTableView) {
+        UIView * view = [UIView new];
+        view.backgroundColor = COLOR(238, 238, 238);
+        return view;
+    }
     UIView * view = [UIView new];
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [btn setTitle:@"还款计划列表" forState:(UIControlStateNormal)];
@@ -75,11 +130,24 @@
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(view);
     }];
-    [btn addTarget:self action:@selector(GoCoinRepaymentPlanViewController) forControlEvents:(UIControlEventTouchUpInside)];
+    btn.tag = 1000 + section;
+    [btn addTarget:self action:@selector(GoCoinRepaymentPlanViewController:) forControlEvents:(UIControlEventTouchUpInside)];
+    UIView * LineView = [UIView new];
+    LineView.backgroundColor = COLOR(238, 238, 238);
+    [view addSubview:LineView];
+    [LineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(view);
+        make.height.mas_equalTo(10);
+    }];
+    view.backgroundColor = [UIColor whiteColor];
     return view;
 }
-- (void)GoCoinRepaymentPlanViewController{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return [UIView new];
+}
+- (void)GoCoinRepaymentPlanViewController:(UIButton *)btn{
     CoinRepaymentPlanViewController * vc = [CoinRepaymentPlanViewController new];
+    vc.order_id = self.ProceedDataArray[btn.tag - 1000][@"order_id"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark 懒加载加载需要的视图
@@ -172,7 +240,9 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    
+    if ([scrollView isKindOfClass:[UITableView class]]) {
+        return;
+    }
     
     //     点击按钮
     NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
@@ -210,7 +280,7 @@
 
 - (UITableView *)finishTableView{
     if (_finishTableView == nil) {
-        _finishTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40) style:(UITableViewStylePlain)];
+        _finishTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:(UITableViewStyleGrouped)];
         _finishTableView.delegate = self;
         _finishTableView.dataSource = self;
        _finishTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -220,12 +290,46 @@
 
 - (UITableView *)ProceedTableView{
     if (_ProceedTableView == nil) {
-        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth, 0, BCWidth, BCHeight - 40) style:(UITableViewStylePlain)];
+        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:(UITableViewStyleGrouped)];
         _ProceedTableView.delegate = self;
         _ProceedTableView.dataSource = self;
          _ProceedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _ProceedTableView;
 }
+
+- (void)requestProceed{
+    [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        if (BCStatus) {
+            if (!BCArrayIsEmpty(responseObject[@"data"])) {
+                self.ProceedDataArray = responseObject[@"data"];
+                [self.ProceedTableView reloadData];
+            }
+        }
+    
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
+}
+
+
+- (void)requestFinish{
+    [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (BCStatus) {
+            if (!BCArrayIsEmpty(responseObject[@"data"])) {
+                self.finishDataArray = responseObject[@"data"];
+                [self.finishTableView reloadData];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
 
 @end

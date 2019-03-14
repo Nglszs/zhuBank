@@ -19,6 +19,8 @@
 @property (nonatomic,strong)UITableView * ProceedTableView;
 @property (nonatomic,strong)UITableView * finishTableView;
 
+@property (nonatomic,copy)NSArray *  waitingArray;// 还款中
+@property (nonatomic,copy)NSArray *  alreadyArray;// 已还款
 @end
 
 @implementation CoinRepaymentPlanViewController
@@ -32,10 +34,11 @@
     [self.backScrollView addSubview:self.finishTableView];
     [self.backScrollView addSubview:self.ProceedTableView];
     [self.view addSubview:self.headView];
+    [self request];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return tableView == self.ProceedTableView ? self.waitingArray.count : self.alreadyArray.count; ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -50,16 +53,49 @@
     cell.textLabel.text = titlles[indexPath.row];
     cell.textLabel.textColor = COLOR(102, 102, 102);
     cell.textLabel.font = Regular(13);
-    cell.detailTextLabel.text = @"iPhone 8 plus";
+    
     cell.detailTextLabel.textColor = COLOR(102, 102, 102);
     cell.detailTextLabel.font = Regular(13);
+    NSDictionary * dict = tableView == self.ProceedTableView ? self.waitingArray[indexPath.section] : self.alreadyArray[indexPath.section];
+    
+    NSString * status = dict[@"status"];
+    if ([status intValue] == 1) {
+        status = @"正常未还";
+    }else if ([status intValue] == 2){
+        status = @"逾期未还";
+    }else if ([status intValue] == 3){
+        status = @"已还";
+    }
+    switch (indexPath.row) {
+        case 0:
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"amount"]];
+            break;
+            
+        case 1:
+cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
+            break;
+            
+        case 2:
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
+            
+            break;
+            
+        case 3:
+            cell.detailTextLabel.text = dict[@"exptime"];
+            
+            break;
+            
+        case 4:
+            cell.detailTextLabel.text = status;
+            break;
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 35;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (tableView == self.ProceedTableView) {
+    if (tableView == self.finishTableView) {
         return 10;
     }
     return 60;
@@ -68,7 +104,8 @@
     UIView * view = [UIView new];
     view.backgroundColor = [UIColor whiteColor];
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    [btn setTitle:@"  还立即还款  " forState:(UIControlStateNormal)];
+    [btn setTitle:@"  立即还款  " forState:(UIControlStateNormal)];
+    btn.tag = 1000 + section;
     btn.layer.cornerRadius = 5;
     btn.clipsToBounds = YES;
     [view addSubview:btn];
@@ -79,7 +116,7 @@
         make.bottom.equalTo(view).offset(-22);
         make.height.mas_offset(25);
     }];
-    [btn addTarget:self action:@selector(GoCoinRepaymentPlanViewController) forControlEvents:(UIControlEventTouchUpInside)];
+    [btn addTarget:self action:@selector(GoCoinRepaymentPlanViewController:) forControlEvents:(UIControlEventTouchUpInside)];
     
     UIView * LineView = [UIView new];
     LineView.backgroundColor = tableView.backgroundColor;
@@ -88,16 +125,21 @@
         make.left.right.bottom.equalTo(view);
         make.height.mas_equalTo(10);
     }];
-    if (tableView == self.ProceedTableView) {
+    if (tableView == self.finishTableView) {
         [btn removeFromSuperview];
     }
     return view;
 }
-- (void)GoCoinRepaymentPlanViewController{
+- (void)GoCoinRepaymentPlanViewController:(UIButton *)btn{
     CoinMemberBuyViewController * vc = [CoinMemberBuyViewController new];
     vc.type = BRPayRepayment;
+    NSDictionary * dict = self.waitingArray[btn.tag - 1000];
+    vc.IdStr = dict[@"id"];
+    vc.titleString = @"";
+    vc.Money = dict[@"repay_money"];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
@@ -106,11 +148,12 @@
     return 40;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSDictionary * dict = tableView == self.ProceedTableView ? self.waitingArray[section] : self.alreadyArray[section];
     UIView * view = [UIView new];
     view.backgroundColor = [UIColor whiteColor];
     UILabel * label = [UILabel new];
-    label.text = @"【1/6】期";
-    label.textColor = (tableView == self.finishTableView ? COLOR(254, 0, 0) : COLOR(255, 169, 73));
+    label.text = [NSString stringWithFormat:@"【%@/%@】期",dict[@"period_num"],dict[@"period"]];
+    label.textColor = (tableView == self.ProceedTableView ? COLOR(254, 0, 0) : COLOR(255, 169, 73));
     label.font = Regular(14);
     [view addSubview:label];
     int offset = (section == 0 ? 10 : 0);
@@ -158,8 +201,6 @@
 
 - (UIView *)headView {
     if (!_headView) {
-        
-        
         
         _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , BCWidth, 40)];
         
@@ -260,7 +301,7 @@
 
 - (UITableView *)finishTableView{
     if (_finishTableView == nil) {
-        _finishTableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, BCWidth - 20, BCHeight - 40 -  BCNaviHeight) style:(UITableViewStyleGrouped)];
+        _finishTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth + 10, 0, BCWidth - 20, BCHeight - 40 -  BCNaviHeight) style:(UITableViewStyleGrouped)];
         _finishTableView.delegate = self;
         _finishTableView.dataSource = self;
         _finishTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -271,7 +312,7 @@
 
 - (UITableView *)ProceedTableView{
     if (_ProceedTableView == nil) {
-        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth, 0, BCWidth, BCHeight - 40) style:(UITableViewStyleGrouped)];
+        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:(UITableViewStyleGrouped)];
         _ProceedTableView.delegate = self;
         _ProceedTableView.dataSource = self;
         _ProceedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -279,5 +320,20 @@
     return _ProceedTableView;
 }
 
+- (void)request{
+    NSString * url = [NSString stringWithFormat:@"repay-plan/%@",@"861"];
+    
+    [KTooL HttpPostWithUrl:url parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        if (BCStatus) {
+            self.waitingArray = responseObject[@"data"][@"waiting"];
+             self.alreadyArray = responseObject[@"data"][@"already"];
+            [self.finishTableView reloadData];
+            [self.ProceedTableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
 
 @end
