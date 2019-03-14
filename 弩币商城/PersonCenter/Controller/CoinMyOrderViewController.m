@@ -15,6 +15,8 @@
     
     UIImageView *backImageView;//滑
     UIButton *selectedBtn;
+    NSMutableArray *allArr,*notArr,*aleratArr,*notEnableArr,*finshArr;
+    NSInteger allF,notF,aleartF,notEnableF,finishF;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -30,6 +32,13 @@
     [super viewDidLoad];
       self.navigationItem.title = @"我的订单";
     
+    allArr = [NSMutableArray arrayWithCapacity:1];
+    notArr = [NSMutableArray arrayWithCapacity:1];
+    aleratArr = [NSMutableArray arrayWithCapacity:1];
+    notEnableArr = [NSMutableArray arrayWithCapacity:1];
+    finshArr = [NSMutableArray arrayWithCapacity:1];
+    
+    
     [self.view addSubview:self.headView];
     
     [self.view addSubview:self.backScrollView];
@@ -42,54 +51,218 @@
     [self.backScrollView addSubview:self.finshTableView];
     
 
-    [self SetReturnButton];
+   
 
+   
+    
+    
+    
+     [self getData:@""andPage:1];
+     [self getData:@"WAITPAY"andPage:1];
+     [self getData:@"WAITSEND"andPage:1];
+     [self getData:@"WAITRECEIVE"andPage:1];
+     [self getData:@"FINISH"andPage:1];
+    
+    
     if (_isNotPay == 1) {
         
-     [self.backScrollView   setContentOffset:CGPointMake(BCWidth, 0) animated:NO];
+        [self.backScrollView   setContentOffset:CGPointMake(BCWidth, 0) animated:NO];
         
-       
+        
         
         UIButton *btn = [self.headView viewWithTag:201];
-     
+        
         [self clickTopButton:btn];
     }
     
     if (_isNotPay == 3) {
         
         
-          [self.backScrollView   setContentOffset:CGPointMake(BCWidth * 3, 0) animated:NO];
+        [self.backScrollView   setContentOffset:CGPointMake(BCWidth * 3, 0) animated:NO];
         
         
         UIButton *btn = [self.headView viewWithTag:203];
         
         [self clickTopButton:btn];
         
-       
+        
     }
     
-    
-//    if (_alertdataView) {
-//        [_alertdataView removeFromSuperview];
-//        _alertdataView = nil;
-//    }
-//    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-//    
-//    self.alertdataView.frame =self.view.bounds;
-//    
-//    [self.view addSubview:_alertdataView];
-//    
     
     
 }
 
-
-
+#pragma mark 网络请求
+- (void)getData:(NSString *)type andPage:(NSInteger)page {
+    
+    [KTooL HttpPostWithUrl:@"Order/my_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"type":type,@"page":@(page)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            NSArray *arr =  [responseObject objectForKey:@"data"];
+            if ([type isEqualToString:@""]) {//全部订单
+                [self.allTableView.mj_footer endRefreshing];
+                [allArr addObjectsFromArray:arr];
+                
+                if (arr.count == 0 && allArr.count == 0) {
+                    
+                    if (_alertdataView) {
+                                [_alertdataView removeFromSuperview];
+                                _alertdataView = nil;
+                            }
+                            self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                    
+                            self.alertdataView.frame =self.view.bounds;
+                    
+                            [self.allTableView addSubview:_alertdataView];
+                    return ;
+                    
+                }
+                
+                if (arr.count < 10) {
+                    
+                    [self.allTableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [self.allTableView reloadData];
+                
+            } else if ([type isEqualToString:@"WAITPAY"]){//代付款
+                [self.notPayTableView.mj_footer endRefreshing];
+                [notArr addObjectsFromArray:arr];
+                
+                if (arr.count == 0 && notArr.count == 0) {
+                    
+                    if (_alertdataView) {
+                        [_alertdataView removeFromSuperview];
+                        _alertdataView = nil;
+                    }
+                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                    
+                    self.alertdataView.frame =self.view.bounds;
+                    
+                    [self.notPayTableView addSubview:_alertdataView];
+                    return ;
+                    
+                }
+                
+                if (arr.count < 10) {
+                    
+                    [self.notPayTableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [self.notPayTableView reloadData];
+                
+            }else if ([type isEqualToString:@"WAITSEND"]){//代发货
+                [self.notDispatchTabview.mj_footer endRefreshing];
+                [aleratArr addObjectsFromArray:arr];
+                
+                
+                if (arr.count == 0 && aleratArr.count == 0) {
+                    
+                    if (_alertdataView) {
+                        [_alertdataView removeFromSuperview];
+                        _alertdataView = nil;
+                    }
+                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                    
+                    self.alertdataView.frame =self.view.bounds;
+                    
+                    [self.notDispatchTabview addSubview:_alertdataView];
+                    return ;
+                    
+                }
+                
+                
+                if (arr.count < 10) {
+                    
+                    [self.notDispatchTabview.mj_footer endRefreshingWithNoMoreData];
+                }
+                [self.notDispatchTabview reloadData];
+                
+            }else if ([type isEqualToString:@"WAITRECEIVE"]){//代收货
+                [self.notEnableTableView.mj_footer endRefreshing];
+                [notEnableArr addObjectsFromArray:arr];
+                
+                
+                if (arr.count == 0 && notEnableArr.count == 0) {
+                    
+                    if (_alertdataView) {
+                        [_alertdataView removeFromSuperview];
+                        _alertdataView = nil;
+                    }
+                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                    
+                    self.alertdataView.frame =self.view.bounds;
+                    
+                    [self.notEnableTableView addSubview:_alertdataView];
+                    return ;
+                    
+                }
+                
+                
+                if (arr.count < 10) {
+                    
+                    [self.notEnableTableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [self.notEnableTableView reloadData];
+                
+            }else {//已完成
+                [self.finshTableView.mj_footer endRefreshing];
+                [finshArr addObjectsFromArray:arr];
+                
+                
+                if (arr.count == 0 && finshArr.count == 0) {
+                    
+                    if (_alertdataView) {
+                        [_alertdataView removeFromSuperview];
+                        _alertdataView = nil;
+                    }
+                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                    
+                    self.alertdataView.frame =self.view.bounds;
+                    
+                    [self.finshTableView addSubview:_alertdataView];
+                    return ;
+                    
+                }
+                
+                
+                if (arr.count < 10) {
+                    
+                    [self.finshTableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [self.finshTableView reloadData];
+                
+            }
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+}
 #pragma mark tableview 代理
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 3;
+    if (tableView == self.allTableView) {
+        
+        return allArr.count;
+    }else if (tableView == self.notPayTableView) {
+         return notArr.count;
+    }else if (tableView == self.notDispatchTabview ){
+        
+         return aleratArr.count;
+    }else if (tableView == self.notEnableTableView){
+         return notEnableArr.count;
+    }else {
+        
+         return finshArr.count;
+        
+    }
 }
 
 
@@ -99,10 +272,21 @@
         
         return 158;
         
-    } else{
+    } else if (tableView == self.allTableView){
     
-    return 197;
+   NSDictionary *dic = [allArr objectAtIndexCheck:indexPath.row];
+        if ([[dic objectForKey:@"check_status"] integerValue] == 1) {//代发货
+            return 158;
+            
+            
+        }else {
+            
+            return 197;
+        }
     
+    } else {
+        
+          return 197;
     }
 }
 
@@ -111,20 +295,78 @@
     
     
     if (tableView == self.allTableView) {
-        static NSString *ID = @"kpo";
-        CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
-        if (!cell) {
-            cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:0];
+             NSDictionary *dic = [allArr objectAtIndexCheck:indexPath.row];
+        
+        if ([[dic objectForKey:@"check_status"] integerValue] == 0) {//代付款
             
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            static NSString *ID = @"kpo";
+            CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:0];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
             
+            
+            
+            [cell setDataForValue:dic];
+            return cell;
+            
+        } else if ([[dic objectForKey:@"check_status"] integerValue] == 1) {
+            
+            static NSString *ID = @"kpos";
+            CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:1];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
+            
+            
+            
+            [cell setDataForValue:dic];
+            return cell;
+            
+        }else if ([[dic objectForKey:@"check_status"] integerValue] == 3) {
+            
+            static NSString *ID = @"kpod";
+            CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:2];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
+            
+            [cell.enableBtn addMoreParams:[dic objectForKey:@"order_id"]];
+            [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
+            [cell setDataForValue:dic];
+            return cell;
+        }else  {
+            
+            static NSString *ID = @"kposs";
+            CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:3];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
+            
+            
+            
+            [cell setDataForValue:dic];
+            return cell;
             
         }
         
         
-        
-        
-        return cell;
         
     } else if (tableView == self.notPayTableView) {
         
@@ -139,7 +381,8 @@
             
         }
         
-       
+       NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        [cell setDataForValue:dic];
         
         return cell;
         
@@ -157,7 +400,8 @@
         }
         
         
-        
+        NSDictionary *dic = [aleratArr objectAtIndexCheck:indexPath.row];
+        [cell setDataForValue:dic];
         
         return cell;
         
@@ -175,9 +419,12 @@
             
         }
         
+         NSDictionary *dic = [notEnableArr objectAtIndexCheck:indexPath.row];
+        [cell.enableBtn addMoreParams:[dic objectForKey:@"order_id"]];
         [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
         
-        
+       
+        [cell setDataForValue:dic];
         
         return cell;
         
@@ -197,7 +444,8 @@
         }
         
         
-        
+        NSDictionary *dic = [finshArr objectAtIndexCheck:indexPath.row];
+        [cell setDataForValue:dic];
         
         return cell;
         
@@ -225,7 +473,55 @@
 #pragma mark 确认订单
 - (void)clickEnable:(UIButton *)btn {
     
-    [self.navigationController pushViewController:[CoinOrderSuccessViewController new] animated:YES];
+    NSString *orderID = [btn getMoreParams];
+    
+    [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+           [self.navigationController pushViewController:[CoinOrderSuccessViewController new] animated:YES];
+            
+        } else {
+            
+            VCToast(@"确认订单失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+    
+}
+
+#pragma mark 取消订单
+- (void)cancelEnable:(UIButton *)btn {
+    
+    NSString *orderID = [btn getMoreParams];
+    
+    [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            VCToast(@"取消订单成功", 1);
+            
+        } else {
+            
+            VCToast(@"取消订单失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+    
 }
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
@@ -350,6 +646,15 @@
         _allTableView.backgroundColor = DIVI_COLOR;
         _allTableView.showsVerticalScrollIndicator = NO;
         _allTableView.showsHorizontalScrollIndicator = NO;
+        
+        _allTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+            allF++;
+            [self getData:@""andPage:allF];
+            
+                    }];
     }
     
     
@@ -369,6 +674,15 @@
         _notPayTableView.backgroundColor = DIVI_COLOR;
         _notPayTableView.showsVerticalScrollIndicator = NO;
         _notPayTableView.showsHorizontalScrollIndicator = NO;
+        
+        _notPayTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+            notF++;
+            [self getData:@"WAITPAY"andPage:notF];
+            
+        }];
     }
     
     
@@ -388,6 +702,16 @@
         
         _notDispatchTabview.showsVerticalScrollIndicator = NO;
         _notDispatchTabview.showsHorizontalScrollIndicator = NO;
+        
+        
+        _notDispatchTabview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+            aleartF++;
+            [self getData:@"WAITSEND"andPage:aleartF];
+            
+        }];
     }
     
     return _notDispatchTabview;
@@ -407,6 +731,15 @@
         
         _notEnableTableView.showsVerticalScrollIndicator = NO;
         _notEnableTableView.showsHorizontalScrollIndicator = NO;
+        
+        _notEnableTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+           notEnableF++;
+            [self getData:@"WAITRECEIVE"andPage:notEnableF];
+            
+        }];
     }
     
     return _notEnableTableView;
@@ -426,6 +759,15 @@
         
         _finshTableView.showsVerticalScrollIndicator = NO;
         _finshTableView.showsHorizontalScrollIndicator = NO;
+        
+        _finshTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+            finishF++;
+            [self getData:@"FINISH"andPage:finishF];
+            
+        }];
     }
     
     return _finshTableView;
