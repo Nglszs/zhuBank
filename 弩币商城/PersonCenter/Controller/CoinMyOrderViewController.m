@@ -331,7 +331,7 @@
             [cell setDataForValue:dic];
             return cell;
             
-        }else if ([[dic objectForKey:@"check_status"] integerValue] == 3) {
+        }else if ([[dic objectForKey:@"check_status"] integerValue] == 4) {
             
             static NSString *ID = @"kpod";
             CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
@@ -776,15 +776,17 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
+    if (scrollView == self.backScrollView) {
+        //     点击按钮
+        NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
+        
+        
+        UIButton *btn = [self.headView viewWithTag:200 + index];
+        
+        [self clickTopButton:btn];
+    }
     
-    
-    //     点击按钮
-    NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
-    
-    
-    UIButton *btn = [self.headView viewWithTag:200 + index];
-    
-    [self clickTopButton:btn];
+   
     
 }
 @end
