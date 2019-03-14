@@ -95,7 +95,7 @@
     [view addSubview:GoBuyButton];
     [GoBuyButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(view);
-        make.width.mas_equalTo(SetX(150));
+        make.width.mas_equalTo(SetX(130));
     }];
     
     UIView * view2 = [UIView new];
@@ -339,7 +339,11 @@
         dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
         dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
         dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
-        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
+        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"q_fenqi"];
+        
+        dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
+        dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
+        
         [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -371,7 +375,7 @@
 
 - (void)upFootView:(NSDictionary *)dataDict{
     if (!BCDictIsEmpty(dataDict)) {
-        NSString * money = [NSString stringWithFormat:@"实付金额:    ￥%@",dataDict[@"total_price"]];
+        NSString * money = [NSString stringWithFormat:@"实付金额:  ￥%@",dataDict[@"total_price"]];
         NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:money];
         [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:254/255.0 green:70/255.0 blue:70/255.0 alpha:1.0] range:NSMakeRange(5, string.length - 5)];
         self.ActualPriceLabel.attributedText = string;
@@ -379,7 +383,7 @@
         
         NSString * q_fenqi = dataDict[@"is_fenqi"];
         if ([q_fenqi integerValue] == 1) {
-            self.per_moneyLabel.text = [NSString stringWithFormat:@"首付：¥%@ 月供：¥%@ 期数：%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
+            self.per_moneyLabel.text = [NSString stringWithFormat:@"首付:¥%@  月供:¥%@ 期数:%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
         }
     }
     

@@ -97,7 +97,7 @@
             cell.detailTextLabel.text = dict[@"bank_card"];
             break;
         case 11:
-            cell.detailTextLabel.text = dict[@"remaining"];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"remaining"]];
             break;
     }
     return cell;

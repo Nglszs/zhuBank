@@ -135,7 +135,7 @@ cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_a
     vc.type = BRPayRepayment;
     NSDictionary * dict = self.waitingArray[btn.tag - 1000];
     vc.IdStr = dict[@"id"];
-    vc.titleString = @"";
+    vc.titleString = dict[@"name"];
     vc.Money = dict[@"repay_money"];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -312,7 +312,7 @@ cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_a
 
 - (UITableView *)ProceedTableView{
     if (_ProceedTableView == nil) {
-        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:(UITableViewStyleGrouped)];
+        _ProceedTableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, BCWidth - 20, BCHeight - 40 - BCNaviHeight) style:(UITableViewStyleGrouped)];
         _ProceedTableView.delegate = self;
         _ProceedTableView.dataSource = self;
         _ProceedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

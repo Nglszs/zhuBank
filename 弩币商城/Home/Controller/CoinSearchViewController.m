@@ -27,7 +27,6 @@
     [self initView];
     [self SetReturnButton];
     [self Request];
-    
 }
 
 // 布局

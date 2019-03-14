@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Home/CoinConfirmOrderViewController.m"
-            timestampString = "574161318.070977"
+            timestampString = "574237478.828934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "344"
-            endingLineNumber = "344"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "-submitOrder"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Home/CoinConfirmOrderViewController.m"
-            timestampString = "574161318.071052"
+            timestampString = "574237478.829123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
+            startingLineNumber = "350"
+            endingLineNumber = "350"
             landmarkName = "-submitOrder"
             landmarkType = "7">
          </BreakpointContent>
@@ -51,13 +51,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/PersonCenter/Controller/CoinRepaymentPlanViewController.m"
-            timestampString = "574161370.665507"
+            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/AppDelegate.m"
+            timestampString = "574237478.829232"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "-GoCoinRepaymentPlanViewController:"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "-onResp:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/AppDelegate.m"
+            timestampString = "574237478.829317"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "-application:openURL:options:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
