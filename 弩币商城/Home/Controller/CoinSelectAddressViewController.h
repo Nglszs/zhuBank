@@ -8,10 +8,11 @@
 
 #import "CoinBaseViewController.h"
 
+typedef void(^BRSelectAddress)(NSString * addressID,NSString * name,NSString * phone,NSString * address_area,NSString * address);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinSelectAddressViewController : CoinBaseViewController
-
+@property (nonatomic,copy)BRSelectAddress address;
 @end
 
 NS_ASSUME_NONNULL_END

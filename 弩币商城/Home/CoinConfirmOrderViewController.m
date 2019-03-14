@@ -16,7 +16,7 @@
 #import "CoinInvoiceViewController.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
-@property (nonatomic,strong)NSDictionary * DataDict;
+@property (nonatomic,strong)NSMutableDictionary * DataDict;
 
 @property (nonatomic,strong)UILabel * ActualPriceLabel;
 @property (nonatomic,strong)UILabel * per_moneyLabel;
@@ -95,7 +95,7 @@
     [view addSubview:GoBuyButton];
     [GoBuyButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(view);
-        make.width.mas_equalTo(SetX(150));
+        make.width.mas_equalTo(SetX(130));
     }];
     
     UIView * view2 = [UIView new];
@@ -255,12 +255,35 @@
     // 地址选择
     if (indexPath.section == 0 && indexPath.row == 0) {
         CoinSelectAddressViewController * vc = [CoinSelectAddressViewController new];
+        WS(weakSelf);
+        vc.address = ^(NSString *addressID, NSString *name, NSString *phone, NSString *address_area, NSString *address) {
+            // 修改数据源刷新数据
+            NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:self.DataDict[@"address_info"]];
+            [dict setValue:addressID forKey:@"address_id"];
+            [dict setValue:address forKey:@"address"];
+            [dict setValue:address_area forKey:@"address_area"];
+            [dict setValue:name forKey:@"consignee"];
+            [dict setValue:phone forKey:@"mobile"];
+            [weakSelf.DataDict setValue:dict forKey:@"address_info"];
+            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:(UITableViewRowAnimationNone)];
+        };
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
     
     // 发票信息
     if (indexPath.section == 2 && indexPath.row == 1) {
         CoinInvoiceViewController * vc = [CoinInvoiceViewController new];
+        WS(weakSelf);
+        vc.block = ^(NSString * _Nonnull invoice_rise, NSString * _Nonnull invoice_content) {
+            NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:weakSelf.DataDict[@"invoice_info"]];
+            [dict setObject:invoice_content forKey:@"invoice_content"];
+            [dict setObject:invoice_rise forKey:@"invoice_rise"];
+            [weakSelf.DataDict setObject:dict forKey:@"invoice_info"];
+            NSIndexPath * index = [NSIndexPath indexPathForRow:1 inSection:2];
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:(UITableViewRowAnimationNone)];
+        };
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -309,27 +332,6 @@
 }
 
 - (void)submitOrder{
-   /*
-    参数：
-    user_id 用户id
-    address_id 收货地址id
-    goods_id 商品id
-    goods_num 购买数量
-    item_id 规格id
-    action 行为 (默认：buy_now)
-    shou_pay 首付
-    per_money 每期还款数
-    qishu 期数
-    q_fenqi 是否分期
-    invoice_rise 发票抬头(默认为空 个人/单位)
-    invoice_content 发票内容(默认为空 商品明细/商品类别/不开发票)
-    方式：POST
-    地址：http://test2.tkgo.cn/Api/Order/submit_order
-    返回:
-    
-    判断状态
-    1： 成功 返回订单号(eg:201903011950366160)
-    */
     if (self.DataDict) {
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
         dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
@@ -339,7 +341,10 @@
         dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
         dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
         dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
-        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
+        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"q_fenqi"];
+        dict[@"action"] = @"buy_now";
+        dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
+        dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
         [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -359,7 +364,7 @@
     [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         if (BCStatus) {
-            self.DataDict = responseObject[@"data"];
+            self.DataDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"data"]];
             [self upFootView:self.DataDict[@"order_info"]];
             [self.tableView reloadData];
         }
@@ -371,15 +376,13 @@
 
 - (void)upFootView:(NSDictionary *)dataDict{
     if (!BCDictIsEmpty(dataDict)) {
-        NSString * money = [NSString stringWithFormat:@"实付金额:    ￥%@",dataDict[@"total_price"]];
+        NSString * money = [NSString stringWithFormat:@"实付金额:  ￥%@",dataDict[@"total_price"]];
         NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:money];
         [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:254/255.0 green:70/255.0 blue:70/255.0 alpha:1.0] range:NSMakeRange(5, string.length - 5)];
         self.ActualPriceLabel.attributedText = string;
-        
-        
         NSString * q_fenqi = dataDict[@"is_fenqi"];
         if ([q_fenqi integerValue] == 1) {
-            self.per_moneyLabel.text = [NSString stringWithFormat:@"首付：¥%@ 月供：¥%@ 期数：%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
+            self.per_moneyLabel.text = [NSString stringWithFormat:@"首付:¥%@  月供:¥%@ 期数:%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
         }
     }
     

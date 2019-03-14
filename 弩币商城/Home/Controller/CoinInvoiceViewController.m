@@ -9,8 +9,9 @@
 #import "CoinInvoiceViewController.h"
 #import "CoinBindingCardViewController.h"
 #import "CoinMyCardViewController.h"
-@interface CoinInvoiceViewController ()
 
+@interface CoinInvoiceViewController ()
+@property (nonatomic,strong)UIButton * tempButton;
 @end
 
 @implementation CoinInvoiceViewController
@@ -120,10 +121,29 @@ self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)affirmButtonAction:(UIButton *)btn{
-    CoinMyCardViewController * vc = [CoinMyCardViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.block) {
+        NSString * rise = @"个人";
+        NSString * content = @"";
+        if (self.tempButton) {
+            switch (self.tempButton.tag) {
+                case 1000:
+                    content = @"商品明细";
+                    break;
+                case 1001:
+                    content = @"商品类别";
+                    break;
+                case 1002:
+                    content = @"不开发票";
+                    break;
+                
+            }
+        }
+        self.block(rise, content);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)SetButton:(CGFloat)left title:(NSString *)title{
+    
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [btn setBackgroundImage:[UIImage imageNamed:@"未选中"] forState:(UIControlStateNormal)];
     [btn setBackgroundImage:[UIImage imageNamed:@"选中"] forState:(UIControlStateSelected)];
@@ -143,9 +163,24 @@ self.view.backgroundColor = [UIColor whiteColor];
         make.left.equalTo(btn.mas_right).offset(10);
         make.centerY.equalTo(btn);
     }];
-    [btn addtargetBlock:^(UIButton *button) {
-        btn.selected = !btn.selected;
-    }];
+    [btn addTarget:self action:@selector(btnAction:) forControlEvents:(UIControlEventTouchUpInside)];
+
+    if (left == 16) {
+        btn.tag = 1000;
+    }else if (left == SetX(126)){
+        btn.tag = 1001;
+    }else if (left == SetX(235)){
+        btn.tag = 1002;
+    }
+    
+}
+- (void)btnAction:(UIButton *)btn{
+    if (self.tempButton == btn) {
+        return;
+    }
+    btn.selected = YES;
+    self.tempButton.selected = NO;
+    self.tempButton = btn;
     
 }
 @end

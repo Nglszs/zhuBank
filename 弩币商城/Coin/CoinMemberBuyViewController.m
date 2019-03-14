@@ -8,15 +8,17 @@
 
 #import "CoinMemberBuyViewController.h"
 #import "CoinMemberSucceedViewController.h"
+#import "WXApi.h"
+#import <AlipaySDK/AlipaySDK.h>
 @interface CoinMemberBuyViewController ()
-
+@property (nonatomic,strong)UIButton * tempButton;
 @end
 
 @implementation CoinMemberBuyViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = (self.type == BRPayRepayment ? @"购买帑库金钻会员卡" : @"还款");
+    self.title = (self.type == BRPayBuyMember ? @"购买帑库金钻会员卡" : @"还款");
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
@@ -128,6 +130,11 @@
             make.right.centerY.equalTo(view);
             make.width.height.mas_equalTo(17);
         }];
+        btn.tag = i;
+        if (i== 0) {
+            btn.selected = YES;
+            self.tempButton = btn;
+        }
         
     }
     
@@ -145,28 +152,68 @@
     payButton.layer.cornerRadius = 10;
     payButton.clipsToBounds = YES;
     payButton.adjustsImageWhenHighlighted = NO;
-    [payButton addTarget:self action:@selector(paySuccess) forControlEvents:(UIControlEventTouchUpInside)];
+    [payButton addTarget:self action:@selector(pay) forControlEvents:(UIControlEventTouchUpInside)];
+}
+
+- (void)pay{
+    
+    NSString * gateway = self.tempButton.tag == 0 ? @"wechat" : @"alipay";
+    NSString * url = [NSString stringWithFormat:@"repay-now/%@",self.IdStr];
+    [KTooL HttpPostWithUrl:url parameters:@{@"id":self.IdStr,@"gateway":gateway} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            if (self.tempButton.tag == 0) {
+                [self wechatPay:responseObject[@"data"]];
+            }else{
+                [self alipayPay:responseObject[@"data"][@"alipay"]];
+            }
+        }
+  } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+   
+}
+- (void)alipayPay:(NSString *)orderString{
+    
+    [[AlipaySDK defaultService] payOrder:orderString fromScheme:@"com.Zbanks.tkgo" callback:^(NSDictionary *resultDic) {
+        if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]){
+            [self paySuccess];
+        }else{
+            [self payError];
+        }
+    }];
+    
+}
+
+- (void)wechatPay:(NSDictionary *)data{
+    PayReq *request = [[PayReq alloc] init] ;
+    request.partnerId = data[@"partnerid"];
+    request.prepayId= data[@"prepayid"];
+    request.package = data[@"package"];
+    request.nonceStr= data[@"noncestr"];
+    request.timeStamp = data[@"timestamp"];
+    request.sign= data[@"sign"];
+    [WXApi sendReq:request];
+}
+- (void)SelectBtnAction:(UIButton *)btn{
+    btn.adjustsImageWhenHighlighted = NO;
+    if (self.tempButton == btn) {
+        return;
+    }
+    self.tempButton.selected = NO;
+    btn.selected = YES;
+    self.tempButton = btn;
 }
 
 - (void)paySuccess{
-    CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-- (void)SelectBtnAction:(UIButton *)btn{
+    //        CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
+    //        [self.navigationController pushViewController:vc animated:YES];
     
-    btn.selected = !btn.selected;
+}
+- (void)payError{
+    
+    
 }
 
-//立即还款
-- (void)pay{
-    
-  NSString * url = [NSString stringWithFormat:@"repay-now/%@",self.IdStr];
-    [KTooL HttpPostWithUrl:url parameters:@{@"id":self.IdStr,@"gateway":@"wechat"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"%@",responseObject);
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
-        }];
-        
-    
-}
+
 @end
