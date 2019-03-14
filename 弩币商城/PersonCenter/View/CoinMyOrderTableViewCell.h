@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 // type = 0，代付款，1 代发货，2 确认收货，3 已完成
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andType:(NSUInteger)type;
 
-
+- (void)setDataForValue:(NSDictionary *)data;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -55,7 +55,7 @@
     leftL.text = @"订单编号：31413414";
     leftL.textColor = TITLE_COLOR;
     leftL.font = Regular(12);
-
+    leftL.tag = 100;
     [backView addSubview:leftL];
     [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -105,6 +105,7 @@
     UILabel *sizeL = [[UILabel alloc] init];
     sizeL.textColor = COLOR(102, 102, 102);
     sizeL.font = Regular(10);
+    sizeL.tag = 200;
     sizeL.text = @"选择规格：xxx";
     [backView addSubview:sizeL];
     [sizeL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,6 +155,7 @@
     UILabel *timeL = [[UILabel alloc] init];
     timeL.text = @"共1件商品  合计：￥82.00 ";
     timeL.textColor = TITLE_COLOR;
+    timeL.tag = 300;
     timeL.font = Regular(13);
     [backView addSubview:timeL];
     [timeL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -291,6 +293,43 @@
     }
     
     
+    
+}
+
+- (void)setDataForValue:(NSDictionary *)data {
+    
+    
+    [self.CommodityImage sd_setImageWithURL:[data objectForKey:@"original_img"]];
+    
+    UILabel *leftL = [self.contentView viewWithTag:100];
+    leftL.text = [NSString stringWithFormat:@"订单编号：%@",[data objectForKey:@"order_sn"]];
+    
+    self.CommodityNameLabel.text = [data objectForKey:@"goods_name"];
+    
+    UILabel *sizeL = [self.contentView viewWithTag:200];
+    sizeL.text = [NSString stringWithFormat:@"选择规格：%@",[data objectForKey:@"spec_key_name"]];
+    
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥%@ x%@",[data objectForKey:@"goods_price"],[data objectForKey:@"goods_num"]]];
+    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
+    [str setAttributes:firstAttributes range:NSMakeRange(str.length - [[data objectForKey:@"goods_num"] stringValue].length - 1,[[data objectForKey:@"goods_num"] stringValue].length)];
+    self.CommodityPriceLabel.attributedText = str;
+    
+    
+    
+    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"首付：%@  月供：%@  期数：%@",[data objectForKey:@"first_pay"],[data objectForKey:@"per_return_money"],[data objectForKey:@"period"]]];
+    
+    NSDictionary * firstAttributes1 = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
+    [string2 setAttributes:firstAttributes1 range:NSMakeRange(0,3)];
+     [string2 setAttributes:firstAttributes1 range:NSMakeRange(5 + [[data objectForKey:@"first_pay"] length],3)];
+    [string2 setAttributes:firstAttributes1 range:NSMakeRange(5 + [[data objectForKey:@"first_pay"] length] + [[data objectForKey:@"per_return_money"] length] + 5,3)];
+    
+    self.ByStagesLabel.attributedText = string2;
+    
+    
+//
+    UILabel *timeL = [self.contentView viewWithTag:300];
+    timeL.text = [NSString stringWithFormat:@"共%@件商品  合计：￥%@",[data objectForKey:@"goods_num"],[data objectForKey:@"order_amount"]];
     
 }
 - (void)awakeFromNib {
