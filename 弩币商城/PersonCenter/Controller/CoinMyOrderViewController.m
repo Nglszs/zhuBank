@@ -50,13 +50,6 @@
     [self.backScrollView addSubview:self.notEnableTableView];
     [self.backScrollView addSubview:self.finshTableView];
     
-
-   
-
-   
-    
-    
-    
      [self getData:@""andPage:1];
      [self getData:@"WAITPAY"andPage:1];
      [self getData:@"WAITSEND"andPage:1];
@@ -456,15 +449,41 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
-    if (tableView == self.finshTableView) {
-        vc.type = BROrderFinsh;
-    }else if (tableView == self.notPayTableView){
-        vc.type = BROrderNotPay;
-    }else if (tableView == self.notDispatchTabview){
-        vc.type = BROrderNotDispatch;
-    }else if (tableView == self.notEnableTableView){
-        vc.type = BROrderNotEnable;
+    NSDictionary * dict;
+    if (tableView == self.allTableView) {
+        dict = allArr[indexPath.row];
     }
+    if (tableView == self.finshTableView) {
+        dict = finshArr[indexPath.row];
+        
+    }else if (tableView == self.notPayTableView){
+        dict = notArr[indexPath.row];
+    }else if (tableView == self.notDispatchTabview){
+        dict = aleratArr[indexPath.row];
+        
+    }else if (tableView == self.notEnableTableView){
+        dict = notEnableArr[indexPath.row];
+    }
+//   check_status 校验订单状态(0待付款； 1待发货；2:已完成 ；3:已取消；4:待收货)
+    NSInteger check_status = [dict[@"check_status"] integerValue];
+    switch (check_status) {
+        case 0:
+            vc.type = BROrderNotPay;
+            break;
+            
+        case 1:
+            vc.type = BROrderNotDispatch;
+            break;
+            
+        case 2:
+            vc.type = BROrderFinsh;
+            break;
+            
+        case 3:
+             vc.type = BROrderNotEnable;
+            break;
+    }
+    vc.order_id = dict[@"order_id"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -476,10 +495,6 @@
     NSString *orderID = [btn getMoreParams];
     
     [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        
-        NSLog(@"===%@",responseObject);
-        
-        
         if (BCStatus) {
             
            [self.navigationController pushViewController:[CoinOrderSuccessViewController new] animated:YES];

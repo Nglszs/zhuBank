@@ -83,7 +83,12 @@
         self.CommoditNameLabel.text = dataDict[@"goods_name"];
         self.CommoditSpecificationLabel.text = dataDict[@"spec_key_name"];
         self.CommoditPrice.text = [NSString stringWithFormat:@"￥ %@",dataDict[@"goods_price"]];
-        self.CommoditNumber.text = [NSString stringWithFormat:@"X%@",dataDict[@"num"]];
+        
+        NSString * num = dataDict[@"num"];
+        if (BCStringIsEmpty(num)) {
+            num = dataDict[@"goods_num"];
+        }
+        self.CommoditNumber.text = [NSString stringWithFormat:@"X%@",num];
     }
     
 }

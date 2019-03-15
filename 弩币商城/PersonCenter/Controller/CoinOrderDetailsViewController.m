@@ -11,6 +11,7 @@
 #import "CoinLogisticsViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
+@property (nonatomic,strong)NSDictionary * dataDict;
 @end
 
 @implementation CoinOrderDetailsViewController
@@ -21,6 +22,7 @@
     [self initView];
     [self SetNavTitleColor];
     [self SetReturnButton];
+    [self request];
 }
 
 - (void)initView{
@@ -60,15 +62,115 @@
     if (indexPath.section == 0) {
         CoinConfirmCommodityOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinConfirmCommodityOrderCell" forIndexPath:indexPath];
         cell.selectionStyle = 0;
+        cell.dataDict = self.dataDict[@"goods_info"];
         return cell;
     }
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"商品总额"]];
     cell.textLabel.text = titles[indexPath.section][indexPath.row];
     cell.textLabel.font = Regular(13);
+    cell.detailTextLabel.font = Regular(13);
     cell.textLabel.textColor = COLOR(102, 102, 102);
     cell.selectionStyle = 0;
+    cell.detailTextLabel.text = [self detailTextLabelText:indexPath];
     return cell;
+}
+
+- (NSString *)detailTextLabelText:(NSIndexPath *)index{
+    if (!self.dataDict) {
+        return @"";
+    }
+    NSString * str = @"";
+    
+    NSDictionary * dict = self.dataDict[@"order_info"];
+    if (index.section == 1) {
+        switch (index.row) {
+            case 0:
+                str = dict[@"order_sn"];
+                break;
+            case 1:
+                str = dict[@"add_time"];
+                break;
+            case 2:
+                str = dict[@"address"];
+                break;
+            case 3:
+                str = dict[@"consignee"];
+                break;
+            case 4:
+                str = dict[@"pay_name"];
+                break;
+            case 5:
+                 str = dict[@"shipping_name"];
+                break;
+            case 6:
+                str = dict[@"user_note"];
+                break;
+        }
+    }
+    if (index.section == 2 ) {
+        switch (index.row) {
+            case 0:
+                  str = dict[@"total_amount"];
+                break;
+            case 1:
+                  str = [NSString stringWithFormat:@"￥%@",dict[@"shipping_price"]];
+                break;
+            case 2:
+                  str = [NSString stringWithFormat:@"￥%@",dict[@"order_amount"]];
+                break;
+            
+        }
+    }
+    
+    if (self.type == BROrderNotEnable) {
+        if (index.section == 1) {
+            switch (index.row) {
+                case 0:
+                    str = dict[@"pay_name"];
+                    break;
+                    
+                default:
+                    str = dict[@"shipping_name"];
+                    break;
+            }
+        }
+        
+        if (index.section == 2) {
+            switch (index.row) {
+                case 0:
+                    str = dict[@"invoice_desc"];
+                    break;
+                case 1:
+                    str = dict[@"invoice_title"];
+                    break;
+                case 2:
+                    str = @"";
+                    break;
+                case 3:
+                    str = dict[@"user_note"];
+                    break;
+            }
+        }
+        
+        if (index.section == 3) {
+            switch (index.row) {
+                case 0:
+                    str = dict[@"add_time"];
+                    break;
+                case 1:
+                    str = [NSString stringWithFormat:@"￥%@",dict[@"total_amount"]];
+                    break;
+                case 2:
+                    str = [NSString stringWithFormat:@"￥%@",dict[@"shipping_price"]];
+                    break;
+                case 3:
+                      str = [NSString stringWithFormat:@"￥%@",dict[@"order_amount"]];
+                    break;
+            }
+        }
+    }
+    return str;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -172,6 +274,7 @@
             btn.layer.borderColor = COLOR(153, 153, 153).CGColor;
             btn.clipsToBounds = YES;
             [view addSubview:btn];
+            [btn addTarget:self action:@selector(cancelOrder) forControlEvents:(UIControlEventTouchUpInside)];
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(view).offset(- 16);
                 make.bottom.equalTo(view).offset(-22);
@@ -197,6 +300,7 @@
             btn.clipsToBounds = YES;
             btn.backgroundColor = COLOR(227, 47, 33);
             [view addSubview:btn];
+            [btn addTarget:self action:@selector(goPay) forControlEvents:(UIControlEventTouchUpInside)];
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(view).offset(- 16);
                 make.centerY.equalTo(view);
@@ -265,6 +369,7 @@
                 make.centerY.equalTo(view);
                 make.height.mas_equalTo(27);
             }];
+            [btn addTarget:self action:@selector(order_confirm) forControlEvents:(UIControlEventTouchUpInside)];
             
             UIButton * btn2 = [UIButton buttonWithType:(UIButtonTypeCustom)];
             [btn2 setTitle:@"  查看物流  " forState:(UIControlStateNormal)];
@@ -302,7 +407,10 @@
 }
 - (void)NotEnableHeaderView:(UIView *)superView{
     UILabel * OrderNumberlabel = [UILabel new];
-    OrderNumberlabel.text = @"订单编号：1234525462";
+    if (self.dataDict) {
+         OrderNumberlabel.text = [NSString stringWithFormat:@"订单编号：%@",self.dataDict[@"order_info"][@"order_sn"]];
+    }
+   
     OrderNumberlabel.textColor = COLOR(102, 102, 102);
     OrderNumberlabel.font = Regular(15);
     [superView addSubview:OrderNumberlabel];
@@ -347,7 +455,7 @@
     }];
     
     UILabel * nameLabel = [UILabel new];
-    nameLabel.text = @"隔壁小王     13212345678";
+    
     nameLabel.textColor = COLOR(102, 102, 102) ;
     nameLabel.font = Regular(15);
     [view addSubview:nameLabel];
@@ -359,7 +467,10 @@
     
     
     UILabel * addressLabel = [UILabel new];
-    addressLabel.text = @"江苏省,南京市,秦淮区,中山东路300号";
+    if (self.dataDict) {
+        nameLabel.text = self.dataDict[@"order_info"][@"consignee"];
+        addressLabel.text = self.dataDict[@"order_info"][@"address"];
+    }
     addressLabel.textColor = COLOR(102, 102, 102) ;
     addressLabel.font = Regular(12);
     [view addSubview:addressLabel];
@@ -379,5 +490,48 @@
     }];
     
     
+}
+
+- (void)request{
+    [KTooL HttpPostWithUrl:@"Order/order_detail" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (BCStatus) {
+            self.dataDict = responseObject[@"data"];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+
+// 取消订单
+- (void)cancelOrder{
+    
+    [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
+// 立即付款
+- (void)goPay{
+    
+    
+}
+
+// 确认收货
+- (void)order_confirm{
+    
+    [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 @end

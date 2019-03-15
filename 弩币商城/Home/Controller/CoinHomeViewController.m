@@ -11,7 +11,6 @@
 #import "CoinGoodDetailViewController.h"
 #import "CoinCertifyViewController.h"
 #import "CoinNotDevelopViewController.h"
-
 #import "CoinSearchViewController.h"
 
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
@@ -648,15 +647,12 @@
 
 
 
+
 #pragma mark 点击轮播图
 - (void)didClickImageLoopIndex:(NSInteger)index{
-    
-    
-    CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+     CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
     vc.url = banaUrl;
     [self.navigationController pushViewController:vc animated:YES];
-    
-    
 }
 
 
