@@ -113,7 +113,7 @@
                                 _alertdataView = nil;
                             }
                             self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                             self.alertdataView.frame =self.view.bounds;
                     
                             [self.allTableView addSubview:_alertdataView];
@@ -138,7 +138,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notPayTableView addSubview:_alertdataView];
@@ -164,7 +164,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notDispatchTabview addSubview:_alertdataView];
@@ -191,7 +191,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notEnableTableView addSubview:_alertdataView];
@@ -220,7 +220,7 @@
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
                     
                     self.alertdataView.frame =self.view.bounds;
-                    
+                    [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     [self.finshTableView addSubview:_alertdataView];
                     return ;
                     
@@ -243,6 +243,12 @@
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         
     }];
+}
+
+-(void)clickGo{
+    self.tabBarController.selectedIndex = 1;
+    [self.navigationController popViewControllerAnimated:YES];
+   
 }
 #pragma mark tableview 代理
 

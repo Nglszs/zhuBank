@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinBrowseStatusViewController : CoinBaseViewController
-
+@property (nonatomic, copy) NSString *ID;
+@property (nonatomic, assign) BOOL isBrowse;//yes是借款状态，no是放款状态
 @end
 
 NS_ASSUME_NONNULL_END
