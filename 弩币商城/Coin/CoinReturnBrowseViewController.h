@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinReturnBrowseViewController : CoinBaseViewController
-
+@property (nonatomic, copy) NSString *ID;
 @end
 
 NS_ASSUME_NONNULL_END

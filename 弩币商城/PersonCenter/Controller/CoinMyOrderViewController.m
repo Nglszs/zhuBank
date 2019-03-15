@@ -106,7 +106,7 @@
                                 _alertdataView = nil;
                             }
                             self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                             self.alertdataView.frame =self.view.bounds;
                     
                             [self.allTableView addSubview:_alertdataView];
@@ -131,7 +131,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notPayTableView addSubview:_alertdataView];
@@ -157,7 +157,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notDispatchTabview addSubview:_alertdataView];
@@ -184,7 +184,7 @@
                         _alertdataView = nil;
                     }
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                    
+                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     self.alertdataView.frame =self.view.bounds;
                     
                     [self.notEnableTableView addSubview:_alertdataView];
@@ -213,7 +213,7 @@
                     self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
                     
                     self.alertdataView.frame =self.view.bounds;
-                    
+                    [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
                     [self.finshTableView addSubview:_alertdataView];
                     return ;
                     
@@ -236,6 +236,12 @@
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         
     }];
+}
+
+-(void)clickGo{
+    self.tabBarController.selectedIndex = 1;
+    [self.navigationController popViewControllerAnimated:YES];
+   
 }
 #pragma mark tableview 代理
 
@@ -324,7 +330,7 @@
             [cell setDataForValue:dic];
             return cell;
             
-        }else if ([[dic objectForKey:@"check_status"] integerValue] == 3) {
+        }else if ([[dic objectForKey:@"check_status"] integerValue] == 4) {
             
             static NSString *ID = @"kpod";
             CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
@@ -791,15 +797,17 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
+    if (scrollView == self.backScrollView) {
+        //     点击按钮
+        NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
+        
+        
+        UIButton *btn = [self.headView viewWithTag:200 + index];
+        
+        [self clickTopButton:btn];
+    }
     
-    
-    //     点击按钮
-    NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
-    
-    
-    UIButton *btn = [self.headView viewWithTag:200 + index];
-    
-    [self clickTopButton:btn];
+   
     
 }
 @end

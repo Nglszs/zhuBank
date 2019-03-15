@@ -10,19 +10,22 @@
 #import "CoinBrowseStatusViewController.h"
 #import "CoinBrowseRecordTableViewCell.h"
 #import "CoinReturnBrowseViewController.h"
+#import "CoinNotBrowseTableViewCell.h"
 
 @interface CoinBrowseRecordViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 {
     UIImageView *backImageView;//滑竿
-     UIButton *selectedBtn;
+    UIButton *selectedBtn;
+    NSMutableArray *notArr,*haveArr;
+    NSInteger notF,haveF;
 }
 @property (nonatomic, strong) UIView *headView;//头部标签
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
 
 
-@property (nonatomic, strong) UITableView *payTableView;//
+@property (nonatomic, strong) UITableView *payTableView,*notPayTableView;//
 @end
 
 @implementation CoinBrowseRecordViewController
@@ -31,144 +34,86 @@
     [super viewDidLoad];
     self.navigationItem.title = @"借款记录";
     
+    notArr = [NSMutableArray arrayWithCapacity:1];
+    haveArr = [NSMutableArray arrayWithCapacity:1];
     
     [self.view addSubview:self.headView];
     [self.view addSubview:self.backScrollView];
     
    
-   
+    [self.backScrollView addSubview:self.notPayTableView];
     [self.backScrollView addSubview:self.payTableView];
     
-    [self initView];
+    
+    [self getData:@"1" andPage:1];
+    [self getData:@"2" andPage:1];
 }
+#pragma mark 网络请求
+- (void)getData:(NSString *)type andPage:(NSInteger)page {
 
-- (void)initView {
-   
-    
-    UIView *backV = [[UIView alloc] init];
-    backV.backgroundColor = White;
-    [self.backScrollView addSubview:backV];
-    [backV mas_makeConstraints:^(MASConstraintMaker *make) {
-       
-        make.left.top.mas_equalTo(0);
-        make.width.mas_equalTo(BCWidth);
-        make.height.mas_equalTo(470);
-    }];
-    
-    
-    NSArray *leftA = @[@"借款协议编号：",@"借款金额：",@"利+服务费：",@"综合月利率：",@"优惠金额：",@"借款期限(天)：",@"借款申请日期：",@"到期还款日：",@"还款方式：",@"还款账户名称：",@"还款账号：",@"应还款金额：",@"状态：",@"逾期费："];
-    for (int i = 0; i < leftA.count; i ++) {
+    [KTooL HttpPostWithUrl:@"CashLoan/loan_list" parameters:@{@"type":type,@"p":@(page)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
         
         
-        UILabel *leftL = [[UILabel alloc] init];
-        leftL.text = leftA[i];
-        
-        leftL.textColor = COLOR(102, 102, 102);
-        leftL.font = Regular(13);
-        [backV addSubview:leftL];
-        [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
-            
-            make.top.mas_equalTo(30*i + TOP_Margin);
-            make.left.mas_equalTo(LEFT_Margin);
-            make.height.mas_equalTo(25);
-            
-        }];
-        
-        
-        
-        UILabel *rightL = [[UILabel alloc] init];
-        rightL.text = @"¥700.00";
-        rightL.textColor = COLOR(102, 102, 102);
-        rightL.font = Regular(13);
-        [backV addSubview:rightL];
-        [rightL mas_makeConstraints:^(MASConstraintMaker *make) {
-            
-            make.right.mas_equalTo(-LEFT_Margin);
-            make.top.mas_equalTo(leftL.mas_top);
-            make.height.mas_equalTo(25);
-        }];
-        
-        if (i == 0) {
+        if (BCStatus) {
             
             
-            UIImageView *rightImage = [[UIImageView alloc] init];
-            rightImage.image = BCImage(查看更多);
-            [backV addSubview:rightImage];
-            [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            if ([type isEqualToString:@"1"]) {//还款中
                 
-                make.right.mas_equalTo(-LEFT_Margin);
-                make.centerY.equalTo(leftL);
-            }];
+           
+                NSArray *dataArr = [responseObject objectForKey:@"data"];
+                [notArr addObjectsFromArray:dataArr];
+                [self.notPayTableView reloadData];
             
-            
-            
-            [rightL mas_remakeConstraints:^(MASConstraintMaker *make) {
-               
+            } else {//已还完
                 
-                make.right.equalTo(rightImage.mas_left).offset(-10);
-                make.top.mas_equalTo(leftL.mas_top);
-                make.height.mas_equalTo(25);
+                NSArray *dataArr = [responseObject objectForKey:@"data"];
+                [haveArr addObjectsFromArray:dataArr];
+                [self.payTableView reloadData];
                 
-            }];
+                
+            }
+            
+            
+            
+        } else {
+            
+            
         }
         
-    }
-    
-    
-//    按钮
-    
-    NSDictionary * firstAttributes1 = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
-    NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:@"查看放款记录" attributes:firstAttributes1];
-    UILabel *segLabel = [[UILabel alloc] init];
-    segLabel.attributedText = str1;
-    segLabel.textColor = COLOR(252, 148, 37);
-    segLabel.font = Regular(14);
-    [backV addSubview:segLabel];
-    [segLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         
-        make.left.mas_equalTo(60);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(40);
     }];
-    [segLabel addTapGestureWithBlock:^{
-       
-        [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
-    }];
-    
-    
-    NSDictionary * firstAttributes = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"去还款" attributes:firstAttributes];
-    UILabel *segLabel1 = [[UILabel alloc] init];
-    segLabel1.attributedText = str;
-    segLabel1.textColor = COLOR(252, 148, 37);
-    segLabel1.font = Regular(14);
-    [backV addSubview:segLabel1];
-    [segLabel1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.right.mas_equalTo(-60);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(40);
-    }];
-    
-    [segLabel1 addTapGestureWithBlock:^{
-       
-        [self.navigationController pushViewController:[CoinReturnBrowseViewController new] animated:YES];
-    }];
-    
+
 }
+
 #pragma mark tableview 代理
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 3;
+    if (tableView == self.notPayTableView) {
+        
+        return notArr.count;
+    } else {
+        
+        return haveArr.count;
+    }
+    
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
-    
-    return 395;
+    if (tableView == self.notPayTableView) {
+        
+        return 480;
+    } else {
+        
+       return 395;
+    }
+   
     
     
 }
@@ -176,26 +121,61 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    
-   
+    if (tableView == self.notPayTableView) {
+        
+        static NSString *ID = @"kpo";
+        CoinNotBrowseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+        if (!cell) {
+            cell = [[CoinNotBrowseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            
+        }
+        NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        [cell setValueData:dic];
+        
+        [cell.segLabel addTapGestureWithBlock:^{
+            CoinBrowseStatusViewController *VC = [[CoinBrowseStatusViewController alloc] init];
+            VC.ID = [dic objectForKey:@"id"];
+            [self.navigationController pushViewController:VC animated:YES];
+        }];
+        [cell.segLabel1 addTapGestureWithBlock:^{
+            CoinReturnBrowseViewController *VC =[CoinReturnBrowseViewController new];
+            VC.ID = [dic objectForKey:@"id"];
+                    [self.navigationController pushViewController:VC animated:YES];
+        }];
+        
+        
+        return cell;
+    } else {
+        
         static NSString *ID = @"kpo3";
         CoinBrowseRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
         if (!cell) {
             cell = [[CoinBrowseRecordTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
-           
+            
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             
         }
         
-    [cell.segLabel addTapGestureWithBlock:^{
-       
-         [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
         
-    }];
+        NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        [cell setValueData:dic];
+        
+        [cell.segLabel addTapGestureWithBlock:^{
+            CoinBrowseStatusViewController *VC = [[CoinBrowseStatusViewController alloc] init];
+            VC.ID = [dic objectForKey:@"id"];
+            [self.navigationController pushViewController:VC animated:YES];
+            
+        }];
         
         
         return cell;
+    }
+   
+    
    
     
 }
@@ -315,6 +295,34 @@
     }
     
     return _backScrollView;
+}
+
+- (UITableView *)notPayTableView {
+    
+    
+    if (!_notPayTableView) {
+        _notPayTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, BCWidth, BCHeight ) style:UITableViewStylePlain];
+        _notPayTableView.delegate = self;
+        _notPayTableView.dataSource = self;
+        _notPayTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        
+        _notPayTableView.backgroundColor = DIVI_COLOR;
+        _notPayTableView.showsVerticalScrollIndicator = NO;
+        _notPayTableView.showsHorizontalScrollIndicator = NO;
+        
+        _notPayTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+//            notF++;
+//            [self getData:@"1"andPage:notF];
+            
+        }];
+    }
+    
+    
+    return _notPayTableView;
 }
 - (UITableView *)payTableView {
     

@@ -9,7 +9,9 @@
 #import "CoinBrowseStatusViewController.h"
 #import "CoinBrowseRecordViewController.h"
 @interface CoinBrowseStatusViewController ()
-
+{
+    NSDictionary *dataDic;
+}
 @end
 
 @implementation CoinBrowseStatusViewController
@@ -17,14 +19,97 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-    self.navigationItem.title = @"借款申请成功";
+    self.navigationItem.title = _isBrowse?@"借款申请成功":@"放款记录";
     
     
     [self initView];
     
+    if (_isBrowse) {
+        
+        [self getBrowseData];
+        
+    } else {
+        
+        [self getData];
+    }
+}
+- (void)getBrowseData {
     
+    [KTooL HttpPostWithUrl:@"UserCenter/setting" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
 }
 
+- (void)getData {
+    [KTooL HttpPostWithUrl:@"CashLoan/loan_detail" parameters:@{@"loan_id":_ID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            if ([[dataDic objectForKey:@"satus"] integerValue] == 1) {
+                
+                //                借款进度设置
+                for (int i = 0; i < 2; i ++) {
+                    
+                    UIButton *btn = [self.view viewWithTag:100 + i];
+                    btn.backgroundColor = COLOR(252, 148, 37);
+                }
+                
+                UIButton *btn = [self.view viewWithTag:200];
+                btn.backgroundColor = COLOR(252, 148, 37);
+                
+                
+            } else {
+                
+                
+                //                借款进度设置
+                for (int i = 0; i < 3; i ++) {
+                    
+                    UIButton *btn = [self.view viewWithTag:100 + i];
+                    btn.backgroundColor = COLOR(252, 148, 37);
+                    
+                    if (i >=1 ) {
+                        UIButton *btn = [self.view viewWithTag:200 + i];
+                        btn.backgroundColor = COLOR(252, 148, 37);
+                    }
+                }
+                
+                
+                
+                
+            }
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
 - (void)initView {
     
 //    申请金额
@@ -225,14 +310,18 @@
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
     backBtn1.layer.cornerRadius = 5;
     backBtn1.backgroundColor = COLOR(255, 141, 29);
-    [self.view addSubview:backBtn1];
-    [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(32);
-        make.top.equalTo(divideView.mas_bottom).offset(256);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo(BCWidth - 64);
-    }];
-    
+    if (_isBrowse) {
+         [self.view addSubview:backBtn1];
+        [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(32);
+            make.top.equalTo(divideView.mas_bottom).offset(256);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(BCWidth - 64);
+        }];
+        
+    }
+   
+   
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
         [self.navigationController pushViewController:[CoinBrowseRecordViewController new] animated:YES];

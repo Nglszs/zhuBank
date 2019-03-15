@@ -9,6 +9,12 @@
 #import "CoinReturnBrowseViewController.h"
 
 @interface CoinReturnBrowseViewController ()
+{
+    NSDictionary *dataDic;
+    UILabel *sizeL;
+    UILabel *leftL1;
+    UILabel *leftL2;
+}
 @property (nonatomic,strong)UIImageView * CommodityImage;
 @property (nonatomic,strong)UILabel * CommodityNameLabel;
 
@@ -20,8 +26,38 @@
     [super viewDidLoad];
     self.navigationItem.title = @"还款唐库银票";
     [self initView];
+    [self getData];
 }
-
+- (void)getData {
+    [KTooL HttpPostWithUrl:@"CashLoan/repay_page" parameters:@{@"loan_id":_ID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            dataDic = [responseObject objectNilForKey:@"data"];
+            
+            self.CommodityNameLabel.text = [dataDic objectNilForKey:@"bank_name"];
+            
+            sizeL.text = [NSString stringWithFormat:@"该卡本次最多可还款%@元",[dataDic objectForKey:@"max_money"]];
+            
+            
+            leftL1.text = [NSString stringWithFormat:@"¥%@",[dataDic objectForKey:@"repay_total"]];
+            
+            leftL2.text = [NSString stringWithFormat:@"(其中本金+利息+服务费:%@元，逾期费:%@元)",[dataDic objectForKey:@"benxi"],[dataDic objectForKey:@"overdue_pay"]];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+        NSLog(@"");
+    }];
+    
+}
 - (void)initView {
     
     
@@ -65,7 +101,7 @@
     }];
     
     
-    UILabel *sizeL = [[UILabel alloc] init];
+    sizeL = [[UILabel alloc] init];
     sizeL.textColor = COLOR(153, 153, 153);
     sizeL.font = Regular(13);
     sizeL.text = @"该卡本次最多可还款10000.00元";
@@ -106,7 +142,7 @@
         }];
     
     
-    UILabel *leftL1 = [[UILabel alloc] init];
+    leftL1 = [[UILabel alloc] init];
     leftL1.text = @"¥4050.00";
     leftL1.textColor = COLOR(252, 148, 37);
     leftL1.font = Regular(20);
@@ -120,8 +156,8 @@
     }];
     
     
-    UILabel *leftL2 = [[UILabel alloc] init];
-    leftL2.text = @"(其中本金+利息+服务费:4047.00元，逾期费:3.00元)";
+    leftL2 = [[UILabel alloc] init];
+    
     leftL2.textColor = COLOR(153, 153, 153);
     leftL2.font = Regular(10);
     [self.view addSubview:leftL2];

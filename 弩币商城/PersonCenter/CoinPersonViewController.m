@@ -18,6 +18,7 @@
 #import "CoinLimitViewController.h"
 #import "CoinByStagesViewController.h"
 #import "CoinSelectAddressViewController.h"
+#import "CoinBrowseRecordViewController.h"
 
 @interface CoinPersonViewController ()
 {
@@ -246,6 +247,11 @@
         // 分期记录
         CoinByStagesViewController * vc = [CoinByStagesViewController new];
         [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        
+        
+        CoinBrowseRecordViewController *VC = [[CoinBrowseRecordViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
     }
     
 }
