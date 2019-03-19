@@ -68,6 +68,7 @@
 		0466B0242227C4FE00B07CF8 /* CoinChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0466B0232227C4FE00B07CF8 /* CoinChangePasswordViewController.m */; };
 		048BD704222629A900910A1F /* BCDivideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD703222629A900910A1F /* BCDivideView.m */; };
 		048BD70722265DD400910A1F /* BCGoodView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD70622265DD400910A1F /* BCGoodView.m */; };
+		04FFA79C2240B59800F376E0 /* CoinPayMoneyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FFA79B2240B59800F376E0 /* CoinPayMoneyOrderViewController.m */; };
 		0C0D7972222D693900CC37EE /* CoinUpdatePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D7971222D693900CC37EE /* CoinUpdatePassWordViewController.m */; };
 		0C18AA7A222FCE51001026DD /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C18AA79222FCE51001026DD /* HttpTool.m */; };
 		0C1EB34E222CCC2B00625293 /* CoinBorrowMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1EB34D222CCC2B00625293 /* CoinBorrowMoneyViewController.m */; };
@@ -273,6 +274,8 @@
 		048BD703222629A900910A1F /* BCDivideView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCDivideView.m; sourceTree = "<group>"; };
 		048BD70522265DD400910A1F /* BCGoodView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCGoodView.h; sourceTree = "<group>"; };
 		048BD70622265DD400910A1F /* BCGoodView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCGoodView.m; sourceTree = "<group>"; };
+		04FFA79A2240B59800F376E0 /* CoinPayMoneyOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinPayMoneyOrderViewController.h; sourceTree = "<group>"; };
+		04FFA79B2240B59800F376E0 /* CoinPayMoneyOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinPayMoneyOrderViewController.m; sourceTree = "<group>"; };
 		0C0D7970222D693900CC37EE /* CoinUpdatePassWordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinUpdatePassWordViewController.h; sourceTree = "<group>"; };
 		0C0D7971222D693900CC37EE /* CoinUpdatePassWordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinUpdatePassWordViewController.m; sourceTree = "<group>"; };
 		0C18AA78222FCE51001026DD /* HttpTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
@@ -679,6 +682,8 @@
 			children = (
 				041A2BA02223859000F6E4F7 /* CoinMoneyViewController.h */,
 				041A2BA12223859000F6E4F7 /* CoinMoneyViewController.m */,
+				04FFA79A2240B59800F376E0 /* CoinPayMoneyOrderViewController.h */,
+				04FFA79B2240B59800F376E0 /* CoinPayMoneyOrderViewController.m */,
 				0C1EB34C222CCC2B00625293 /* CoinBorrowMoneyViewController.h */,
 				0C1EB34D222CCC2B00625293 /* CoinBorrowMoneyViewController.m */,
 				0CF0FEEB222D12C8001728F3 /* CoinMemberBuyViewController.h */,
@@ -1159,6 +1164,7 @@
 				0C9A5060222D69C6006045AC /* CoinUpdatePassWordView.m in Sources */,
 				0C6D3AD22229417800C6280F /* CoinFindPassWordViewController.m in Sources */,
 				0CF0FEED222D12C8001728F3 /* CoinMemberBuyViewController.m in Sources */,
+				04FFA79C2240B59800F376E0 /* CoinPayMoneyOrderViewController.m in Sources */,
 				0C6D3AD8222945AD00C6280F /* CoinAboutUsViewController.m in Sources */,
 				0CBDBE61222F6874006E94A8 /* CoinByStagesViewController.m in Sources */,
 				041A2B462223800500F6E4F7 /* CoinBaseViewController.m in Sources */,
@@ -1396,7 +1402,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8Y3DY37M53;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/弩币商城/Vender",
@@ -1414,7 +1420,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Zbanks.tkgo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1424,7 +1430,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8Y3DY37M53;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/弩币商城/Vender",
@@ -1442,7 +1448,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Zbanks.tkgo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
