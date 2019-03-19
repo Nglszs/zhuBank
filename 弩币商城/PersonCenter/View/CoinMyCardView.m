@@ -10,6 +10,15 @@
 
 @interface CoinMyCardView()
 @property (nonatomic,strong)UIScrollView * scrollView;
+@property (nonatomic,strong)UIImageView * ByStagesBankImage;
+@property (nonatomic,strong)UIImageView * loansBankImage;
+@property (nonatomic,strong)UILabel *ByStagesBankNameLabel;
+@property (nonatomic,strong)UILabel *loansBankNameLabel;
+@property (nonatomic,strong)UILabel *ByStagesBankNumberLabel;
+@property (nonatomic,strong)UILabel * loansBankNumberLabel;
+
+@property (nonatomic,strong)UIView * view1;
+@property (nonatomic,strong)UIView * view2;
 @end
 @implementation CoinMyCardView
 
@@ -17,6 +26,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self SetUI];
+        [self request];
     }
     return self;
 }
@@ -42,11 +52,19 @@
         make.top.equalTo(self.scrollView).offset(16);
     }];
     UIView * PayView = [self SetNoneCardView];
+    self.view1 = [self AddBankCard:0];
+  
+  
+    
     [PayView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(16);
         make.right.equalTo(self).offset(-16);
         make.height.mas_equalTo(122);
         make.top.equalTo(PayLabel.mas_bottom).offset(20);
+    }];
+    
+    [self.view1 mas_makeConstraints:^(MASConstraintMaker *make) {
+         make.edges.equalTo(PayView);
     }];
     
     UIView * lineView2 = [[UIView alloc] init];
@@ -71,6 +89,10 @@
     }];
     
     UIView * RepaymentView = [self SetNoneCardView];
+    self.view2 = [self AddBankCard:1];
+    [self.view2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(RepaymentView);
+    }];
     [RepaymentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.height.equalTo(PayView);
         make.top.equalTo(RepaymentLabel.mas_bottom).offset(20);
@@ -85,7 +107,8 @@
         make.left.right.equalTo(RepaymentView);
         make.top.equalTo(RepaymentView.mas_bottom).offset(30);
     }];
-   
+    self.view1.hidden = YES;
+    self.view2.hidden = YES;
     
 }
 
@@ -125,16 +148,88 @@
     return view;
 }
 
+// 有卡布局  0 分期还款，代扣  1  收款还款
+- (UIView *)AddBankCard:(int)type{
+    UIView * view = [UIView new];
+    UIImageView * imageView = [UIImageView new];
+
+    view.backgroundColor = COLOR(236, 74, 77);
+    view.layer.cornerRadius = 5;
+    view.clipsToBounds = YES;
+    [view addSubview:imageView];
+    [self.scrollView addSubview:view];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(view).offset(20);
+        make.top.equalTo(view).offset(25);
+        make.width.height.mas_equalTo(32);
+    }];
+    imageView.layer.cornerRadius = 16;
+    imageView.clipsToBounds = YES;
+    
+    UILabel * nameLabel = [UILabel new];
+    nameLabel.textColor = COLOR(255, 255, 255);
+    nameLabel.font = Regular(14);
+    [view addSubview:nameLabel];
+    
+    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imageView.mas_right).offset(9);
+        make.centerY.equalTo(imageView);
+    }];
+    
+    
+    UILabel * numberLabel = [UILabel new];
+    numberLabel.textColor = COLOR(255, 255, 255);
+    numberLabel.font = Regular(17);
+    [view addSubview:numberLabel];
+    [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(nameLabel);
+        make.bottom.equalTo(view).offset(-25);
+    }];
+    
+    if (type == 0) {
+        self.ByStagesBankImage = imageView;
+        self.ByStagesBankNameLabel = nameLabel;
+        self.ByStagesBankNumberLabel = numberLabel;
+    }else{
+        self.loansBankNameLabel = nameLabel;
+        self.loansBankImage = imageView;
+        self.loansBankNumberLabel = numberLabel;
+    }
+    return view;
+}
+
+
 - (void)AddBankCard{
     
     
 }
-
-- (UIView *)SetHaveVardView{
+- (void)request{
+    [KTooL HttpPostWithUrl:@"UserCenter/my_bank" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            
+            NSDictionary *  fu_bankcard = responseObject[@"data"][@"fu_bankcard"];
+            NSDictionary * ll_bankcard = responseObject[@"data"][@"ll_bankcard"];
+            int  status1 = [fu_bankcard[@"status"] intValue];
+            int  status2 = [ll_bankcard[@"status"] intValue];
+            if (status1 == 1) {
+                self.view1.hidden = NO;
+                [self.ByStagesBankImage sd_setImageWithURL:[NSURL URLWithString:fu_bankcard[@"pic"]]];
+                self.ByStagesBankNameLabel.text = fu_bankcard[@"bank_name"];
+                self.ByStagesBankNumberLabel.text = fu_bankcard[@"bank_card"];
+                
+            }
+            
+            if (status2 == 1) {
+                self.view2.hidden = NO;
+                [self.loansBankImage sd_setImageWithURL:[NSURL URLWithString:fu_bankcard[@"pic"]]];
+                self.loansBankNameLabel.text = fu_bankcard[@"bank_name"];
+                self.loansBankNumberLabel.text = fu_bankcard[@"bank_card"];
+                
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
     
-    UIView * view = [UIView new];
-    
-    
-    return view;
 }
 @end

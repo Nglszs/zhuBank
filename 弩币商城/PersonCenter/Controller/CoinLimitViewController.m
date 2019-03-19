@@ -9,6 +9,10 @@
 #import "CoinLimitViewController.h"
 
 @interface CoinLimitViewController ()
+@property (nonatomic,strong) UILabel * cash_credit_left;
+@property (nonatomic,strong)UILabel * cash_credit_limit;
+@property (nonatomic,strong)UILabel * mall_credit_left;
+@property (nonatomic,strong)UILabel * mall_credit_limit; // 购物总额度
 
 @end
 
@@ -20,6 +24,7 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
+    [self request];
 }
 
 - (void)initView{
@@ -44,6 +49,7 @@
         
         UILabel * titleLabel = [UILabel new];
         titleLabel.text = (i == 0 ? @"购物可用额度" :@"借款可用额度");
+       
         titleLabel.textColor = COLOR(51, 51, 51);
         titleLabel.font = Regular(15);
         [view addSubview:titleLabel];
@@ -53,7 +59,12 @@
         }];
         
         UILabel * MoneyLabel = [UILabel new];
-        MoneyLabel.text = @"￥5600";
+        if (i == 0) {
+            self.mall_credit_left = MoneyLabel;
+        }else{
+            self.cash_credit_left =  MoneyLabel;
+        }
+        
         MoneyLabel.textColor = COLOR(51, 51, 51);
         MoneyLabel.font = Regular(15);
         [view addSubview:MoneyLabel];
@@ -63,7 +74,11 @@
         }];
         
         UILabel * typeLabel = [UILabel new];
-        typeLabel.text = @"总额度：￥6000";
+        if (i == 0) {
+            self.mall_credit_limit = typeLabel;
+        }else{
+            self.cash_credit_limit = typeLabel;
+        }
         typeLabel.textColor = COLOR(153, 153, 153);
         typeLabel.font = Regular(13);
         [view addSubview:typeLabel];
@@ -81,6 +96,21 @@
         make.height.mas_equalTo(0.5);
     }];
     
+}
+- (void)request{
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/check_credit_limit" parameters:nil loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.mall_credit_limit.text = [NSString stringWithFormat:@"总额度：￥%@",responseObject[@"data"][@"mall_credit_limit"]];
+            self.cash_credit_limit.text = [NSString stringWithFormat:@"总额度：￥%@",responseObject[@"data"][@"cash_credit_limit"]];
+            
+            self.mall_credit_left.text = [NSString stringWithFormat:@"￥%@",responseObject[@"data"][@"mall_credit_left"]];
+            self.cash_credit_left.text = [NSString stringWithFormat:@"￥%@",responseObject[@"data"][@"cash_credit_left"]];
+            
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 
 @end
