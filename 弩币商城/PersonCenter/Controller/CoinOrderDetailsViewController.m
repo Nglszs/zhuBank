@@ -12,6 +12,7 @@
 #import "SVProgressHUD.h"
 #import "CoinMemberBuyViewController.h"
 #import "CoinOrderAllMoneyViewController.h"
+#import "CoinPayMoneyOrderViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -534,7 +535,11 @@
             vc.Money = self.dataDict[@"order_info"][@"order_amount"];
             [self.navigationController pushViewController:vc animated:YES];
         }else{
-            
+            CoinPayMoneyOrderViewController * vc = [CoinPayMoneyOrderViewController new];
+            vc.name  = self.dataDict[@"order_info"][@"consignee"];
+            vc.address = self.dataDict[@"order_info"][@"address"];
+            vc.orderNum = self.dataDict[@"order_info"][@"order_sn"];
+            [self.navigationController pushViewController:vc animated:YES];
             
         }
         
