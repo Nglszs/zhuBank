@@ -10,6 +10,10 @@
 #import "CoinMyOrderTableViewCell.h"
 #import "CoinOrderSuccessViewController.h"
 #import "CoinOrderDetailsViewController.h"
+#import "CoinOrderAllMoneyViewController.h"
+#import "CoinPayMoneyOrderViewController.h"
+#import "CoinLogisticsViewController.h"
+
 @interface CoinMyOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -238,6 +242,7 @@
     }];
 }
 
+#pragma mark 空白页去逛逛
 -(void)clickGo{
     self.tabBarController.selectedIndex = 1;
     [self.navigationController popViewControllerAnimated:YES];
@@ -307,7 +312,9 @@
                 
                 
             }
-            
+            cell.payBtn.userInteractionEnabled = NO;
+            [cell.cancelBtn addMoreParams:[dic objectForKey:@"order_id"]];
+            [cell.cancelBtn addTarget:self action:@selector(cancelEnable:) forControlEvents:UIControlEventTouchUpInside];
             
             
             [cell setDataForValue:dic];
@@ -341,8 +348,19 @@
                 
                 
             }
+            [cell.expressBtn addtargetBlock:^(UIButton *button) {
+               
+                CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+                vc.url = [dic objectForKey:@"express"];
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
             
-            [cell.enableBtn addMoreParams:[dic objectForKey:@"order_id"]];
+            [cell.serviceBtn addtargetBlock:^(UIButton *button) {
+                
+                NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }];
+            [cell.enableBtn addMoreParams:dic];
             [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
             [cell setDataForValue:dic];
             return cell;
@@ -358,8 +376,17 @@
                 
             }
             
-            
-            
+            [cell.serviceBtn addtargetBlock:^(UIButton *button) {
+                
+                NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }];
+            [cell.expressBtn addtargetBlock:^(UIButton *button) {
+                
+                CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+                vc.url = [dic objectForKey:@"express"];
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
             [cell setDataForValue:dic];
             return cell;
             
@@ -379,8 +406,11 @@
             
             
         }
-        
-       NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        cell.payBtn.userInteractionEnabled = NO;
+        [cell.cancelBtn addMoreParams:[dic objectForKey:@"order_id"]];
+        [cell.cancelBtn addTarget:self action:@selector(cancelEnable:) forControlEvents:UIControlEventTouchUpInside];
+       
         [cell setDataForValue:dic];
         
         return cell;
@@ -419,10 +449,19 @@
         }
         
          NSDictionary *dic = [notEnableArr objectAtIndexCheck:indexPath.row];
-        [cell.enableBtn addMoreParams:[dic objectForKey:@"order_id"]];
+        [cell.enableBtn addMoreParams:dic];
         [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
-        
-       
+        [cell.serviceBtn addtargetBlock:^(UIButton *button) {
+            
+            NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        [cell.expressBtn addtargetBlock:^(UIButton *button) {
+            
+            CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+            vc.url = [dic objectForKey:@"express"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
         [cell setDataForValue:dic];
         
         return cell;
@@ -442,8 +481,19 @@
             
         }
         
-        
+       
         NSDictionary *dic = [finshArr objectAtIndexCheck:indexPath.row];
+        [cell.serviceBtn addtargetBlock:^(UIButton *button) {
+            
+            NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        [cell.expressBtn addtargetBlock:^(UIButton *button) {
+            
+            CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+            vc.url = [dic objectForKey:@"express"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
         [cell setDataForValue:dic];
         
         return cell;
@@ -497,13 +547,51 @@
 
 #pragma mark 确认订单
 - (void)clickEnable:(UIButton *)btn {
-    
-    NSString *orderID = [btn getMoreParams];
+  
+   
+    NSDictionary *dic = [btn getMoreParams];
+    NSString *orderID = [dic objectForKey:@"order_id"];
     
     [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (BCStatus) {
+            CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
+            VC.imageUrl = [dic objectForKey:@"original_img"];
+            VC.name = [dic objectForKey:@"goods_name"];
+            VC.size = [dic objectForKey:@"spec_key_name"];
+            VC.price =[dic objectForKey:@"goods_price"];
+            VC.num = [dic objectForKey:@"goods_num"];
+           [self.navigationController pushViewController:VC animated:YES];
             
-           [self.navigationController pushViewController:[CoinOrderSuccessViewController new] animated:YES];
+//            刷新当前列表
+            NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+            if (index== 0) {
+                [allArr removeAllObjects];
+                [self getData:@""andPage:1];
+                
+                
+            } else if (index == 1){
+                
+                [notArr removeAllObjects];
+                [self getData:@"WAITPAY"andPage:1];
+                
+                
+            }else if (index == 2){
+                
+                [aleratArr removeAllObjects];
+                [self getData:@"WAITSEND"andPage:1];
+               
+                
+            }else if (index == 3){
+                
+                [notEnableArr removeAllObjects];
+                [self getData:@"WAITRECEIVE"andPage:1];
+                
+                
+            }else {
+                
+                [finshArr removeAllObjects];
+                [self getData:@"FINISH"andPage:1];
+            }
             
         } else {
             
@@ -530,6 +618,37 @@
         
         if (BCStatus) {
             
+//            刷新当前列表
+            NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+            if (index== 0) {
+                [allArr removeAllObjects];
+                [self getData:@""andPage:1];
+                
+                
+            } else if (index == 1){
+                
+                [notArr removeAllObjects];
+                [self getData:@"WAITPAY"andPage:1];
+                
+                
+            }else if (index == 2){
+                
+                [aleratArr removeAllObjects];
+                [self getData:@"WAITSEND"andPage:1];
+                
+                
+            }else if (index == 3){
+                
+                [notEnableArr removeAllObjects];
+                [self getData:@"WAITRECEIVE"andPage:1];
+                
+                
+            }else {
+                
+                [finshArr removeAllObjects];
+                [self getData:@"FINISH"andPage:1];
+            }
+            
             VCToast(@"取消订单成功", 1);
             
         } else {
@@ -544,6 +663,9 @@
     
     
 }
+
+
+
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
     

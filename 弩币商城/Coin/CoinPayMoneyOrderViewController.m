@@ -7,6 +7,7 @@
 //
 
 #import "CoinPayMoneyOrderViewController.h"
+#import "CoinMemberBuyViewController.h"
 
 @implementation CoinPayMoneyOrderViewController
 
@@ -48,6 +49,7 @@
     
     
     NSArray *leftA = @[@"收货人姓名：",@"收货地址：",@"支付方式：",@"订单号："];
+    NSArray *rightA = @[_name,_address,@"分期购",_orderNum];
     for (int i = 0; i < leftA.count; i ++) {
         
         
@@ -67,7 +69,7 @@
         
         
         UILabel *rightL = [[UILabel alloc] init];
-        rightL.text = @"江苏 南京市 秦淮区 中山东路321号xxxxx1764室";
+        rightL.text = rightA[i];
         rightL.textColor = COLOR(153, 153, 153);
         rightL.font = Regular(13);
         [topV addSubview:rightL];
@@ -97,6 +99,16 @@
         make.width.mas_equalTo(BCWidth - 80);
     }];
     
+    [backBtn1 addtargetBlock:^(UIButton *button) {
+       
+        
+        CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
+        VC.type = BRPayBuyCommodity;
+        VC.titleString = @"支付首付";
+        VC.IdStr =_orderNum;
+        VC.Money = _money;
+        [self.navigationController pushViewController:VC animated:YES];
+    }];
     
     UIButton *backBtn = [[UIButton alloc] init];
     backBtn.titleLabel.font = Regular(16);

@@ -18,17 +18,18 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-   [self setProgameRootViewController];
-    // 测试上传
-
-   
-    // NOTE: 调用支付结果开始支付
   
+    //    根视图
+    [self setProgameRootViewController];
+   
+  
+    //    更新用户信息
+    [self updateUserInfo];
+   
     
-
-
+    // NOTE: 调用支付结果开始支付
     
-     [WXApi registerApp:@"wx3007c71783deadc3"];
+    [WXApi registerApp:@"wx3007c71783deadc3"];
     return YES;
 }
 

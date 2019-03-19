@@ -10,6 +10,9 @@
 
 @interface CoinOrderSuccessViewController ()
 
+@property (nonatomic,strong)UIImageView * CommodityImage;
+@property (nonatomic,strong)UILabel * CommodityNameLabel;
+@property (nonatomic,strong)UILabel * CommodityPriceLabel;
 @end
 
 @implementation CoinOrderSuccessViewController
@@ -86,7 +89,7 @@
     
     self.CommodityNameLabel = [UILabel new];
     
-    self.CommodityNameLabel.text = @"贵州茅乡酒  M10浓香型白酒 52度送礼白";
+//    self.CommodityNameLabel.text = @"贵州茅乡酒  M10浓香型白酒 52度送礼白";
     self.CommodityNameLabel.textColor = TITLE_COLOR;
     self.CommodityNameLabel.font = Regular12Font;
     [bottomV addSubview:self.CommodityNameLabel];
@@ -101,7 +104,7 @@
     UILabel *sizeL = [[UILabel alloc] init];
     sizeL.textColor = COLOR(102, 102, 102);
     sizeL.font = Regular(10);
-    sizeL.text = @"选择规格：xxx";
+//    sizeL.text = @"选择规格：xxx";
     [bottomV addSubview:sizeL];
     [sizeL mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -112,13 +115,13 @@
     
     
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"¥6088.00 x1"];
-    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
-    [str setAttributes:firstAttributes range:NSMakeRange(str.length - 2,2)];
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"¥6088.00 x1"];
+//    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
+//    [str setAttributes:firstAttributes range:NSMakeRange(str.length - 2,2)];
     self.CommodityPriceLabel = [UILabel new];
     
     self.CommodityPriceLabel.textColor = TITLE_COLOR;
-    self.CommodityPriceLabel.attributedText = str;
+//    self.CommodityPriceLabel.attributedText = str;
     self.CommodityPriceLabel.font = Regular(10);
     [bottomV addSubview:self.CommodityPriceLabel];
     [self.CommodityPriceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -126,6 +129,21 @@
         make.height.mas_equalTo(10);
         make.top.equalTo(sizeL.mas_bottom).offset(6);
     }];
+    
+    
+    [self.CommodityImage sd_setImageWithURL:[NSURL URLWithString:_imageUrl]];
+    
+    
+    self.CommodityNameLabel.text = _name;
+    
+    
+    sizeL.text = [NSString stringWithFormat:@"选择规格：%@",_size];
+    
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥%@ x%@",_price,_num]];
+    NSDictionary * firstAttributes = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
+    [str setAttributes:firstAttributes range:NSMakeRange(str.length - _num.length - 1,_num.length)];
+    self.CommodityPriceLabel.attributedText = str;
     
     
     

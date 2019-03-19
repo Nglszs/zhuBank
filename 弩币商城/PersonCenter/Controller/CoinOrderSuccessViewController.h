@@ -11,9 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinOrderSuccessViewController : CoinBaseViewController
-@property (nonatomic,strong)UIImageView * CommodityImage;
-@property (nonatomic,strong)UILabel * CommodityNameLabel;
-@property (nonatomic,strong)UILabel * CommodityPriceLabel;
+@property(nonatomic, copy) NSString *imageUrl,*name,*size,*price,*num;
+
+
 @end
 
 NS_ASSUME_NONNULL_END
