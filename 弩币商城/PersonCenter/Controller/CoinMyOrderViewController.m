@@ -541,6 +541,40 @@
     }
     vc.order_id = dict[@"order_id"];
     [self.navigationController pushViewController:vc animated:YES];
+
+    vc.resultData = ^(id  _Nonnull resultData) {
+      
+//        刷新当前列表
+        NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+        if (index== 0) {
+            [allArr removeAllObjects];
+            [self getData:@""andPage:1];
+            
+            
+        } else if (index == 1){
+            
+            [notArr removeAllObjects];
+            [self getData:@"WAITPAY"andPage:1];
+            
+            
+        }else if (index == 2){
+            
+            [aleratArr removeAllObjects];
+            [self getData:@"WAITSEND"andPage:1];
+            
+            
+        }else if (index == 3){
+            
+            [notEnableArr removeAllObjects];
+            [self getData:@"WAITRECEIVE"andPage:1];
+            
+            
+        }else {
+            
+            [finshArr removeAllObjects];
+            [self getData:@"FINISH"andPage:1];
+        }
+    };
 }
 
 
