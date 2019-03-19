@@ -12,6 +12,7 @@
 #import "CoinCertifyViewController.h"
 #import "CoinNotDevelopViewController.h"
 #import "CoinSearchViewController.h"
+#import "CoinPayMoneyOrderViewController.h"
 
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
 
@@ -634,7 +635,7 @@
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
-            
+            [self.navigationController pushViewController:[CoinPayMoneyOrderViewController new] animated:YES];
     
         }];
        
