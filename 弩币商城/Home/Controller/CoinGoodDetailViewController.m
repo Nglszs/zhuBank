@@ -525,7 +525,7 @@
     
     [backBtn addtargetBlock:^(UIButton *button) {
        
-        NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",@"111"];
+        NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dataDic objectNilForKey:@"customer_mobile"]];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }];
     

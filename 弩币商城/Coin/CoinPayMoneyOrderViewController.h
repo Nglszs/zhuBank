@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *address;
 @property (nonatomic, copy) NSString *orderNum;
+@property (nonatomic, copy) NSString *money;
 
 @end
 

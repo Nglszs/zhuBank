@@ -110,49 +110,25 @@ static void *networkKey = &networkKey;
     if ([Tool isLogin]) {
         
        
-        NSString *method = [NSString stringWithFormat:@"/getUserInfo?token=%@",[USER_DEFAULTS objectForKey:USER_Token]];
-        
-        NSLog(@"%@",method);
-        [Tool requestwithUrl:BASE_URL withMethod:method withParams:nil withSuccessBlock:^(id successResult) {
+        [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
             
-            NSLog(@"获取用户信息：%@",successResult);
+            NSLog(@"===%@",responseObject);
             
             
-            if ([successResult objectForKey:@"phone"]) {
+            if (BCStatus) {
                 
-                NSDictionary *userINFO = successResult ;
+              NSDictionary *dataDic = [responseObject objectNilForKey:@"data"];
+                
                
-                [USER_DEFAULTS setObject:userINFO forKey:USER_INFO];
-                [USER_DEFAULTS setBool:YES forKey:ISLogin];
+                [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
                 [USER_DEFAULTS synchronize];
-                
-                
-              
-                
                 
             } else {
                 
                 
-                [SHARE_APPLICATION.keyWindow makeToast:@"登录出错请重新登录！" duration:1 position:CSToastPositionCenter];
-                [Tool deleteObjectForKey:USER_INFO];
-                [Tool deleteObjectForKey:USER_Token];
-                [USER_DEFAULTS setBool:NO forKey:ISLogin];
-                [USER_DEFAULTS synchronize];
-                
             }
             
-            
-            
-        } withFailBlock:^(NSString *errorResult) {
-            
-          
-            
-            [SHARE_APPLICATION.keyWindow makeToast:@"登录出错请重新登录！" duration:1 position:CSToastPositionCenter];
-            [Tool deleteObjectForKey:USER_INFO];
-            
-            [Tool deleteObjectForKey:USER_Token];
-            [USER_DEFAULTS setBool:NO forKey:ISLogin];
-            [USER_DEFAULTS synchronize];
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
             
         }];
     }
