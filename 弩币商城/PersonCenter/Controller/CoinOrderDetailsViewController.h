@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, BROrderType) {
 @interface CoinOrderDetailsViewController : CoinBaseViewController
 
 @property (nonatomic,assign)BROrderType type;
+@property (nonatomic,copy)NSString * order_id;
 @end
 
 NS_ASSUME_NONNULL_END
