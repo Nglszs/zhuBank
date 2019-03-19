@@ -25,7 +25,7 @@
 #import "General/BCManagerTool.h"
 #import "CustomAlert/BCHUDAlert.h"
 #import "WOWONoDataView.h"
-
+#import "SVProgressHUD.h"
 
 #import "CateGroys/UIView+Common.h"
 #import "CateGroys/NSObject+Common.h"

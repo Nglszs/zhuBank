@@ -9,6 +9,9 @@
 #import "CoinOrderDetailsViewController.h"
 #import "CoinConfirmCommodityOrderCell.h"
 #import "CoinLogisticsViewController.h"
+#import "SVProgressHUD.h"
+#import "CoinMemberBuyViewController.h"
+#import "CoinOrderAllMoneyViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -509,7 +512,9 @@
     
     [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            
+            [SVProgressHUD showSuccessWithStatus:@"成功"]; dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -519,8 +524,22 @@
 
 // 立即付款
 - (void)goPay{
-    
-    
+    if (self.dataDict) {
+        
+        NSString * is_fenqi = [NSString stringWithFormat:@"%@",self.dataDict[@"order_info"][@"is_fenqi"]];
+        if ([is_fenqi isEqualToString:@"0"]) {
+            // 判断订单是不是分期
+            CoinOrderAllMoneyViewController * vc = [CoinOrderAllMoneyViewController new];
+            vc.OrderID = self.dataDict[@"order_info"][@"order_sn"];
+            vc.Money = self.dataDict[@"order_info"][@"order_amount"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+            
+            
+        }
+        
+    }
+   
 }
 
 // 确认收货
@@ -528,7 +547,9 @@
     
     [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            
+            [SVProgressHUD showSuccessWithStatus:@"成功"]; dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

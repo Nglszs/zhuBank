@@ -33,7 +33,6 @@
 }
 
 
-
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     if ([url.host isEqualToString:@"pay"]) {
         return [WXApi handleOpenURL:url delegate:self];

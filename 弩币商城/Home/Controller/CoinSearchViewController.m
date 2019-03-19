@@ -78,7 +78,7 @@
     }];
     
     UILabel * label = [UILabel new];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"热门搜索" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Medium" size: 14],NSForegroundColorAttributeName: [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:1.0]}];
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"热门搜索" attributes:@{NSFontAttributeName: Regular(14),NSForegroundColorAttributeName: [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:1.0]}];
     
     label.attributedText = string;
     [self.view addSubview:label];
