@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, BRPayType) {
     BRPayBuyMember, // 购买会员
     BRPayRepayment, // 分期还款
-    BRPayBuyCommodity// 购买商品支付
+    BRPayBuyCommodity// 购买商品支付首付
 };
 @interface CoinMemberBuyViewController : CoinBaseViewController
 
@@ -21,7 +21,9 @@ typedef NS_ENUM(NSUInteger, BRPayType) {
 
 @property (nonatomic,copy)NSString * Money;
 @property (nonatomic,copy)NSString * titleString;
-@property (nonatomic,copy)NSString * IdStr;
+@property (nonatomic,copy)NSString * IdStr;// 分期还款的ID
+
+@property (nonatomic,copy)NSString * orderNum;// 订单号
 @end
 
 NS_ASSUME_NONNULL_END

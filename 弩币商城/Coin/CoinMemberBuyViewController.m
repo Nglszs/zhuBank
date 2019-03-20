@@ -18,7 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = (self.type == BRPayBuyMember ? @"购买帑库金钻会员卡" : @"还款");
+    if (self.type == BRPayBuyMember) {
+        self.title = @"购买帑库金钻会员卡";
+    }else if (self.type == BRPayRepayment){
+        self.title = @"还款";
+    }else if (self.type == BRPayBuyCommodity){
+        self.title = @"支付首付";
+    }
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
@@ -156,10 +162,24 @@
 }
 
 - (void)pay{
+     NSString * gateway = self.tempButton.tag == 0 ? @"wechat" : @"alipay";
+    NSMutableDictionary * dict =[NSMutableDictionary dictionary];
+    NSString * url = @"";
+    if (self.type == BRPayRepayment) {
+        url = [NSString stringWithFormat:@"repay-now/%@",self.IdStr];
+        dict[@"id"] = self.IdStr;
+        dict[@"gateway"] = gateway;
+    }
     
-    NSString * gateway = self.tempButton.tag == 0 ? @"wechat" : @"alipay";
-    NSString * url = [NSString stringWithFormat:@"repay-now/%@",self.IdStr];
-    [KTooL HttpPostWithUrl:url parameters:@{@"id":self.IdStr,@"gateway":gateway} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    if (self.type == BRPayBuyMember) {
+        
+    }
+    if (self.type == BRPayBuyCommodity) {
+        
+    }
+    
+   
+    [KTooL HttpPostWithUrl:url parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             if (self.tempButton.tag == 0) {
                 [self wechatPay:responseObject[@"data"]];

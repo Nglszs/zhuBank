@@ -13,6 +13,7 @@
 #import "CoinMemberBuyViewController.h"
 #import "CoinOrderAllMoneyViewController.h"
 #import "CoinPayMoneyOrderViewController.h"
+#import "CoinH5ViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -27,6 +28,7 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self request];
+    
 }
 
 - (void)initView{
@@ -350,13 +352,14 @@
                 make.centerY.equalTo(view);
                 make.height.mas_equalTo(27);
             }];
-            UIView * lineView = [UIView new];
+            UIView * lineView = [UIView     new];
             lineView.backgroundColor = COLOR(245, 245, 245);
             [view addSubview:lineView];
             [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.right.bottom.equalTo(view);
                 make.height.mas_equalTo(10);
             }];
+            [btn addTarget:self action:@selector(phone) forControlEvents:(UIControlEventTouchUpInside)];
             return view;
         }
         if (section == 3) {
@@ -404,11 +407,7 @@
 }
 
 
-- (void)ExamineLogistics{
-    
-    CoinLogisticsViewController * vc = [CoinLogisticsViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
-}
+
 - (void)NotEnableHeaderView:(UIView *)superView{
     UILabel * OrderNumberlabel = [UILabel new];
     if (self.dataDict) {
@@ -555,12 +554,41 @@
     
     [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            [SVProgressHUD showSuccessWithStatus:@"成功"]; dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.navigationController popViewControllerAnimated:YES];
-            });
+            [SVProgressHUD showSuccessWithStatus:@"成功"];
+            self.type = BROrderFinsh;
+            [self.tableView reloadData];
+            if (self.resultData) {
+                self.resultData(@"1");
+            }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
+}
+
+// 联系客服
+- (void)phone{
+    if (self.dataDict) {
+        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.dataDict[@"goods_info"][@"customer_mobile"]];
+        UIWebView * callWebview = [[UIWebView alloc] init];[callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];[self.view addSubview:callWebview];
+        
+    }
+
+    
+    
+}
+
+//查看物流
+- (void)ExamineLogistics{
+    if (self.dataDict) {
+        NSString * url =  self.dataDict[@"order_info"][@"express"];
+        CoinH5ViewController * VC = [CoinH5ViewController new];
+        VC.titleStr = @"查看物流";
+        VC.url = url;
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    
+    
+    
 }
 @end

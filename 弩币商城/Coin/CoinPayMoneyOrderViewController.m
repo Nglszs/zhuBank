@@ -105,8 +105,8 @@
         CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
         VC.type = BRPayBuyCommodity;
         VC.titleString = @"支付首付";
-        VC.IdStr =_orderNum;
-        VC.Money = _money;
+        VC.orderNum =self->_orderNum;
+        VC.Money = self->_money;
         [self.navigationController pushViewController:VC animated:YES];
     }];
     
