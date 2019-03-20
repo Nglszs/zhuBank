@@ -635,7 +635,7 @@
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
-            [self.navigationController pushViewController:[CoinPayNotFristViewController new] animated:YES];
+           
     
         }];
        
