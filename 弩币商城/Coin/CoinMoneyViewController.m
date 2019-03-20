@@ -9,6 +9,8 @@
 #import "CoinMoneyViewController.h"
 #import "CoinBorrowMoneyViewController.h"
 #import "CoinH5ViewController.h"
+#import "CoinCooperationCompanyViewController.h"
+#import "CoinCertifyViewController.h"
 @interface CoinMoneyViewController ()
 
 @property (nonatomic,strong)UILabel * tips1;
@@ -130,13 +132,15 @@
     [str2 addAttribute:NSUnderlineColorAttributeName value:COLOR(255, 0, 0) range:NSMakeRange(0, str.length)];
     [str2 addAttribute:NSForegroundColorAttributeName value:COLOR(255, 0, 0) range:NSMakeRange(0, str2.length)];
     [CooperationBtn setAttributedTitle:str2 forState:(UIControlStateNormal)];
+    [CooperationBtn addtargetBlock:^(UIButton *button) {
+        CoinCooperationCompanyViewController * vc = [CoinCooperationCompanyViewController new];
+        vc.DataDict = self.join_org;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
     [self setNavitem:@"详情介绍" type:RightNavItem];
     self.navigationItem.rightBarButtonItem.tintColor = COLOR(255, 126, 0);
     
-    [btn addtargetBlock:^(UIButton *button) {
-        CoinBorrowMoneyViewController * vc = [[CoinBorrowMoneyViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }];
+    [btn addTarget:self action:@selector(btnAction:) forControlEvents:(UIControlEventTouchUpInside)];
     
 }
 
@@ -163,7 +167,8 @@
     self.MoneyLabel.attributedText = string2;
     self.load_url = dict[@"load_url"];
     self.details = dict[@"details"];
-    
+    self.url =  dict[@"url"];
+    self.join_org = dict[@"join_org"];
 }
 
 - (void)RightItemAction{
@@ -173,4 +178,53 @@
     vc.url = self.details;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)btnAction:(UIButton *)btn{
+//    CoinBorrowMoneyViewController * vc = [[CoinBorrowMoneyViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    if (self.url) {
+        
+        NSInteger type = [self.url integerValue];
+        
+        if (type == 1) {
+            // 去登录
+            
+        } else if (type == 2) {
+            // 不可点击
+            
+        }else if (type == 3) {
+            // 去购买会员
+            
+        }else if (type == 4) {
+            // 去审核身份
+            CoinCertifyViewController * vc = [CoinCertifyViewController new];
+            vc.indexType = 1;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if (type == 5) {
+            // 去绑卡
+            CoinCertifyViewController * vc = [CoinCertifyViewController new];
+            vc.indexType = 2;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }else if (type == 6) {
+             // 去信用认证
+            CoinCertifyViewController * vc = [CoinCertifyViewController new];
+            vc.indexType = 3;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }else if (type == 7) {
+            // 去借款
+            
+        }
+       
+        
+        
+    }
+    
+    
+    
+}
+
 @end

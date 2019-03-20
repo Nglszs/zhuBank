@@ -101,8 +101,7 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
        
-        
-        CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
+          CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
         VC.type = BRPayBuyCommodity;
         VC.titleString = @"支付首付";
         VC.orderNum =self->_orderNum;

@@ -19,6 +19,8 @@
 
 @property (nonatomic,strong)UIView * view1;
 @property (nonatomic,strong)UIView * view2;
+
+
 @end
 @implementation CoinMyCardView
 
@@ -52,6 +54,7 @@
         make.top.equalTo(self.scrollView).offset(16);
     }];
     UIView * PayView = [self SetNoneCardView];
+    self.PayView = PayView;
     self.view1 = [self AddBankCard:0];
   
   
@@ -89,6 +92,7 @@
     }];
     
     UIView * RepaymentView = [self SetNoneCardView];
+    self.RepaymentView = RepaymentView;
     self.view2 = [self AddBankCard:1];
     [self.view2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(RepaymentView);

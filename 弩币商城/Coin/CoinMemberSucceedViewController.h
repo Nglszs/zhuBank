@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, BRPaySuccessType) {
     BRPaySuccessBuyMember,//购买会员卡成功
-    BRPaySuccess,// 支付首付成功
+    BRPayPaymentSuccess,// 支付首付成功
+    BRPayAllMoneySuccess,// 付全款成功
+    BRPayRepaySuccess // 还款成功
 };
 // 支付成功界面得改
 @interface CoinMemberSucceedViewController : CoinBaseViewController

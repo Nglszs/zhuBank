@@ -14,12 +14,17 @@
 #import "CoinConfirmCommodityMessageCell.h"
 #import "CoinSelectAddressViewController.h"
 #import "CoinInvoiceViewController.h"
+#import "CoinMemberBuyViewController.h"
+#import "CoinH5ViewController.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSMutableDictionary * DataDict;
 
 @property (nonatomic,strong)UILabel * ActualPriceLabel;
 @property (nonatomic,strong)UILabel * per_moneyLabel;
+
+@property (nonatomic,strong)UIButton * ConsentButton;
+@property (nonatomic,strong)UIView * tempView;
 @end
 
 @implementation CoinConfirmOrderViewController
@@ -109,9 +114,12 @@
     
     UIButton * ConsentButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [view2 addSubview:ConsentButton];
-   
+    self.tempView = view2;
+    view2.hidden = YES;
     [ConsentButton setBackgroundImage:BCImage(未选中) forState:(UIControlStateNormal)];
+    self.ConsentButton = ConsentButton;
     [ConsentButton setBackgroundImage:BCImage(选中) forState:(UIControlStateSelected)];
+    ConsentButton.selected = YES;
     ConsentButton.adjustsImageWhenHighlighted = NO;
     [ConsentButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(MoneyLabel);
@@ -126,18 +134,54 @@
     UILabel * AgreementLabel = [UILabel new];
     [view2 addSubview:AgreementLabel];
     
-    NSMutableAttributedString *string3 = [[NSMutableAttributedString alloc] initWithString:@"同意委托服务协议、借款协议以及重要提示。" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Regular" size: 14],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     
-    [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(2, 11)];
+    NSMutableAttributedString *string3 = [[NSMutableAttributedString alloc] initWithString:@"同意委托服务协议、" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Regular" size: 14],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     
-    [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(15, 4)];
+    [string3 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(2, 6)];
+    
+    AgreementLabel.userInteractionEnabled = YES;
+    MJWeakSelf;
+    [AgreementLabel addTapGestureWithBlock:^{
+        [weakSelf pushH5Title:@"委托服务协议" url:self.DataDict[@"links"][@"entrustment_agreement_link"]];
+    }];
+    
+    UILabel * label1 = [UILabel new];
+    label1.textColor = COLOR(255, 137, 73);
+    label1.text = @"借款协议";
+    label1.font = Regular(14);
+    label1.userInteractionEnabled = YES;
+    [view2 addSubview:label1];
+    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(AgreementLabel.mas_right);
+        make.centerY.equalTo(AgreementLabel);
+    }];
+    [label1 addTapGestureWithBlock:^{
+        [weakSelf pushH5Title:@"借款协议" url:self.DataDict[@"links"][@"loan_agreement_link"]];
+    }];
     
     AgreementLabel.attributedText = string3;
     [AgreementLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view2);
         make.left.equalTo(ConsentButton.mas_right).offset(7);
-        make.right.equalTo(view2);
+        
     }];
+    
+    UILabel * label2 = [UILabel new];
+    
+    NSMutableAttributedString *string4 = [[NSMutableAttributedString alloc] initWithString:@"以及重要提示。" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang-SC-Regular" size: 14],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
+    
+    [string4 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255/255.0 green:137/255.0 blue:73/255.0 alpha:1.0]} range:NSMakeRange(2, 4)];
+    label2.attributedText = string4;
+    [view2 addSubview:label2];
+    [label2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(label1.mas_right);
+        make.centerY.equalTo(label1);
+    }];
+    label2.userInteractionEnabled = YES;
+    [label2 addTapGestureWithBlock:^{
+         [weakSelf pushH5Title:@"重要提示" url:self.DataDict[@"links"][@"risk_warning_link"]];
+    }];
+    
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -333,6 +377,20 @@
 
 - (void)submitOrder{
     if (self.DataDict) {
+        // 判断同意协议
+        if (!self.ConsentButton.selected) {
+            [SVProgressHUD showInfoWithStatus:@"请同意相关协议"];
+            [SVProgressHUD dismissWithDelay:2];
+            return;
+        }
+        // 判断选择收货地址
+        NSString * idS = self.DataDict[@"address_info"][@"address_id"];;
+        if (BCStringIsEmpty(idS)) {
+            [SVProgressHUD showInfoWithStatus:@"请选择收货地址"];
+            [SVProgressHUD dismissWithDelay:2];
+            return;
+        }
+        
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
         dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
         dict[@"goods_id"] = self.DataDict[@"goods_info"][@"goods_id"];
@@ -345,13 +403,24 @@
         dict[@"action"] = @"buy_now";
         dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
         dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
-        [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"%@",responseObject);
+        [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
+            [self goPay:responseObject];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error.description);
         }];
     }
 }
+
+- (void)goPay:(NSDictionary *)dict{
+     NSLog(@"====%@",dict);
+
+    // 订单成功了，要判断商品状态   1 全款（CoinOrderAllMoneyViewController）   2 有首付分期（CoinPayMoneyOrderViewController ）  3 无首付分期（CoinPayNotFristViewController）
+    
+    
+    
+    
+}
+
 
 - (void)Request{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
@@ -361,9 +430,10 @@
     dict[@"num"] = self.num;
     dict[@"periods"] = self.periods;
     dict[@"stages"] = self.stages;
+  
     [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (BCStatus) {
+        
+        if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
             self.DataDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"data"]];
             [self upFootView:self.DataDict[@"order_info"]];
             [self.tableView reloadData];
@@ -371,6 +441,29 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
+    
+}
+
+- (BOOL)disposeStatus:(int)status{
+    //status:1成功 0:未登录 -1:请先购买会员卡 -2:不符合分期条件 -3:会员卡到期 -4:请先验证身份信息 -5:请先绑卡 -6:请先评估您的信用/您的信用评分已过期,请重新评估 -7:请先设置交易密码 -8:库存不足 -9:剩余额度不足,请调整首付比例
+    if (status == 1) {
+        return YES;
+    }
+    if (status == 0) {
+        
+    }
+    if (status == -1) {
+        CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+        VC.type  =BRPayBuyMember;
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    if (status == -2) {
+        
+    }
+    if (status == -3) {
+        
+    }
+    return NO;
     
 }
 
@@ -383,9 +476,17 @@
         NSString * q_fenqi = dataDict[@"is_fenqi"];
         if ([q_fenqi integerValue] == 1) {
             self.per_moneyLabel.text = [NSString stringWithFormat:@"首付:¥%@  月供:¥%@ 期数:%@期",dataDict[@"first_pay"],dataDict[@"per_money"],dataDict[@"periods"]];
+            self.tempView.hidden = NO;
         }
     }
     
 }
 
+- (void)pushH5Title:(NSString *)title url:(NSString *)url{
+    CoinH5ViewController * vc = [CoinH5ViewController new];
+    vc.titleStr = title;
+    vc.url = url;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 @end
