@@ -12,6 +12,9 @@
 {
     BOOL isSuccess;//是否认证成功
     UIButton *selectedBtn;
+    UITextField *nameF,*numberF,*addressF,*cardNumF,*phoneF,*codeF;
+    NSString *llToken;//连连需要的
+    NSDictionary *dataDic;
 }
 
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -27,7 +30,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"身份验证";
    
-    
+    llToken = @"";
     
     [self.view addSubview:self.headView];
     [self.view addSubview:self.backScrollView];
@@ -36,7 +39,12 @@
     [self initView];
     [self initSecondView];
     [self initThirdView];
-    [self initFourView];
+   
+    
+    if (_indexType >= 2) {//直接去银行卡界面
+        
+       [self.backScrollView setContentOffset:CGPointMake(BCWidth * _indexType, 0) animated:NO];
+    }
     
 }
 
@@ -54,7 +62,7 @@
     }];
    
     NSArray *titleA = @[@"真实姓名：",@"身份证号：",@"户籍地址："];
-     NSArray *titleA1 = @[@"请输入您的手机号码",@"请输入您的身份证号",@"请输入您的户籍所在地"];
+     NSArray *titleA1 = @[@"请输入您的姓名",@"请输入您的身份证号",@"请输入您的户籍所在地"];
     
     
     for (int i = 0; i < titleA.count; i ++) {
@@ -83,7 +91,7 @@
         _countTextField.textColor = TITLE_COLOR;
         _countTextField.placeholder = titleA1[i];
         
-        _countTextField.font = Regular(15);
+        _countTextField.font = Regular(14);
         [backV addSubview:_countTextField];
         [_countTextField mas_makeConstraints:^(MASConstraintMaker *make) {
            
@@ -92,7 +100,14 @@
             
         }];
         
-        
+        if (i == 0) {
+            nameF = _countTextField;
+        } else if (i == 1){
+            
+            numberF = _countTextField;
+        } else {
+            addressF = _countTextField;
+        }
         
         
         UIImageView *lineImage = [[UIImageView alloc] init];
@@ -125,13 +140,51 @@
         make.height.mas_equalTo(40);
         make.width.mas_equalTo(BCWidth - 30);
     }];
+    [backBtn1 addTarget:self action:@selector(getData) forControlEvents:UIControlEventTouchUpInside];
+
     
-    [backBtn1 addtargetBlock:^(UIButton *button) {
+    
+}
+
+#pragma mark 验证个人信息
+- (void)getData {
+    
+    if (nameF.text.length <= 0) {
+        VCToast(@"姓名不能为空", 1);
         
-        [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+        return;
+    }
+    
+    if (numberF.text.length <= 0) {
+        VCToast(@"身份证号不能为空", 1);
+        
+        return;
+    }
+    
+    
+    if (addressF.text.length <= 0) {
+        VCToast(@"地址不能为空", 1);
+        
+        return;
+    }
+    [KTooL HttpPostWithUrl:@"MaterialVerify/identity_verify" parameters:@{@"name":nameF.text,@"idcard":numberF.text,@"address":addressF.text,@"reg_from":@"3"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+            
+        } else {
+              VCToast(@"验证失败", 1);
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+       
+//        VCToast(@"验证失败", 1);
     }];
-    
-    
 }
 
 - (void)initSecondView {
@@ -211,7 +264,39 @@
 }
 
 
+#pragma mark 绑卡展示页面
+- (void)getBindCard {
+    
+    [KTooL HttpPostWithUrl:@"MaterialVerify/card_bind" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            UILabel *leftL = [self.backScrollView viewWithTag:1000];
+            leftL.text = [NSString stringWithFormat:@"请使用持卡人(%@)的储蓄卡，完成绑卡认证",[[responseObject objectNilForKey:@"data"] objectNilForKey:@"name"]];
+           UILabel *priceL =  [self.backScrollView viewWithTag:2000];
+            [priceL addTapGestureWithBlock:^{
+            
+                CoinH5ViewController *VC = [[CoinH5ViewController alloc] init];
+                VC.url = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"withhold"];
+                [self.navigationController pushViewController:VC animated:YES];
+            }];
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+}
+
 - (void)initThirdView {
+    
+   
     
     UIView *backV = [[UIView alloc] init];
     backV.backgroundColor  = White;
@@ -239,6 +324,7 @@
     
     UILabel *leftL = [[UILabel alloc] init];
     leftL.text = @"请使用持卡人(刘*华)的储蓄卡，完成绑卡认证";
+    leftL.tag = 1000;
     leftL.textColor = COLOR(188, 188, 188);
     leftL.font = Regular(10);
     [backV addSubview:leftL];
@@ -250,9 +336,18 @@
         
     }];
     
+    NSString *useStr;
+    if (_isFenqi) {//如果是分期
+        
+        useStr = @"分期购买商品";
+        
+    } else {
+        
+       useStr = @"帑库银票借款";
+    }
     
     NSArray *titleA = @[@"绑卡用途：",@"银行卡号：",@"银行卡预留手机号：",@"手机短信验证码："];
-    NSArray *titleA1 = @[@"帑库银票借款",@"请输入本人银行卡号",@"请输入您的预留手机号",@"请输入手机短信验证码"];
+    NSArray *titleA1 = @[useStr,@"请输入本人银行卡号",@"请输入您的预留手机号",@"请输入手机短信验证码"];
     
     
     for (int i = 0; i < titleA.count; i ++) {
@@ -315,7 +410,7 @@
             
             if (i == 1) {
               
-                
+                cardNumF = _countTextField;
                 UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
                 [exitButton setImage:[UIImage imageNamed:@"组 4"] forState:UIControlStateNormal];
                 
@@ -330,9 +425,13 @@
                 
             }
             
+            if (i == 2) {
+                
+                phoneF = _countTextField;
+            }
             
             if (i == 3) {
-               
+                codeF = _countTextField;
                 // 验证码按钮
                 _codeButton = [UIButton buttonWithType:UIButtonTypeCustom];
                
@@ -386,6 +485,7 @@
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
     [exitButton setImage:[UIImage imageNamed:@"形状 1"] forState:UIControlStateSelected];
+    exitButton.tag = 3000;
     exitButton.layer.borderWidth = 1;
     exitButton.layer.borderColor =COLOR(255, 141, 29).CGColor;
     [exitButton setEnlargeEdge:10];
@@ -411,7 +511,7 @@
     [str setAttributes:firstAttributes range:NSMakeRange(9,str.length - 9)];
     
     UILabel *priceL = [[UILabel alloc] init];
-    
+    priceL.tag = 2000;
     priceL.textColor = TITLE_COLOR;
     priceL.font = Regular(10);
     priceL.attributedText = str;
@@ -438,18 +538,192 @@
         make.width.mas_equalTo(BCWidth - 30);
     }];
     
-    [backBtn1 addtargetBlock:^(UIButton *button) {
+    [backBtn1 addTarget:self action:@selector(clickBindCard) forControlEvents:UIControlEventTouchUpInside];
+    
+     [self getBindCard];
+    
+}
+
+#pragma mark 绑定银行卡信息
+- (void)clickBindCard {
+    if (cardNumF.text.length <= 0) {
+        VCToast(@"卡号不能为空", 1);
         
-        [self.backScrollView setContentOffset:CGPointMake(BCWidth * 3, 0) animated:YES];
+        return;
+    }
+    
+    if (phoneF.text.length <= 0) {
+        VCToast(@"预留手机号不能为空", 1);
+        
+        return;
+    }
+   
+    if (codeF.text.length <= 0) {
+        VCToast(@"验证码不能为空", 1);
+        
+        return;
+    }
+    
+    UIButton *seleBtn = [self.backScrollView viewWithTag:3000];
+    if (!seleBtn.selected) {
+        VCToast(@"请选中左下角的协议", 1);
+        
+        return;
+    }
+   
+    
+    NSInteger type;
+    if (_isFenqi) {
+        type = 1;
+    } else {
+        
+        type = 2;
+    }
+    
+    [KTooL HttpPostWithUrl:@"MaterialVerify/card_verify_sms" parameters:@{@"type":@(type),@"ll_token":llToken,@"verify_code":codeF.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            [self TestISSuccess];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
     }];
+}
+
+#pragma mark 发送短信验证码
+- (void)clickCodeButton {
+    
+    
+    if (cardNumF.text.length <= 0) {
+        VCToast(@"卡号不能为空", 1);
+        
+        return;
+    }
+    
+    if (phoneF.text.length <= 0) {
+        VCToast(@"预留手机号不能为空", 1);
+        
+        return;
+    }
+    
+    
+    NSInteger type;
+    if (_isFenqi) {
+        type = 1;
+    } else {
+        
+        type = 2;
+    }
+    
+    [KTooL HttpPostWithUrl:@"MaterialVerify/card_send_sms" parameters:@{@"type":@(type),@"bank_card":cardNumF.text,@"bank_mobile":phoneF.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            llToken = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"ll_token"];
+            [self changeTimeState];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
     
     
 }
 
+- (void)changeTimeState {
+    
+    
+    __block  NSInteger time = 59; //倒计时时间
+    
+    
+    WS(weakSelf);
+    
+    //    [_codeButton setTitleColor:White forState:UIControlStateNormal];
+    //    _codeButton.layer.borderColor = White.CGColor;
+    _codeButton.userInteractionEnabled = NO;
+    _countDownTimer = [NSTimer wwl_scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer *timer) {
+        
+        
+        
+        NSInteger seconds = time % 60;
+        time --;
+        
+        
+        [weakSelf.codeButton setTitle:[NSString stringWithFormat:@"%.2ld秒后重试", seconds] forState:UIControlStateNormal];
+        
+        
+        if (time == 0) {
+            //设置按钮的样式
+            [weakSelf.countDownTimer invalidate];
+            weakSelf.countDownTimer = nil;
+            
+            
+            
+            [weakSelf.codeButton setTitle:@"重新发送" forState:UIControlStateNormal];
+            
+            
+            //            防止倒计时结束前修改了号码
+            //            [self textValueChanged:nil];
+            
+        }
+        
+    }];
+    
+    
+    [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
+    [_countDownTimer fire];
+    
+}
 
+
+#pragma mark 验证信息是否通过
+- (void)TestISSuccess {
+    
+    
+    [KTooL HttpPostWithUrl:@"MaterialVerify/Credit" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        dataDic = [responseObject objectNilForKey:@"data"];
+        
+        if (BCStatus) {
+             isSuccess = YES;
+            
+            
+        } else {
+            
+            isSuccess = NO;
+        }
+        
+        [self initFourView];
+        
+        [self.backScrollView setContentOffset:CGPointMake(BCWidth * 3, 0) animated:YES];
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+         isSuccess = NO;
+    }];
+    
+}
 - (void)initFourView {
     
-    isSuccess = NO;
+   
     
     UIView *backV = [[UIView alloc] init];
     backV.backgroundColor  = White;
@@ -553,7 +827,7 @@
         leftL.text = @"恭喜您信用认证通过，您获得";
         
         
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"帑库银票借款额度：¥4000.00"];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"帑库银票借款额度：¥%@",[dataDic objectNilForKey:@"cash_credit_limit"] ]];
         NSDictionary * firstAttributes = @{NSForegroundColorAttributeName:COLOR(255, 0, 0)};
         [str setAttributes:firstAttributes range:NSMakeRange(9,str.length - 9)];
         
@@ -571,7 +845,7 @@
         }];
         
         
-        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:@"分期购物额度：¥4000.00"];
+        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"分期购物额度：¥%@",[dataDic objectNilForKey:@"mall_credit_limit"] ]];
         NSDictionary * firstAttributes1 = @{NSForegroundColorAttributeName:COLOR(255, 0, 0)};
         [str1 setAttributes:firstAttributes1 range:NSMakeRange(7,str1.length - 7)];
         
@@ -620,74 +894,40 @@
     
     
 }
-
+#pragma mark 信用认证
 - (void)clickButton:(UIButton *)btn {
     
-    
-}
-#pragma mark 点击验证码倒计时
-- (void)clickCodeButton {
-    
-    
-    //    if (![self isMobileNumber:_phoneField.text]) {
-    //
-    //
-    //        VCToast(@"手机号码错误", 1);
-    //
-    //        return;
-    //    }
-    
-    //    网络请求成功后调用下方代码
-    [self changeTimeState];
-    
-    
-    
-}
-
-- (void)changeTimeState {
-    
-    
-    __block  NSInteger time = 59; //倒计时时间
-    
-    
-    WS(weakSelf);
-    
-    //    [_codeButton setTitleColor:White forState:UIControlStateNormal];
-    //    _codeButton.layer.borderColor = White.CGColor;
-    _codeButton.userInteractionEnabled = NO;
-    _countDownTimer = [NSTimer wwl_scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer *timer) {
+    if (isSuccess) {//通过的情况
         
         
-        
-        NSInteger seconds = time % 60;
-        time --;
-        
-        
-        [weakSelf.codeButton setTitle:[NSString stringWithFormat:@"%.2ld秒后重试", seconds] forState:UIControlStateNormal];
-        
-        
-        if (time == 0) {
-            //设置按钮的样式
-            [weakSelf.countDownTimer invalidate];
-            weakSelf.countDownTimer = nil;
+        if (btn.tag == 0) {//借款
             
+            self.tabBarController.selectedIndex = 2;
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } else {//分期
             
-            
-            [weakSelf.codeButton setTitle:@"重新发送" forState:UIControlStateNormal];
-            
-            
-            //            防止倒计时结束前修改了号码
-            //            [self textValueChanged:nil];
+            self.tabBarController.selectedIndex = 1;
+            [self.navigationController popToRootViewControllerAnimated:YES];
             
         }
         
-    }];
-    
-    
-    [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
-    [_countDownTimer fire];
+    } else {
+        
+        if (btn.tag == 0) {//去领会员福利
+            
+            NSMutableString *str= [[NSMutableString alloc]initWithFormat:@"tel:%@",@"400-618-8803"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        } else {//分期
+            
+            self.tabBarController.selectedIndex = 1;
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+        }
+        
+    }
     
 }
+
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
     
