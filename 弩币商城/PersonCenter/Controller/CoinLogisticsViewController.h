@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinLogisticsViewController : CoinBaseViewController
 
+//@property (nonatomic,copy)NSString * urlString;
+//@property (nonatomic,copy)
 @end
 
 NS_ASSUME_NONNULL_END

@@ -523,6 +523,7 @@
     
 }
 
+
 // 立即付款
 - (void)goPay{
     if (self.dataDict) {
@@ -540,6 +541,7 @@
             vc.name  = self.dataDict[@"order_info"][@"consignee"];
             vc.address = self.dataDict[@"order_info"][@"address"];
             vc.orderNum = self.dataDict[@"order_info"][@"order_sn"];
+            
             [self.navigationController pushViewController:vc animated:YES];
             
         }

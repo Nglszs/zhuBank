@@ -9,7 +9,8 @@
 #import "CoinAboutUsViewController.h"
 
 @interface CoinAboutUsViewController ()
-
+@property (nonatomic,copy)NSString * register_agreement;
+@property (nonatomic,copy)NSString * secret_agreement;
 @end
 
 @implementation CoinAboutUsViewController
@@ -20,6 +21,7 @@
     [self SetReturnButton];
     [self SetNavTitleColor];
     [self initView];
+    [self request];
 }
 
 - (void)initView{
@@ -50,7 +52,7 @@
         btn.tag = 1000 + i;
          CGFloat height = 40;
         CGFloat top = SetY(214) + i * height;
-       
+        [btn addTarget:self action:@selector(btnAction:) forControlEvents:(UIControlEventTouchUpInside)];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view).offset(top);
             make.height.mas_equalTo(height);
@@ -106,4 +108,30 @@
     }];
 }
 
+- (void)btnAction:(UIButton *)btn{
+    CoinH5ViewController * vc = [CoinH5ViewController new];
+ 
+    if (btn.tag == 1000) {
+        
+    }else if (btn.tag == 1001){
+        vc.url = self.register_agreement;
+        vc.titleStr = @"用户注册协议";
+    }else{
+        vc.url = self.secret_agreement;
+        vc.titleStr = @"隐私保护政策";
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)request{
+    [KTooL HttpPostWithUrl:@"User/agreement" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.register_agreement = responseObject[@"data"][@"register_agreement"];
+            self.secret_agreement = responseObject[@"data"][@"secret_agreement"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
 @end
