@@ -1413,6 +1413,7 @@
 			baseConfigurationReference = 652FC2C9C25BBDB0535A3974 /* Pods-弩币商城.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8Y3DY37M53;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1422,6 +1423,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
 				INFOPLIST_FILE = "弩币商城/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1441,6 +1443,7 @@
 			baseConfigurationReference = C17C8E6ED8A00F751FE4F819 /* Pods-弩币商城.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8Y3DY37M53;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1450,6 +1453,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/弩币商城/CoinHeader.pch";
 				INFOPLIST_FILE = "弩币商城/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

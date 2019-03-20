@@ -139,7 +139,7 @@
     
 //    会员及额度
     UIButton *backBtn= [[UIButton alloc] init];
-    
+    backBtn.tag = 2000;
     [backBtn setTitle:@"帑库金钻会员" forState:UIControlStateNormal];
     [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
     backBtn.titleLabel.font = Regular(13);
@@ -505,6 +505,10 @@
             
             UILabel *titleL = [self.backScrollView viewWithTag:200];
             titleL.text = [dataDic objectNilForKey:@"nickname"];
+            
+            UIButton *btn = [self.backScrollView viewWithTag:2000];
+            NSString *isVip = [[dataDic objectForKey:@"buy_vip"] boolValue]?@"努库金钻会员":@"暂未成为会员";
+            [btn setTitle:isVip forState:UIControlStateNormal];
             
             [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
             [USER_DEFAULTS synchronize];
