@@ -172,8 +172,10 @@
     }
     
     if (self.type == BRPayBuyMember) {
-        
+        url = @"CashLoan/buy_vip";
+        dict[@"pay_type"] = self.tempButton.tag == 0 ? @"2" :@"1";
     }
+    
     if (self.type == BRPayBuyCommodity) {
         
     }
@@ -226,12 +228,23 @@
 }
 
 - (void)paySuccess{
-    //        CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
-    //        [self.navigationController pushViewController:vc animated:YES];
+    CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
+    if (self.type == BRPayBuyMember) {
+        vc.type =  BRPaySuccessBuyMember;
+    }
+    if (self.type == BRPayBuyCommodity) {
+        vc.type = BRPayPaymentSuccess;
+    }
+    
+    if (self.type == BRPayRepayment) {
+        vc.type = BRPayRepaySuccess;
+    }
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 - (void)payError{
-    
+    [SVProgressHUD showErrorWithStatus:@"支付失败"];
+    [SVProgressHUD dismissWithDelay:2];
     
 }
 

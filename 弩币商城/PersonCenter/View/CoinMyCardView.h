@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinMyCardView : UIView
-
+@property (nonatomic,strong)UIView * PayView;
+@property (nonatomic,strong)UIView * RepaymentView;
 @end
 
 NS_ASSUME_NONNULL_END
