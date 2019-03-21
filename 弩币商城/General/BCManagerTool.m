@@ -405,6 +405,11 @@ static BCManagerTool *_instanceTool;
     
 }
 
+- (BOOL)isCreait {
+    
+    return [USER_DEFAULTS  boolForKey:@"iscredit"];
+    
+}
 + (void)loadTencentCaptcha:(UIView *)view callback:(void(^)(NSString * Ticket,NSString * Randstr))success{
     [[TCWebCodesBridge sharedBridge]loadTencentCaptcha:view appid:TencentCaptchAppID callback:^(NSDictionary *resultJSON) {
         if(0==[resultJSON[@"ret"] intValue]) {

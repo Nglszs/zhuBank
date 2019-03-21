@@ -33,6 +33,8 @@
     [super viewWillAppear:animated];
      [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -229,6 +231,7 @@
 //        还款时间
         UILabel *titleL = [[UILabel alloc] init];
         titleL.text = titleA1[i];
+        titleL.tag = 10000 + i;
         titleL.textColor = COLOR(153, 153, 153);
         titleL.font = Regular(11);
         [topV addSubview:titleL];
@@ -510,7 +513,12 @@
             NSString *isVip = [[dataDic objectForKey:@"buy_vip"] boolValue]?@"努库金钻会员":@"暂未成为会员";
             [btn setTitle:isVip forState:UIControlStateNormal];
             
+            UILabel *titleL1 = [self.backScrollView viewWithTag:10001];
+            titleL1.text = [NSString stringWithFormat:@"最近一笔%@还款",[dataDic objectNilForKey:@"repay_time"]];
+            
             [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
+           
+            [USER_DEFAULTS setBool:[[dataDic objectForKey:@"credit"] boolValue] forKey:@"iscredit"];
             [USER_DEFAULTS synchronize];
             
         } else {

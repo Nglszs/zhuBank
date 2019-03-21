@@ -417,12 +417,12 @@
 #pragma mark 得到拍照图片
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
-    
+     UIImage *newImage;
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         
-        UIImage *newImage;
+       
         if (self.imagePicker.allowsEditing) {//如果可以编辑
             
             newImage = [info objectForKey:UIImagePickerControllerEditedImage];
@@ -434,15 +434,56 @@
         
         
         [_headImageView setImage:newImage];
-//
-//        [NOTIFICATION_CENTER postNotificationName:Change_Camer object:@{@"image":newImage}];
+
+        
+        
         
         
     }
     
     
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = 20;
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
     
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    // 公共参数
+    NSString * user_id  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+    if (!BCStringIsEmpty(user_id)) {
+        dict[@"user_id"] = user_id;
+    }
     
+    NSString * token  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];
+    if (!BCStringIsEmpty(token)) {
+        dict[@"token"] = token;
+    }
+    dict[@"reg_from"] = @"3";
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    dict[@"version"] = app_Version;
+    dict[@"device"] = [self getUUID];
+     NSString *url = [NSString stringWithFormat:@"%@%@",BCBaseUrl,@"UserCenter/reset_head_pic"];
+    
+    [manager POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+      
+        
+        NSData*imageData=UIImageJPEGRepresentation(newImage,.2);
+        NSDateFormatter*formatter=[[NSDateFormatter alloc]init];
+        formatter.dateFormat=@"yyyyMMddHHmmss";
+        NSString*str = [formatter stringFromDate:[NSDate date]];
+        NSString*fileName = [NSString stringWithFormat:@"%@.jpg", str];
+       
+        
+        [formData appendPartWithFileData:imageData name:@"head_pic" fileName:fileName mimeType:@"image/jpeg"];
+       
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        NSLog(@"%@",uploadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        VCToast(@"上传成功", 1);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+          VCToast(@"上传失败", 1);
+    }];
     
 //    imageName = [[self getNowTimeTimestamp]stringByAppendingPathExtension:@"jpg"];
 //
@@ -490,6 +531,21 @@
     
     
     return _playTableview;
+}
+- (NSString *)getUUID{
+    
+    CFUUIDRef puuid = CFUUIDCreate(nil);
+    CFStringRef uuidString = CFUUIDCreateString(nil, puuid);
+    NSString *result = (NSString *)CFBridgingRelease(CFStringCreateCopy(NULL, uuidString));
+    NSMutableString *tmpResult = result.mutableCopy;
+    
+    NSRange range = [tmpResult rangeOfString:@"-"];
+    while (range.location != NSNotFound) {
+        [tmpResult deleteCharactersInRange:range];
+        range = [tmpResult rangeOfString:@"-"];
+    }
+    return tmpResult;
+    
 }
 
 @end

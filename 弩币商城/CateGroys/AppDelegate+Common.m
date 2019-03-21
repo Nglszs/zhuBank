@@ -121,6 +121,8 @@ static void *networkKey = &networkKey;
                 
                
                 [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
+                 [USER_DEFAULTS setBool:[[dataDic objectForKey:@"credit"] boolValue] forKey:@"iscredit"];
+                
                 [USER_DEFAULTS synchronize];
                 
             } else {
