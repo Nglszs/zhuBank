@@ -253,6 +253,10 @@
         make.top.equalTo(leftL.mas_bottom).offset(50);
     }];
 
+
+
+    NSArray * titleArr = [sepDic objectForKey:@"颜色"];
+
     
     titleArr = [NSMutableArray arrayWithCapacity:1];
     titleA = [NSMutableArray arrayWithCapacity:1];
@@ -268,6 +272,7 @@
         }
         
     }
+
 
 
     for (int i = 0; i < titleArr.count ; i++) {

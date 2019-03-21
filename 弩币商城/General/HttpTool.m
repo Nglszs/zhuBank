@@ -60,6 +60,9 @@ static HttpTool * tool;
     if (parameters == nil) {
         parameters = [NSDictionary dictionary];
     }
+    if (!BCStringIsEmpty(loadString)) {
+        [SVProgressHUD showWithStatus:loadString];
+    }
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     // 公共参数
     NSString * user_id  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
@@ -79,6 +82,7 @@ static HttpTool * tool;
     
     NSLog(@"---%@",parameters);
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [SVProgressHUD dismiss];
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"8"]) {
             //您的账号已在别处登录
             [self GoLogin];
@@ -97,6 +101,7 @@ static HttpTool * tool;
         }
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+         [SVProgressHUD dismiss];
         failure(task,error);
     }];
     
