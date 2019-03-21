@@ -617,56 +617,41 @@
             NSLog(@")))%@",result);
             sizeArr = result;
             
-            [KTooL HttpPostWithUrl:@"goods/spec_page" parameters:@{@"goods_id":_goodID,@"spec_keys":[sizeArr lastObject]} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                
-               
-                if (BCStatus) {
-                    
-                 NSDictionary*Dic = [responseObject objectNilForKey:@"data"];
-                    
-                    
-                    
-                    
-                    
-//                    选完规格才跳转
-                    CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
-                    VC.q_fenqi = divideArr.count<=0?@"0":@"1";
-                    VC.goods_id = _goodID;
-                    VC.num = [sizeArr objectAtIndex:0];
-                    VC.item_id = [[Dic objectForKey:@"goods_info"] objectForKey:@"item_id"];
-                     NSLog(@"===%@",VC.item_id);
-                    if (divideArr.count > 0) {
-                        VC.periods = [divideArr lastObject];
-                        NSString *stage = [divideArr firstObject];
-                        if ([stage isEqualToString:@"零首付"]) {
-                            VC.stages = @"0";
-                        } else {
-                            
-                            NSString *newStr = [stage substringToIndex:1];
-                            VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
-                        }
-                        
-                    }
-                    [self.navigationController pushViewController:VC animated:YES];
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                  
-                    
+            
+            CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
+            VC.q_fenqi = divideArr.count<=0?@"0":@"1";
+            VC.goods_id = _goodID;
+            VC.num = [sizeArr firstObject];
+            VC.item_id = [sizeArr lastObject];
+           
+            if (divideArr.count > 0) {
+                VC.periods = [divideArr lastObject];
+                NSString *stage = [divideArr firstObject];
+                if ([stage isEqualToString:@"零首付"]) {
+                    VC.stages = @"0";
                 } else {
                     
-                   
+                    NSString *newStr = [stage substringToIndex:1];
+                    VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
                 }
                 
-            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-                
-            }];
+            }
+            [self.navigationController pushViewController:VC animated:YES];
             
-//
+            
+            
+            
+            
+            
+            
+            
+            
+                    
+                    
+            
+            
+            
+
             
             
         };

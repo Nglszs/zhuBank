@@ -24,6 +24,7 @@
     UILabel *countL;
     NSMutableArray *titleArr;
     NSMutableArray *titleA;
+    NSString *item_ID;//传个提交订单
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params{
     paramS = params;
@@ -435,7 +436,7 @@
             NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
             NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
             NSLog(@"%@==%@",colorID,sizeID);
-            self.backBlock(@[_countTextField.text,[NSString stringWithFormat:@"%@_%@",colorID,sizeID]]);
+            self.backBlock(@[_countTextField.text,item_ID]);
         }
         
         [self removeCommentCuView];
@@ -508,7 +509,8 @@
             
             NSDictionary *dic = [responseObject objectNilForKey:@"data"];
             NSDictionary *newDic = [dic objectNilForKey:@"goods_info"];
-            
+           
+            item_ID = [newDic objectNilForKey:@"item_id"];
             NSDictionary *newDic1 = [dic objectNilForKey:@"fenqi_info"];
             
             
