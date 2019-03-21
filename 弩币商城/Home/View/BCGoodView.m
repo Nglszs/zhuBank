@@ -235,7 +235,7 @@
     
 //      颜色
 
-    NSDictionary *sepDic = [dataDic objectNilForKey:@"spec_info"];
+    NSArray *sepDic = [dataDic objectNilForKey:@"spec_info"];
     
     UILabel *leftL2 = [[UILabel alloc] init];
     leftL2.textColor = TITLE_COLOR;
@@ -249,8 +249,22 @@
         make.top.equalTo(leftL.mas_bottom).offset(50);
     }];
 
-//
-    NSArray *titleArr = [sepDic objectForKey:@"颜色"];
+    
+    NSMutableArray *titleArr = [NSMutableArray arrayWithCapacity:1];
+    NSMutableArray *titleA = [NSMutableArray arrayWithCapacity:1];
+    
+    for (NSDictionary *dic in sepDic) {
+        if ([[dic objectNilForKey:@"name"] isEqualToString:@"颜色"]) {
+            [titleArr addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
+        }
+        
+        if ([[dic objectNilForKey:@"name"]isEqualToString:@"版本"]) {
+            
+             [titleA addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
+        }
+        
+    }
+
 
     for (int i = 0; i < titleArr.count ; i++) {
         NSDictionary *colorDic = titleArr[i];
@@ -349,7 +363,7 @@
     
     
     
-        NSArray *titleA = [sepDic objectNilForKey:@"版本"];
+    
         for (int i = 0; i < titleA.count ; i++) {
             
                NSDictionary *sizeDic = titleA[i];

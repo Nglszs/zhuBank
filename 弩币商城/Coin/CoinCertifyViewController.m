@@ -41,11 +41,14 @@
     [self initThirdView];
    
     
-    if (_indexType >= 2) {//直接去银行卡界面
+    if (_indexType == 2) {//直接去银行卡界面
         
        [self.backScrollView setContentOffset:CGPointMake(BCWidth * _indexType, 0) animated:NO];
     }
     
+    if (_indexType == 3) {
+        [self TestISSuccess];
+    }
 }
 
 - (void)initView {
