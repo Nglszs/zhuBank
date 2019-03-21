@@ -250,7 +250,7 @@
     }];
 
 //
-    NSArray *titleArr = [sepDic objectForKey:@"颜色"];
+    NSArray * titleArr = [sepDic objectForKey:@"颜色"];
 
     for (int i = 0; i < titleArr.count ; i++) {
         NSDictionary *colorDic = titleArr[i];
