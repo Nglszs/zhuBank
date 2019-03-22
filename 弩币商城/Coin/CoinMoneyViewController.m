@@ -11,6 +11,7 @@
 #import "CoinH5ViewController.h"
 #import "CoinCooperationCompanyViewController.h"
 #import "CoinCertifyViewController.h"
+#import "CoinMemberBuyViewController.h"
 @interface CoinMoneyViewController ()
 
 @property (nonatomic,strong)UILabel * tips1;
@@ -190,12 +191,15 @@
         
         if (type == 1) {
             // 去登录
-            
+            VCToast(@"请先登录", 2);
         } else if (type == 2) {
             // 不可点击
-            
+              VCToast(@"暂时无法使用", 2);
         }else if (type == 3) {
             // 去购买会员
+            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+            VC.type  = BRPayBuyMember;
+            [self.navigationController pushViewController:VC animated:YES];
             
         }else if (type == 4) {
             // 去审核身份

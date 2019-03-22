@@ -73,6 +73,7 @@
 #define BCDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
 // 判断返回值status
 #define BCStatus  [[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"1"]
+#define BCMsg responseObject[@"msg"]
 
 /**
  *  全局环境控制

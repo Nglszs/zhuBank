@@ -17,6 +17,8 @@
 
 #define ISLogin  @"ISLogin" //是否登录
 
+#define PaySuccess @"PaySuccess" // 支付成功
+#define PayError @"PayError" // 支付失败
 
 #define USER_Token  @"USER_Token" //是否登录
 

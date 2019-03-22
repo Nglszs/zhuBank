@@ -82,9 +82,9 @@
 
 - (void)AlipayPayresultDic:(NSDictionary *)resultDic{
     if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]){
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PaySuccess object:nil];
     }else{
-        
+         [[NSNotificationCenter defaultCenter] postNotificationName:PayError object:nil];
     }
     
 }
@@ -100,15 +100,17 @@
         //支付返回结果，实际支付结果需要去微信服务器端查询
         switch (resp.errCode) {
             case 0:
+                  [[NSNotificationCenter defaultCenter] postNotificationName:PaySuccess object:nil];
                 payResoult = @"支付结果：成功！";
                 break;
-            case -1:
-                payResoult = @"支付结果：失败！";
-                break;
-            case -2:
-                payResoult = @"用户已经退出支付！";
-                break;
+//            case -1:
+//                payResoult = @"支付结果：失败！";
+//                break;
+//            case -2:
+//                payResoult = @"用户已经退出支付！";
+//                break;
             default:
+                 [[NSNotificationCenter defaultCenter] postNotificationName:PayError object:nil];
                 payResoult = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
                 break;
         }

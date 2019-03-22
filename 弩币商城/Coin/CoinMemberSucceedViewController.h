@@ -16,10 +16,15 @@ typedef NS_ENUM(NSUInteger, BRPaySuccessType) {
     BRPayAllMoneySuccess,// 付全款成功
     BRPayRepaySuccess // 还款成功
 };
-// 支付成功界面得改
+
 @interface CoinMemberSucceedViewController : CoinBaseViewController
 
 @property (nonatomic,assign)BRPaySuccessType type;
+
+@property (nonatomic,copy)NSString * Money;
+@property (nonatomic,copy)NSString * order_id;
+@property (nonatomic,copy)NSArray * dataArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

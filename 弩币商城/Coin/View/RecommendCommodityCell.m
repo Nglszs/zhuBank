@@ -27,7 +27,8 @@
 
 - (void)SetUI{
     self.imageView = [[UIImageView alloc] init];
- 
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageView.clipsToBounds = YES;
     [self.contentView addSubview:self.imageView];
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(10);

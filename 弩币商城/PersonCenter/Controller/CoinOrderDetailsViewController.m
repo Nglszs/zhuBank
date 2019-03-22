@@ -14,6 +14,7 @@
 #import "CoinOrderAllMoneyViewController.h"
 #import "CoinPayMoneyOrderViewController.h"
 #import "CoinH5ViewController.h"
+#import "CoinPayNotFristViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -512,9 +513,12 @@
     
     [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            [SVProgressHUD showSuccessWithStatus:@"成功"]; dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            VCToast(@"取消订单成功", 2); dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
+                self.resultData(@"1");
             });
+        }else{
+            VCToast(@"取消订单失败", 2);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -526,28 +530,60 @@
 // 立即付款
 - (void)goPay{
     if (self.dataDict) {
+        [KTooL HttpPostWithUrl:@"Order/get_order_info" parameters:@{@"order_id" : self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (BCStatus) {
+                [self goPay:responseObject];
+            }else{
+                VCToast(@"支付失败", 2);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            VCToast(@"支付失败", 2);
+        }];
         
-        NSString * is_fenqi = [NSString stringWithFormat:@"%@",self.dataDict[@"order_info"][@"is_fenqi"]];
-        if ([is_fenqi isEqualToString:@"0"]) {
-            // 判断订单是不是分期
-            CoinOrderAllMoneyViewController * vc = [CoinOrderAllMoneyViewController new];
-            vc.OrderID = self.dataDict[@"order_info"][@"order_sn"];
-            vc.Money = self.dataDict[@"order_info"][@"order_amount"];
-            [self.navigationController pushViewController:vc animated:YES];
-        }else{
-            CoinPayMoneyOrderViewController * vc = [CoinPayMoneyOrderViewController new];
-            vc.money = self.dataDict[@"order_info"][@"first_pay"];
-            vc.name  = self.dataDict[@"order_info"][@"consignee"];
-            vc.address = self.dataDict[@"order_info"][@"address"];
-            vc.orderNum = self.dataDict[@"order_info"][@"order_sn"];
-            
-            [self.navigationController pushViewController:vc animated:YES];
-            
-        }
-     
+        
     }
    
 }
+
+- (void)goPay:(NSDictionary *)dict{
+    
+    // 订单成功了，要判断商品状态   1 全款（CoinOrderAllMoneyViewController）   2 有首付分期（CoinPayMoneyOrderViewController ）  3 无首付分期（CoinPayNotFristViewController）
+
+    //    flag 标记(1：不分期   2：分期零首付  3：分期有首付)
+    
+    int flag = [dict[@"data"][@"flag"] intValue];
+    if (flag == 1) {
+        CoinOrderAllMoneyViewController * vc = [CoinOrderAllMoneyViewController new];
+        vc.OrderNum = dict[@"data"][@"order_sn"];
+        vc.Money = dict[@"data"][@"pay_amount"];
+        vc.order_id = dict[@"data"][@"order_id"];
+        vc.dataArray = dict[@"data"][@"hot_goods"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    if (flag == 2) {
+        CoinPayNotFristViewController * VC = [CoinPayNotFristViewController new];
+        VC.name = dict[@"data"][@"consignee"];
+        VC.address = dict[@"data"][@"address"];
+        VC.orderNum = dict[@"data"][@"order_sn"];
+        VC.dataArray = dict[@"data"][@"hot_goods"];
+        VC.order_id = dict[@"data"][@"order_id"];
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    
+    if (flag == 3) {
+        CoinPayMoneyOrderViewController  * vc = [CoinPayMoneyOrderViewController new];
+        vc.name = dict[@"data"][@"consignee"];
+        vc.address = dict[@"data"][@"address"];;
+        vc.orderNum = dict[@"data"][@"order_sn"];
+        vc.money = dict[@"data"][@"pay_amount"];
+        vc.order_id = dict[@"data"][@"order_id"];
+        vc.dataArray = dict[@"data"][@"hot_goods"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+}
+
 
 // 确认收货
 - (void)order_confirm{
@@ -571,8 +607,7 @@
     if (self.dataDict) {
         NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.dataDict[@"goods_info"][@"customer_mobile"]];
         UIWebView * callWebview = [[UIWebView alloc] init];[callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];[self.view addSubview:callWebview];
-        
-    }
+     }
 
     
     

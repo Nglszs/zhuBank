@@ -10,8 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^BRSelectUse)(NSString * use);
 @interface BorrowMoneyReasonView : UIView
-
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSArray *)dataArray;
+@property (nonatomic,copy)BRSelectUse use;
 @end
 
 NS_ASSUME_NONNULL_END

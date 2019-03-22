@@ -24,6 +24,8 @@ typedef NS_ENUM(NSUInteger, BRPayType) {
 @property (nonatomic,copy)NSString * IdStr;// 分期还款的ID
 
 @property (nonatomic,copy)NSString * orderNum;// 订单号
+@property (nonatomic,copy)NSString * orderID;// 订单ID
+@property (nonatomic,strong)NSArray * DataArray;// 推荐数组
 @end
 
 NS_ASSUME_NONNULL_END

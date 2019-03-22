@@ -13,15 +13,15 @@
 @end
 @implementation BorrowMoneyReasonView
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSArray *)dataArray{
     self = [super initWithFrame:frame];
     if (self) {
-        [self initView];
+        [self initView:dataArray];
     }
     return self;
 }
 
-- (void)initView{
+- (void)initView:(NSArray *)data{
     
     UIView * BGView = [[UIView alloc] init];
     BGView.backgroundColor = [UIColor blackColor];
@@ -30,7 +30,10 @@
     [BGView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
-    NSArray * array = @[@"个人生活消费",@"租房装修",@"电子数码",@"旅游",@"无指定用途(根据监管规则，无指定用途不允许借款)"];
+    NSMutableArray * array = [NSMutableArray array];
+    for (NSDictionary * dict in data) {
+        [array addObject:dict[@"use"]];
+    }
     for (int i = 0; i < array.count; i++) {
         UIView * view = [UIView new];
         view.backgroundColor = [UIColor whiteColor];
@@ -48,6 +51,12 @@
         [BGView addSubview:btn];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(view);
+        }];
+        MJWeakSelf;
+        [btn addtargetBlock:^(UIButton *button) {
+            if (weakSelf.use) {
+                weakSelf.use(button.titleLabel.text);
+            }
         }];
         btn.tag = 1000 + i;
         [btn addTarget:self action:@selector(Select:) forControlEvents:(UIControlEventTouchUpInside)];
