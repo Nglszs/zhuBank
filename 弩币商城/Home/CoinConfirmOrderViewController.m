@@ -452,6 +452,7 @@
         VC.name = dict[@"data"][@"consignee"];
         VC.address = dict[@"data"][@"address"];
         VC.orderNum = dict[@"data"][@"order_sn"];
+        VC.dataArray = dict[@""];
         [self.navigationController pushViewController:VC animated:YES];
     }
     

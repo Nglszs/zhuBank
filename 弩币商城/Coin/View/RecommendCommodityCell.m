@@ -27,7 +27,7 @@
 
 - (void)SetUI{
     self.imageView = [[UIImageView alloc] init];
-    self.imageView.backgroundColor = [UIColor redColor];
+ 
     [self.contentView addSubview:self.imageView];
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(10);
@@ -38,7 +38,7 @@
     self.titleLabel = [UILabel new];
     self.titleLabel.font = Regular(12);
     self.titleLabel.textColor = COLOR(51, 51, 51);
-    self.titleLabel.text = @"HUAWEI Mate 20 Pro";
+    
     [self.contentView addSubview:self.titleLabel];
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -48,12 +48,7 @@
     }];
     self.MoneyLabel = [[UILabel alloc] init];
 
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"￥5399起" attributes:@{NSFontAttributeName: Regular(18),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
-    
-    [string addAttributes:@{NSFontAttributeName: Regular(17.1)} range:NSMakeRange(1, 4)];
-    
-    [string addAttributes:@{NSFontAttributeName: Regular(12)} range:NSMakeRange(5, 1)];
-    self.MoneyLabel.attributedText = string;
+   
     [self.contentView addSubview:self.MoneyLabel];
     
     [self.MoneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -63,17 +58,36 @@
     }];
     
     self.ByStagesLabel = [UILabel new];
-    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:@"￥180*36期" attributes:@{NSFontAttributeName: Regular(12),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
-    
-    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]} range:NSMakeRange(4, 4)];
-    
-    self.ByStagesLabel.attributedText = string2;
+  
     [self.contentView addSubview:self.ByStagesLabel];
     [self.ByStagesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.MoneyLabel.mas_bottom).offset(3);
         make.left.right.equalTo(self.MoneyLabel);
     }];
 
+    
+}
+
+- (void)setDataDict:(NSDictionary *)dataDict{
+    _dataDict = dataDict;
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:dataDict[@"original_img"]]];
+    self.titleLabel.text = dataDict[@"goods_name"];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",dataDict[@"shop_price"]] attributes:@{NSFontAttributeName: Regular(18),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
+    
+    [string addAttributes:@{NSFontAttributeName: Regular(17.1)} range:NSMakeRange(1, [dataDict[@"shop_price"] length])];
+    
+   
+    self.MoneyLabel.attributedText = string;
+    
+    
+    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",dataDict[@"fenqi_info"]] attributes:@{NSFontAttributeName: Regular(12),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
+    NSString * s1 = dataDict[@"fenqi_info"];
+    NSArray * arr = [s1 componentsSeparatedByString:@"*"];
+    [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]} range:NSMakeRange(string2.length - [arr[1] length] - 1, [arr[1] length] + 1)];
+    
+    self.ByStagesLabel.attributedText = string2;
+    
     
 }
 @end
