@@ -89,10 +89,11 @@ UIView * tempView =     [self HeaderView];
     }else if (self.type == BRPayRepaySuccess){
         s1 = @"还款成功";
     }
+    _Money = [NSString stringWithFormat:@"%@",_Money];
     NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@ %@",_Money,s1]];
+    self.moneLabel.textColor = COLOR(58, 171, 53);
     [string addAttribute:NSForegroundColorAttributeName value:COLOR(102, 102, 102) range:NSMakeRange(0, _Money.length + 1)];
-    
-    [string addAttribute:NSForegroundColorAttributeName value:COLOR(58, 171, 53) range:NSMakeRange(_Money.length + 1, s1.length + 1)];
+  
     self.moneLabel.attributedText = string;
     
     UILabel * label = [[UILabel alloc] init];
@@ -218,14 +219,19 @@ UIView * tempView =     [self HeaderView];
         self.tabBarController.selectedIndex = 2;
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
-    if (self.type == BRPayPaymentSuccess || self.type == BRPayAllMoneySuccess || self.type == BRPayRepaySuccess) {
+    if (self.type == BRPayPaymentSuccess || self.type == BRPayAllMoneySuccess) {
         //查看订单
+        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.order_id = self.order_id;
+        vc.type = BROrderNotEnable;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (self.type == BRPayRepaySuccess) {
         CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
         vc.order_id = self.order_id;
         vc.type = BROrderFinsh;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
     
 }
 

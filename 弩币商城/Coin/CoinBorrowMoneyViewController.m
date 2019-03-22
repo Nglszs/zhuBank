@@ -27,6 +27,7 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChange) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)initView{
@@ -66,28 +67,62 @@
         VCToast(@"请选择借款用途", 2);
         return;
     }
-    
-    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-    dict[@"amount"] = self.moneyTF.text;
-    dict[@"days"] = self.dayLabel.text;
-    dict[@"use"] = self.reasonLabel.text;
-    dict[@"repay_amount"] = [self.MoneyLabel.text substringFromIndex:1];
-    
-    
-    [KTooL HttpPostWithUrl:@"CashLoan/loan" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
-       
-        int status = [responseObject[@"status"] intValue];
-        if (status == 1) {
+    UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"交易密码" message:@"请输入交易密码" preferredStyle:(UIAlertControllerStyleAlert)];
+ __block   UITextField * TF;
+    [aler addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入交易密码";
+        textField.secureTextEntry = YES;
+        TF = textField;
+    }];
+    UIAlertAction * a1 = [UIAlertAction actionWithTitle:@"确认" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+        
+        
+        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+        dict[@"amount"] = self.moneyTF.text;
+        dict[@"days"] = self.dayLabel.text;
+        dict[@"use"] = self.reasonLabel.text;
+        dict[@"repay_amount"] = [self.MoneyLabel.text substringFromIndex:1];
+        dict[@"password"] = TF.text;
+        [KTooL HttpPostWithUrl:@"CashLoan/confirm_loan" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
             
-        }else if (status == 0){
-             VCToast(BCMsg, 2);
-        }else if (status == 2){
-            VCToast(@"请先设置交易密码", 2);
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            int status = [responseObject[@"status"] intValue];
+            if (status == 1) {
+                CoinBrowseStatusViewController * VC = [CoinBrowseStatusViewController new];
+                VC.isBrowse = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+            }else if (status == 0){
+                VCToast(BCMsg, 2);
+            }else if (status == 2){
+                VCToast(@"请先设置交易密码", 2);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
         
     }];
+    UIAlertAction * a2 = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [aler addAction:a1];
+    [aler addAction:a2];
+    [self presentViewController:aler animated:YES completion:^{
+        
+    }];
+    
+  
 //    [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
+    
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    if (textField.text.length > 8) {
+        return NO;
+    }
+    return YES;
+}
+- (void)textFieldTextDidChange{
+     [self requestMoney];
     
 }
 
@@ -256,11 +291,15 @@
         if (BCStatus) {
             self.dayArray = responseObject[@"data"][@"days"];
             self.reasonAyyay = responseObject[@"data"][@"use"];
-            self.moneyTF.text = responseObject[@"data"][@"money"];
+            self.moneyTF.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"money"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
     
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
