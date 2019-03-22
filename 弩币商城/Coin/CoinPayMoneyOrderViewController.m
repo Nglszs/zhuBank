@@ -8,7 +8,7 @@
 
 #import "CoinPayMoneyOrderViewController.h"
 #import "CoinMemberBuyViewController.h"
-
+#import "CoinOrderDetailsViewController.h"
 @implementation CoinPayMoneyOrderViewController
 
 - (void)viewDidLoad {
@@ -106,6 +106,8 @@
         VC.titleString = @"支付首付";
         VC.orderNum =self->_orderNum;
         VC.Money = self->_money;
+        VC.orderID = self.order_id;
+        VC.DataArray = self.dataArray;
         [self.navigationController pushViewController:VC animated:YES];
     }];
     
@@ -121,6 +123,13 @@
         make.top.equalTo(backBtn1.mas_bottom).offset(20);
         make.height.mas_equalTo(35);
         make.width.mas_equalTo(BCWidth - 80);
+    }];
+    
+    [backBtn addtargetBlock:^(UIButton *button) {
+        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.order_id = self.order_id;
+        vc.type = BROrderNotPay;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     
 }

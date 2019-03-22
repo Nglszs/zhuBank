@@ -96,9 +96,10 @@
         make.top.equalTo(MoneyLabel.mas_bottom).offset(3);
     }];
     
+    NSString * title = [self.q_fenqi intValue] == 1 ? @"提交分期订单" :@"提交订单";
     UIButton * GoBuyButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [GoBuyButton setBackgroundColor:COLOR(254, 70, 70) forState:(UIControlStateNormal)];
-    [GoBuyButton setTitle:@"提交分期订单" forState:(UIControlStateNormal)];
+    [GoBuyButton setTitle:title forState:(UIControlStateNormal)];
     GoBuyButton.adjustsImageWhenHighlighted = NO;
     GoBuyButton.titleLabel.font = MediumFont(15);
     [GoBuyButton addTarget:self action:@selector(submitOrder) forControlEvents:(UIControlEventTouchUpInside)];
@@ -429,9 +430,7 @@
 }
 
 - (void)goPay:(NSDictionary *)dict{
-     NSLog(@"1111111%@",dict);
-
-    
+  
     // 订单成功了，要判断商品状态   1 全款（CoinOrderAllMoneyViewController）   2 有首付分期（CoinPayMoneyOrderViewController ）  3 无首付分期（CoinPayNotFristViewController）
     
     if (!self.DataDict) {
@@ -442,8 +441,10 @@
     int flag = [dict[@"data"][@"flag"] intValue];
     if (flag == 1) {
         CoinOrderAllMoneyViewController * vc = [CoinOrderAllMoneyViewController new];
-        vc.OrderID = dict[@"data"][@"order_sn"];
+        vc.OrderNum = dict[@"data"][@"order_sn"];
         vc.Money = dict[@"data"][@"pay_amount"];
+        vc.order_id = dict[@"data"][@"order_id"];
+        vc.dataArray = dict[@"data"][@"hot_goods"];
         [self.navigationController pushViewController:vc animated:YES];
     }
   
@@ -452,7 +453,8 @@
         VC.name = dict[@"data"][@"consignee"];
         VC.address = dict[@"data"][@"address"];
         VC.orderNum = dict[@"data"][@"order_sn"];
-        VC.dataArray = dict[@""];
+        VC.dataArray = dict[@"data"][@"hot_goods"];
+        VC.order_id = dict[@"data"][@"order_id"];
         [self.navigationController pushViewController:VC animated:YES];
     }
     
@@ -462,6 +464,8 @@
         vc.address = dict[@"data"][@"address"];;
         vc.orderNum = dict[@"data"][@"order_sn"];
         vc.money = dict[@"data"][@"pay_amount"];
+        vc.order_id = dict[@"data"][@"order_id"];
+         vc.dataArray = dict[@"data"][@"hot_goods"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     

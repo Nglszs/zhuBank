@@ -28,6 +28,8 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccess) name:PaySuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payError) name:PayError object:nil];
 }
 
 - (void)initView{
@@ -242,6 +244,9 @@
     if (self.type == BRPayRepayment) {
         vc.type = BRPayRepaySuccess;
     }
+    vc.Money = self.Money;
+    vc.order_id = self.orderID;
+    vc.dataArray = self.DataArray;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -250,5 +255,7 @@
     [SVProgressHUD dismissWithDelay:2];
 }
 
-
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

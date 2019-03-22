@@ -9,8 +9,14 @@
 #import "CoinBorrowMoneyViewController.h"
 #import "BorrowMoneyReasonView.h"
 #import "CoinBrowseStatusViewController.h"
-@interface CoinBorrowMoneyViewController ()
 
+@interface CoinBorrowMoneyViewController ()<UITextFieldDelegate>
+@property (nonatomic,strong)NSArray * dayArray;
+@property (nonatomic,strong)NSArray * reasonAyyay;
+@property (nonatomic,strong)UITextField * moneyTF;
+@property (nonatomic,strong)UILabel * dayLabel;
+@property (nonatomic,strong)UILabel * reasonLabel;
+@property (nonatomic,strong)UILabel * MoneyLabel;
 @end
 
 @implementation CoinBorrowMoneyViewController
@@ -45,14 +51,61 @@
         
     }];
     [footButton addTarget:self action:@selector(goBuy:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self request];
 }
 - (void)goBuy:(UIButton *)btn{
-  
+    if ([self.moneyTF.text intValue] == 0) {
+        VCToast(@"请输入合理借款金额", 2);
+        return;
+    }
+    if ([self.dayLabel.text isEqualToString:@"请选择"]) {
+        VCToast(@"请选择借款天数", 2);
+        return;
+    }
+    if ([self.reasonLabel.text isEqualToString:@"请选择"]) {
+        VCToast(@"请选择借款用途", 2);
+        return;
+    }
     
-    [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"amount"] = self.moneyTF.text;
+    dict[@"days"] = self.dayLabel.text;
+    dict[@"use"] = self.reasonLabel.text;
+    dict[@"repay_amount"] = [self.MoneyLabel.text substringFromIndex:1];
+    
+    
+    [KTooL HttpPostWithUrl:@"CashLoan/loan" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
+       
+        int status = [responseObject[@"status"] intValue];
+        if (status == 1) {
+            
+        }else if (status == 0){
+             VCToast(BCMsg, 2);
+        }else if (status == 2){
+            VCToast(@"请先设置交易密码", 2);
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+//    [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
     
 }
 
+- (void)requestMoney{
+    if (!BCStringIsEmpty(self.moneyTF.text) || ![self.dayLabel.text isEqualToString:@"请选择"]) {
+        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+        dict[@"days"] = self.dayLabel.text;
+        dict[@"amount"] = self.moneyTF.text;
+        [KTooL HttpPostWithUrl:@"CashLoan/calculat_money" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (BCStatus) {
+                self.MoneyLabel.text = [NSString stringWithFormat:@"￥%@",responseObject[@"data"][@"repay_total"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+    }
+    
+}
 
 - (void)SetLists{
     NSArray * array = @[@"借款金额(元)：",@"借款期限(天)：",@"借款用途：",@"到期应还："];
@@ -107,7 +160,16 @@
         
         if (i != 0) {
             UILabel * label = [UILabel new];
-            label.text = @[@"30",@"30",@"请选择",@"¥2870.00"][i];
+            label.text = @[@"30",@"请选择",@"请选择",@""][i];
+            if (i == 1) {
+                self.dayLabel = label;
+            }
+            if (i == 2) {
+                self.reasonLabel = label;
+            }
+            if (i== 3) {
+                self.MoneyLabel = label;
+            }
             label.font = Regular(15);
             label.textColor = COLOR(102, 102, 102);
             [btn addSubview:label];
@@ -131,10 +193,13 @@
             UITextField * TF = [[UITextField alloc] init];
             TF.keyboardType = UIKeyboardTypeNumberPad;
             [btn addSubview:TF];
+            self.moneyTF = TF;
+            self.moneyTF.delegate = self;
             TF.font = Regular(15);
             [TF mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(BGView).offset(10);
                 make.top.bottom.equalTo(BGView);
+                
                 
             }];
             [BGView addTapGestureWithBlock:^{
@@ -155,13 +220,47 @@
         CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
         //获取导航栏的rect
         CGRect navRect = self.navigationController.navigationBar.frame;
-        BorrowMoneyReasonView * view = [[BorrowMoneyReasonView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight + statusRect.size.height + navRect.size.height)];
+        BorrowMoneyReasonView * view = [[BorrowMoneyReasonView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight + statusRect.size.height + navRect.size.height) withData:self.reasonAyyay];
+        MJWeakSelf;
+        view.use = ^(NSString * _Nonnull use) {
+            weakSelf.reasonLabel.text = use;
+            [weakSelf requestMoney];
+        };
         [[UIApplication sharedApplication].keyWindow addSubview:view];
         [UIView animateWithDuration:0.25 animations:^{
             view.top = - (statusRect.size.height + navRect.size.height);
         }];
     }
     
+    if (tag == 1) {
+        if (self.dayArray) {
+            UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"借款天数" message:@"请选择借款天数" preferredStyle:(UIAlertControllerStyleAlert)];
+            for (int i = 0; i < self.dayArray.count; i++) {
+                NSString * str = [NSString stringWithFormat:@"%@",self.dayArray[i][@"days"]];
+                UIAlertAction * a = [UIAlertAction actionWithTitle:str style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+                    self.dayLabel.text = action.title;
+                    [self requestMoney];
+                }];
+                [aler addAction:a];
+            }
+            [self presentViewController:aler animated:YES completion:^{
+                
+            }];
+        }
+       
+    }
 }
 
+- (void)request{
+    [KTooL HttpPostWithUrl:@"CashLoan/loan_page" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.dayArray = responseObject[@"data"][@"days"];
+            self.reasonAyyay = responseObject[@"data"][@"use"];
+            self.moneyTF.text = responseObject[@"data"][@"money"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
 @end

@@ -141,6 +141,8 @@ cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_a
     vc.IdStr = dict[@"id"];
     vc.titleString = dict[@"name"];
     vc.Money = dict[@"repay_money"];
+    vc.orderID = dict[@"order_id"];
+    vc.DataArray = @[];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

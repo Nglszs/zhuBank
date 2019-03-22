@@ -8,6 +8,12 @@
 
 #import "CoinPayNotFristViewController.h"
 #import "RecommendCommodityCell.h"
+#import "CoinGoodDetailViewController.h"
+#import "CoinOrderDetailsViewController.h"
+
+@interface CoinPayNotFristViewController()
+@property (nonatomic,strong) UICollectionView * collectionView;
+@end
 
 @implementation CoinPayNotFristViewController
 - (void)viewDidLoad {
@@ -19,6 +25,13 @@
     [self initView];
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
 }
 
 - (void)initView {
@@ -101,7 +114,7 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
-        
+        [self.navigationController popToRootViewControllerAnimated:YES];
        
     }];
     
@@ -116,6 +129,12 @@
         make.top.mas_equalTo(188);
         make.height.mas_equalTo(45);
         make.width.mas_equalTo(BCWidth/2);
+    }];
+    [backBtn addtargetBlock:^(UIButton *button) {
+        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.order_id = self.order_id;
+        vc.type = BROrderNotEnable;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     
 //    分割线
@@ -177,6 +196,7 @@
     UICollectionViewFlowLayout * flow = [UICollectionViewFlowLayout new];
     UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:flow];
     [self.view addSubview:collectionView];
+    self.collectionView = collectionView;
     [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.equalTo(self.view);
         make.top.equalTo(leftL.mas_bottom);
@@ -217,7 +237,14 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSString * ids = self.dataArray[indexPath.row][@"goods_id"];
+    CoinGoodDetailViewController * vc = [CoinGoodDetailViewController new];
+    vc.goodID = ids;
+    [self.navigationController pushViewController:vc animated:YES];
     
+}
+- (void)setDataArray:(NSArray *)dataArray{
+    _dataArray = dataArray;
+    [self.collectionView reloadData];
 }
 
 @end

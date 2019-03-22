@@ -647,7 +647,7 @@
     
     [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
-        NSLog(@"===%@",responseObject);
+        
         
         
         if (BCStatus) {

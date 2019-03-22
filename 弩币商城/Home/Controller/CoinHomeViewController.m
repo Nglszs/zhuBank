@@ -14,6 +14,8 @@
 #import "CoinSearchViewController.h"
 #import "CoinPayNotFristViewController.h"
 #import "CoinLoginViewController.h"
+#import "CoinMemberSucceedViewController.h"
+#import "CoinBorrowMoneyViewController.h"
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
 
 {
@@ -645,9 +647,11 @@
     }];
     
     [moneyImageV addTapGestureWithBlock:^{
-       
+        CoinBorrowMoneyViewController * vq  = [CoinBorrowMoneyViewController new];
+        [self.navigationController pushViewController:vq animated:YES];
+        return;
         CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
-        vc.url = huluUrl;
+        vc.url = self->huluUrl;
         [self.navigationController pushViewController:vc animated:YES];
         
     }];

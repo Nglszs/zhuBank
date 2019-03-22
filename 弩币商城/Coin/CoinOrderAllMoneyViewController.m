@@ -26,6 +26,8 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccess) name:PaySuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payError) name:PayError object:nil];
 }
 
 - (void)initView{
@@ -42,7 +44,7 @@
     }];
     
     self.orderNumberLabel = [UILabel new];
-    self.orderNumberLabel.text = self.OrderID;
+    self.orderNumberLabel.text = self.OrderNum;
     self.orderNumberLabel.textColor = COLOR(255, 0, 0);
     self.orderNumberLabel.font = Regular(16);
     [self.view addSubview:self.orderNumberLabel];
@@ -193,7 +195,7 @@
 
 - (void)pay{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-    dict[@"order_sn"] = self.OrderID;
+    dict[@"order_sn"] = self.OrderNum;
     dict[@"pay_type"] = self.tempButton.tag == 0? @"2" : @"1";
     [KTooL HttpPostWithUrl:@"Order/order_payment" parameters:dict loadString:@"正在支付" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
@@ -216,11 +218,7 @@
 - (void)alipayPay:(NSString *)orderString{
     
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:@"com.Zbanks.tkgo" callback:^(NSDictionary *resultDic) {
-        if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]){
-            [self paySuccess];
-        }else{
-            [self payError];
-        }
+       
     }];
     
 }
@@ -247,13 +245,15 @@
 
 - (void)paySuccess{
         CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
-    vc.type = BRPayAllMoneySuccess;
+        vc.type = BRPayAllMoneySuccess;
+    vc.Money = self.Money;
+    vc.order_id = self.order_id;
+    vc.dataArray = self.dataArray;
         [self.navigationController pushViewController:vc animated:YES];
     
 }
 - (void)payError{
-    [SVProgressHUD showErrorWithStatus:@"支付失败"];
-    [SVProgressHUD dismissWithDelay:2];
+    VCToast(@"支付失败", 2);
     
 }
 

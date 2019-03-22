@@ -8,18 +8,33 @@
 
 #import "CoinMemberSucceedViewController.h"
 #import "RecommendCommodityCell.h"
+#import "CoinGoodDetailViewController.h"
+#import "CoinOrderDetailsViewController.h"
+
 @interface CoinMemberSucceedViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic,strong)UILabel * moneLabel;
+@property (nonatomic,strong)UILabel * stringLabel;
 @end
 
 @implementation CoinMemberSucceedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"购买会员卡成功";
-    [self SetReturnButton];
+    if (self.type == BRPaySuccessBuyMember) {
+         self.title = @"购买会员卡成功";
+    }else if (self.type == BRPayPaymentSuccess){
+        self.title = @"支付首付";
+    }else if (self.type == BRPayAllMoneySuccess){
+        self.title = @"支付成功";
+    }else if (self.type == BRPayRepaySuccess){
+        self.title = @"还款状态";
+    }
+   
+   
     [self SetNavTitleColor];
     [self initView];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
 }
 - (void)initView{
     
@@ -36,6 +51,13 @@ UIView * tempView =     [self HeaderView];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [collectionView registerClass:[RecommendCommodityCell class] forCellWithReuseIdentifier:@"RecommendCommodityCell"];
+
+    
+}
+
+- (void)setMoney:(NSString *)Money{
+    _Money = Money;
+  
     
 }
 - (UIView * )HeaderView{
@@ -57,6 +79,22 @@ UIView * tempView =     [self HeaderView];
         make.left.equalTo(imageView.mas_right).offset(10);
         make.centerY.equalTo(imageView);
     }];
+    self.moneLabel = MoneyLabel;
+    
+    NSString * s1 = @"";
+    if (self.type == BRPayPaymentSuccess) {
+        s1 = @"支付首付成功";
+    }else if (self.type == BRPayAllMoneySuccess){
+        s1 = @"支付全款成功";
+    }else if (self.type == BRPayRepaySuccess){
+        s1 = @"还款成功";
+    }
+    NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@ %@",_Money,s1]];
+    [string addAttribute:NSForegroundColorAttributeName value:COLOR(102, 102, 102) range:NSMakeRange(0, _Money.length + 1)];
+    
+    [string addAttribute:NSForegroundColorAttributeName value:COLOR(58, 171, 53) range:NSMakeRange(_Money.length + 1, s1.length + 1)];
+    self.moneLabel.attributedText = string;
+    
     UILabel * label = [[UILabel alloc] init];
     label.text = @"会员卡购买成功！";
     label.textColor = COLOR(58, 171, 53);
@@ -66,6 +104,18 @@ UIView * tempView =     [self HeaderView];
         make.left.equalTo(imageView);
         make.top.equalTo(imageView.mas_bottom).offset(10);
     }];
+    self.stringLabel = label;
+ 
+    label.hidden = YES;
+    if (self.type == BRPaySuccessBuyMember) {
+        label.hidden = NO;
+    }
+    if (self.type == BRPayRepaySuccess) {
+        label.hidden = NO;
+        label.text = @"请保持良好的还款习惯，珍惜个人信用。";
+        label.textColor = COLOR(153, 153, 153);
+        label.font = Regular(11);
+    }
     
     UIView * LineView = [UIView new];
     LineView.backgroundColor = COLOR(229, 229, 229);
@@ -78,11 +128,16 @@ UIView * tempView =     [self HeaderView];
     }];
     
     
-    
+    NSArray * titles;
+    if (self.type == BRPayPaymentSuccess || self.type == BRPayAllMoneySuccess || self.type == BRPayRepaySuccess) {
+        titles = @[@"查看订单",@"回到首页"];
+    }else{
+        titles = @[@"去借钱",@"去购物"];
+    }
     for (int i = 0 ; i < 2; i++) {
         UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
         [self.view addSubview:btn];
-        NSString * title = i == 0 ? @"去借款" : @"去购物";
+        NSString * title = titles[i];
         [btn setTitle:title forState:(UIControlStateNormal)];
         btn.adjustsImageWhenHighlighted = NO;
         [self.view addSubview:btn];
@@ -94,6 +149,13 @@ UIView * tempView =     [self HeaderView];
             make.height.mas_equalTo(45);
             make.width.mas_equalTo(BCWidth / 2);
         }];
+        if (i == 0) {
+             [btn addTarget:self action:@selector(leftBtnAction:) forControlEvents:(UIControlEventTouchUpInside)];
+        }else{
+             [btn addTarget:self action:@selector(rightBtnAction:) forControlEvents:(UIControlEventTouchUpInside)];
+        }
+       
+        
         
     }
     
@@ -122,11 +184,12 @@ UIView * tempView =     [self HeaderView];
     return 1;
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 10;
+    return self.dataArray.count;
 }
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     RecommendCommodityCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RecommendCommodityCell" forIndexPath:indexPath];
+    cell.dataDict = self.dataArray[indexPath.row];
     return cell;
 }
 
@@ -141,6 +204,51 @@ UIView * tempView =     [self HeaderView];
     return CGSizeMake((BCWidth - 1) / 2, 190);
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSString * ids = self.dataArray[indexPath.row][@"goods_id"];
+    CoinGoodDetailViewController * vc = [CoinGoodDetailViewController new];
+    vc.goodID = ids;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+#pragma mark   下面两个按钮点击事件
+- (void)leftBtnAction:(UIButton *)btn{
+    if (self.type == BRPaySuccessBuyMember) {
+        // 去借钱
+        self.tabBarController.selectedIndex = 2;
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    if (self.type == BRPayPaymentSuccess || self.type == BRPayAllMoneySuccess || self.type == BRPayRepaySuccess) {
+        //查看订单
+        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.order_id = self.order_id;
+        vc.type = BROrderFinsh;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    
+}
+
+- (void)rightBtnAction:(UIButton *)btn{
+    if (self.type == BRPaySuccessBuyMember) {
+        // 去购物
+        self.tabBarController.selectedIndex = 1;
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+    if (self.type == BRPayPaymentSuccess || self.type == BRPayAllMoneySuccess || self.type == BRPayRepaySuccess) {
+        //回到首页
+        self.tabBarController.selectedIndex = 0;
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+}
 
 
 @end
