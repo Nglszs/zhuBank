@@ -258,9 +258,7 @@
 
 
  
-    NSMutableArray *titleArr = [NSMutableArray arrayWithCapacity:1];
-    NSMutableArray *titleA = [NSMutableArray arrayWithCapacity:1];
-
+   
    
 
     
