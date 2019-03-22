@@ -672,14 +672,14 @@
     
     [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
-        NSLog(@"===%@",responseObject);
+    
         if (BCStatus) {
             dataDic = [responseObject objectNilForKey:@"data"];
             [self refreshView];
             
         } else {
             
-            VCToast(@"请求失败", 1);
+       
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

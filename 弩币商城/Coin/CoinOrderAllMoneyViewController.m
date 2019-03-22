@@ -197,7 +197,7 @@
     dict[@"pay_type"] = self.tempButton.tag == 0? @"2" : @"1";
     [KTooL HttpPostWithUrl:@"Order/order_payment" parameters:dict loadString:@"正在支付" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            [self paySuccess];
+            
             if (self.tempButton.tag == 0) {
                 [self wechatPay:responseObject[@"data"]];
             }else{
@@ -246,8 +246,9 @@
 }
 
 - (void)paySuccess{
-            CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
+        CoinMemberSucceedViewController * vc = [CoinMemberSucceedViewController new];
+    vc.type = BRPayAllMoneySuccess;
+        [self.navigationController pushViewController:vc animated:YES];
     
 }
 - (void)payError{

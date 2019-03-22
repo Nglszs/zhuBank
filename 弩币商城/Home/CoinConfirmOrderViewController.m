@@ -16,6 +16,11 @@
 #import "CoinInvoiceViewController.h"
 #import "CoinMemberBuyViewController.h"
 #import "CoinH5ViewController.h"
+#import "CoinCertifyViewController.h"
+#import "CoinOrderAllMoneyViewController.h"
+#import "CoinPayMoneyOrderViewController.h"
+#import "CoinPayNotFristViewController.h"
+#import "CoinChangePhoneViewController.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSMutableDictionary * DataDict;
@@ -384,7 +389,7 @@
             return;
         }
         // 判断选择收货地址
-        NSString * idS = self.DataDict[@"address_info"][@"address_id"];;
+        NSString * idS = [NSString stringWithFormat:@"%@",self.DataDict[@"address_info"][@"address_id"]];
         if (BCStringIsEmpty(idS)) {
             [SVProgressHUD showInfoWithStatus:@"请选择收货地址"];
             [SVProgressHUD dismissWithDelay:2];
@@ -399,22 +404,65 @@
         dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
         dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
         dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
-        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"q_fenqi"];
+        
+        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
         dict[@"action"] = @"buy_now";
         dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
-        dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
+       dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
+       
+        dict[@"transfer_price"] = self.DataDict[@"order_info"][@"transfer_price"];
+        
+        NSDictionary * temp = self.DataDict[@"coupons_info"];
+        [temp enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            [dict setObject:obj forKey:key];
+        }];
+        
         [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
-            [self goPay:responseObject];
+            if (BCStatus) {
+                [self goPay:responseObject];
+            }
+            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"%@",error.description);
+            VCToast(@"提交失败", 2);
         }];
     }
 }
 
 - (void)goPay:(NSDictionary *)dict{
-     NSLog(@"====%@",dict);
+     NSLog(@"1111111%@",dict);
 
+    
     // 订单成功了，要判断商品状态   1 全款（CoinOrderAllMoneyViewController）   2 有首付分期（CoinPayMoneyOrderViewController ）  3 无首付分期（CoinPayNotFristViewController）
+    
+    if (!self.DataDict) {
+        return;
+    }
+//    flag 标记(1：不分期   2：分期零首付  3：分期有首付)
+    
+    int flag = [dict[@"data"][@"flag"] intValue];
+    if (flag == 1) {
+        CoinOrderAllMoneyViewController * vc = [CoinOrderAllMoneyViewController new];
+        vc.OrderID = dict[@"data"][@"order_sn"];
+        vc.Money = dict[@"data"][@"pay_amount"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+  
+    if (flag == 2) {
+        CoinPayNotFristViewController * VC = [CoinPayNotFristViewController new];
+        VC.name = dict[@"data"][@"consignee"];
+        VC.address = dict[@"data"][@"address"];
+        VC.orderNum = dict[@"data"][@"order_sn"];
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    
+    if (flag == 3) {
+        CoinPayMoneyOrderViewController  * vc = [CoinPayMoneyOrderViewController new];
+        vc.name = dict[@"data"][@"consignee"];
+        vc.address = dict[@"data"][@"address"];;
+        vc.orderNum = dict[@"data"][@"order_sn"];
+        vc.money = dict[@"data"][@"pay_amount"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
     
     
@@ -428,7 +476,14 @@
     dict[@"goods_id"] = self.goods_id;
     dict[@"item_id"] = self.item_id;
     dict[@"num"] = self.num;
-    dict[@"periods"] = self.periods;
+    
+    if (!BCStringIsEmpty(self.periods)) {
+      NSCharacterSet * nonDigits =[[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+        int remainSecond =[[self.periods stringByTrimmingCharactersInSet:nonDigits] intValue];
+        dict[@"periods"] = [NSString stringWithFormat:@"%d",remainSecond];
+    }
+   
+    
     dict[@"stages"] = self.stages;
   
     [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -446,6 +501,7 @@
 
 - (BOOL)disposeStatus:(int)status{
     //status:1成功 0:未登录 -1:请先购买会员卡 -2:不符合分期条件 -3:会员卡到期 -4:请先验证身份信息 -5:请先绑卡 -6:请先评估您的信用/您的信用评分已过期,请重新评估 -7:请先设置交易密码 -8:库存不足 -9:剩余额度不足,请调整首付比例
+    NSString  * msg;
     if (status == 1) {
         return YES;
     }
@@ -453,19 +509,58 @@
         
     }
     if (status == -1) {
-        CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
-        VC.type  =BRPayBuyMember;
-        [self.navigationController pushViewController:VC animated:YES];
+        [SVProgressHUD showInfoWithStatus:@"请先购买会员卡"];
+        [SVProgressHUD dismissWithDelay:1];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+            VC.type  = BRPayBuyMember;
+            [self.navigationController pushViewController:VC animated:YES];
+        });
+       
     }
     if (status == -2) {
-        
+        msg = @"不符合分期条件";
+      
     }
     if (status == -3) {
-        
+        msg = @"会员卡到期";
+    }
+    if (status == -4) {
+        CoinCertifyViewController * vc = [CoinCertifyViewController new];
+        vc.indexType = 1;
+        vc.isFenqi = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (status == -5) {
+        CoinCertifyViewController * vc = [CoinCertifyViewController new];
+        vc.indexType = 2;
+        vc.isFenqi = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (status == -6) {
+        CoinCertifyViewController * vc = [CoinCertifyViewController new];
+        vc.indexType = 3;
+        vc.isFenqi = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (status == -7) {
+        CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
+        vc.isSetPay = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (status == -8) {
+        msg = @"库存不足";
+    }
+    if (status == -9) {
+        msg = @"剩余额度不足,请调整首付比例";
+    }
+    if (msg) {
+        VCToast(msg, 2);
     }
     return NO;
     
 }
+
 
 - (void)upFootView:(NSDictionary *)dataDict{
     if (!BCDictIsEmpty(dataDict)) {
@@ -487,6 +582,5 @@
     vc.titleStr = title;
     vc.url = url;
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 @end

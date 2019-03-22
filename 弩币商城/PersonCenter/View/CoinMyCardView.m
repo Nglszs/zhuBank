@@ -125,6 +125,7 @@
     UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
     [btn setBackgroundImage:[UIImage imageNamed:@"组5"] forState:(UIControlStateNormal)];
     [view addSubview:btn];
+    btn.userInteractionEnabled = NO;
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(view);
         make.top.equalTo(view).offset(24);

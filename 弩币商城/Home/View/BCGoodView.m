@@ -251,9 +251,7 @@
 
 
 
-    NSArray * titleArr = [sepDic objectForKey:@"颜色"];
-
-    
+ 
     NSMutableArray *titleArr = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *titleA = [NSMutableArray arrayWithCapacity:1];
     

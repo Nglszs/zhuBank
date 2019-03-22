@@ -177,39 +177,42 @@
     }
     
     if (self.type == BRPayBuyCommodity) {
-        
+        url = @"Order/order_payment";
+        dict[@"pay_type"] = self.tempButton.tag == 0 ? @"2" : @"1";
+        dict[@"order_sn"] = self.orderNum;
     }
     
-   
-    [KTooL HttpPostWithUrl:url parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:url parameters:dict loadString:@"正在获取支付信息" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             if (self.tempButton.tag == 0) {
                 [self wechatPay:responseObject[@"data"]];
             }else{
-                [self alipayPay:responseObject[@"data"][@"alipay"]];
+            
+                NSString * alipay = responseObject[@"data"][@"alipay"];
+                if ([responseObject[@"data"] objectForKey:@"response"]) {
+                    alipay = responseObject[@"data"][@"response"];
+                }
+                [self alipayPay:alipay];
             }
+        }else{
+            VCToast(@"获取支付信息失败", 2);
         }
   } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        VCToast(@"获取支付信息失败", 2);
     }];
     
    
 }
 - (void)alipayPay:(NSString *)orderString{
-    
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:@"com.Zbanks.tkgo" callback:^(NSDictionary *resultDic) {
-        if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]){
-            [self paySuccess];
-        }else{
-            [self payError];
-        }
+        
     }];
     
 }
 
 - (void)wechatPay:(NSDictionary *)data{
     PayReq *request = [[PayReq alloc] init] ;
-    request.partnerId = data[@"partnerid"];
+     request.partnerId = data[@"partnerid"];
     request.prepayId= data[@"prepayid"];
     request.package = data[@"package"];
     request.nonceStr= data[@"noncestr"];
@@ -245,7 +248,6 @@
 - (void)payError{
     [SVProgressHUD showErrorWithStatus:@"支付失败"];
     [SVProgressHUD dismissWithDelay:2];
-    
 }
 
 

@@ -100,7 +100,7 @@
             [self refreshView];
         } else {
             
-           VCToast(@"请求失败", 1);
+         
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

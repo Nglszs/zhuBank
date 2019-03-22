@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *address;
 @property (nonatomic, copy) NSString *orderNum;
+@property (nonatomic,strong)NSArray * dataArray;// 推荐商品
 
 @end
 

@@ -34,7 +34,11 @@
     [self.backScrollView addSubview:self.finishTableView];
     [self.backScrollView addSubview:self.ProceedTableView];
     [self.view addSubview:self.headView];
-    [self request];
+  
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+      [self request];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -321,7 +325,7 @@ cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_a
 }
 
 - (void)request{
-    NSString * url = [NSString stringWithFormat:@"repay-plan/%@",@"861"];
+    NSString * url = [NSString stringWithFormat:@"repay-plan/%@",self.order_id];
     
     [KTooL HttpPostWithUrl:url parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         

@@ -77,9 +77,23 @@ static HttpTool * tool;
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     dict[@"version"] = app_Version;
     dict[@"device"] = [self getUUID];
+    [dict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        dict[key] = [NSString stringWithFormat:@"%@",obj];
+    }];
     
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [SVProgressHUD dismiss];
+       
+
+//        if (!BCStatus) {
+//            NSString * msg = responseObject[@"msg"];
+//            if ([responseObject objectForKey:@"error"]) {
+//                msg = [responseObject objectForKey:@"error"];
+//            }
+//            [SVProgressHUD showErrorWithStatus:msg];
+//            [SVProgressHUD dismissWithDelay:2];
+//        }
+        
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"8"]) {
             //您的账号已在别处登录
             [self GoLogin];
@@ -90,11 +104,6 @@ static HttpTool * tool;
             // 登录过期，请重新登录
             [self GoLogin];
             return;
-        }
-        
-        if (!BCStatus) {
-            [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
-            [SVProgressHUD dismissWithDelay:2];
         }
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

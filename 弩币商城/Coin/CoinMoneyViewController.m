@@ -31,9 +31,13 @@
     [self initView];
     self.title = @"帑库银票";
     [self SetNavTitleColor];
-    [self request];
+   
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     [self request];
+}
 - (void)initView{
     
     UILabel *TitleLabel = [[UILabel alloc] init];
@@ -145,11 +149,11 @@
 }
 
 - (void)request{
-    [KTooL HttpPostWithUrl:@"CashLoan/index" parameters:nil loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSString * str = self.url ? nil : @"正在加载";
+    [KTooL HttpPostWithUrl:@"CashLoan/index" parameters:nil loadString:str success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             [self upDataUI:responseObject[@"data"]];
         }
-        NSLog(@"====%@",responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
@@ -172,7 +176,6 @@
 }
 
 - (void)RightItemAction{
-    
     CoinH5ViewController * vc = [CoinH5ViewController new];
     vc.titleStr = @"详情介绍";
     vc.url = self.details;
@@ -180,9 +183,7 @@
 }
 
 - (void)btnAction:(UIButton *)btn{
-//    CoinBorrowMoneyViewController * vc = [[CoinBorrowMoneyViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-    
+
     if (self.url) {
         
         NSInteger type = [self.url integerValue];
@@ -206,6 +207,7 @@
             // 去绑卡
             CoinCertifyViewController * vc = [CoinCertifyViewController new];
             vc.indexType = 2;
+            vc.isFenqi = NO;
             [self.navigationController pushViewController:vc animated:YES];
             
         }else if (type == 6) {
@@ -216,6 +218,8 @@
             
         }else if (type == 7) {
             // 去借款
+            CoinBorrowMoneyViewController * vc = [[CoinBorrowMoneyViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
             
         }
        
