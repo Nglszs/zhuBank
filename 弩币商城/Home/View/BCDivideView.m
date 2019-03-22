@@ -11,12 +11,16 @@
 @implementation BCDivideView
 {
      UIView *divideV;//分期界面
+    UILabel *notDivi;//不分期
      UIButton *selectedBtn,*diviBtn,*diviNumBtn;  //按钮单选逻辑
     NSDictionary *dataDic;
     NSString *goodID;
     NSString *stages,*numMonth;
+    UILabel *leftL1;
+    NSString *price;
 }
-- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID {
+- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPrice:(nonnull NSString *)pirce{
+    price = pirce;
     goodID = ID;
     return [self initWithFrame:frame];
 }
@@ -107,6 +111,13 @@
     
     
     
+    //退出按钮
+    UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    [exitButton setImage:[UIImage imageNamed:@"取消"] forState:UIControlStateNormal];
+    exitButton.frame=CGRectMake(BCWidth - 37, 14, 22, 22);
+    [headView addSubview:exitButton];
+    [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
+    
     NSArray *titleA = @[@"不分期",@"分期"];
     for (int i = 0; i < 2 ; i++) {
         UIButton *activityBtn = [UIButton new];
@@ -138,7 +149,20 @@
         }
         
     }
-    
+//    不分期
+    notDivi = [[UILabel alloc] init];
+    notDivi.text = @"您选择的是不分期请直接点击下一步哦~";
+    notDivi.textColor = COLOR(102, 102, 102);
+    notDivi.font = [UIFont systemFontOfSize:17];
+    notDivi.textAlignment = NSTextAlignmentCenter;
+    notDivi.hidden = YES;
+    [headView addSubview:notDivi];
+    [notDivi mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.centerY.mas_equalTo(headView.mas_centerY);
+        make.width.mas_equalTo(BCWidth);
+        make.height.mas_equalTo(15);
+    }];
     
 //    如果点击了分期界面
     divideV = [[UIView alloc] init];
@@ -153,7 +177,7 @@
         
     }];
     
-    UILabel *leftL1 = [[UILabel alloc] init];
+    leftL1 = [[UILabel alloc] init];
     leftL1.textColor = TITLE_COLOR;
     leftL1.font = Regular(11);
     leftL1.text = @"￥266.75*36期";
@@ -163,7 +187,7 @@
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(R(155));
         make.height.mas_equalTo(12);
-        make.width.mas_equalTo(80);
+        
       
     }];
 
@@ -257,9 +281,10 @@
             make.size.mas_equalTo(CGSizeMake(50, 23));
         }];
         
-        if (i == 0) {
+        if (i == titleArr1.count - 1) {
             activityBtn.selected = YES;
             diviNumBtn = activityBtn;
+            [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
         
     }
@@ -283,7 +308,8 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         if (self.backBlock && selectedBtn.tag == 101) {//当选择分期的时候才会返回
-            self.backBlock(@[diviBtn.currentTitle,diviNumBtn.currentTitle]);
+            NSDictionary *dic = @{@"fenqi":leftL1.text,@"lixi":@[diviBtn.currentTitle,diviNumBtn.currentTitle]};
+            self.backBlock(dic);
         }
         [self removeCommentCuView];
     }];
@@ -310,9 +336,9 @@
     if (button.tag == 100) {
         
         divideV.hidden = YES;
-        
+        notDivi.hidden = NO;
     } else {
-        
+        notDivi.hidden = YES;
         divideV.hidden = NO;
     }
 }
@@ -332,6 +358,7 @@
     }
     
     NSLog(@"==%@",diviBtn.currentTitle);
+      [self getDiviData];
 }
 
 - (void)clickDiviNum:(UIButton *)button{
@@ -348,6 +375,40 @@
     }
     
     NSLog(@"==%@",diviNumBtn.currentTitle);
+    [self getDiviData];
+}
+
+#pragma mark 刷新分期利息
+- (void)getDiviData {
+    
+    NSLog(@"==%@]]]%@",diviBtn.currentTitle,diviNumBtn.currentTitle);
+  
+    NSString *divi = @"0";
+    if ([diviBtn.currentTitle isEqualToString:@"零首付"]) {
+        divi = @"0";
+    } else {
+        
+        NSString *newStr = [diviBtn.currentTitle substringToIndex:1];
+        divi = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+    }
+    
+    [KTooL HttpPostWithUrl:@"goods/stage_select" parameters:@{@"goods_id":goodID,@"period":diviNumBtn.currentTitle,@"shou_pay":divi,@"q_fenqi":@"1",@"goods_price":price,@"goods_num":@"1"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if (BCStatus) {
+          
+            NSDictionary *dic = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"fenqi_info"];
+              leftL1.text = [NSString stringWithFormat:@"￥%.2f*%@期",[[dic objectNilForKey:@"per_money"]floatValue],[dic objectNilForKey:@"period"]];
+            
+        } else {
+            
+            ViewToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        ViewToast(error.description, 1);
+    }];
+    
 }
 //防止手势冲突
 - (void)move:(UIPanGestureRecognizer *)sender {
@@ -373,8 +434,5 @@
     
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    
-    [self removeCommentCuView];
-}
+
 @end

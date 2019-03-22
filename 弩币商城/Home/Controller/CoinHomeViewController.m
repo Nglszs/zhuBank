@@ -13,7 +13,7 @@
 #import "CoinNotDevelopViewController.h"
 #import "CoinSearchViewController.h"
 #import "CoinPayNotFristViewController.h"
-
+#import "CoinLoginViewController.h"
 @interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
 
 {
@@ -52,7 +52,24 @@
     [self initNavView];
 
     
-    [self getData];
+    //为了第一次安装app出现的问题
+    if ([Tool isConnectionAvalible]) {
+        
+        [self getData];
+        
+    } else {
+        
+        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
+        [self.view addSubview:view];
+        [view.button addtargetBlock:^(UIButton *button) {
+           
+            [self getData];
+        }];
+        
+        
+    }
+   
+
 
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,6 +93,12 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    //    版本更新
+    [self upDateVersion];
+}
 #pragma mark 网络请求
 - (void)getData {
     
@@ -188,7 +211,14 @@
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:White forState:UIControlStateNormal];
     loginBtn.titleLabel.font = Regular(15);
-    [_navView addSubview:loginBtn];
+    [loginBtn addtargetBlock:^(UIButton *button) {
+        CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }];
+    if (![Tool isLogin]) {
+        [_navView addSubview:loginBtn];
+    }
+    
     
 }
 - (void)initView {
@@ -611,7 +641,7 @@
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
         make.height.mas_equalTo(132);
-        make.bottom.equalTo(self.backScrollView).offset(-150);
+        make.bottom.equalTo(self.backScrollView).offset(-100);
     }];
     
     [moneyImageV addTapGestureWithBlock:^{
@@ -635,10 +665,10 @@
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
-            CoinCertifyViewController *VC = [CoinCertifyViewController new];
-            VC.indexType = 2;
-            VC.isFenqi = YES;
-            [self.navigationController pushViewController:VC animated:YES];
+//            CoinCertifyViewController *VC = [CoinCertifyViewController new];
+//            VC.indexType = 2;
+//            VC.isFenqi = YES;
+//            [self.navigationController pushViewController:VC animated:YES];
     
         }];
        
@@ -659,5 +689,40 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+
+#pragma mark 版本更新
+- (void)upDateVersion {
+   
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    
+    
+    [KTooL HttpPostWithUrl:@"User/app_version" parameters:@{@"reg_from":@"3",@"version_nubmer":app_Version} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            NSDictionary *dataDic = [responseObject objectNilForKey:@"data"];
+            
+            if ([[dataDic objectNilForKey:@"status"] integerValue] == 1) {
+                [self showSystemAlertTitle:[NSString stringWithFormat:@"更新:%@",[dataDic objectNilForKey:@"title"]] message:[dataDic objectNilForKey:@"update_content"] cancelTitle:nil confirmTitle:@"现在更新" cancel:nil confirm:^{
+                    
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[dataDic objectNilForKey:@"link"]]];
+                }];
+            }
+            
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
 
 @end

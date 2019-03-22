@@ -179,6 +179,14 @@ typedef void(^ BCFailureBlock)  (NSString *errorResult);
  @return nil
  */
 - (BOOL)isVip;
+
+
+/**
+ 是否已经身份认证
+
+ @return nil
+ */
+- (BOOL)isCreait;
 /**
  加载短信验证码
 

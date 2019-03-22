@@ -21,6 +21,7 @@
     UIScrollView *_scView;//显示图片详情
     NSArray *divideArr;
     NSArray *sizeArr;
+    NSString *price;//商品价格
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -153,9 +154,11 @@
             return ;
         }
         
+
+        
         //    点击打开分期
         
-        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
+        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPrice:price];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -165,14 +168,16 @@
         vv.backBlock = ^(id  _Nonnull result) {
           
             NSLog(@"]]]]%@",result);
-            divideArr = result;
+             UILabel *titleL = [self.backScrollView viewWithTag:500];
+            titleL.text = [NSString stringWithFormat:@"分期%@",[result objectNilForKey:@"fenqi"]];
+            divideArr = [result objectNilForKey:@"lixi"];
         };
     }];
     
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(BCWidth - LEFT_Margin - 100);
         make.bottom.equalTo(priceL.mas_bottom);
-        make.width.mas_equalTo(100);
+       
         make.height.mas_equalTo(12);
         
     }];
@@ -379,8 +384,25 @@
     
     [easeView1 addTapGestureWithBlock:^{
         
-        
-        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
+        NSDictionary *dic;
+        if (divideArr.count <= 0) {//如果没选择分期
+            dic = @{@"q_fenqi":@"0",@"shou_pay":@"0",@"period":@"0"};
+        } else {//如果选择了分期
+            
+            
+          
+            NSString *stage = [divideArr firstObject];
+            if ([stage isEqualToString:@"零首付"]) {
+                stage = @"0";
+            } else {
+                
+                NSString *newStr = [stage substringToIndex:1];
+                stage = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+            }
+             dic = @{@"q_fenqi":@"1",@"shou_pay":stage,@"period":[divideArr lastObject]};
+            
+        }
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -554,10 +576,36 @@
         return;
     }
     
+    
+    if (![Tool isCreait]&&divideArr.count > 0) {
+        
+        VCToast(@"分期购买商品必须通过身份认证", 1);
+        
+        return;
+    }
+    
     if (sizeArr.count <= 0) {//如果规则页没选过则购买的时候弹出来
         
+        NSDictionary *dic;
+        if (divideArr.count <= 0) {//如果没选择分期
+            dic = @{@"q_fenqi":@"0",@"shou_pay":@"0",@"period":@"0"};
+        } else {//如果选择了分期
+            
+            
+            
+            NSString *stage = [divideArr firstObject];
+            if ([stage isEqualToString:@"零首付"]) {
+                stage = @"0";
+            } else {
+                
+                NSString *newStr = [stage substringToIndex:1];
+                stage = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+            }
+            dic = @{@"q_fenqi":@"1",@"shou_pay":stage,@"period":[divideArr lastObject]};
+            
+        }
         
-        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID];
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -569,56 +617,41 @@
             NSLog(@")))%@",result);
             sizeArr = result;
             
-            [KTooL HttpPostWithUrl:@"goods/spec_page" parameters:@{@"goods_id":_goodID,@"spec_keys":[sizeArr lastObject]} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                
-               
-                if (BCStatus) {
-                    
-                 NSDictionary*Dic = [responseObject objectNilForKey:@"data"];
-                    
-                    
-                    
-                    
-                    
-//                    选完规格才跳转
-                    CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
-                    VC.q_fenqi = divideArr.count<=0?@"0":@"1";
-                    VC.goods_id = _goodID;
-                    VC.num = [sizeArr objectAtIndex:0];
-                    VC.item_id = [[Dic objectForKey:@"goods_info"] objectForKey:@"item_id"];
-                     NSLog(@"===%@",VC.item_id);
-                    if (divideArr.count > 0) {
-                        VC.periods = [divideArr lastObject];
-                        NSString *stage = [divideArr firstObject];
-                        if ([stage isEqualToString:@"零首付"]) {
-                            VC.stages = @"0";
-                        } else {
-                            
-                            NSString *newStr = [stage substringToIndex:1];
-                            VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
-                        }
-                        
-                    }
-                    [self.navigationController pushViewController:VC animated:YES];
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                  
-                    
+            
+            CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
+            VC.q_fenqi = divideArr.count<=0?@"0":@"1";
+            VC.goods_id = _goodID;
+            VC.num = [sizeArr firstObject];
+            VC.item_id = [sizeArr lastObject];
+           
+            if (divideArr.count > 0) {
+                VC.periods = [divideArr lastObject];
+                NSString *stage = [divideArr firstObject];
+                if ([stage isEqualToString:@"零首付"]) {
+                    VC.stages = @"0";
                 } else {
                     
-                   
+                    NSString *newStr = [stage substringToIndex:1];
+                    VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
                 }
                 
-            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-                
-            }];
+            }
+            [self.navigationController pushViewController:VC animated:YES];
             
-//
+            
+            
+            
+            
+            
+            
+            
+            
+                    
+                    
+            
+            
+            
+
             
             
         };
@@ -709,7 +742,7 @@
     
      NSDictionary *dic1 = [dataDic objectNilForKey:@"spec_info"];
     
-    NSString *price;
+    
     
     if (BCStringIsEmpty([dic1 objectNilForKey:@"spec_price"])) {//先判断有没有规格价，有则显示，无则显示shop价格
         
@@ -760,7 +793,7 @@
     }
     
     
-//    是否分期
+//    是否可以分期
     UILabel *titleL = [self.backScrollView viewWithTag:500];
     if ([[dic objectNilForKey:@"is_fenqi"] integerValue] != 1) {
         titleL.hidden = YES;

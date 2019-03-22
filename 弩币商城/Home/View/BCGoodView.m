@@ -17,13 +17,18 @@
     NSString *goodID;
     NSInteger shopNumber;//选择商品数量
      CGFloat maxValue;//商品最大值
-    
+    NSDictionary *paramS;//请求参数
     UIImageView *leftI;
     UILabel *moneyL;
     UILabel *moneyL1;//分期
     UILabel *countL;
+    NSMutableArray *titleArr;
+    NSMutableArray *titleA;
+    NSString *item_ID;//传个提交订单
 }
-- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID {
+- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params{
+    paramS = params;
+    NSLog(@"+++%@",params);
     
     goodID = ID;
     return [self initWithFrame:frame];
@@ -251,9 +256,17 @@
 
 
 
+
  
     NSMutableArray *titleArr = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *titleA = [NSMutableArray arrayWithCapacity:1];
+
+   
+
+    
+    titleArr = [NSMutableArray arrayWithCapacity:1];
+    titleA = [NSMutableArray arrayWithCapacity:1];
+
     
     for (NSDictionary *dic in sepDic) {
         if ([[dic objectNilForKey:@"name"] isEqualToString:@"颜色"]) {
@@ -399,6 +412,7 @@
                 
                 activityBtn.selected = YES;
                 selectedBtn = activityBtn;
+                [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
     
         }
@@ -428,7 +442,7 @@
             NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
             NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
             NSLog(@"%@==%@",colorID,sizeID);
-            self.backBlock(@[_countTextField.text,[NSString stringWithFormat:@"%@_%@",colorID,sizeID]]);
+            self.backBlock(@[_countTextField.text,item_ID]);
         }
         
         [self removeCommentCuView];
@@ -451,7 +465,7 @@
         
         diviBtn.selected = YES;
     }
-    
+     [self getDiviData];
 }
 
 #pragma mark 选择版本
@@ -467,6 +481,7 @@
         
         diviNumBtn.selected = YES;
     }
+     [self getDiviData];
 }
 
 #pragma mark 选择内存
@@ -482,6 +497,51 @@
         
         selectedBtn.selected = YES;
     }
+     [self getDiviData];
+}
+
+#pragma mark 刷新商品利息
+- (void)getDiviData {
+    
+    NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
+    NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
+    
+    NSString *itemID = [[dataDic objectForKey:@"goods_info"] objectForKey:@"item_id"];
+    
+    [KTooL HttpPostWithUrl:@"goods/spec_page" parameters:@{@"goods_id":goodID,@"goods_num":_countTextField.text,@"spec_keys":[NSString stringWithFormat:@"%@_%@",colorID,sizeID],@"item_id":itemID,@"shou_pay":[paramS objectForKey:@"shou_pay"],@"q_fenqi":[paramS objectForKey:@"q_fenqi"],@"period":[paramS objectForKey:@"period"]} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        if (BCStatus) {
+            
+            NSDictionary *dic = [responseObject objectNilForKey:@"data"];
+            NSDictionary *newDic = [dic objectNilForKey:@"goods_info"];
+           
+            item_ID = [newDic objectNilForKey:@"item_id"];
+            NSDictionary *newDic1 = [dic objectNilForKey:@"fenqi_info"];
+            
+            
+             moneyL.text =  [NSString stringWithFormat:@"¥ %ld",[[newDic objectNilForKey:@"goods_price"] integerValue]];
+            
+            
+            NSString *fenqi = [NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic1 objectNilForKey:@"per_money"] floatValue],[newDic1 objectNilForKey:@"periods"]];
+            
+            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:fenqi];
+            NSDictionary * firstAttributes = @{NSForegroundColorAttributeName:COLOR(102, 102, 102)};
+            
+            NSString *stt = [NSString stringWithFormat:@"%.2f",[[newDic1 objectNilForKey:@"per_money"] floatValue]];
+            
+            [str setAttributes:firstAttributes range:NSMakeRange(stt.length + 4,fenqi.length - stt.length - 4)];
+            
+            moneyL1.attributedText = str;
+            
+        } else {
+            
+            ViewToast(@"请求失败", 1);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        ViewToast(error.description, 1);
+    }];
     
 }
 //防止手势冲突
@@ -579,6 +639,7 @@
 - (void)clickButton:(UIButton *)btn {
     
     
+    
     [self checkTextFieldNumberWithUpdate];
     
     CGFloat number = [_countTextField.text floatValue];
@@ -594,7 +655,13 @@
         _countTextField.text = [NSString stringWithFormat:@"%ld", shopNumber];
         
     }
+    if (shopNumber >= maxValue) {
+        
+        ViewToast(@"已超出商品最大值", 1);
+        return;
+    }
     
+    [self getDiviData];
 //    if (self.returnData) {
 //        self.returnData(_shopNumber);
 //    }

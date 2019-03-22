@@ -10,6 +10,8 @@
 #import <AFNetworking/AFNetworking.h>
 #import "Reachability.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "CoinLoginViewController.h"
+
 static HttpTool * tool;
 @interface HttpTool()
 @property (nonatomic,strong)AFHTTPSessionManager * manager;
@@ -81,6 +83,7 @@ static HttpTool * tool;
         dict[key] = [NSString stringWithFormat:@"%@",obj];
     }];
     
+    NSLog(@"---%@",parameters);
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [SVProgressHUD dismiss];
        
@@ -143,8 +146,39 @@ static HttpTool * tool;
 }
 
 - (void)GoLogin{
+  
+    UIViewController *VC = [self getCurrentViewController];
+    [VC.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
     
 }
+
+- (UIViewController *)getCurrentViewController {
+    
+    UIWindow *window = [[UIApplication sharedApplication].delegate window];
+    UIViewController *topViewController = [window rootViewController];
+    
+    while (true) {
+        
+        if (topViewController.presentedViewController) {
+            
+            topViewController = topViewController.presentedViewController;
+            
+        } else if ([topViewController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)topViewController topViewController]) {
+            
+            topViewController = [(UINavigationController *)topViewController topViewController];
+            
+        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
+            
+            UITabBarController *tab = (UITabBarController *)topViewController;
+            topViewController = tab.selectedViewController;
+            
+        } else {
+            break;
+        }
+    }
+    return topViewController;
+}
+
 - (BOOL)isConnectionAvalible {
     
     BOOL isExistenceNetwork = NO;
