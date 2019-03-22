@@ -231,7 +231,7 @@
     request.prepayId= data[@"prepayid"];
     request.package = data[@"package"];
     request.nonceStr= data[@"noncestr"];
-    request.timeStamp = data[@"timestamp"];
+    request.timeStamp = [data[@"timestamp"] intValue];
     request.sign= data[@"sign"];
     [WXApi sendReq:request];
 }

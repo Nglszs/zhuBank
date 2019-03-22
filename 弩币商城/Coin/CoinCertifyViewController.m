@@ -44,6 +44,8 @@
     if (_indexType == 2) {//直接去银行卡界面
         
        [self.backScrollView setContentOffset:CGPointMake(BCWidth * _indexType, 0) animated:NO];
+        
+          [self getBindCard];
     }
     
     if (_indexType == 3) {
@@ -261,6 +263,7 @@
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
         [self.backScrollView setContentOffset:CGPointMake(BCWidth * 2, 0) animated:YES];
+          [self getBindCard];
     }];
     
     
@@ -543,7 +546,7 @@
     
     [backBtn1 addTarget:self action:@selector(clickBindCard) forControlEvents:UIControlEventTouchUpInside];
     
-     [self getBindCard];
+   
     
 }
 
