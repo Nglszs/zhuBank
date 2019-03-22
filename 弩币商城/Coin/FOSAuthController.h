@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FOSAuthController : UIViewController
-
+@property (nonatomic,copy) void(^backBlock)(id result);
 @property (nonatomic, copy) NSDictionary *params;
 
 @end

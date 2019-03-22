@@ -25,7 +25,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "213"
             endingLineNumber = "213"
-            landmarkName = "-wechatPay:"
+            landmarkName = "-alipayPay:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -35,7 +35,7 @@
 }
 - (void)getBrowseData {
     
-    [KTooL HttpPostWithUrl:@"UserCenter/setting" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"CashLoan/loan_success" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         
