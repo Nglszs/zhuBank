@@ -301,7 +301,7 @@
     
     
     if (!_notPayTableView) {
-        _notPayTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, BCWidth, BCHeight ) style:UITableViewStylePlain];
+        _notPayTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, BCWidth, BCHeight  - BCNaviHeight) style:UITableViewStylePlain];
         _notPayTableView.delegate = self;
         _notPayTableView.dataSource = self;
         _notPayTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

@@ -7,6 +7,10 @@
 //
 
 #import "CoinCertifyViewController.h"
+#import "FOSAuthController.h"
+
+
+
 
 @interface CoinCertifyViewController ()<UIScrollViewDelegate>
 {
@@ -51,6 +55,12 @@
     if (_indexType == 3) {
         [self TestISSuccess];
     }
+   
+    
+    FOSAuthController *VC =  [FOSAuthController new];
+    VC.params = @{@"name":@"jack",@"cardNo":@"1213132131"};
+    [self.navigationController pushViewController:VC animated:YES];
+    
 }
 
 - (void)initView {

@@ -669,10 +669,10 @@
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
-//            CoinCertifyViewController *VC = [CoinCertifyViewController new];
-//            VC.indexType = 2;
-//            VC.isFenqi = YES;
-//            [self.navigationController pushViewController:VC animated:YES];
+            CoinCertifyViewController *VC = [CoinCertifyViewController new];
+            VC.indexType = 1;
+            VC.isFenqi = YES;
+            [self.navigationController pushViewController:VC animated:YES];
     
         }];
        

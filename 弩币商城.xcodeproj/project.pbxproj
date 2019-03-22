@@ -69,6 +69,9 @@
 		0475094E2240F80D006CA60C /* CoinPayNotFristViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0475094D2240F80D006CA60C /* CoinPayNotFristViewController.m */; };
 		048BD704222629A900910A1F /* BCDivideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD703222629A900910A1F /* BCDivideView.m */; };
 		048BD70722265DD400910A1F /* BCGoodView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048BD70622265DD400910A1F /* BCGoodView.m */; };
+		04FA0A602244B29700277C70 /* FosaferHumanCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FA0A5F2244B29700277C70 /* FosaferHumanCard.framework */; };
+		04FA0A632244B3B000277C70 /* FOSAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FA0A622244B3B000277C70 /* FOSAuthController.m */; };
+		04FA0A652244B56700277C70 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FA0A642244B56600277C70 /* libc++.tbd */; };
 		04FFA79C2240B59800F376E0 /* CoinPayMoneyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FFA79B2240B59800F376E0 /* CoinPayMoneyOrderViewController.m */; };
 		0C0D7972222D693900CC37EE /* CoinUpdatePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D7971222D693900CC37EE /* CoinUpdatePassWordViewController.m */; };
 		0C18AA7A222FCE51001026DD /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C18AA79222FCE51001026DD /* HttpTool.m */; };
@@ -279,6 +282,10 @@
 		048BD703222629A900910A1F /* BCDivideView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCDivideView.m; sourceTree = "<group>"; };
 		048BD70522265DD400910A1F /* BCGoodView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCGoodView.h; sourceTree = "<group>"; };
 		048BD70622265DD400910A1F /* BCGoodView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCGoodView.m; sourceTree = "<group>"; };
+		04FA0A5F2244B29700277C70 /* FosaferHumanCard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FosaferHumanCard.framework; sourceTree = "<group>"; };
+		04FA0A612244B3B000277C70 /* FOSAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOSAuthController.h; sourceTree = "<group>"; };
+		04FA0A622244B3B000277C70 /* FOSAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOSAuthController.m; sourceTree = "<group>"; };
+		04FA0A642244B56600277C70 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		04FFA79A2240B59800F376E0 /* CoinPayMoneyOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinPayMoneyOrderViewController.h; sourceTree = "<group>"; };
 		04FFA79B2240B59800F376E0 /* CoinPayMoneyOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinPayMoneyOrderViewController.m; sourceTree = "<group>"; };
 		0C0D7970222D693900CC37EE /* CoinUpdatePassWordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinUpdatePassWordViewController.h; sourceTree = "<group>"; };
@@ -411,7 +418,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FA0A652244B56700277C70 /* libc++.tbd in Frameworks */,
 				0CC1C6CD2230AB1700924D98 /* TCWebCodesSDK.framework in Frameworks */,
+				04FA0A602244B29700277C70 /* FosaferHumanCard.framework in Frameworks */,
 				BF8A252CCC76C03A34D7B8C5 /* libPods-弩币商城.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,6 +718,8 @@
 				044F025E222E4919000BAA9F /* CoinReturnBrowseViewController.m */,
 				04223277222F63D700F5E662 /* CoinCertifyViewController.h */,
 				04223278222F63D700F5E662 /* CoinCertifyViewController.m */,
+				04FA0A612244B3B000277C70 /* FOSAuthController.h */,
+				04FA0A622244B3B000277C70 /* FOSAuthController.m */,
 				0CD40ECA224089FB009C999D /* CoinOrderAllMoneyViewController.h */,
 				0CD40ECB224089FB009C999D /* CoinOrderAllMoneyViewController.m */,
 				0CEF25DC2241E561005A86DA /* CoinCooperationCompanyViewController.h */,
@@ -778,6 +789,7 @@
 		0C37C1932228C955009001F4 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				04FA0A5F2244B29700277C70 /* FosaferHumanCard.framework */,
 				0CC1C6CC2230AB1700924D98 /* TCWebCodesSDK.framework */,
 				0C37C1A02228CB3C009001F4 /* BRPickerView */,
 			);
@@ -897,6 +909,7 @@
 		8FBD1B6C0B88118CE050C200 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04FA0A642244B56600277C70 /* libc++.tbd */,
 				7C760E15965B01E01034A11E /* libPods-弩币商城.a */,
 				98238E16DACD9A9D8FF8FE84 /* libPods-弩币商城Tests.a */,
 				4F7574CC658BCFE159394AD8 /* libPods-弩币商城UITests.a */,
@@ -1168,6 +1181,7 @@
 				0466B0212227C10000B07CF8 /* CoinChangePayCodeViewController.m in Sources */,
 				041A2B1522237A3900F6E4F7 /* main.m in Sources */,
 				041A2B492223801400F6E4F7 /* BCNavigationViewController.m in Sources */,
+				04FA0A632244B3B000277C70 /* FOSAuthController.m in Sources */,
 				044F025F222E4919000BAA9F /* CoinReturnBrowseViewController.m in Sources */,
 				0CCAF7692226916A006F1791 /* CoinHomeViewController.m in Sources */,
 				041A2B6D2223808700F6E4F7 /* UITapGestureRecognizer+Common.m in Sources */,
@@ -1422,6 +1436,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8Y3DY37M53;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/弩币商城/Vender",
@@ -1452,6 +1467,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8Y3DY37M53;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/弩币商城/Vender",
