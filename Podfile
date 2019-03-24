@@ -12,6 +12,7 @@ target '弩币商城' do
   pod 'Masonry'
   pod 'YYModel'
   pod 'Toast'
+pod 'Bugly'
 pod 'AlipaySDK-iOS'
 pod 'SVProgressHUD'
 pod 'WechatOpenSDK'

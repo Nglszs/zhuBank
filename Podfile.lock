@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - AlipaySDK-iOS (15.5.5)
+  - Bugly (2.5.0)
   - IQKeyboardManager (6.2.0)
   - Masonry (1.1.0)
   - MJRefresh (3.1.15.7)
@@ -29,6 +30,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - AlipaySDK-iOS
+  - Bugly
   - IQKeyboardManager
   - Masonry
   - MJRefresh
@@ -42,6 +44,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - AlipaySDK-iOS
+    - Bugly
     - IQKeyboardManager
     - Masonry
     - MJRefresh
@@ -54,6 +57,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AlipaySDK-iOS: 7b700342e71cb3b626603ce96f9d2fb158acbcfb
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
@@ -63,6 +67,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 30bbdbf298d93b371e16e857b44c84522f353ec1
+PODFILE CHECKSUM: be7c72903d1f788e12258813ed8d74cf4e3136c2
 
 COCOAPODS: 1.5.3
