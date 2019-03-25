@@ -21,6 +21,7 @@
 #import "CoinPayMoneyOrderViewController.h"
 #import "CoinPayNotFristViewController.h"
 #import "CoinChangePhoneViewController.h"
+#import "BCUseCouPonView.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSMutableDictionary * DataDict;
@@ -336,6 +337,22 @@
         
         [self.navigationController pushViewController:vc animated:YES];
     }
+    
+    // 优惠券
+    if (indexPath.section == 3 && indexPath.row == 0) {
+        if (self.DataDict) {
+            NSString * user_id = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+            //0是现金券，1是运费q券
+            BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:user_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
+            view.backBlock = ^(id  _Nonnull result) {
+                NSLog(@"%@",result);
+            };
+            [self.view addSubview:view];
+        }
+        
+    }
+    
+    // 运费抵扣券
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

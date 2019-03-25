@@ -41,6 +41,18 @@
     UIView * view = [UIView new];
     [self.scrollView addSubview:view];
     
+    
+    /*
+     {
+     money : 80,
+     headline : 2019-03-14,
+     condition : 1500,
+     status : 1,
+     coupons_type : 0,
+     name : 测3,
+     cid : 4
+     }
+     */
     return view;
 }
 
