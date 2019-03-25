@@ -11,6 +11,7 @@
 @interface CoinAboutUsViewController ()
 @property (nonatomic,copy)NSString * register_agreement;
 @property (nonatomic,copy)NSString * secret_agreement;
+@property (nonatomic,copy)NSString * tkgo_introduce;
 @end
 
 @implementation CoinAboutUsViewController
@@ -112,7 +113,8 @@
     CoinH5ViewController * vc = [CoinH5ViewController new];
  
     if (btn.tag == 1000) {
-        
+        vc.title = @"关于我们";
+        vc.url = self.tkgo_introduce;
     }else if (btn.tag == 1001){
         vc.url = self.register_agreement;
         vc.titleStr = @"用户注册协议";
@@ -128,6 +130,8 @@
         if (BCStatus) {
             self.register_agreement = responseObject[@"data"][@"register_agreement"];
             self.secret_agreement = responseObject[@"data"][@"secret_agreement"];
+              self.tkgo_introduce = responseObject[@"data"][@"tkgo_introduce"];
+            
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
