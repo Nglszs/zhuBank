@@ -13,6 +13,7 @@
     NSInteger isUseMoney,goodNum;
     UIButton *selectedBtn;
     NSString *goodID,*item_ID;
+    NSArray *dataArr;//优惠券数组
 }
 
 - (void)getData{
@@ -23,7 +24,7 @@
         
         
         if (BCStatus) {
-            
+            dataArr = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"coupons_info"];
             [self initView];
             
         } else {
@@ -91,9 +92,28 @@
     }];
     
     
-    //    优惠券
-    for (int i = 0; i < 3; i++) {
+    if (dataArr.count <= 0) {
+     UILabel *notDivi = [[UILabel alloc] init];
+        notDivi.text = @"暂无可使用优惠券哦~";
+        notDivi.textColor = COLOR(102, 102, 102);
+        notDivi.font = [UIFont systemFontOfSize:17];
+        notDivi.textAlignment = NSTextAlignmentCenter;
+       
+        [headView addSubview:notDivi];
+        [notDivi mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.centerY.mas_equalTo(headView.mas_centerY);
+            make.width.mas_equalTo(BCWidth);
+            make.height.mas_equalTo(15);
+        }];
         
+       
+    }
+    
+    
+    //    优惠券
+    for (int i = 0; i < dataArr.count; i++) {
+          NSDictionary *dic = [dataArr objectAtIndex:i];
         //        背景
         UIImageView *imageV = [[UIImageView alloc] init];
         [headView addSubview:imageV];
@@ -128,6 +148,16 @@
                 selectedBtn.selected = YES;
             }
             
+//            选择的优惠券
+            if (self.backBlock) {
+             
+                NSString *ID = [dic objectForKey:@"id"];
+                NSString *money  = [dic objectForKey:@"money"];
+                self.backBlock(@{@"id":ID,@"money":money});
+            }
+            
+            [self removeCommentCuView];
+            
         }];
         
         if (isUseMoney == 0) {//如果是现金券
@@ -145,7 +175,7 @@
             
             //            标题  价格等等
             UILabel *moneyL = [[UILabel alloc] init];
-            moneyL.text = @"¥ 300";
+            moneyL.text = [NSString stringWithFormat:@"¥ %@",[dic objectForKey:@"money"]];
             moneyL.textColor = COLOR(254, 100, 38);
             moneyL.font = Regular(24);
             [imageV addSubview:moneyL];
@@ -171,7 +201,7 @@
             
             
             UILabel *useL = [[UILabel alloc] init];
-            useL.text = @"满3000 使用";
+            useL.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"condition"]];
             useL.textColor = ACOLOR(254, 100, 38,.7);
             useL.font = Regular(12);
             [imageV addSubview:useL];
@@ -185,7 +215,7 @@
             
             
             UILabel *timeL = [[UILabel alloc] init];
-            timeL.text = @"有效期2019.01.06-2019.03.31";
+            timeL.text = [NSString stringWithFormat:@"有效期 %@",[dic objectForKey:@"use_date"]];
             timeL.textColor = ACOLOR(254, 100, 38,.7);
             timeL.font = Regular(12);
             [imageV addSubview:timeL];
@@ -214,7 +244,7 @@
             
             
             UILabel *moneyL = [[UILabel alloc] init];
-            moneyL.text = @"¥ 8";
+            moneyL.text = [NSString stringWithFormat:@"¥ %@",[dic objectForKey:@"money"]];
             moneyL.textColor = COLOR(171, 193, 65);
             moneyL.font = Regular(24);
             [imageV addSubview:moneyL];
@@ -239,7 +269,7 @@
             }];
             
             UILabel *timeL = [[UILabel alloc] init];
-            timeL.text = @"有效期2019.01.06-2019.03.31";
+            timeL.text = [NSString stringWithFormat:@"有效期 %@",[dic objectForKey:@"use_date"]];
             timeL.textColor = ACOLOR(171, 193, 65,.7);
             timeL.font = Regular(12);
             [imageV addSubview:timeL];

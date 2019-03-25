@@ -224,6 +224,22 @@
     }
     
     
+    if (arr.count <= 0) {
+        UILabel *notDivi = [[UILabel alloc] init];
+        notDivi.text = @"暂无可使用优惠券哦~";
+        notDivi.textColor = COLOR(102, 102, 102);
+        notDivi.font = [UIFont systemFontOfSize:17];
+        notDivi.textAlignment = NSTextAlignmentCenter;
+        
+        [headView addSubview:notDivi];
+        [notDivi mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.centerY.mas_equalTo(headView.mas_centerY);
+            make.width.mas_equalTo(BCWidth);
+            make.height.mas_equalTo(15);
+        }];
+        
+    }
     
 //    关闭按钮
     UIButton *backBtn1 = [[UIButton alloc] init];
