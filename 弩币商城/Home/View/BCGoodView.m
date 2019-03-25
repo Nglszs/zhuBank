@@ -161,7 +161,8 @@
         make.top.equalTo(moneyL.mas_bottom).offset(12);
         make.height.mas_equalTo(12);
     }];
-    if ([[paramS objectForKey:@"q_fenqi"] integerValue] != 1) {//分期
+   
+    if ([[paramS objectForKey:@"q_fenqi"] integerValue] != 1) {//不是分期就隐藏
         moneyL1.hidden = YES;
     }
     
