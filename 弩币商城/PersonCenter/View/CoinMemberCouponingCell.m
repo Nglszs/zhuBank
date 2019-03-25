@@ -39,7 +39,8 @@
 }
 - (UIView *)setView:(NSDictionary *)dict index:(int)index{
     UIView * view = [UIView new];
-   
+    [self.scrollView addSubview:view];
+    
     return view;
 }
 
