@@ -154,13 +154,18 @@
     moneyL1.textColor = COLOR(254, 0, 0);
     moneyL1.font = Regular(13);
      moneyL1.attributedText = str;
-    [headView addSubview:moneyL1];
-    [moneyL1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.equalTo(moneyL.mas_left);
-        make.top.equalTo(moneyL.mas_bottom).offset(12);
-        make.height.mas_equalTo(12);
-    }];
+    
+    if ([[paramS objectForKey:@"q_fenqi"] integerValue] == 1) {//分期
+        [headView addSubview:moneyL1];
+        [moneyL1 mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.left.equalTo(moneyL.mas_left);
+            make.top.equalTo(moneyL.mas_bottom).offset(12);
+            make.height.mas_equalTo(12);
+        }];
+    }
+    
+   
     
 //    // 标题
     countL = [[UILabel alloc] initWithFrame:headView.bounds];
