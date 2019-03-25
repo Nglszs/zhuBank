@@ -17,7 +17,7 @@
 
 - (void)getData{
     
-    [KTooL HttpPostWithUrl:@"Order/select_coupons" parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:USER_ID],@"coupons_type":@""} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"Order/select_coupons" parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:USER_ID],@"coupons_type":@(isUseMoney),@"goods_id":goodID,@"item_id":item_ID,@"num":@(goodNum)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         
@@ -130,7 +130,7 @@
             
         }];
         
-        if (isUseMoney) {//如果是满减券
+        if (isUseMoney == 0) {//如果是现金券
             
             imageV.image = BCImage(可用优惠券商品bj);
             [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
