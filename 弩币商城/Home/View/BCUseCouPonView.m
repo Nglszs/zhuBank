@@ -10,11 +10,38 @@
 
 @implementation BCUseCouPonView
 {
-    BOOL isUseMoney;
+    NSInteger isUseMoney,goodNum;
     UIButton *selectedBtn;
+    NSString *goodID,*item_ID;
 }
-- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withMoney:(BOOL)isMoney{
+
+- (void)getData{
+    
+    [KTooL HttpPostWithUrl:@"Order/select_coupons" parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:USER_ID],@"coupons_type":@""} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            [self initView];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
+
+- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withMoney:(NSInteger)isMoney withItemID:(nonnull NSString *)itemID endNum:(NSInteger)num{
     isUseMoney = isMoney;
+    goodID = ID;
+    item_ID = itemID;
+    goodNum = num;
     return [self initWithFrame:frame];
 }
 
@@ -23,7 +50,7 @@
     
     if (self = [super initWithFrame:frame]) {
         
-        [self initView];
+        [self getData];
         
         
     }
@@ -270,9 +297,9 @@
             [self removeFromSuperview];
         }];
         
-        if (_backBlock) {
-            _backBlock();
-        }
+//        if (_backBlock) {
+//            _backBlock();
+//        }
     }
     
 }
