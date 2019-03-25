@@ -647,9 +647,6 @@
     }];
     
     [moneyImageV addTapGestureWithBlock:^{
-        CoinBorrowMoneyViewController * vq  = [CoinBorrowMoneyViewController new];
-        [self.navigationController pushViewController:vq animated:YES];
-        return;
         CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
         vc.url = self->huluUrl;
         [self.navigationController pushViewController:vc animated:YES];

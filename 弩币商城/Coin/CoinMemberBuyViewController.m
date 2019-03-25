@@ -34,6 +34,9 @@
 
 - (void)initView{
     UILabel * MoneyLabel = [[UILabel alloc] init];
+    if (!self.Money) {
+        self.Money = @"299";
+    }
     MoneyLabel.text = [NSString stringWithFormat:@"￥%@",self.Money];
     MoneyLabel.textColor = COLOR(255, 87, 103);
     MoneyLabel.font = Regular(24);

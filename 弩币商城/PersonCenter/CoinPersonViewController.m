@@ -19,6 +19,7 @@
 #import "CoinByStagesViewController.h"
 #import "CoinSelectAddressViewController.h"
 #import "CoinBrowseRecordViewController.h"
+#import "CoinMemberViewController.h"
 
 @interface CoinPersonViewController ()
 {
@@ -157,7 +158,7 @@
         make.height.mas_equalTo(25);
         make.width.mas_equalTo(90);
     }];
-   
+    [backBtn addTarget:self action:@selector(GoMember) forControlEvents:(UIControlEventTouchUpInside)];
     
     
     
@@ -179,9 +180,23 @@
     [backBtn1 addTarget:self action:@selector(ExamineLimit) forControlEvents:(UIControlEventTouchUpInside)];
     
 }
+- (void)GoMember{
+    if (![Tool isLogin]){
+        VCToast(@"请先登录", 2);
+        return;
+    }
+    
+    CoinMemberViewController * vc = [CoinMemberViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 
 
 - (void)ExamineLimit{
+    if (![Tool isLogin]){
+        VCToast(@"请先登录", 2);
+        return;
+    }
     CoinLimitViewController * VC = [CoinLimitViewController new];
     [self.navigationController pushViewController:VC animated:YES];
 }

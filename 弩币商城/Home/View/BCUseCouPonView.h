@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BCUseCouPonView : UIView
 @property (nonatomic,copy)void(^backBlock)(void);
 - (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withMoney:(BOOL)isMoney;//是否是满减券
+
 @end
 
 NS_ASSUME_NONNULL_END

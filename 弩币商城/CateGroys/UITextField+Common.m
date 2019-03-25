@@ -14,9 +14,6 @@ static void *preTextKey = &preTextKey;
 
 
 
-
-
-
 - (void)setPreviousTextFieldContent:(NSString *)previousTextFieldContent {
     
     objc_setAssociatedObject(self, &preTextKey,previousTextFieldContent, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
