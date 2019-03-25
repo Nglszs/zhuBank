@@ -20,7 +20,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/PersonCenter/Controller/CoinOrderDetailsViewController.m"
-            timestampString = "574935908.454841"
+            timestampString = "575131654.514498"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "550"
@@ -36,12 +36,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Coin/CoinBorrowMoneyViewController.m"
-            timestampString = "574935908.455228"
+            timestampString = "574939486.8032"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
-            landmarkName = "-request"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "-requestMoney"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -52,12 +52,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Coin/CoinBorrowMoneyViewController.m"
-            timestampString = "574935908.456081"
+            timestampString = "574939486.8036439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "-requestMoney"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "-goBuy:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

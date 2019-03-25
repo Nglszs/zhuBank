@@ -10,8 +10,9 @@
 
 @implementation BCUseCouPonView
 {
-    BOOL isUseMoney;
+    NSInteger isUseMoney,goodNum;
     UIButton *selectedBtn;
+    NSString *goodID,*item_ID;
 }
 
 - (void)getData{
@@ -36,8 +37,11 @@
     
 }
 
-- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withMoney:(BOOL)isMoney withItemID:(nonnull NSString *)itemID endNum:(NSInteger)num{
+- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withMoney:(NSInteger)isMoney withItemID:(nonnull NSString *)itemID endNum:(NSInteger)num{
     isUseMoney = isMoney;
+    goodID = ID;
+    item_ID = itemID;
+    goodNum = num;
     return [self initWithFrame:frame];
 }
 
@@ -293,9 +297,9 @@
             [self removeFromSuperview];
         }];
         
-        if (_backBlock) {
-            _backBlock();
-        }
+//        if (_backBlock) {
+//            _backBlock();
+//        }
     }
     
 }
