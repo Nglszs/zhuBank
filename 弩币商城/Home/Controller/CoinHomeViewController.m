@@ -61,12 +61,12 @@
         
     } else {
         
-        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
-        [self.view addSubview:view];
-        [view.button addtargetBlock:^(UIButton *button) {
-           
-            [self getData];
-        }];
+//        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
+//        [self.view addSubview:view];
+//        [view.button addtargetBlock:^(UIButton *button) {
+//
+//            [self getData];
+//        }];
         
         
     }
