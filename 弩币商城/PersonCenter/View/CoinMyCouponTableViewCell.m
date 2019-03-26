@@ -47,7 +47,7 @@
     
     
     UIImageView *leftI = [[UIImageView alloc] init];
-    leftI.backgroundColor = ImageColor;
+    leftI.image = BCImage(矩形 15 拷贝 3);
     [backView addSubview:leftI];
     [leftI mas_makeConstraints:^(MASConstraintMaker *make) {
         

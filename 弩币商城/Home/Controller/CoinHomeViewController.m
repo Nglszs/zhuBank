@@ -16,11 +16,13 @@
 #import "CoinLoginViewController.h"
 #import "CoinMemberSucceedViewController.h"
 #import "CoinBorrowMoneyViewController.h"
-@interface CoinHomeViewController ()<ClickImageLoopViewDelegate>
+@interface CoinHomeViewController ()<ClickImageLoopViewDelegate,UIScrollViewDelegate>
 
 {
     NSString *banaUrl;//轮播图链接
     NSString *huluUrl;//葫芦回收链接
+    UIButton *loginBtn;
+    CGFloat oldY;
 }
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -71,8 +73,16 @@
         
     }
    
+    [NOTIFICATION_CENTER addObserver:self selector:@selector(loginSuccess) name:Login_Success object:nil];
 
+}
 
+- (void)loginSuccess{
+    [loginBtn setTitle:@"" forState:UIControlStateNormal];
+    [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
+    [loginBtn addtargetBlock:^(UIButton *button) {
+        self.tabBarController.selectedIndex = 3;
+    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -209,16 +219,27 @@
     
     
 //    登录按钮
-    UIButton *loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(BCWidth - 60, topBtn.top, 60, 30)];
-    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(BCWidth - 60, topBtn.top, 60, 30)];
+   
     [loginBtn setTitleColor:White forState:UIControlStateNormal];
     loginBtn.titleLabel.font = Regular(15);
-    [loginBtn addtargetBlock:^(UIButton *button) {
-        CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
-    }];
-    if (![Tool isLogin]) {
+    
+    
         [_navView addSubview:loginBtn];
+    
+    
+    if ([Tool isLogin]) {
+        [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
+        [loginBtn addtargetBlock:^(UIButton *button) {
+            self.tabBarController.selectedIndex = 3;
+        }];
+    } else {
+        
+         [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+        [loginBtn addtargetBlock:^(UIButton *button) {
+            CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:YES];
+        }];
     }
     
     
@@ -660,16 +681,13 @@
     if (!_backScrollView) {
         _backScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight )];
 
-       
+        _backScrollView.delegate = self;
         _backScrollView.backgroundColor = White;
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
         [_backScrollView addTapGestureWithBlock:^{
             
-            CoinCertifyViewController *VC = [CoinCertifyViewController new];
-            VC.indexType = 1;
-            VC.isFenqi = YES;
-            [self.navigationController pushViewController:VC animated:YES];
+           
     
         }];
        
@@ -680,6 +698,23 @@
     return _backScrollView;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if ([scrollView isEqual: self.backScrollView]) {
+        if (self.backScrollView.contentOffset.y > oldY) {
+            // 上滑
+           _navView.backgroundColor = COLOR(255, 0, 0);
+        }
+        else{
+            // 下滑
+            _navView.backgroundColor = [UIColor clearColor];
+        }
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    // 获取开始拖拽时tableview偏移量
+    oldY = self.backScrollView.contentOffset.y;
+}
 
 
 

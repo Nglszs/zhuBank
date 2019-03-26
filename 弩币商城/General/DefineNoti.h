@@ -31,4 +31,6 @@
 
 #define  Exit_login @"Exit_login"
 
+#define  Login_Success @"Login_Success"
+
 #endif /* DefineNoti_h */
