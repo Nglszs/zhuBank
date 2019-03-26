@@ -281,7 +281,8 @@
                 break;
             case 2:
                 if (order_info) {
-                    cell.total_price = order_info[@"total_price"];
+                    // 商品总价
+                    cell.total_price = order_info[@"total_price_goods"];
                 }
                 break;
             case 3:
@@ -333,6 +334,7 @@
             [weakSelf.DataDict setObject:dict forKey:@"invoice_info"];
             NSIndexPath * index = [NSIndexPath indexPathForRow:1 inSection:2];
             [weakSelf.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:(UITableViewRowAnimationNone)];
+            [weakSelf upFootView:self.DataDict[@"order_info"]];
         };
         
         [self.navigationController pushViewController:vc animated:YES];
@@ -345,14 +347,43 @@
             //0是现金券，1是运费q券
             BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:user_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
             view.backBlock = ^(id  _Nonnull result) {
-                NSLog(@"%@",result);
+                NSString * idString = result[@"id"];
+                NSString * money = result[@"money"];
+                NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:self.DataDict[@"coupons_info"]];
+                
+                [dict setObject:money forKey:@"coupons_reduce"];
+                [dict setObject:idString forKey:@"coupons_reduce_id"];
+                 [self.DataDict setObject:dict forKey:@"coupons_info"];
+                 [self upFootView:self.DataDict[@"order_info"]];
             };
             [self.view addSubview:view];
         }
         
     }
     
-    // 运费抵扣券
+     // 运费抵扣券
+    if (indexPath.section == 3 && indexPath.row == 1) {
+        if (self.DataDict) {
+            NSString * user_id = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+            //0是现金券，1是运费q券
+            BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:user_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
+            MJWeakSelf;
+            view.backBlock = ^(id  _Nonnull result) {
+                NSString * idString = result[@"id"];
+                NSString * money = result[@"money"];
+                NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:self.DataDict[@"coupons_info"]];
+                
+                [dict setObject:money forKey:@"coupons_transfer"];
+                [dict setObject:idString forKey:@"coupons_transfer_id"];
+                [weakSelf.DataDict setObject:dict forKey:@"coupons_info"];
+            };
+            [self.view addSubview:view];
+        }
+        
+    }
+    
+    
+   
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -586,7 +617,8 @@
 
 - (void)upFootView:(NSDictionary *)dataDict{
     if (!BCDictIsEmpty(dataDict)) {
-        NSString * money = [NSString stringWithFormat:@"实付金额:  ￥%@",dataDict[@"total_price"]];
+        CGFloat m = [dataDict[@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [dataDict[@"transfer_price"] floatValue];
+        NSString * money = [NSString stringWithFormat:@"实付金额:  ￥%@",[self decimalNumberString:m]];
         NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:money];
         [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:254/255.0 green:70/255.0 blue:70/255.0 alpha:1.0] range:NSMakeRange(5, string.length - 5)];
         self.ActualPriceLabel.attributedText = string;
@@ -604,5 +636,13 @@
     vc.titleStr = title;
     vc.url = url;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+/** 字符串小数格式化
+ @return 小数字符串 */
+- (NSString *)decimalNumberString:(CGFloat )str{
+    
+    NSString *numberString = [NSString stringWithFormat:@"%f",str];
+    return [NSString stringWithFormat:@"%@",[NSDecimalNumber decimalNumberWithString:numberString]];
 }
 @end

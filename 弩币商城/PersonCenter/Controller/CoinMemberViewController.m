@@ -9,6 +9,7 @@
 #import "CoinMemberViewController.h"
 #import "CoinMemberDredgeCell.h"
 #import "CoinMemberBuyViewController.h"
+#import "CoinMemberCouponingCell.h"
 @interface CoinMemberViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)UIButton * button;
@@ -22,7 +23,6 @@
     self.title = @"帑库金钻会员卡";
     [self initView];
     [self request];
-    
 }
 
 - (void)initView{
@@ -83,6 +83,23 @@
         cell.selectionStyle = 0;
         return cell;
     }
+     if (indexPath.section == 1 && indexPath.row == 1) {
+        CoinMemberCouponingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinMemberCouponingCell1"];
+        if (cell == nil) {
+            cell = [[CoinMemberCouponingCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberCouponingCell1"];
+        }
+         cell.dataArray = self.DataDict[@"mall_coupons"];
+        return cell;
+    }
+    
+    if (indexPath.section == 1 && indexPath.row == 3) {
+        CoinMemberCouponingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinMemberCouponingCell1"];
+        if (cell == nil) {
+            cell = [[CoinMemberCouponingCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberCouponingCell1"];
+        }
+        cell.dataArray = self.DataDict[@"month_coupons"];
+        return cell;
+    }
     
     NSArray * titles = @[@"特权一",@"",@"特权二",@"",@"特权三",@"特权四",@"特权五"];
     NSArray * imageStr = @[@"特权一 拷贝",@"",@"特权2 拷贝",@"",@"特权3 拷贝",@"特权4 拷贝",@"特权5 拷贝"];
@@ -92,6 +109,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         }
+        cell.selectionStyle = 0;
         cell.imageView.image = [UIImage imageNamed:imageStr[indexPath.row]];
         cell.textLabel.text = titles[indexPath.row];
         cell.detailTextLabel.text = detailes[indexPath.row];
