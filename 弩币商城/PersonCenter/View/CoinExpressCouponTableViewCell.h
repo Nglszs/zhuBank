@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinExpressCouponTableViewCell : UITableViewCell
 @property (nonatomic , assign) NSInteger type;//1是已使用，2是已过期
+@property (nonatomic , strong) UIButton *activityBtn;
 - (void)setDataForCell:(NSDictionary *)data;
 @end
 

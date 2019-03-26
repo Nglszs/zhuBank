@@ -173,6 +173,11 @@
             }
             
             NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
+            [cell.activityBtn addtargetBlock:^(UIButton *button) {
+                CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
+                vc.ID = [[[dataArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
             [cell setDataForCell:dic];
             
             return cell;
@@ -189,6 +194,11 @@
                 
             }
             NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
+            [cell.activityBtn addtargetBlock:^(UIButton *button) {
+                CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
+                vc.ID = [[[dataArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
             [cell setDataForCell:dic];
             return cell;
         }
@@ -205,6 +215,12 @@
         
         
         NSDictionary *dic = [secondArr objectAtIndex:indexPath.row];
+       
+        [cell.activityBtn addtargetBlock:^(UIButton *button) {
+            CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
+            vc.ID = [[[secondArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
         [cell setDataForCell:dic];
         
         return cell;
@@ -223,6 +239,11 @@
         
         
         NSDictionary *dic = [thirdArr objectAtIndex:indexPath.row];
+        [cell.activityBtn addtargetBlock:^(UIButton *button) {
+            CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
+            vc.ID = [[[thirdArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
         [cell setDataForCell:dic];
         
         return cell;
@@ -232,26 +253,8 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    CoinCouponCanViewController *vc = [[CoinCouponCanViewController alloc] init];
-    
-    if (tableView == self.getTableView) {
-        
-        vc.ID = [[[dataArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
-        
-    } else if (tableView == self.payTableView){
-        
-        
-       vc.ID = [[[secondArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
-    } else {
-        
-       vc.ID = [[[thirdArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
-    }
-    
-    
-    [self.navigationController pushViewController:vc animated:YES];
-}
+
+
 #pragma mark 点击顶部按钮
 - (void)clickTopButton:(UIButton *)btn {
     

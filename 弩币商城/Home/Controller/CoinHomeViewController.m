@@ -16,13 +16,14 @@
 #import "CoinLoginViewController.h"
 #import "CoinMemberSucceedViewController.h"
 #import "CoinBorrowMoneyViewController.h"
-@interface CoinHomeViewController ()<ClickImageLoopViewDelegate,UIScrollViewDelegate>
+@interface CoinHomeViewController ()<ClickImageLoopViewDelegate,UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
 {
     NSString *banaUrl;//轮播图链接
     NSString *huluUrl;//葫芦回收链接
     UIButton *loginBtn;
     CGFloat oldY;
+    UICollectionView *myCollectionView;//3c
 }
 
 @property (nonatomic, strong) UIScrollView *backScrollView;
@@ -31,6 +32,7 @@
 @end
 
 @implementation CoinHomeViewController
+static NSString *cellID = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -132,7 +134,7 @@
             huluUrl = [[responseObject objectNilForKey:@"data"] objectForKey:@"hulu_receive_url"];
             
 //            刷新界面
-            [self refreshView];
+            [myCollectionView reloadData];
         } else {
             
          
@@ -144,44 +146,7 @@
     
 }
 
-- (void)refreshView {
-    
-    for (int i = 0; i < _goodArray.count; i++) {
-//
-        UIImageView *image = [self.backScrollView viewWithTag:100 + i];
-         UILabel *title = [self.backScrollView viewWithTag:200 + i];
-         UILabel *price = [self.backScrollView viewWithTag:300 + i];
-         UILabel *fenqi = [self.backScrollView viewWithTag:400 + i];
-        
-        [image sd_setImageWithURL:[NSURL URLWithString:[[_goodArray objectAtIndex:i] objectForKey:@"original_img"] ]];
-        title.text = [[_goodArray objectAtIndex:i] objectForKey:@"goods_name"];
-        
-        
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld起",[[[_goodArray objectAtIndex:i] objectForKey:@"shop_price"] integerValue] ]];
-        NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular12Font};
-        [str setAttributes:firstAttributes range:NSMakeRange(str.length - 1,1)];
-        
-        price.attributedText = str;
-        
-        
-        
-        NSDictionary * firstAttributes1 = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
-        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[[_goodArray objectAtIndex:i] objectForKey:@"fenqi_info"] attributes:firstAttributes1];
-        
-        fenqi.attributedText = str1;
-        
-        
-//        跳转商品详情界面
-        [image addTapGestureWithBlock:^{
-           
-            CoinGoodDetailViewController *vc = [[CoinGoodDetailViewController alloc] init];
-            vc.goodID = [[_goodArray objectAtIndex:i] objectForKey:@"goods_id"];
-            [self.navigationController pushViewController:vc animated:YES];
-        }];
-        
-    }
-    
-}
+
 #pragma mark 初始化导航栏
 -(void)initNavView {
     
@@ -308,112 +273,193 @@
      [backBtn imagePositionStyle:ImagePositionStyleRight spacing:7];
     
     
-//    商品图片
-    for (int i = 0; i < 2; i++) {
-        
-        UIImageView *imageV = [[UIImageView alloc] init];
-        imageV.tag = 100 + i;
-        imageV.backgroundColor = ImageColor;
-        imageV.contentMode = UIViewContentModeScaleAspectFill;
-        imageV.clipsToBounds = YES;
-        [self.backScrollView addSubview:imageV];
-        [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-          
-            make.top.equalTo(leftL.mas_bottom).offset(5);
-            make.left.mas_equalTo(LEFT_Margin + i *((BCWidth - 30 - 10)/2 + 10));
-            make.width.mas_equalTo((BCWidth - 30 - 10)/2);
-            make.height.mas_equalTo(110);
-            
-        }];
-        
-        
-//        商品标题
-        UILabel *titleL = [[UILabel alloc] init];
-        titleL.text = @"HUAWEI Mate 20 Pro";
-        titleL.textColor = TITLE_COLOR;
-        titleL.tag = 200 + i;
-        titleL.font = Regular(12);
-        [self.backScrollView addSubview:titleL];
-        
-        [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
-           
-            make.top.equalTo(imageV.mas_bottom).offset(3);
-            make.left.equalTo(imageV.mas_left).offset(8);
-            make.height.mas_equalTo(12);
-            
-        }];
-        
-//        商品价格
-        UILabel *moneyL = [[UILabel alloc] init];
-        
-        moneyL.text = @"¥";
-        moneyL.textColor = COLOR(251, 82, 24);
-        moneyL.font = Regular(10);
-        [self.backScrollView addSubview:moneyL];
-        [moneyL mas_makeConstraints:^(MASConstraintMaker *make) {
-           
-            make.left.mas_equalTo(titleL.mas_left);
-            make.top.equalTo(titleL.mas_bottom).offset(5);
-            make.height.mas_equalTo(10);
-        }];
-        
-        
-       
-        
-        UILabel *priceL = [[UILabel alloc] init];
-        priceL.tag = 300 + i;
-        priceL.textColor = COLOR(251, 82, 24);
-        priceL.font = Regular(18);
-       
-        [self.backScrollView addSubview:priceL];
-        [priceL mas_makeConstraints:^(MASConstraintMaker *make) {
-           
-            make.left.equalTo(moneyL.mas_right).offset(2);
-            make.top.equalTo(moneyL.mas_top);
-            make.height.mas_equalTo(16);
-        }];
-        
-        
-        
-//        分期
-        UILabel *moneyL1 = [[UILabel alloc] init];
-        
-        moneyL1.text = @"¥";
-        moneyL1.textColor = COLOR(153, 153, 153);
-        moneyL1.font = Regular(8);
-        [self.backScrollView addSubview:moneyL1];
-        [moneyL1 mas_makeConstraints:^(MASConstraintMaker *make) {
-            
-            make.left.equalTo(priceL.mas_right).offset(2);
-            make.top.equalTo(moneyL.mas_top).offset(2);
-            make.height.mas_equalTo(8);
-        }];
-        
-     
-        
-        
-//        下划线
-        
-       
-       
-        UILabel *segLabel = [[UILabel alloc] init];
-        segLabel.tag = 400 + i;
-       
-        segLabel.textColor = COLOR(153, 153, 153);
-        segLabel.font = Regular(12);
-        [self.backScrollView addSubview:segLabel];
-        [segLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-           
-            make.left.equalTo(moneyL1.mas_right).offset(2);
-            make.top.mas_equalTo(moneyL1.mas_top);
-            make.height.mas_equalTo(15);
-        }];
-    }
-    
+//    左右滑动
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    // 设置UICollectionView为横向滚动
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    // 每一行cell之间的间距
+
+
+        flowLayout.itemSize = CGSizeMake((BCWidth - 40)/2 , 160);// 该行代码就算不写,item也会有默认尺寸
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 212, BCWidth, 160) collectionViewLayout:flowLayout];
+    collectionView.backgroundColor = White;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.bounces = NO;
+    myCollectionView = collectionView;
+    [self.backScrollView addSubview:collectionView];
+     collectionView.showsHorizontalScrollIndicator = NO;
+    [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:cellID];
+
     
     
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    
+    return _goodArray.count;
+}
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    
+    
+    
+    
+    return UIEdgeInsetsMake(0, 15, 0, 15);
+    
+    
+    
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    
+    
+    return 10;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionViewCell *cell =  [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    
+    UIImageView *imageV = [cell.contentView viewWithTag:100];
+    if (!imageV) {
+        UIImageView *imageV = [[UIImageView alloc] init];
+        imageV.tag = 100 ;
+        imageV.backgroundColor = ImageColor;
+        imageV.contentMode = UIViewContentModeScaleAspectFill;
+        imageV.clipsToBounds = YES;
+        [cell.contentView addSubview:imageV];
+        [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.top.mas_equalTo(5);
+            make.left.mas_equalTo(0);
+            make.width.mas_equalTo((BCWidth - 40)/2);
+            make.height.mas_equalTo(110);
+            
+        }];
+        
+        //        商品标题
+                        UILabel *titleL = [[UILabel alloc] init];
+                        titleL.text = @"HUAWEI Mate 20 Pro";
+                        titleL.textColor = TITLE_COLOR;
+                        titleL.tag = 200;
+                        titleL.font = Regular(12);
+                        [cell.contentView addSubview:titleL];
+        
+                        [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+                            make.top.equalTo(imageV.mas_bottom).offset(3);
+                            make.left.equalTo(imageV.mas_left).offset(8);
+                            make.height.mas_equalTo(12);
+        
+                        }];
+        
+                //        商品价格
+                        UILabel *moneyL = [[UILabel alloc] init];
+        
+                        moneyL.text = @"¥";
+                        moneyL.textColor = COLOR(251, 82, 24);
+                        moneyL.font = Regular(10);
+                        [cell.contentView addSubview:moneyL];
+                        [moneyL mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+                            make.left.mas_equalTo(titleL.mas_left);
+                            make.top.equalTo(titleL.mas_bottom).offset(5);
+                            make.height.mas_equalTo(10);
+                        }];
+        
+        
+        
+        
+                        UILabel *priceL = [[UILabel alloc] init];
+                        priceL.tag = 300 ;
+                        priceL.textColor = COLOR(251, 82, 24);
+                        priceL.font = Regular(18);
+        
+                        [cell.contentView addSubview:priceL];
+                        [priceL mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+                            make.left.equalTo(moneyL.mas_right).offset(2);
+                            make.top.equalTo(moneyL.mas_top);
+                            make.height.mas_equalTo(16);
+                        }];
+        
+        
+        
+                //        分期
+                        UILabel *moneyL1 = [[UILabel alloc] init];
+        
+                        moneyL1.text = @"¥";
+                        moneyL1.textColor = COLOR(153, 153, 153);
+                        moneyL1.font = Regular(8);
+                        [cell.contentView addSubview:moneyL1];
+                        [moneyL1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+                            make.left.equalTo(priceL.mas_right).offset(2);
+                            make.top.equalTo(moneyL.mas_top).offset(2);
+                            make.height.mas_equalTo(8);
+                        }];
+        
+        
+        
+        
+                //        下划线
+        
+        
+        
+                        UILabel *segLabel = [[UILabel alloc] init];
+                        segLabel.tag = 400 ;
+        
+                        segLabel.textColor = COLOR(153, 153, 153);
+                        segLabel.font = Regular(12);
+                        [cell.contentView addSubview:segLabel];
+                        [segLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+                            make.left.equalTo(moneyL1.mas_right).offset(2);
+                            make.top.mas_equalTo(moneyL1.mas_top);
+                            make.height.mas_equalTo(15);
+                        }];
+        
+    }
+    
+        
+    UIImageView *image = [cell.contentView viewWithTag:100 ];
+    UILabel *title = [cell.contentView  viewWithTag:200 ];
+    UILabel *price = [cell.contentView  viewWithTag:300];
+    UILabel *fenqi = [cell.contentView  viewWithTag:400 ];
+    
+    [image sd_setImageWithURL:[NSURL URLWithString:[[_goodArray objectAtIndex:indexPath.row] objectForKey:@"original_img"] ]];
+    title.text = [[_goodArray objectAtIndex:indexPath.row] objectForKey:@"goods_name"];
+    
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld起",[[[_goodArray objectAtIndex:indexPath.row] objectForKey:@"shop_price"] integerValue] ]];
+    NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular12Font};
+    [str setAttributes:firstAttributes range:NSMakeRange(str.length - 1,1)];
+    
+    price.attributedText = str;
+    
+    
+    
+    NSDictionary * firstAttributes1 = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[[_goodArray objectAtIndex:indexPath.row] objectForKey:@"fenqi_info"] attributes:firstAttributes1];
+    
+    fenqi.attributedText = str1;
+    
+    
+  
+   
+    
+    
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+      //        跳转商品详情界面
+    CoinGoodDetailViewController *vc = [[CoinGoodDetailViewController alloc] init];
+    vc.goodID = [[_goodArray objectAtIndex:indexPath.row] objectForKey:@"goods_id"];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 #pragma  mark 严选专区
 
 - (void)initSecondView {
@@ -664,7 +710,7 @@
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
         make.height.mas_equalTo(132);
-        make.bottom.equalTo(self.backScrollView).offset(-100);
+        make.bottom.equalTo(self.backScrollView).offset(-80);
     }];
     
     [moneyImageV addTapGestureWithBlock:^{
@@ -685,11 +731,7 @@
         _backScrollView.backgroundColor = White;
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
-        [_backScrollView addTapGestureWithBlock:^{
-            
-           
-    
-        }];
+       
        
         
     }

@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
  yes是设置交易密码，no是修改
  */
 @property (nonatomic, assign) BOOL isSetPay;
+
+@property (nonatomic, copy) NSString *phoneNum;//x交易密码时，手机号码传入
 @end
 
 NS_ASSUME_NONNULL_END

@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.navigationItem.title = @"修改昵称";
     
     [self initView];
 }
@@ -45,7 +45,7 @@
     _messageCodeField.font = Regular(15);
     _messageCodeField.delegate = self;
     _messageCodeField.autocorrectionType = UITextAutocorrectionTypeNo;
-    _messageCodeField.keyboardType = UIKeyboardTypeNumberPad;
+    
     _messageCodeField.layer.cornerRadius = 4;
     _messageCodeField.layer.borderWidth = 1;
     _messageCodeField.layer.borderColor = COLOR(153, 153, 153).CGColor;
@@ -90,6 +90,7 @@
             if (BCStatus) {
                 
                 VCToast(@"修改成功", 1);
+                [self.view endEditing:YES];
                 [NOTIFICATION_CENTER postNotificationName:Reresh_UserInfo object:nil];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];

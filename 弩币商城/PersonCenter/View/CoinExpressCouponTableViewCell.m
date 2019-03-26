@@ -141,18 +141,18 @@
     }];
     
     
-    UIButton *activityBtn = [UIButton new];
-    [activityBtn setTitleColor:COLOR(172, 186, 106) forState:UIControlStateNormal];
-    [activityBtn setTitle:@"立即使用" forState:UIControlStateNormal];
-    [activityBtn.titleLabel setFont:Regular(12)];
-    activityBtn.layer.borderWidth = 1;
-    activityBtn.layer.borderColor = COLOR(172, 186, 106).CGColor;
-    activityBtn.tag = 1000;
-    activityBtn.layer.cornerRadius = 8;
-    [backView addSubview:activityBtn];
+    _activityBtn = [UIButton new];
+    [_activityBtn setTitleColor:COLOR(172, 186, 106) forState:UIControlStateNormal];
+    [_activityBtn setTitle:@"立即使用" forState:UIControlStateNormal];
+    [_activityBtn.titleLabel setFont:Regular(12)];
+    _activityBtn.layer.borderWidth = 1;
+    _activityBtn.layer.borderColor = COLOR(172, 186, 106).CGColor;
+    _activityBtn.tag = 1000;
+    _activityBtn.layer.cornerRadius = 8;
+    [backView addSubview:_activityBtn];
     
     
-    [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(40);
         make.right.mas_equalTo(-10);
         make.size.mas_equalTo(CGSizeMake(60, 20));

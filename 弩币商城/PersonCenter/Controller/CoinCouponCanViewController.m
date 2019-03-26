@@ -39,6 +39,17 @@
             
             dataArr = [responseObject objectNilForKey:@"data"];
             
+            if (dataArr.count <= 0) {
+                
+               
+               WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"myyhq 拷贝" text:@"该优惠券还没有可使用商品哦~" detailText:nil buttonTitle:nil];
+                
+              alertdataView.frame =self.view.bounds;
+                
+                [self.view addSubview:alertdataView];
+                
+                return ;
+            }
             [tabView reloadData];
             
         } else {
