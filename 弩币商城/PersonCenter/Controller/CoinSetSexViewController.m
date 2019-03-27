@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-    
+      self.navigationItem.title = @"修改性别";
     
     NSArray *titleA = @[@"图层 2",@"图层 1"];
     NSArray *titleA1 = @[@"图层 2 拷贝",@"图层 1 拷贝"];

@@ -38,10 +38,18 @@
     if (_isChangePhone) {
           titleL.text = @"修改绑定手机号码";
     } else {
-         titleL.text = @"短信修改交易密码";
+        
+        if (_isSetPay) {
+            titleL.text = @"短信设置交易密码";
+        } else {
+            
+             titleL.text = @"短信修改交易密码";
+        }
+        
         
     }
   
+      self.navigationItem.title = titleL.text;
     titleL.textColor = TITLE_COLOR;
     titleL.font = Regular(15);
     [self.view addSubview:titleL];
@@ -60,10 +68,16 @@
     _countTextField.keyboardType = UIKeyboardTypeNumberPad;
     _countTextField.delegate = self;
     _countTextField.textColor = COLOR(102, 102, 102);
-    _countTextField.placeholder = @"请输入您的手机号码";
+    
     _phoneField = _countTextField;
     _countTextField.font = Regular(15);
    
+    if (!_isChangePhone) {//如果是交易密码，则吧手机号码直接传入
+        
+        _countTextField.text = _phoneNum;
+    } else {
+        _countTextField.placeholder = @"请输入您的手机号码";
+    }
     
     UIImageView *leftI = [[UIImageView alloc]initWithFrame:CGRectMake(12, 0, 18, 22)];
     leftI.image = BCImage(手机);

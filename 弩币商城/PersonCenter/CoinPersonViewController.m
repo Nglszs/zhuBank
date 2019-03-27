@@ -32,6 +32,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+     [self.backScrollView.mj_header beginRefreshing];
      [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     
@@ -66,7 +67,8 @@
     
     [self initBottomView];
     
-    [self.backScrollView.mj_header beginRefreshing];
+   
+   
     
 }
 

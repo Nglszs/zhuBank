@@ -70,6 +70,8 @@
     dict[@"system_version"] =  [[UIDevice currentDevice] systemVersion];
     [KTooL HttpPostWithUrl:@"User/login" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
+            
+            [NOTIFICATION_CENTER postNotificationName:Login_Success object:nil];
             NSString *  token = responseObject[@"data"][@"token"];
             NSString *  user_id =  responseObject[@"data"][@"user_id"];
             [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_Token];

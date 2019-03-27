@@ -22,9 +22,9 @@
     UILabel *moneyL;
     UILabel *moneyL1;//分期
     UILabel *countL;
-    NSMutableArray *titleArr;
-    NSMutableArray *titleA;
-    NSString *item_ID;//传个提交订单
+    NSMutableArray *titleArr;//颜色
+    NSMutableArray *titleA;//内存
+    NSString *item_ID;//传给提交订单
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params{
     paramS = params;
@@ -318,6 +318,10 @@
         if (i == 0) {
             activityBtn.selected = YES;
             diviBtn = activityBtn;
+            if (titleA.count <= 0) {
+                 [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+           
         }
 
     }
@@ -447,9 +451,7 @@
 
     [backBtn1 addtargetBlock:^(UIButton *button) {
         if (self.backBlock ) {
-            NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
-            NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
-            NSLog(@"%@==%@",colorID,sizeID);
+
             self.backBlock(@[_countTextField.text,item_ID]);
         }
         
@@ -511,8 +513,14 @@
 #pragma mark 刷新商品利息
 - (void)getDiviData {
     
+    
     NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
-    NSString *sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
+    
+    NSString *sizeID = @"";
+    if (titleA.count > 0) {
+         sizeID = [[titleA objectAtIndex:selectedBtn.tag - 100] objectForKey:@"id"];
+    }
+  
     
     NSString *itemID = [[dataDic objectForKey:@"goods_info"] objectForKey:@"item_id"];
     

@@ -12,6 +12,7 @@
 #import "BCDivideView.h"
 #import "BCGoodView.h"
 #import "CoinConfirmOrderViewController.h"
+#import "CoinLoginViewController.h"
 
 @interface CoinGoodDetailViewController ()<UIScrollViewDelegate>
 {
@@ -216,7 +217,7 @@
     nameLabel.attributedText = [self setLabelIndent:14*titleA.count text:@"华为(HUAWEI) mate20pro手机樱粉金 8G+128G 全网通"];
   
     nameLabel.tag = 100;
-    nameLabel.numberOfLines = 0;
+    nameLabel.numberOfLines = 2;
     [self.backScrollView addSubview:nameLabel];
    
     
@@ -547,7 +548,7 @@
     
     [backBtn addtargetBlock:^(UIButton *button) {
        
-        NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dataDic objectNilForKey:@"customer_mobile"]];
+        NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[[dataDic objectNilForKey:@"goods_info"] objectNilForKey:@"customer_mobile"]];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }];
     
@@ -573,6 +574,7 @@
     if (![Tool isLogin]) {
         
         VCToast(@"请先登录", 1);
+        [self.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
         return;
     }
     
@@ -704,7 +706,9 @@
 - (void)getData {
     
     [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-       
+
+        
+        NSLog(@"===%@",responseObject);
         if (BCStatus) {
             dataDic = [responseObject objectNilForKey:@"data"];
             [self refreshView];

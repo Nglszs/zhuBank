@@ -43,7 +43,7 @@
 //    取消确定
     
     
-    topView = [[UIView alloc] initWithFrame:CGRectMake(0, BCHeight - 125, BCWidth, 35)];
+    topView = [[UIView alloc] initWithFrame:CGRectMake(0, BCHeight - 185, BCWidth, 35)];
     topView.backgroundColor = COLOR(151, 151, 151);
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:topView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(10,10)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -99,10 +99,12 @@
         
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
-        make.height.mas_equalTo(90);
+        make.height.mas_equalTo(150);
         make.bottom.mas_equalTo(0);
     }];
     
+    
+   
     UIDatePicker *datePicker = [[UIDatePicker alloc] init];
     
     //设置地区: zh-中国
@@ -131,7 +133,7 @@
     [datePicker mas_makeConstraints:^(MASConstraintMaker *make) {
        
         make.left.top.mas_equalTo(0);
-        make.height.mas_equalTo(90);
+        make.height.mas_equalTo(150);
         make.width.mas_equalTo(BCWidth);
     }];
     

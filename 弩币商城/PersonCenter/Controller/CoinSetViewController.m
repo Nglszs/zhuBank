@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.navigationItem.title = @"设置";
     
     [NOTIFICATION_CENTER addObserver:self selector:@selector(getData) name:Reresh_UserInfo object:nil];
    
@@ -370,6 +370,7 @@
             {
                 CoinChangePhoneViewController *vc = [[CoinChangePhoneViewController alloc] init];
                 vc.isChangePhone = NO;
+               vc.phoneNum = [dataDic objectNilForKey:@"mobile"];
                 if ([[dataDic objectNilForKey:@"paypwd"] integerValue] == 0) {//未修改
                     
                     vc.isSetPay = NO;
