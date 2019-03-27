@@ -253,15 +253,15 @@
     UILabel *leftL1 = [[UILabel alloc] init];
     leftL1.text = @"此次比对分数是88.86分。";
     leftL1.textColor = COLOR(188, 188, 188);
-    leftL1.font = Regular(13);
-    [backV addSubview:leftL1];
-    [leftL1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.top.equalTo(leftI.mas_bottom).offset(5);
-        make.centerX.equalTo(backV);
-        make.height.mas_equalTo(13);
-        
-    }];
+//    leftL1.font = Regular(13);
+//    [backV addSubview:leftL1];
+//    [leftL1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        
+//        make.top.equalTo(leftI.mas_bottom).offset(5);
+//        make.centerX.equalTo(backV);
+//        make.height.mas_equalTo(13);
+//        
+//    }];
     
     
     
