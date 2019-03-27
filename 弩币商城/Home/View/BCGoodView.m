@@ -79,10 +79,19 @@
     }];
     
 }
+- (CGFloat)widthOfString:(NSString *)string{
+    
+    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};  //指定字号
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(0, 23)/*计算宽度时要确定高度*/ options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
+    return rect.size.width;
+    
+   
+}
 - (void)initView {
     
-    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [self addGestureRecognizer:panGes];
+//    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+//    [self addGestureRecognizer:panGes];
     
     
     
@@ -93,7 +102,7 @@
     [self addSubview:backView];
     
     
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
+    UIScrollView *headView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
     headView.backgroundColor = White;
     [self addSubview:headView];
     
@@ -248,50 +257,46 @@
     
   
     
-//      颜色
+
+
+    
+    titleArr = [NSMutableArray arrayWithCapacity:1];//颜色
+    
+    titleA = [NSMutableArray arrayWithCapacity:1];//内存
 
     NSArray *sepDic = [dataDic objectNilForKey:@"spec_info"];
-    
-    UILabel *leftL2 = [[UILabel alloc] init];
-    leftL2.textColor = TITLE_COLOR;
-    leftL2.font = Regular(13);
-    leftL2.text = @"颜色";
-    [headView addSubview:leftL2];
-    [leftL2 mas_makeConstraints:^(MASConstraintMaker *make) {
-
-        make.left.mas_equalTo(LEFT_Margin);
-        make.height.mas_equalTo(15);
-        make.top.equalTo(leftL.mas_bottom).offset(50);
-    }];
-
-
-
-
- 
-   
-   
-
-    
-    titleArr = [NSMutableArray arrayWithCapacity:1];
-    titleA = [NSMutableArray arrayWithCapacity:1];
-
-    
     for (NSDictionary *dic in sepDic) {
         if ([[dic objectNilForKey:@"name"] isEqualToString:@"颜色"]) {
             [titleArr addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
         }
-        
+
         if ([[dic objectNilForKey:@"name"]isEqualToString:@"版本"]) {
-            
+
              [titleA addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
         }
-        
+
     }
-
-
-
+    
+   
+    //      颜色
+    
+   
+    
+    UILabel *leftL2 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, 165, 30, 13)];
+    leftL2.textColor = TITLE_COLOR;
+    leftL2.font = Regular(13);
+    leftL2.text = @"颜色";
+    [headView addSubview:leftL2];
+    if (titleArr.count <= 0) {//如果没有颜色
+        leftL2.height = 0;
+    }
+    
+    CGFloat w = 0;//保存前一个button的宽以及前一个button距离屏幕边缘的距离
+    CGFloat h = leftL2.bottom + 15;//用来控制button距离父视图的高
+   
     for (int i = 0; i < titleArr.count ; i++) {
         NSDictionary *colorDic = titleArr[i];
+         CGFloat tmpW = [self widthOfString:[colorDic objectForKey:@"item"]];
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
         [activityBtn setTitleColor:White forState:UIControlStateSelected];
@@ -305,156 +310,154 @@
         activityBtn.layer.cornerRadius = 4;
         activityBtn.clipsToBounds = YES;
         [headView addSubview:activityBtn];
-
+        
         [activityBtn addTarget:self action:@selector(clickDivi:) forControlEvents:UIControlEventTouchUpInside];
-
-        [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-
-            make.left.mas_equalTo(i%4 * (50 + (BCWidth - 200 - 64)/3) + LEFT_Margin);
-            make.top.equalTo(leftL2.mas_bottom).offset(12 + 35 * (i/4));
-            make.size.mas_equalTo(CGSizeMake(50, 23));
-        }];
-
+     
+        activityBtn.frame = CGRectMake(LEFT_Margin + w, h, tmpW + 30 , 23);
+        //当button的位置超出屏幕边缘时换行 320 只是button所在父视图的宽度
+        if(LEFT_Margin + w + tmpW + 30 > BCWidth){
+            w = 0; //换行时将w置为0
+            h = h + activityBtn.frame.size.height + LEFT_Margin;//距离父视图也变化
+            activityBtn.frame = CGRectMake(LEFT_Margin + w, h, tmpW + 30, 23);//重设button的frame
+        }
+        w = activityBtn.frame.size.width + activityBtn.frame.origin.x;
+       
         if (i == 0) {
             activityBtn.selected = YES;
             diviBtn = activityBtn;
             if (titleA.count <= 0) {
-                 [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+                [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
-           
+            
         }
-
-    }
-
-//
-//    //    版本
-    UILabel *leftL3 = [[UILabel alloc] init];
-    leftL3.textColor = TITLE_COLOR;
-    leftL3.font = Regular(13);
-    leftL3.text = @"版本";
-    [headView addSubview:leftL3];
-    [leftL3 mas_makeConstraints:^(MASConstraintMaker *make) {
-
-        make.left.mas_equalTo(LEFT_Margin);
-        make.height.mas_equalTo(15);
-        make.top.equalTo(leftL2.mas_bottom).offset(80);
-    }];
-
-
-
-    NSArray *titleArr1 = @[@"公开版"];
-
-    for (int i = 0; i < titleArr1.count ; i++) {
-        UIButton *activityBtn = [UIButton new];
-        [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
-        [activityBtn setTitleColor:White forState:UIControlStateSelected];
-        [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
-        [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
-        [activityBtn setTitle:titleArr1[i] forState:UIControlStateNormal];
-        [activityBtn.titleLabel setFont:Regular(12)];
-        activityBtn.layer.borderWidth = 1;
-        activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
-        activityBtn.tag = 300 + i;
-        activityBtn.layer.cornerRadius = 4;
-        activityBtn.clipsToBounds = YES;
-        [headView addSubview:activityBtn];
-
-        [activityBtn addTarget:self action:@selector(clickDiviNum:) forControlEvents:UIControlEventTouchUpInside];
-
-        [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-
-            make.left.mas_equalTo(i%4 * (50 + (BCWidth - 200 - 64)/3) + LEFT_Margin);
-            make.top.equalTo(leftL3.mas_bottom).offset(12 + 35 * (i/4));
-            make.size.mas_equalTo(CGSizeMake(50, 23));
-        }];
-
-        if (i == 0) {
-            activityBtn.selected = YES;
-            diviNumBtn = activityBtn;
-        }
-
+        
     }
 
     
-//         内存
-        UILabel *leftL4 = [[UILabel alloc] init];
-        leftL4.textColor = TITLE_COLOR;
-        leftL4.font = Regular(13);
-        leftL4.text = @"内存";
-        [headView addSubview:leftL4];
-        [leftL4 mas_makeConstraints:^(MASConstraintMaker *make) {
-    
-            make.left.mas_equalTo(LEFT_Margin);
-            make.height.mas_equalTo(15);
-            make.top.equalTo(leftL3.mas_bottom).offset(48);
-        }];
+   
     
     
-    
-    
-        for (int i = 0; i < titleA.count ; i++) {
-            
-               NSDictionary *sizeDic = titleA[i];
-            
+
+  
+
+    if (titleArr.count > 0) {//如果有颜色的话
+        
+        //    版本
+        UILabel *leftL3 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, h + 45, 30, 13)];
+        leftL3.textColor = TITLE_COLOR;
+        leftL3.font = Regular(13);
+        leftL3.text = @"版本";
+        [headView addSubview:leftL3];
+        
+        NSArray *titleArr1 = @[@"公开版"];
+        
+        for (int i = 0; i < titleArr1.count ; i++) {
             UIButton *activityBtn = [UIButton new];
             [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
             [activityBtn setTitleColor:White forState:UIControlStateSelected];
             [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
             [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
-            [activityBtn setTitle:[sizeDic objectNilForKey:@"item"] forState:UIControlStateNormal];
+            [activityBtn setTitle:titleArr1[i] forState:UIControlStateNormal];
             [activityBtn.titleLabel setFont:Regular(12)];
+            
             activityBtn.layer.borderWidth = 1;
             activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
-            activityBtn.tag = 100 + i;
+            activityBtn.tag = 300 + i;
             activityBtn.layer.cornerRadius = 4;
             activityBtn.clipsToBounds = YES;
             [headView addSubview:activityBtn];
-    
-            [activityBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-            [activityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-               
-                make.top.equalTo(leftL4.mas_bottom).offset(12 + 35 * (i/4));
-                make.left.equalTo(leftL4.mas_left).offset(i * (60 + 28) );
-    
-                make.size.mas_equalTo(CGSizeMake(60, 23));
-            }];
-    
+            activityBtn.frame = CGRectMake(LEFT_Margin, leftL3.bottom + 15, 50, 23);
+            [activityBtn addTarget:self action:@selector(clickDiviNum:) forControlEvents:UIControlEventTouchUpInside];
+            
+            
             if (i == 0) {
-                
                 activityBtn.selected = YES;
-                selectedBtn = activityBtn;
-                [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+                diviNumBtn = activityBtn;
             }
-    
+            
         }
-    
-    
-    
+        
+        h += 110;
+    }
     
 
+//         内存
+        UILabel *leftL4 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, h , 30, 13)];
+        leftL4.textColor = TITLE_COLOR;
+        leftL4.font = Regular(13);
+        leftL4.text = @"内存";
+        [headView addSubview:leftL4];
+    if (titleA.count <= 0) {//如果内存没有的话
+        
+        leftL4.height = 0;
+    }
+    
+    
+    
+    CGFloat w1 = 0;
+    h +=25;
+    for (int i = 0; i < titleA.count ; i++) {
+        
+                       NSDictionary *sizeDic = titleA[i];
+         CGFloat tmpW = [self widthOfString:[sizeDic objectForKey:@"item"]];
+                    UIButton *activityBtn = [UIButton new];
+                    [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
+                    [activityBtn setTitleColor:White forState:UIControlStateSelected];
+                    [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
+                    [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
+                    [activityBtn setTitle:[sizeDic objectNilForKey:@"item"] forState:UIControlStateNormal];
+                    [activityBtn.titleLabel setFont:Regular(12)];
+                    activityBtn.layer.borderWidth = 1;
+                    activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
+                    activityBtn.tag = 100 + i;
+                    activityBtn.layer.cornerRadius = 4;
+                    activityBtn.clipsToBounds = YES;
+                    [headView addSubview:activityBtn];
+                    [activityBtn.titleLabel adjustsFontSizeToFitWidth];
+                    [activityBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        activityBtn.frame = CGRectMake(LEFT_Margin + w1, h , tmpW + 30 , 23);
+        //当button的位置超出屏幕边缘时换行 320 只是button所在父视图的宽度
+        if(LEFT_Margin + w1 + tmpW + 30 > BCWidth){
+            w1 = 0; //换行时将w置为0
+            h = h + activityBtn.frame.size.height + LEFT_Margin;//距离父视图也变化
+            activityBtn.frame = CGRectMake(LEFT_Margin + w1, h, tmpW + 30, 23);//重设button的frame
+        }
+        w1 = activityBtn.frame.size.width + activityBtn.frame.origin.x;
+        
+        
+                    if (i == 0) {
+        
+                        activityBtn.selected = YES;
+                        selectedBtn = activityBtn;
+                        [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+                    }
+        
+                }
 
+    if (h < headView.height) {
+        h = headView.height + 15;
+    } else {
+        
+        h += 30;
+    }
 
+     headView.contentSize = CGSizeMake(BCWidth,  h );
+//
     //    关闭按钮
-    UIButton *backBtn1 = [[UIButton alloc] init];
+    UIButton *backBtn1 = [[UIButton alloc] initWithFrame:CGRectMake(0, BCHeight - 50, BCWidth, 50)];
     backBtn1.titleLabel.font = Regular(16);
     [backBtn1 setTitle:@"确定" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
     backBtn1.backgroundColor = Red;
-    [headView addSubview:backBtn1];
-    [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.mas_equalTo(0);
-
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(BCWidth);
-    }];
-
+    [self addSubview:backBtn1];
+   
     [backBtn1 addtargetBlock:^(UIButton *button) {
         if (self.backBlock ) {
 
             self.backBlock(@[_countTextField.text,item_ID]);
         }
-        
+
         [self removeCommentCuView];
     }];
 
@@ -514,7 +517,11 @@
 - (void)getDiviData {
     
     
-    NSString *colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
+    NSString *colorID = @"";
+    if (titleArr.count > 0) {
+      colorID = [[titleArr objectAtIndex:diviBtn.tag - 200] objectForKey:@"id"];
+    }
+   
     
     NSString *sizeID = @"";
     if (titleA.count > 0) {

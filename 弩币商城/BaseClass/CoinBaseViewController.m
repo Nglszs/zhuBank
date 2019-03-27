@@ -88,6 +88,71 @@
     }];
     
 }
+- (MJRefreshStateHeader *)loadMJRefresh:(void (^)(void))completion {
+    
+    //正常
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
+            if (completion) {
+                completion();
+            }
+    
+        }];
+        header.lastUpdatedTimeLabel.hidden = YES;
+    
+    
+//    //动画类刷新
+//    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingBlock:^{
+//        if (completion) {
+//            completion();
+//        }
+//    }];
+//    
+//    header.lastUpdatedTimeLabel.hidden= YES;
+//    header.stateLabel.hidden = YES;
+//    
+//    
+//    
+//    //设置普通状态的动画图片
+//    [header setImages:[self normalImages] forState:MJRefreshStateIdle];
+//    
+//    // 设置即将刷新状态的动画图片（一松开就会刷新的状态）
+//    [header setImages:[self refreshImages] forState:MJRefreshStatePulling];
+//    
+//    // 设置正在刷新状态的动画图片
+//    [header setImages:[self refreshImages] forState:MJRefreshStateRefreshing];
+    
+    return header;
+    
+}
+
+- (NSMutableArray *)normalImages
+{
+    
+    NSMutableArray  *normalImages = [[NSMutableArray alloc] init];
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"wowo_refresh_1"]];
+    
+    [normalImages addObject:image];
+    
+    return normalImages;
+}
+
+//正在刷新状态下的图片
+- (NSMutableArray *)refreshImages
+{
+    
+    NSMutableArray *refreshImages = [[NSMutableArray alloc] init];
+    
+    //                循环添加图片
+    for (NSUInteger i = 1; i <= 35; i++ ) {
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"wowo_refresh_%ld", i]];
+        [refreshImages addObject:image];
+        
+    }
+    
+    return refreshImages;
+}
 
 - (void)dealloc {
     

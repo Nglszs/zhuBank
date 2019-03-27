@@ -13,14 +13,14 @@
 
 #define FOS_SERVER      @"https://api.fosafer.com/compound_auth/v3"
 /// 请与商务人员进行索取对应值
-#define kHCLicense      @""
-#define kHCSdkType      @""
-#define kHCBundleID     @""
+#define kHCLicense      @"kH28MIeAkp99yY4e"
+#define kHCSdkType      @"hcdet"
+#define kHCBundleID     @"com.Zbanks.tkgo"
 
 
-#define kMemberId    @""
-#define kTerminalId  @""
-#define kCerPasswd   @""
+#define kMemberId    @"8004201191"
+#define kTerminalId  @"8004201191"
+#define kCerPasswd   @"yjkj999"
 
 @interface FOSAuthController ()<FOSAuthenticatorDelegate>
 
@@ -157,6 +157,7 @@
         _authenticator = nil;
     }
 
+    NSLog(@"pappp%@",params);
     _authenticator = [[FOSAuthenticator alloc] initWithParams:params preview:self.view videoSession:_cachedSession];
     if (![_cachedSession isEqual:[_authenticator videoSession]]) {
         _cachedSession = [_authenticator videoSession];
@@ -411,12 +412,13 @@
 - (void)authenticator:(FOSAuthenticator *)authenticator error:(NSError *)error {
     //    __weak typeof (self)WeakSelf = self;
     
-    
+     NSLog(@"===%@",error);
     
     error = nil;
 }
 
 - (void)authenticator:(FOSAuthenticator *)authenticator result:(NSDictionary *)result {
+    NSLog(@"===%@",result);
     self.hintLabel.text = @"";
     NSError *error = [result objectForKey:@"error"];
     if (error) {
@@ -445,7 +447,12 @@
     NSDictionary *data = [dict objectForKey:@"data"];
     NSString *code = [data objectForKey:@"code"];
     NSString *desc = [data objectForKey:@"desc"];
-    if (success && [code isEqualToString:@"0"]) {
+    if (success && [code isEqualToString:@"0"]) {//认证成功
+        
+        [self getData];
+        if (self.backBlock) {
+            self.backBlock(@"1");
+        }
         [self alertTitle:@"" message:desc type:0];
     } else {
         NSString *msg;

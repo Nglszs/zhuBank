@@ -75,13 +75,13 @@
     timeL.text = @"1条评价 98%好评 ";
     timeL.textColor = COLOR(153, 153, 153);
     timeL.font = Regular(11);
-    [self.contentView addSubview:timeL];
-    [timeL mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.mas_equalTo(self.ByStagesLabel.mas_left);
-        make.top.equalTo(self.ByStagesLabel.mas_bottom).offset(6);
-        make.height.mas_equalTo(11);
-    }];
+//    [self.contentView addSubview:timeL];
+//    [timeL mas_makeConstraints:^(MASConstraintMaker *make) {
+//        
+//        make.left.mas_equalTo(self.ByStagesLabel.mas_left);
+//        make.top.equalTo(self.ByStagesLabel.mas_bottom).offset(6);
+//        make.height.mas_equalTo(11);
+//    }];
     
     //    分割线
     UIImageView *lineImage = [[UIImageView alloc] init];
@@ -110,7 +110,7 @@
   self.ByStagesLabel.attributedText = string2;
     
     
-    timeL.text = [NSString stringWithFormat:@"%@条评价 %@%%好评 ",[data objectNilForKey:@"show_comment_count"],[[data objectNilForKey:@"comment_statistics"]objectForKey:@"high_rate"] ];
+//    timeL.text = [NSString stringWithFormat:@"%@条评价 %@%%好评 ",[data objectNilForKey:@"show_comment_count"],[[data objectNilForKey:@"comment_statistics"]objectForKey:@"high_rate"] ];
     
 }
 - (void)awakeFromNib {

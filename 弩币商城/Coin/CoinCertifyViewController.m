@@ -57,9 +57,7 @@
     }
    
     
-    FOSAuthController *VC =  [FOSAuthController new];
-    VC.params = @{@"name":@"jack",@"cardNo":@"1213132131"};
-    [self.navigationController pushViewController:VC animated:YES];
+ 
     
 }
 
@@ -189,7 +187,18 @@
         
         if (BCStatus) {
             
-            [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+            FOSAuthController *VC =  [FOSAuthController new];
+            VC.params = @{@"name":nameF.text,@"cardNo":numberF.text};
+            [self.navigationController pushViewController:VC animated:YES];
+            VC.backBlock = ^(id  _Nonnull result) {//成功之后跳转
+                
+                if ([result isEqualToString:@"1"]) {
+                     [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+                }
+               
+            };
+            
+//
             
         } else {
               VCToast(@"验证失败", 1);

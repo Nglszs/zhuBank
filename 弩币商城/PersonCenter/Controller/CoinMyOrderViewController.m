@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) UITableView *allTableView,*notPayTableView,*notDispatchTabview,*notEnableTableView,*finshTableView;
 
-@property (nonatomic, strong) WOWONoDataView *alertdataView;
+
 @end
 
 @implementation CoinMyOrderViewController
@@ -105,15 +105,12 @@
                 
                 if (arr.count == 0 && allArr.count == 0) {
                     
-                    if (_alertdataView) {
-                                [_alertdataView removeFromSuperview];
-                                _alertdataView = nil;
-                            }
-                            self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
-                            self.alertdataView.frame =self.view.bounds;
+                   
+                          WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                      [alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
+                            alertdataView.frame =self.view.bounds;
                     
-                            [self.allTableView addSubview:_alertdataView];
+                            [self.allTableView addSubview:alertdataView];
                     return ;
                     
                 }
@@ -130,15 +127,12 @@
                 
                 if (arr.count == 0 && notArr.count == 0) {
                     
-                    if (_alertdataView) {
-                        [_alertdataView removeFromSuperview];
-                        _alertdataView = nil;
-                    }
-                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
-                    self.alertdataView.frame =self.view.bounds;
+                   
+                   WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                      [alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
+                    alertdataView.frame =self.view.bounds;
                     
-                    [self.notPayTableView addSubview:_alertdataView];
+                    [self.notPayTableView addSubview:alertdataView];
                     return ;
                     
                 }
@@ -156,15 +150,12 @@
                 
                 if (arr.count == 0 && aleratArr.count == 0) {
                     
-                    if (_alertdataView) {
-                        [_alertdataView removeFromSuperview];
-                        _alertdataView = nil;
-                    }
-                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
-                    self.alertdataView.frame =self.view.bounds;
+                   
+                   WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                      [alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
+                    alertdataView.frame =self.view.bounds;
                     
-                    [self.notDispatchTabview addSubview:_alertdataView];
+                    [self.notDispatchTabview addSubview:alertdataView];
                     return ;
                     
                 }
@@ -183,15 +174,12 @@
                 
                 if (arr.count == 0 && notEnableArr.count == 0) {
                     
-                    if (_alertdataView) {
-                        [_alertdataView removeFromSuperview];
-                        _alertdataView = nil;
-                    }
-                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
-                      [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
-                    self.alertdataView.frame =self.view.bounds;
+                   
+                    WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                      [alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
+                    alertdataView.frame =self.view.bounds;
                     
-                    [self.notEnableTableView addSubview:_alertdataView];
+                    [self.notEnableTableView addSubview:alertdataView];
                     return ;
                     
                 }
@@ -210,15 +198,12 @@
                 
                 if (arr.count == 0 && finshArr.count == 0) {
                     
-                    if (_alertdataView) {
-                        [_alertdataView removeFromSuperview];
-                        _alertdataView = nil;
-                    }
-                    self.alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
+                   
+                   WOWONoDataView *alertdataView = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"抱歉未查到数据" detailText:nil buttonTitle:@"去逛逛"];
                     
-                    self.alertdataView.frame =self.view.bounds;
-                    [self.alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
-                    [self.finshTableView addSubview:_alertdataView];
+                    alertdataView.frame =self.view.bounds;
+                    [alertdataView.button addTarget:self action:@selector(clickGo) forControlEvents:UIControlEventTouchUpInside];
+                    [self.finshTableView addSubview:alertdataView];
                     return ;
                     
                 }

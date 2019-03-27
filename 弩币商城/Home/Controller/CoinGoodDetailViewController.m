@@ -150,11 +150,7 @@
     [self.backScrollView addSubview:titleL];
     [titleL addTapGestureWithBlock:^{
        
-        if (![Tool isVip]) {
-            VCToast(@"会员才可以分期哦，请先购买会员", 1);
-            return ;
-        }
-        
+       
 
         
         //    点击打开分期
@@ -169,9 +165,15 @@
         vv.backBlock = ^(id  _Nonnull result) {
           
             NSLog(@"]]]]%@",result);
-             UILabel *titleL = [self.backScrollView viewWithTag:500];
-            titleL.text = [NSString stringWithFormat:@"分期%@",[result objectNilForKey:@"fenqi"]];
-            divideArr = [result objectNilForKey:@"lixi"];
+            if ([[result objectForKey:@"isfenqi"]isEqualToString:@"1"]) {
+                UILabel *titleL = [self.backScrollView viewWithTag:500];
+                titleL.text = [NSString stringWithFormat:@"分期%@",[result objectNilForKey:@"fenqi"]];
+                divideArr = [result objectNilForKey:@"lixi"];
+            } else {
+                
+                divideArr = nil;
+            }
+            
         };
     }];
     
@@ -595,6 +597,7 @@
             
             
             
+            
             NSString *stage = [divideArr firstObject];
             if ([stage isEqualToString:@"零首付"]) {
                 stage = @"0";
@@ -640,7 +643,7 @@
             }
             [self.navigationController pushViewController:VC animated:YES];
             
-            
+            sizeArr = nil;
             
             
             
