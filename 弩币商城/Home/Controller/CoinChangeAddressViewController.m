@@ -26,6 +26,10 @@
     [self.RootView.affirmButton addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     self.RootView.address_id = self.address_id;
     
+    if (!BCStringIsEmpty(self.address_id)) {
+        [self setNavitemImage:@"删除" type:(RightNavItem)];
+    }
+    
 }
 
 - (void)loadView{
@@ -54,4 +58,17 @@
         }];
     }
 }
+
+- (void)RightItemAction{
+    [KTooL HttpPostWithUrl:@"Order/delete_address" parameters:@{@"address_id": self.address_id} loadString:@"正在删除" success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            VCToast(BCMsg, 2);
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+
 @end

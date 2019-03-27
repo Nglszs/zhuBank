@@ -78,8 +78,7 @@ static NSString *cellID = @"cell";
 //            [self getData];
 //        }];
         
-
-        
+   
     }
    
     [NOTIFICATION_CENTER addObserver:self selector:@selector(loginSuccess) name:Login_Success object:nil];

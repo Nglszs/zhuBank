@@ -130,7 +130,7 @@
         jj = @selector(RightItemAction);
     }
     
-    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed:imageString] style:(UIBarButtonItemStyleDone) target:self action:jj];
+    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithImage: [[UIImage imageNamed:imageString] imageWithRenderingMode:(UIImageRenderingModeAlwaysOriginal)] style:(UIBarButtonItemStyleDone) target:self action:jj];
     if (type == LeftNavItem) {
         self.navigationItem.leftBarButtonItem = item;
     }else{

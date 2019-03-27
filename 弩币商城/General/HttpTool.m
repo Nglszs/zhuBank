@@ -99,12 +99,14 @@ static HttpTool * tool;
         
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"8"]) {
             //您的账号已在别处登录
+             [SVProgressHUD showInfoWithStatus:@"您的账号已在别处登录"];
             [self GoLogin];
             return;
         }
         
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"9"]) {
             // 登录过期，请重新登录
+            [SVProgressHUD showInfoWithStatus:@"登录过期，请重新登录"];
             [self GoLogin];
             return;
         }
@@ -146,7 +148,9 @@ static HttpTool * tool;
 }
 
 - (void)GoLogin{
-  
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_ID];
+     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_Token];
+    
     UIViewController *VC = [self getCurrentViewController];
     [VC.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
     

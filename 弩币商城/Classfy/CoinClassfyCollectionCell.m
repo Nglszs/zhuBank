@@ -35,7 +35,7 @@
     self.titleLabel.text = @"苹果";
     [self.contentView addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.font = TextFont(11);
+    self.titleLabel.font = TextFont(13);
     self.titleLabel.textColor = COLOR(102, 102, 102);
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.CommodityImage);

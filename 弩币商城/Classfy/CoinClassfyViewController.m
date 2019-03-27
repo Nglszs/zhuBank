@@ -137,15 +137,28 @@
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     CoinClassRightModel * model = self.RightDataArray[section];
-    return model.sub_menu.count;
+    NSUInteger count = model.sub_menu.count;
+    if (model.sub_menu.count % 3 != 0) {
+        count += 3 - model.sub_menu.count % 3;
+    }
+    if (count< 9) {
+        count = 9;
+    }
+    return  count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     CoinClassfyCollectionCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CoinClassfyCollectionCell" forIndexPath:indexPath];
     CoinClassRightModel * model = self.RightDataArray[indexPath.section];
-    CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
-    cell.name = model2.name;
-    cell.image = model2.image;
+    if (indexPath.row > model.sub_menu.count - 1) {
+        cell.name = @"";
+        cell.image = @"";
+    }else{
+        CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
+        cell.name = model2.name;
+        cell.image = model2.image;
+    }
+ 
     return cell;
     
 }
@@ -157,12 +170,12 @@
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    return CGSizeMake((BCWidth - 88 - 12 - 12) / 3, 80);
+    return CGSizeMake((BCWidth - 88 - 12 - 12) / 3, 90);
     
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-    return CGSizeMake(collectionView.frame.size.width, 35);
+    return CGSizeMake(collectionView.frame.size.width, 40);
 }
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
@@ -172,17 +185,23 @@
     for (UIView * view in headerView.subviews) {
         [view removeFromSuperview];
     }
+    UIView * view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor whiteColor];
+    [headerView addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(headerView);
+        make.top.equalTo(headerView).offset(10);
+    }];
     headerView.backgroundColor = COLOR(238, 238, 238);
     UILabel * label = [UILabel new];
     label.textColor = COLOR(102, 102, 102);
-    label.font = TextFont(13);
+    label.font = TextFont(14);
     CoinClassRightModel * model = self.RightDataArray[indexPath.section];
     label.text = model.name;
     [headerView addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(headerView);
-        make.bottom.equalTo(headerView).offset(-5);
-        
+        make.left.equalTo(headerView).offset(15);
+        make.bottom.equalTo(headerView).offset(-2);
     }];
    
     return headerView;
@@ -191,8 +210,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     CoinClassRightModel * model = self.RightDataArray[indexPath.section];
+    if (indexPath.row > model.sub_menu.count - 1) {
+        return;
+    }
     CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
-    
     CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
     vc.keyword = model2.name;
     [self.navigationController pushViewController:vc animated:YES];

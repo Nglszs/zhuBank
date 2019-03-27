@@ -618,7 +618,7 @@
     if (self.dataDict) {
         NSString * url =  self.dataDict[@"order_info"][@"express"];
         CoinH5ViewController * VC = [CoinH5ViewController new];
-        VC.titleStr = @"查看物流";
+        VC.titleStr = @"查看物流信息";
         VC.url = url;
         [self.navigationController pushViewController:VC animated:YES];
     }

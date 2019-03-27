@@ -28,6 +28,10 @@
 }
 - (void)GoSetPassword{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    if (self.RootView.messageCodeField.text.length == 0) {
+        VCToast(@"请输入验证码", 2);
+        return;
+    }
     dict[@"mobile"] = self.RootView.PhoneTF.text;
     dict[@"action"] =  @"2";
     dict[@"verify_code"] = self.RootView.messageCodeField.text;

@@ -228,7 +228,7 @@
     dict[@"consignee"] = self.NameTF.text;
     dict[@"mobile"] = self.PhoneNumberTF.text;
     dict[@"address"] = self.AddressTF.text;
-    [KTooL HttpPostWithUrl:@"Order/new_address_submit" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:@"Order/new_address_submit" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             ViewToast(@"添加成功", 2);
         }else{
@@ -242,6 +242,7 @@
 }
 - (void)EditAddress:(void (^)(BOOL))isSucceed{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+   
     if (BCStringIsEmpty(self.province)) {
         ViewToast(@"请选择地址", 1);
         return;
@@ -265,7 +266,7 @@
     dict[@"consignee"] = self.NameTF.text;
     dict[@"mobile"] = self.PhoneNumberTF.text;
     dict[@"address"] = self.AddressTF.text;
-    [KTooL HttpPostWithUrl:@"Order/edit_address_submit" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+     [KTooL HttpPostWithUrl:@"Order/edit_address_submit" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
         isSucceed(BCStatus);
         if (!BCStatus) {
             ViewToast(responseObject[@"msg"], 2);
@@ -281,7 +282,7 @@
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"address_id"] = self.address_id;
 
-    [KTooL HttpPostWithUrl:@"Order/edit_address" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:@"Order/edit_address" parameters:dict loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             NSDictionary * dict = responseObject[@"data"];
             if (!BCDictIsEmpty(dict)) {
@@ -300,6 +301,9 @@
     self.PhoneNumberTF.text = dict[@"mobile"];
     self.CityTF.text = dict[@"address_area"];
     self.AddressTF.text = dict[@"address"];
+    self.province = [NSString stringWithFormat:@"%@",dict[@"province"]];
+    self.city = [NSString stringWithFormat:@"%@", dict[@"city"]];
+    self.district = [NSString stringWithFormat:@"%@",dict[@"district"]];
 }
 
 - (void)setAddress_id:(NSString *)address_id{

@@ -8,7 +8,7 @@
 
 #import "CoinByStagesViewController.h"
 #import "CoinRepaymentPlanViewController.h"
-
+#import "WOWONoDataView.h"
 @interface CoinByStagesViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -21,6 +21,8 @@
 @property (nonatomic,strong)UITableView * finishTableView;
 @property (nonatomic,copy)NSArray *ProceedDataArray;
 @property (nonatomic,copy)NSArray * finishDataArray;
+@property (nonatomic,strong)WOWONoDataView * NoDataView;
+@property (nonatomic,strong)WOWONoDataView * NoDataView2;
 @end
 
 @implementation CoinByStagesViewController
@@ -37,8 +39,28 @@
     [self.backScrollView addSubview:self.ProceedTableView];
     [self requestFinish];
     [self requestProceed];
+    self.NoDataView = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无分期记录！" detailText:nil buttonTitle:@"去逛逛"];
+     [self.view addSubview:self.NoDataView];
+    [self.NoDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.ProceedTableView);
+    }];
+    
+    [self.NoDataView.button addTarget:self action:@selector(goShopp) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.NoDataView2 = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无分期记录！" detailText:nil buttonTitle:@"去逛逛"];
+    [self.finishTableView addSubview:self.NoDataView2];
+    
+    [self.NoDataView2.button addTarget:self action:@selector(goShopp) forControlEvents:(UIControlEventTouchUpInside)];
+    
+     [self.NoDataView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.finishTableView);
+    }];
 }
 
+- (void)goShopp{
+    self.tabBarController.selectedIndex = 1;
+    [self.navigationController popToRootViewControllerAnimated:YES];
+ }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return tableView == self.ProceedTableView ? self.ProceedDataArray.count : self.finishDataArray.count;
 }
@@ -303,6 +325,7 @@
             if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.ProceedDataArray = responseObject[@"data"];
                 [self.ProceedTableView reloadData];
+                self.NoDataView.hidden = YES;
             }
         }
     
@@ -315,11 +338,11 @@
 
 - (void)requestFinish{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"2"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
         if (BCStatus) {
-            if (!BCArrayIsEmpty(responseObject[@"data"])) {
+        if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.finishDataArray = responseObject[@"data"];
                 [self.finishTableView reloadData];
+                self.NoDataView2.hidden = YES;
             }
         }
         

@@ -75,6 +75,7 @@
         make.centerY.equalTo(UserNameLogoImageView);
     }];
     self.UserNameTF.keyboardType =  UIKeyboardTypeNumberPad;
+    self.UserNameTF.delegate = self;
     UIView * PasswordLineView = [UIView new];
     [self addSubview:PasswordLineView];
     PasswordLineView.backgroundColor = userNameLineView.backgroundColor;
@@ -145,6 +146,25 @@
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
+    if (textField == self.UserNameTF) {
+        if (![self isMobileNumber:self.UserNameTF.text]) {
+            ViewToast(@"请输入正确的手机号", 2);
+        }
+    }
     return YES;
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+      NSString * string2 = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    if (textField == self.UserNameTF) {
+        if (string2.length == 11 && ![self isMobileNumber:string2]) {
+            ViewToast(@"请输入正确的手机号", 2);
+        }
+        if (string2.length > 11) {
+            return NO;
+        }
+    }
+  return YES;
+}
+
 @end
