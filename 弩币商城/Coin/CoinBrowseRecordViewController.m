@@ -63,13 +63,38 @@
                 
            
                 NSArray *dataArr = [responseObject objectForKey:@"data"];
+                if (dataArr.count <= 10) {
+                    
+                    [self.notPayTableView.mj_footer endRefreshingWithNoMoreData];
+                }
                 [notArr addObjectsFromArray:dataArr];
+                
+                if (notArr.count <= 0) {
+                    
+                    WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有借款记录~" detailText:nil buttonTitle:nil];
+                            [self.view addSubview:view];
+                    return ;
+                }
                 [self.notPayTableView reloadData];
             
             } else {//已还完
                 
                 NSArray *dataArr = [responseObject objectForKey:@"data"];
+                
+                
+                if (dataArr.count <= 10) {
+                    
+                    [self.payTableView.mj_footer endRefreshingWithNoMoreData];
+                }
                 [haveArr addObjectsFromArray:dataArr];
+                
+                
+                if (haveArr.count <= 0) {
+                    
+                    WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有还款记录~" detailText:nil buttonTitle:nil];
+                    [self.view addSubview:view];
+                    return ;
+                }
                 [self.payTableView reloadData];
                 
                 
@@ -315,8 +340,8 @@
             
             
             
-//            notF++;
-//            [self getData:@"1"andPage:notF];
+            notF++;
+            [self getData:@"1"andPage:notF];
             
         }];
     }
@@ -328,7 +353,7 @@
     
     
     if (!_payTableView) {
-        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - - BCNaviHeight) style:UITableViewStylePlain];
         _payTableView.delegate = self;
         _payTableView.dataSource = self;
         _payTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -337,6 +362,15 @@
         
         _payTableView.showsVerticalScrollIndicator = NO;
         _payTableView.showsHorizontalScrollIndicator = NO;
+        
+        _payTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
+            
+            haveF++;
+            [self getData:@"2"andPage:haveF];
+            
+        }];
     }
     
     

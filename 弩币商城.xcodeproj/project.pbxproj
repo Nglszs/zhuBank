@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0408EF7D224B1C0A001B33BA /* fosafer_pri.pfx in Resources */ = {isa = PBXBuildFile; fileRef = 0408EF7C224B1738001B33BA /* fosafer_pri.pfx */; };
 		040B04682228F81E0082D7B1 /* CoinSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B04672228F81E0082D7B1 /* CoinSetViewController.m */; };
 		040B046B2228FEAA0082D7B1 /* CoinChangeNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B046A2228FEAA0082D7B1 /* CoinChangeNickNameViewController.m */; };
 		040B046E222900F20082D7B1 /* CoinSetSexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B046D222900F20082D7B1 /* CoinSetSexViewController.m */; };
@@ -159,6 +160,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0408EF7C224B1738001B33BA /* fosafer_pri.pfx */ = {isa = PBXFileReference; lastKnownFileType = file; path = fosafer_pri.pfx; sourceTree = "<group>"; };
 		040B04662228F81E0082D7B1 /* CoinSetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinSetViewController.h; sourceTree = "<group>"; };
 		040B04672228F81E0082D7B1 /* CoinSetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinSetViewController.m; sourceTree = "<group>"; };
 		040B04692228FEAA0082D7B1 /* CoinChangeNickNameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinChangeNickNameViewController.h; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 				041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */,
 				041A2B1322237A3900F6E4F7 /* Info.plist */,
 				041A2B3722237D6200F6E4F7 /* CoinHeader.pch */,
+				0408EF7C224B1738001B33BA /* fosafer_pri.pfx */,
 				041A2B1422237A3900F6E4F7 /* main.m */,
 			);
 			path = "弩币商城";
@@ -874,9 +877,9 @@
 				0C6D3AC7222903E300C6280F /* BankCardCell.h */,
 				0C6D3AC8222903E300C6280F /* BankCardCell.m */,
 				0C6D3ACD2229143C00C6280F /* CoinMyCardView.h */,
+				0C6D3ACE2229143C00C6280F /* CoinMyCardView.m */,
 				0C6D3ADA22295C1E00C6280F /* CoinRegisterView.h */,
 				0C6D3AD922295C1E00C6280F /* CoinRegisterView.m */,
-				0C6D3ACE2229143C00C6280F /* CoinMyCardView.m */,
 				0C6D3AD32229419F00C6280F /* CoinFindPassWordView.h */,
 				0C6D3AD42229419F00C6280F /* CoinFindPassWordView.m */,
 				0417858C222CEFDB00B8A234 /* CoinMyOrderTableViewCell.h */,
@@ -1057,6 +1060,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0408EF7D224B1C0A001B33BA /* fosafer_pri.pfx in Resources */,
 				0C37C1B92228CB3C009001F4 /* BRPickerView.bundle in Resources */,
 				041A2B1222237A3900F6E4F7 /* LaunchScreen.storyboard in Resources */,
 				041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */,

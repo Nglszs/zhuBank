@@ -29,7 +29,13 @@ typedef void(^returnNeedData)(id resultData);
  */
 - (void)setCustomRightBar:(NSString *)rightTitle click:(void(^)(void))clickRight;
 
-
+/**
+ 封装下拉刷新控件至基类
+ 
+ @param completion block返回结果
+ @return nil
+ */
+- (MJRefreshStateHeader *)loadMJRefresh:(void (^)(void))completion;
 @end
 
 NS_ASSUME_NONNULL_END

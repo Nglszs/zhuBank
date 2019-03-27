@@ -307,9 +307,17 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
-        if (self.backBlock && selectedBtn.tag == 101) {//当选择分期的时候才会返回
-            NSDictionary *dic = @{@"fenqi":leftL1.text,@"lixi":@[diviBtn.currentTitle,diviNumBtn.currentTitle]};
-            self.backBlock(dic);
+        if (self.backBlock) {
+            
+            if (selectedBtn.tag == 101) {//选择分期
+                NSDictionary *dic = @{@"fenqi":leftL1.text,@"lixi":@[diviBtn.currentTitle,diviNumBtn.currentTitle],@"isfenqi":@"1"};
+                self.backBlock(dic);
+
+            } else {
+                
+                NSDictionary *dic = @{@"isfenqi":@"0"};
+                 self.backBlock(dic);
+            }
         }
         [self removeCommentCuView];
     }];

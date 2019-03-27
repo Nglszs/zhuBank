@@ -262,6 +262,11 @@
         return;
     }
     
+    if (![Tool isMobileNumber:_phoneField.text]) {
+         VCToast(@"手机号码错误", 1);
+        return;
+    }
+    
     //    网络请求成功后调用下方代码
     
     MJWeakSelf;
@@ -341,6 +346,12 @@
     }
     
     
+    if (textField == _phoneField) {
+        
+        if (textField.text.length >= 11) {
+            return NO;
+        }
+    }
     
     //  只能输入数字
     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];

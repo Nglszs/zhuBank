@@ -124,6 +124,8 @@ static NSString *cellID = @"cell";
     
     [KTooL HttpPostWithUrl:@"Index/homepage" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
+        [self.backScrollView.mj_header endRefreshing];
+        
         NSLog(@"===%@",responseObject);
         if ([[responseObject objectNilForKey:@"status"]integerValue] == 1) {
             
@@ -738,6 +740,13 @@ static NSString *cellID = @"cell";
         _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.showsHorizontalScrollIndicator = NO;
        
+        MJRefreshStateHeader *header = [self loadMJRefresh:^{
+           
+            [self getData];
+        }];
+        
+        
+        _backScrollView.mj_header = header;
        
         
     }

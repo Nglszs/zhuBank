@@ -523,6 +523,7 @@
         _playTableview.delegate = self;
         _playTableview.dataSource = self;
         _playTableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _playTableview.scrollEnabled = NO;
         _playTableview.backgroundColor = ThemeColor;
         _playTableview.backgroundColor = DIVI_COLOR;
         _playTableview.showsVerticalScrollIndicator = NO;
