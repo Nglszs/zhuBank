@@ -12,6 +12,7 @@
 #import "BCNavigationViewController.h"
 #import "CoinPersonViewController.h"
 #import "CoinH5ViewController.h"
+#import "CoinLoginViewController.h"
 @interface CoinRegisterViewController ()
 @property (nonatomic,strong)CoinRegisterView * RootView;
 @property (nonatomic,copy)NSString * register_agreement;
@@ -25,13 +26,11 @@
     self.RootView = [[CoinRegisterView alloc] initWithFrame:BCBound];
     self.view = self.RootView;
     [self requestProtocol];
+    self.title = @"注册";
     
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.navigationBar.hidden = YES;
- 
     [self.RootView.RegisterButton addtargetBlock:^(UIButton *button) {
         [self request];
      
@@ -74,6 +73,22 @@
     
 }
 - (void)request{
+    if (![self isMobileNumber:self.RootView.PhoneNumberTF.text]) {
+        VCToast(@"请输入正确的手机号", 2);
+        return;
+    }
+    if (self.RootView.PassWordTF1.text.length <= 6 || self.RootView.PassWordTF1.text.length > 12) {
+        VCToast(@"请输入6-12位登录密码", 2);
+        return;
+    }
+    if (![self.RootView.PassWordTF1.text isEqualToString:self.RootView.PassWordTF2.text]) {
+        VCToast(@"两次密码不一致", 2);
+        return;
+    }
+    if (self.RootView.CodeTF.text.length == 0) {
+        VCToast(@"请输入验证码", 2);
+        return;
+    }
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"verify_code"] = self.RootView.CodeTF.text;
     dict[@"password"] = self.RootView.PassWordTF1.text;
@@ -89,6 +104,11 @@
             [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",user_id] forKey:USER_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
+            if (![self.navigationController.viewControllers[0] isKindOfClass:[CoinLoginViewController class]]) {
+                [self.navigationController popViewControllerAnimated:YES];
+                return;
+            }
+            
             CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
             NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
             
@@ -98,15 +118,17 @@
             [self.tabBarController setViewControllers:arr];
             
         } else {
-            
             VCToast([responseObject objectForKey:@"msg"], 1);
-            
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-        NSLog(@"");
+         VCToast(@"注册失败", 1);
     }];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 @end

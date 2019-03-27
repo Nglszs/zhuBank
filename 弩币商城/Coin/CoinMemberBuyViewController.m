@@ -190,7 +190,11 @@
     [KTooL HttpPostWithUrl:url parameters:dict loadString:@"正在获取支付信息" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             if (self.tempButton.tag == 0) {
-                [self wechatPay:responseObject[@"data"]];
+                NSDictionary * data = responseObject[@"data"];
+                if ([data objectForKey:@"response"]) {
+                    data = data[@"response"];
+                }
+                [self wechatPay:data];
             }else{
             
                 NSString * alipay = responseObject[@"data"][@"alipay"];
@@ -251,7 +255,6 @@
     vc.order_id = self.orderID;
     vc.dataArray = self.DataArray;
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 - (void)payError{
     [SVProgressHUD showErrorWithStatus:@"支付失败"];

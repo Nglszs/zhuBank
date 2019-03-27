@@ -53,8 +53,9 @@
             UIAlertAction * a2 = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
              
             }];
+             [aler addAction:a2];
             [aler addAction:a1];
-            [aler addAction:a2];
+           
             [self presentViewController:aler animated:YES completion:nil];
            
         }
@@ -72,8 +73,9 @@
             UIAlertAction * a2 = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
                 
             }];
+             [aler addAction:a2];
             [aler addAction:a1];
-            [aler addAction:a2];
+           
             [self presentViewController:aler animated:YES completion:nil];
         }
         

@@ -7,8 +7,9 @@
 //
 
 #import "CoinConfirmCommodityMessageCell.h"
-@interface CoinConfirmCommodityMessageCell()
+@interface CoinConfirmCommodityMessageCell()<UITextViewDelegate>
 @property (nonatomic,strong)UITextView * textView;
+@property (nonatomic,strong)UILabel * countLabel;
 @end
 @implementation CoinConfirmCommodityMessageCell
 
@@ -46,6 +47,7 @@
     self.textView.font = Regular(10);
     self.textView.textColor = COLOR(183, 183, 183);
     [textView addSubview:self.textView];
+    self.textView.delegate = self;
     self.textView.text = @"选填";
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(textView);
@@ -55,17 +57,38 @@
     UILabel * label = [UILabel new];
     label.textColor = COLOR(183, 183, 183);
     label.text = @"50/50";
+    self.countLabel = label;
     label.font = Regular(10);
     [textView addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.bottom.equalTo(textView);
     }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChange) name:UITextViewTextDidChangeNotification object:nil];
     
-    
+}
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:@"选填"]) {
+        textView.text = @"";
+        textView.textColor = COLOR(102, 102, 102);
+    }
+}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]) {
+        return NO;
+    }
+    return YES;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+}
+
+-  (void)didChange{
+    
+    if (self.textView.text.length >=50) {
+        self.textView.text = [ self.textView.text substringToIndex:50];
+    }
+    self.countLabel.text = [NSString stringWithFormat:@"%lu/50",(unsigned long)self.textView.text.length];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

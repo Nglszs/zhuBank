@@ -7,7 +7,8 @@
 //
 
 #import "CoinPassWordSucceedViewController.h"
-
+#import "CoinLoginViewController.h"
+#import "BCNavigationViewController.h"
 @interface CoinPassWordSucceedViewController ()
 
 @end
@@ -50,8 +51,20 @@
     btn.backgroundColor = COLOR(255, 0, 0);
     [self.view addSubview:btn];
     [btn addtargetBlock:^(UIButton *button) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [USER_DEFAULTS removeObjectForKey:USER_ID];
+        [USER_DEFAULTS removeObjectForKey:USER_Token];
+        [USER_DEFAULTS synchronize];
+        
+        CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
+        BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
+        workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [arr replaceObjectAtIndex:3 withObject:workNav];
+        [self.tabBarController setViewControllers:arr];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
     }];
+    
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(label);
         make.top.equalTo(label.mas_bottom).offset(40);
@@ -60,14 +73,6 @@
         make.height.mas_equalTo(40);
     }];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

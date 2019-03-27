@@ -297,10 +297,8 @@
     }
     return _ProceedTableView;
 }
-
 - (void)requestProceed{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        
         if (BCStatus) {
             if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.ProceedDataArray = responseObject[@"data"];
@@ -316,7 +314,7 @@
 
 
 - (void)requestFinish{
-    [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"2"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         if (BCStatus) {
             if (!BCArrayIsEmpty(responseObject[@"data"])) {

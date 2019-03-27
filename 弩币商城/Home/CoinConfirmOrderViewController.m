@@ -22,6 +22,7 @@
 #import "CoinPayNotFristViewController.h"
 #import "CoinChangePhoneViewController.h"
 #import "BCUseCouPonView.h"
+#import "BCDealPasswordView.h"
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSMutableDictionary * DataDict;
@@ -444,37 +445,57 @@
             [SVProgressHUD dismissWithDelay:2];
             return;
         }
+        self.q_fenqi = @"1";
+        if ([self.q_fenqi intValue] == 1) {
+            // 需要输入交易密码
+            CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];
+             BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:BCBound money:[self decimalNumberString:m]];
+            MJWeakSelf;
+            view.success = ^(BOOL isSuccess) {
+                [weakSelf ultimatelySubmitOrder];
+            };
+            [self.view addSubview:view];
+         }else{
+            [self ultimatelySubmitOrder];
+        }
         
-        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-        dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
-        dict[@"goods_id"] = self.DataDict[@"goods_info"][@"goods_id"];
-        dict[@"goods_num"] = self.DataDict[@"goods_info"][@"num"];
-        dict[@"item_id"] = self.DataDict[@"goods_info"][@"item_id"];
-        dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
-        dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
-        dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
-        
-        dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
-        dict[@"action"] = @"buy_now";
-        dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
-       dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
        
-        dict[@"transfer_price"] = self.DataDict[@"order_info"][@"transfer_price"];
-        
-        NSDictionary * temp = self.DataDict[@"coupons_info"];
-        [temp enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            [dict setObject:obj forKey:key];
-        }];
-        
-        [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
-            if (BCStatus) {
-                [self goPay:responseObject];
-            }
-            
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            VCToast(@"提交失败", 2);
-        }];
     }
+}
+
+- (void)ultimatelySubmitOrder{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
+    dict[@"goods_id"] = self.DataDict[@"goods_info"][@"goods_id"];
+    dict[@"goods_num"] = self.DataDict[@"goods_info"][@"num"];
+    dict[@"item_id"] = self.DataDict[@"goods_info"][@"item_id"];
+    dict[@"shou_pay"] = self.DataDict[@"order_info"][@"first_pay"];
+    dict[@"per_money"] = self.DataDict[@"order_info"][@"per_money"];
+    dict[@"qishu"] = self.DataDict[@"order_info"][@"periods"];
+    
+    dict[@"q_fenqi"] = self.DataDict[@"order_info"][@"is_fenqi"];
+    dict[@"action"] = @"buy_now";
+    dict[@"invoice_rise"] = self.DataDict[@"invoice_info"][@"invoice_rise"];
+    dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
+    
+    dict[@"transfer_price"] = self.DataDict[@"order_info"][@"transfer_price"];
+    
+    NSDictionary * temp = self.DataDict[@"coupons_info"];
+    [temp enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [dict setObject:obj forKey:key];
+    }];
+    
+    [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            [self goPay:responseObject];
+        }else{
+            VCToast(BCMsg, 2);
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        VCToast(@"提交失败", 2);
+    }];
+    
 }
 
 - (void)goPay:(NSDictionary *)dict{

@@ -11,6 +11,7 @@
 #import "HttpTool.h"
 #import <AlipaySDK/AlipaySDK.h>
 #import "WXApi.h"
+#import <Bugly/Bugly.h>
 @interface AppDelegate ()<WXApiDelegate>
 
 @end
@@ -30,6 +31,7 @@
     // NOTE: 调用支付结果开始支付
     
     [WXApi registerApp:@"wx3007c71783deadc3"];
+    [Bugly startWithAppId:@"02599bb342"];
     return YES;
 }
 

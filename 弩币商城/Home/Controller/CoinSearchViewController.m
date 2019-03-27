@@ -11,10 +11,12 @@
 #import <TCWebCodesSDK/TCWebCodesBridge.h>
 #import "HttpTool.h"
 
-@interface CoinSearchViewController ()<UITextFieldDelegate>
+@interface CoinSearchViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong)UITextField * SearchTF;
 @property (nonatomic,copy)NSString * keyword;
+@property (nonatomic,strong)UITableView * tableView;
+@property (nonatomic,copy)NSArray * dataArray;
 @end
 
 @implementation CoinSearchViewController
@@ -27,7 +29,10 @@
     [self initView];
     [self SetReturnButton];
     [self Request];
+    
 }
+    
+
 
 // 布局
 - (void)initView{
@@ -63,7 +68,7 @@
     
     self.SearchTF = [UITextField new];
     self.SearchTF.placeholder = @"搜索商品";
-    
+    [self.SearchTF addTarget:self action:@selector(textFieldTextChange) forControlEvents:UIControlEventEditingChanged];
     [self.SearchTF setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
     [self.SearchTF setValue:[UIFont boldSystemFontOfSize:14]
                  forKeyPath:@"_placeholderLabel.font"];
@@ -88,7 +93,38 @@
         
     }];
  
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.hidden = YES;
+    self.tableView.tableFooterView = [UIView new];
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.top.equalTo(SearchView.mas_bottom);
+    }];
+}
+
+- (void)textFieldTextChange{
+    if (self.SearchTF.text.length > 0) {
+        self.tableView.hidden = NO;
+        [self.view bringSubviewToFront:self.tableView];
+        [self request:self.SearchTF.text];
+    }else{
+        self.tableView.hidden = YES;
+    }
    
+}
+- (void)request:(NSString *)keyword{
+    [KTooL HttpPostWithUrl:@"Search/association_list" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.dataArray = responseObject[@"data"][@"list"];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
 }
 
 - (void)SetLabel:(NSArray<NSString *>*)titles{
@@ -133,6 +169,23 @@
     return label;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.dataArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell * cell = [UITableViewCell new];
+    cell.textLabel.text = self.dataArray[indexPath.row];
+    cell.selectionStyle = 0;
+    cell.textLabel.numberOfLines = 0;
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.keyword = self.dataArray[indexPath.row];
+}
 - (void)GoSearch:(UIButton *)button{
     if (self.SearchTF.text.length > 0) {
         self.keyword = self.SearchTF.text;
