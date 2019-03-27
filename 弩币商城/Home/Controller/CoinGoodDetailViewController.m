@@ -704,15 +704,14 @@
 - (void)getData {
     
     [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        
-    
+       
         if (BCStatus) {
             dataDic = [responseObject objectNilForKey:@"data"];
             [self refreshView];
             
         } else {
             
-       
+            VCToast(responseObject[@"error"], 2);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

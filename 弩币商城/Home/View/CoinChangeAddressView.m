@@ -45,7 +45,7 @@
     [self SetTextFiled:self.CityTF leftString:@"所在地区：" topSpace:(45 * 3) placeholder:nil];
     
     
-    [self SetTextFiled:self.AddressTF leftString:@"所在地区：" topSpace:(45 * 4) placeholder:nil];
+    [self SetTextFiled:self.AddressTF leftString:@"详细地址：" topSpace:(45 * 4) placeholder:nil];
     
     
     UIView * lineView = [UIView new];
@@ -210,6 +210,18 @@
         ViewToast(@"请选择地址", 1);
         return;
     }
+    if (self.NameTF.text.length == 0) {
+        ViewToast(@"请填写收货人", 1);
+        return;
+    }
+    if (self.AddressTF.text.length == 0) {
+        ViewToast(@"请填写详细地址", 1);
+        return;
+    }
+    if (self.PhoneNumberTF.text.length == 0) {
+        ViewToast(@"请填写手机号码", 1);
+        return;
+    }
     dict[@"province"] = self.province;// 省
     dict[@"city"] = self.city;//  市
     dict[@"district"] = self.district; //区
@@ -219,6 +231,8 @@
     [KTooL HttpPostWithUrl:@"Order/new_address_submit" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             ViewToast(@"添加成功", 2);
+        }else{
+            ViewToast(BCMsg, 2);
         }
         isSucceed(BCStatus);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -228,6 +242,22 @@
 }
 - (void)EditAddress:(void (^)(BOOL))isSucceed{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    if (BCStringIsEmpty(self.province)) {
+        ViewToast(@"请选择地址", 1);
+        return;
+    }
+    if (self.NameTF.text.length == 0) {
+        ViewToast(@"请填写收货人", 1);
+        return;
+    }
+    if (self.AddressTF.text.length == 0) {
+        ViewToast(@"请填写详细地址", 1);
+        return;
+    }
+    if (self.PhoneNumberTF.text.length == 0) {
+        ViewToast(@"请填写手机号码", 1);
+        return;
+    }
     dict[@"address_id"] = self.address_id;
     dict[@"province"] = self.province;// 省
     dict[@"city"] = self.city;//  市

@@ -173,6 +173,7 @@
 - (void)GetCodeAction:(UIButton *)btn{
     [self endEditing:YES];
     if (![self isPhoneNumber:self.PhoneNumberTF.text]) {
+        ViewToast(@"请输入正确的手机号", 2);
         return;
     }
     
@@ -184,6 +185,8 @@
             [KTooL GetCodeWithMobile:self.PhoneNumberTF.text action:1 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
                 if (isSucces) {
                     [weakSelf changeTimeState];
+                }else{
+                    ViewToast(@"该手机号码已注册", 2);
                 }
             }];
             

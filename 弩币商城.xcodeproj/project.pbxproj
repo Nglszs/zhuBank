@@ -89,6 +89,7 @@
 		0C38B1942227B0A300572C75 /* CoinSelectAddresCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C38B1932227B0A300572C75 /* CoinSelectAddresCell.m */; };
 		0C38B1972227C1AA00572C75 /* CoinChangeAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C38B1962227C1AA00572C75 /* CoinChangeAddressViewController.m */; };
 		0C38B19A2227C23500572C75 /* CoinChangeAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C38B1992227C23500572C75 /* CoinChangeAddressView.m */; };
+		0C3A9A322249F35C008D208E /* BCDealPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3A9A312249F35C008D208E /* BCDealPasswordView.m */; };
 		0C3BF5D82247D11600BF4403 /* CoinMemberDredgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3BF5D72247D11600BF4403 /* CoinMemberDredgeCell.m */; };
 		0C4291F32223D72F00254434 /* CoinLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4291F22223D72F00254434 /* CoinLoginViewController.m */; };
 		0C4291F62223D7D400254434 /* MCMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4291F52223D7D400254434 /* MCMainView.m */; };
@@ -324,6 +325,8 @@
 		0C38B1962227C1AA00572C75 /* CoinChangeAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinChangeAddressViewController.m; sourceTree = "<group>"; };
 		0C38B1982227C23500572C75 /* CoinChangeAddressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinChangeAddressView.h; sourceTree = "<group>"; };
 		0C38B1992227C23500572C75 /* CoinChangeAddressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinChangeAddressView.m; sourceTree = "<group>"; };
+		0C3A9A302249F35C008D208E /* BCDealPasswordView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCDealPasswordView.h; sourceTree = "<group>"; };
+		0C3A9A312249F35C008D208E /* BCDealPasswordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCDealPasswordView.m; sourceTree = "<group>"; };
 		0C3BF5D62247D11600BF4403 /* CoinMemberDredgeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMemberDredgeCell.h; sourceTree = "<group>"; };
 		0C3BF5D72247D11600BF4403 /* CoinMemberDredgeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMemberDredgeCell.m; sourceTree = "<group>"; };
 		0C4291F12223D72F00254434 /* CoinLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinLoginViewController.h; sourceTree = "<group>"; };
@@ -530,6 +533,8 @@
 				0C38B1932227B0A300572C75 /* CoinSelectAddresCell.m */,
 				0C38B1982227C23500572C75 /* CoinChangeAddressView.h */,
 				0C38B1992227C23500572C75 /* CoinChangeAddressView.m */,
+				0C3A9A302249F35C008D208E /* BCDealPasswordView.h */,
+				0C3A9A312249F35C008D208E /* BCDealPasswordView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1185,6 +1190,7 @@
 				041A2BAB2223C67800F6E4F7 /* CarouselView.m in Sources */,
 				041A2B6B2223808700F6E4F7 /* NSString+Common.m in Sources */,
 				0417858B222CEA1500B8A234 /* CoinMyOrderViewController.m in Sources */,
+				0C3A9A322249F35C008D208E /* BCDealPasswordView.m in Sources */,
 				0CCAF76C222691B1006F1791 /* CoinConfirmOrderViewController.m in Sources */,
 				0CCAF7662226916A006F1791 /* CoinSearchResultViewController.m in Sources */,
 				041A2B672223808700F6E4F7 /* UIViewController+Common.m in Sources */,

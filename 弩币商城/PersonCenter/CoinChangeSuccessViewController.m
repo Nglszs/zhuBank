@@ -182,10 +182,7 @@
         workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [arr replaceObjectAtIndex:3 withObject:workNav];
         [self.tabBarController setViewControllers:arr];
-        
-        
-        [self.navigationController popToRootViewControllerAnimated:YES];
-       
+         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
     
 }
