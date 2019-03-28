@@ -505,6 +505,11 @@ static NSString *cellID = @"cell";
             make.left.mas_equalTo(LEFT_Margin + i*((BCWidth - 30 - 10)/2 + 10));
         }];
         
+        [backV addTapGestureWithBlock:^{
+            
+            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
+        }];
+        
         
         UILabel *titleL = [[UILabel alloc] init];
         titleL.text = title[i];
@@ -549,6 +554,7 @@ static NSString *cellID = @"cell";
             make.centerY.equalTo(backV);
             make.width.mas_equalTo(80);
         }];
+      
         
     }
     
@@ -749,6 +755,10 @@ static NSString *cellID = @"cell";
         
         _backScrollView.mj_header = header;
        
+//        [_backScrollView addTapGestureWithBlock:^{
+//
+//            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
+//        }];
         
     }
     
@@ -758,21 +768,18 @@ static NSString *cellID = @"cell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if ([scrollView isEqual: self.backScrollView]) {
-        if (self.backScrollView.contentOffset.y > oldY) {
-            // 上滑
-           _navView.backgroundColor = COLOR(255, 0, 0);
-        }
-        else{
-            // 下滑
-            _navView.backgroundColor = [UIColor clearColor];
-        }
+        
+        NSLog(@"===%f",scrollView.contentOffset.y);
+       CGFloat alphaValue = MIN(1, scrollView.contentOffset.y/(BCNaviHeight * 2));
+        
+       
+            
+            _navView.backgroundColor = ACOLOR(242,48,48, alphaValue);
+        
+
     }
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    // 获取开始拖拽时tableview偏移量
-    oldY = self.backScrollView.contentOffset.y;
-}
 
 
 

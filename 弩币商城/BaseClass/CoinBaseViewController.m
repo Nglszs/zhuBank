@@ -73,11 +73,12 @@
 - (void)setCustomRightBar:(NSString *)rightTitle click:(void (^)(void))clickRight {
     
     UIButton *backBtn= [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setFrame:CGRectMake(0, 0,R(48), R(48))];
+    [backBtn setFrame:CGRectMake(0, 0,70, R(48))];
     backBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     backBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    
     [backBtn setTitle:rightTitle forState:UIControlStateNormal];
-    [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
+    [backBtn setTitleColor:COLOR(254, 135, 38) forState:UIControlStateNormal];
     backBtn.titleLabel.font = Regular(15);
     
     UIBarButtonItem *backBut = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
@@ -91,36 +92,36 @@
 - (MJRefreshStateHeader *)loadMJRefresh:(void (^)(void))completion {
     
     //正常
-        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    
-            if (completion) {
-                completion();
-            }
-    
-        }];
-        header.lastUpdatedTimeLabel.hidden = YES;
+//        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//
+//            if (completion) {
+//                completion();
+//            }
+//
+//        }];
+//        header.lastUpdatedTimeLabel.hidden = YES;
     
     
 //    //动画类刷新
-//    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingBlock:^{
-//        if (completion) {
-//            completion();
-//        }
-//    }];
-//    
-//    header.lastUpdatedTimeLabel.hidden= YES;
-//    header.stateLabel.hidden = YES;
-//    
-//    
-//    
-//    //设置普通状态的动画图片
-//    [header setImages:[self normalImages] forState:MJRefreshStateIdle];
-//    
-//    // 设置即将刷新状态的动画图片（一松开就会刷新的状态）
-//    [header setImages:[self refreshImages] forState:MJRefreshStatePulling];
-//    
-//    // 设置正在刷新状态的动画图片
-//    [header setImages:[self refreshImages] forState:MJRefreshStateRefreshing];
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingBlock:^{
+        if (completion) {
+            completion();
+        }
+    }];
+    
+    header.lastUpdatedTimeLabel.hidden= YES;
+    header.stateLabel.hidden = YES;
+    
+    
+    
+    //设置普通状态的动画图片
+    [header setImages:[self normalImages] forState:MJRefreshStateIdle];
+    
+    // 设置即将刷新状态的动画图片（一松开就会刷新的状态）
+    [header setImages:[self refreshImages] forState:MJRefreshStatePulling];
+    
+    // 设置正在刷新状态的动画图片
+    [header setImages:[self refreshImages] forState:MJRefreshStateRefreshing];
     
     return header;
     
@@ -130,7 +131,7 @@
 {
     
     NSMutableArray  *normalImages = [[NSMutableArray alloc] init];
-    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"wowo_refresh_1"]];
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"0"]];
     
     [normalImages addObject:image];
     
@@ -144,9 +145,9 @@
     NSMutableArray *refreshImages = [[NSMutableArray alloc] init];
     
     //                循环添加图片
-    for (NSUInteger i = 1; i <= 35; i++ ) {
+    for (NSUInteger i = 1; i <= 16; i++ ) {
         
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"wowo_refresh_%ld", i]];
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%ld", i]];
         [refreshImages addObject:image];
         
     }

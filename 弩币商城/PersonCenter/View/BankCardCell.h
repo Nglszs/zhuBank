@@ -11,7 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BankCardCell : UITableViewCell
-
+@property (nonatomic,strong)UIImageView * BankImageView;
+@property (nonatomic,strong)UILabel * BankNameLabel;
+@property (nonatomic,strong)UILabel * BankMoneyLabel;
 @end
 
 NS_ASSUME_NONNULL_END

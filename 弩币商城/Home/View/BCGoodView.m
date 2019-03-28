@@ -183,17 +183,17 @@
     
 //    // 标题
     countL = [[UILabel alloc] initWithFrame:headView.bounds];
-    countL.textAlignment = NSTextAlignmentCenter;
+    countL.textAlignment = NSTextAlignmentRight;
     countL.font = Regular(11);
     countL.textColor = COLOR(102, 102, 102);
     countL.text = [NSString stringWithFormat:@"剩余库存：%@",[newDic objectNilForKey:@"store_count"] ];
-   
+  
     [headView addSubview:countL];
     [countL mas_makeConstraints:^(MASConstraintMaker *make) {
 
-        make.right.mas_equalTo(-43);
+        make.left.mas_equalTo(BCWidth - 70 - 43);
         make.height.mas_equalTo(11);
-        make.bottom.mas_equalTo(moneyL1.mas_bottom);
+        make.width.mas_equalTo(70); make.top.equalTo(moneyL.mas_bottom).offset(12);
        
     }];
     
@@ -453,6 +453,12 @@
     [self addSubview:backBtn1];
    
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        
+        if ([countL.text isEqualToString:@"剩余库存：0"]) {
+            
+            ViewToast(@"当前库存为0，不能下单", 1);
+            return ;
+        }
         if (self.backBlock ) {
 
             self.backBlock(@[_countTextField.text,item_ID]);
@@ -542,6 +548,9 @@
             item_ID = [newDic objectNilForKey:@"item_id"];
             NSDictionary *newDic1 = [dic objectNilForKey:@"fenqi_info"];
             
+           
+                countL.text = [NSString stringWithFormat:@"剩余库存：%@",[newDic objectNilForKey:@"store_count"]];
+             maxValue = [[newDic objectNilForKey:@"store_count"] floatValue];
             
              moneyL.text =  [NSString stringWithFormat:@"¥ %ld",[[newDic objectNilForKey:@"goods_price"] integerValue]];
             

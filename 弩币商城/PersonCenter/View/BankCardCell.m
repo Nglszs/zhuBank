@@ -8,9 +8,7 @@
 
 #import "BankCardCell.h"
 @interface BankCardCell()
-@property (nonatomic,strong)UIImageView * BankImageView;
-@property (nonatomic,strong)UILabel * BankNameLabel;
-@property (nonatomic,strong)UILabel * BankMoneyLabel;
+
 @end
 @implementation BankCardCell
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) UIButton *cancelBtn,*payBtn,*enableBtn,*expressBtn,*serviceBtn;
 
-// type = 0，代付款，1 代发货，2 确认收货，3 已完成
+// type = 0，代付款，1 代发货，2 确认收货，3 已完成 4已取消
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andType:(NSUInteger)type;
 
 - (void)setDataForValue:(NSDictionary *)data;

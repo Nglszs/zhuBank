@@ -264,7 +264,7 @@
     } else if (tableView == self.allTableView){
     
    NSDictionary *dic = [allArr objectAtIndexCheck:indexPath.row];
-        if ([[dic objectForKey:@"check_status"] integerValue] == 1) {//代发货
+        if ([[dic objectForKey:@"check_status"] integerValue] == 1 || [[dic objectForKey:@"check_status"] integerValue] == 3) {//代发货
             return 158;
             
             
@@ -322,7 +322,7 @@
             [cell setDataForValue:dic];
             return cell;
             
-        }else if ([[dic objectForKey:@"check_status"] integerValue] == 4) {
+        }else if ([[dic objectForKey:@"check_status"] integerValue] == 4) {//确认收货
             
             static NSString *ID = @"kpod";
             CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
@@ -345,11 +345,79 @@
                 NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
             }];
-            [cell.enableBtn addMoreParams:dic];
-            [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.enableBtn addtargetBlock:^(UIButton *button) {
+                
+                [self showSystemAlertTitle:@"提示" message:@"是否收到该订单商品?" cancelTitle:@"未收货" confirmTitle:@"已收货" cancel:nil confirm:^{
+                    
+                   
+                    NSString *orderID = [dic objectForKey:@"order_id"];
+                    
+                    [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                        
+                        NSLog(@"===%@",responseObject);
+                        
+                        if (BCStatus) {
+                            CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
+                            VC.imageUrl = [dic objectForKey:@"original_img"];
+                            VC.name = [dic objectForKey:@"goods_name"];
+                            VC.size = [dic objectForKey:@"spec_key_name"];
+                            VC.price =[dic objectForKey:@"goods_price"];
+                            VC.num = [dic objectForKey:@"goods_num"];
+                            [self.navigationController pushViewController:VC animated:YES];
+                            
+                            //            刷新当前列表
+                            NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+                            if (index== 0) {
+                                [allArr removeAllObjects];
+                                [self getData:@""andPage:1];
+                                
+                                [notEnableArr removeAllObjects];
+                                [self getData:@"WAITRECEIVE"andPage:1];
+                                
+                                [finshArr removeAllObjects];
+                                [self getData:@"FINISH"andPage:1];
+                                
+                            } else if (index == 1){
+                                
+                                [notArr removeAllObjects];
+                                [self getData:@"WAITPAY"andPage:1];
+                                
+                                
+                            }else if (index == 2){
+                                
+                                [aleratArr removeAllObjects];
+                                [self getData:@"WAITSEND"andPage:1];
+                                
+                                
+                            }else if (index == 3){
+                                
+                                [notEnableArr removeAllObjects];
+                                [self getData:@"WAITRECEIVE"andPage:1];
+                                
+                                [finshArr removeAllObjects];
+                                [self getData:@"FINISH"andPage:1];
+                            }else {
+                                
+                                [finshArr removeAllObjects];
+                                [self getData:@"FINISH"andPage:1];
+                            }
+                            
+                        } else {
+                            
+                            VCToast(@"确认订单失败", 1);
+                        }
+                        
+                    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                        
+                    }];
+                    
+                }];
+                
+                
+            }];
             [cell setDataForValue:dic];
             return cell;
-        }else  {
+        }else if([[dic objectForKey:@"check_status"] integerValue] == 2) {
             
             static NSString *ID = @"kposs";
             CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
@@ -375,6 +443,20 @@
             [cell setDataForValue:dic];
             return cell;
             
+        } else {//已取消的订单
+            
+            static NSString *ID = @"kposss";
+            CoinMyOrderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
+            if (!cell) {
+                cell = [[CoinMyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID andType:4];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                
+            }
+            
+            [cell setDataForValue:dic];
+            return cell;
         }
         
         
@@ -434,8 +516,75 @@
         }
         
          NSDictionary *dic = [notEnableArr objectAtIndexCheck:indexPath.row];
-        [cell.enableBtn addMoreParams:dic];
-        [cell.enableBtn addTarget:self action:@selector(clickEnable:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.enableBtn addtargetBlock:^(UIButton *button) {
+            [self showSystemAlertTitle:@"提示" message:@"是否收到该订单商品?" cancelTitle:@"未收货" confirmTitle:@"已收货" cancel:nil confirm:^{
+                
+               
+                NSString *orderID = [dic objectForKey:@"order_id"];
+                
+                [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                    
+                    NSLog(@"===%@",responseObject);
+                    
+                    if (BCStatus) {
+                        CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
+                        VC.imageUrl = [dic objectForKey:@"original_img"];
+                        VC.name = [dic objectForKey:@"goods_name"];
+                        VC.size = [dic objectForKey:@"spec_key_name"];
+                        VC.price =[dic objectForKey:@"goods_price"];
+                        VC.num = [dic objectForKey:@"goods_num"];
+                        [self.navigationController pushViewController:VC animated:YES];
+                        
+                        //            刷新当前列表
+                        NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+                        if (index== 0) {
+                            [allArr removeAllObjects];
+                            [self getData:@""andPage:1];
+                            
+                            [notEnableArr removeAllObjects];
+                            [self getData:@"WAITRECEIVE"andPage:1];
+                            
+                            [finshArr removeAllObjects];
+                            [self getData:@"FINISH"andPage:1];
+                            
+                        } else if (index == 1){
+                            
+                            [notArr removeAllObjects];
+                            [self getData:@"WAITPAY"andPage:1];
+                            
+                            
+                        }else if (index == 2){
+                            
+                            [aleratArr removeAllObjects];
+                            [self getData:@"WAITSEND"andPage:1];
+                            
+                            
+                        }else if (index == 3){
+                            
+                            [notEnableArr removeAllObjects];
+                            [self getData:@"WAITRECEIVE"andPage:1];
+                            
+                            [finshArr removeAllObjects];
+                            [self getData:@"FINISH"andPage:1];
+                        }else {
+                            
+                            [finshArr removeAllObjects];
+                            [self getData:@"FINISH"andPage:1];
+                        }
+                        
+                    } else {
+                        
+                        VCToast(@"确认订单失败", 1);
+                    }
+                    
+                } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                    
+                }];
+                
+            }];
+            
+            
+        }];
         [cell.serviceBtn addtargetBlock:^(UIButton *button) {
             
             NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",[dic objectForKey:@"customer_mobile"]];
@@ -564,122 +713,72 @@
 
 
 
-#pragma mark 确认订单
-- (void)clickEnable:(UIButton *)btn {
-  
-   
-    NSDictionary *dic = [btn getMoreParams];
-    NSString *orderID = [dic objectForKey:@"order_id"];
-    
-    [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        if (BCStatus) {
-            CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
-            VC.imageUrl = [dic objectForKey:@"original_img"];
-            VC.name = [dic objectForKey:@"goods_name"];
-            VC.size = [dic objectForKey:@"spec_key_name"];
-            VC.price =[dic objectForKey:@"goods_price"];
-            VC.num = [dic objectForKey:@"goods_num"];
-           [self.navigationController pushViewController:VC animated:YES];
-            
-//            刷新当前列表
-            NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
-            if (index== 0) {
-                [allArr removeAllObjects];
-                [self getData:@""andPage:1];
-                
-                
-            } else if (index == 1){
-                
-                [notArr removeAllObjects];
-                [self getData:@"WAITPAY"andPage:1];
-                
-                
-            }else if (index == 2){
-                
-                [aleratArr removeAllObjects];
-                [self getData:@"WAITSEND"andPage:1];
-               
-                
-            }else if (index == 3){
-                
-                [notEnableArr removeAllObjects];
-                [self getData:@"WAITRECEIVE"andPage:1];
-                
-                
-            }else {
-                
-                [finshArr removeAllObjects];
-                [self getData:@"FINISH"andPage:1];
-            }
-            
-        } else {
-            
-            VCToast(@"确认订单失败", 1);
-        }
-        
-    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        
-    }];
-    
-    
-    
-}
+
 
 #pragma mark 取消订单
 - (void)cancelEnable:(UIButton *)btn {
     
-    NSString *orderID = [btn getMoreParams];
-    
-    [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [self showSystemAlertTitle:@"提示" message:@"您确定要取消订单吗？" cancelTitle:@"再想想" confirmTitle:@"确定" cancel:nil confirm:^{
         
         
+        NSString *orderID = [btn getMoreParams];
         
-        
-        if (BCStatus) {
+        [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"order_id":orderID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
             
-//            刷新当前列表
-            NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
-            if (index== 0) {
-                [allArr removeAllObjects];
-                [self getData:@""andPage:1];
+            
+            
+            
+            if (BCStatus) {
                 
+                //            刷新当前列表
+                NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
+                if (index== 0) {
+                    [allArr removeAllObjects];
+                    [self getData:@""andPage:1];
+                    
+                    [notArr removeAllObjects];
+                    [self getData:@"WAITPAY"andPage:1];
+                    
+                } else if (index == 1){
+                    
+                    [notArr removeAllObjects];
+                    [self getData:@"WAITPAY"andPage:1];
+                    
+                    
+                }else if (index == 2){
+                    
+                    [aleratArr removeAllObjects];
+                    [self getData:@"WAITSEND"andPage:1];
+                    
+                    
+                }else if (index == 3){
+                    
+                    [notEnableArr removeAllObjects];
+                    [self getData:@"WAITRECEIVE"andPage:1];
+                    
+                    
+                }else {
+                    
+                    [finshArr removeAllObjects];
+                    [self getData:@"FINISH"andPage:1];
+                }
                 
-            } else if (index == 1){
+                VCToast(@"取消订单成功", 1);
                 
-                [notArr removeAllObjects];
-                [self getData:@"WAITPAY"andPage:1];
+            } else {
                 
-                
-            }else if (index == 2){
-                
-                [aleratArr removeAllObjects];
-                [self getData:@"WAITSEND"andPage:1];
-                
-                
-            }else if (index == 3){
-                
-                [notEnableArr removeAllObjects];
-                [self getData:@"WAITRECEIVE"andPage:1];
-                
-                
-            }else {
-                
-                [finshArr removeAllObjects];
-                [self getData:@"FINISH"andPage:1];
+                VCToast(@"取消订单失败", 1);
             }
             
-            VCToast(@"取消订单成功", 1);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
             
-        } else {
-            
-            VCToast(@"取消订单失败", 1);
-        }
+        }];
         
-    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
         
     }];
     
-    
+   
     
 }
 
@@ -801,7 +900,7 @@
     
     
     if (!_allTableView) {
-        _allTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _allTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
         _allTableView.delegate = self;
         _allTableView.dataSource = self;
         _allTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -827,7 +926,7 @@
     
     
     if (!_notPayTableView) {
-        _notPayTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _notPayTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40- BCNaviHeight) style:UITableViewStylePlain];
         _notPayTableView.delegate = self;
         _notPayTableView.dataSource = self;
         _notPayTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -856,7 +955,7 @@
     if (!_notDispatchTabview) {
         
         
-        _notDispatchTabview = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _notDispatchTabview = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40- BCNaviHeight) style:UITableViewStylePlain];
         _notDispatchTabview.delegate = self;
         _notDispatchTabview.dataSource = self;
         _notDispatchTabview.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -884,7 +983,7 @@
     if (!_notEnableTableView) {
         
         
-        _notEnableTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 3, 0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _notEnableTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 3, 0, BCWidth, BCHeight - 40- BCNaviHeight) style:UITableViewStylePlain];
         _notEnableTableView.delegate = self;
         _notEnableTableView.dataSource = self;
         _notEnableTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -912,7 +1011,7 @@
     if (!_finshTableView) {
         
         
-        _finshTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 4, 0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _finshTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 4, 0, BCWidth, BCHeight - 40- BCNaviHeight) style:UITableViewStylePlain];
         _finshTableView.delegate = self;
         _finshTableView.dataSource = self;
         _finshTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
