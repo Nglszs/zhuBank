@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinBindingCardViewController : CoinBaseViewController
 
+@property (nonatomic, assign) NSInteger type;//1:消费分期 2：现金贷 连连
 @end
 
 NS_ASSUME_NONNULL_END

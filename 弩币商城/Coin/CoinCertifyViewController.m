@@ -9,10 +9,10 @@
 #import "CoinCertifyViewController.h"
 #import "FOSAuthController.h"
 
+#import "CoinBindingCardViewController.h"
 
 
-
-@interface CoinCertifyViewController ()<UIScrollViewDelegate>
+@interface CoinCertifyViewController ()<UIScrollViewDelegate,UITextFieldDelegate>
 {
     BOOL isSuccess;//是否认证成功
     UIButton *selectedBtn;
@@ -99,17 +99,17 @@
         
         UITextField *_countTextField = [[UITextField alloc] init];
         
-//        _countTextField.keyboardType = UIKeyboardTypeNumberPad;
-//        _countTextField.delegate = self;
+
+        _countTextField.delegate = self;
         _countTextField.textColor = TITLE_COLOR;
         _countTextField.placeholder = titleA1[i];
-        
+    
         _countTextField.font = Regular(14);
         [backV addSubview:_countTextField];
         [_countTextField mas_makeConstraints:^(MASConstraintMaker *make) {
            
             make.centerY.height.equalTo(titleL);
-            make.left.equalTo(titleL.mas_right).offset(TOP_Margin);
+            make.width.mas_equalTo(250); make.left.equalTo(titleL.mas_right).offset(TOP_Margin);
             
         }];
         
@@ -159,6 +159,27 @@
     
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (string.length <= 0) {
+        return YES;
+    }
+    
+    //禁止输入空格
+    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
+    
+    if (![string isEqualToString:tem]) {
+        return NO;
+    }
+    
+    if (textField==numberF) {
+        
+        if (textField.text.length >=18) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
 #pragma mark 验证个人信息
 - (void)getData {
     
@@ -201,7 +222,7 @@
 //
             
         } else {
-              VCToast(@"验证失败", 1);
+              VCToast(@"身份验证失败", 1);
             
         }
         
@@ -402,7 +423,7 @@
             [backBtn setTitleColor:COLOR(167, 167, 167) forState:UIControlStateNormal];
             backBtn.titleLabel.font = Regular12Font;
             backBtn.contentHorizontalAlignment = 2;
-            [backBtn setImage:BCImage(查看更多) forState:UIControlStateNormal];
+//            [backBtn setImage:BCImage(查看更多) forState:UIControlStateNormal];
             [backV addSubview:backBtn];
             
             [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -424,11 +445,12 @@
         _countTextField.placeholder = titleA1[i];
             [_countTextField changePlaceholderFont:Regular(12)];
         _countTextField.font = Regular(15);
+          
         [backV addSubview:_countTextField];
         [_countTextField mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.centerY.height.equalTo(titleL);
-            make.left.equalTo(titleL.mas_right).offset(5);
+            make.width.mas_equalTo(200); make.left.equalTo(titleL.mas_right).offset(5);
             
         }];
             
@@ -446,6 +468,12 @@
                     make.centerY.equalTo(titleL);
                     make.right.mas_equalTo(-LEFT_Margin);
                     make.width.height.mas_equalTo(15);
+                }];
+                [exitButton addtargetBlock:^(UIButton *button) {
+                   
+                    CoinBindingCardViewController *vc = [CoinBindingCardViewController new];
+                    vc.type = _isFenqi?1:2;
+                    [self.navigationController pushViewController:vc animated:YES];
                 }];
                 
             }
@@ -605,6 +633,9 @@
         type = 2;
     }
     
+    if (BCStringIsEmpty(llToken)) {
+        llToken = @"";
+    }
     [KTooL HttpPostWithUrl:@"MaterialVerify/card_verify_sms" parameters:@{@"type":@(type),@"ll_token":llToken,@"verify_code":codeF.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
@@ -627,6 +658,7 @@
 #pragma mark 发送短信验证码
 - (void)clickCodeButton {
     
+   
     
     if (cardNumF.text.length <= 0) {
         VCToast(@"卡号不能为空", 1);
@@ -634,12 +666,23 @@
         return;
     }
     
+    if (![Tool isBankard:cardNumF.text]) {
+        VCToast(@"银行卡号不正确", 1);
+        
+        return;
+        
+    }
     if (phoneF.text.length <= 0) {
         VCToast(@"预留手机号不能为空", 1);
         
         return;
     }
     
+    if (![Tool isMobileNumber:phoneF.text]) {
+        VCToast(@"手机号码格式不正确", 1);
+        
+        return;
+    }
     
     NSInteger type;
     if (_isFenqi) {
@@ -704,7 +747,7 @@
             
             [weakSelf.codeButton setTitle:@"重新发送" forState:UIControlStateNormal];
             
-            
+             weakSelf.codeButton.userInteractionEnabled = YES;
             //            防止倒计时结束前修改了号码
             //            [self textValueChanged:nil];
             

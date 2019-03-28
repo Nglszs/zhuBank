@@ -60,7 +60,7 @@
             
             
             if ([type isEqualToString:@"1"]) {//还款中
-                
+                 [self.notPayTableView.mj_footer endRefreshing];
            
                 NSArray *dataArr = [responseObject objectForKey:@"data"];
                 if (dataArr.count <= 10) {
@@ -72,13 +72,13 @@
                 if (notArr.count <= 0) {
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有借款记录~" detailText:nil buttonTitle:nil];
-                            [self.view addSubview:view];
+                            [self.notPayTableView addSubview:view];
                     return ;
                 }
                 [self.notPayTableView reloadData];
             
             } else {//已还完
-                
+                [self.payTableView.mj_footer endRefreshing];
                 NSArray *dataArr = [responseObject objectForKey:@"data"];
                 
                 
@@ -92,7 +92,7 @@
                 if (haveArr.count <= 0) {
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有还款记录~" detailText:nil buttonTitle:nil];
-                    [self.view addSubview:view];
+                    [self.payTableView addSubview:view];
                     return ;
                 }
                 [self.payTableView reloadData];

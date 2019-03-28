@@ -40,7 +40,7 @@
         make.top.mas_equalTo(10);
         make.width.mas_equalTo(BCWidth);
         make.left.mas_equalTo(0);
-        if (orderType == 1) {//如果是代发货，则没有任何按钮
+        if (orderType == 1 || orderType == 4) {//如果是代发货，则没有任何按钮
            make.height.mas_equalTo(148);
         } else {
             
@@ -253,7 +253,7 @@
             
         }
         
-    } else {
+    } else if (orderType == 3){
         
         rightL.text = @"已完成";
         
@@ -290,6 +290,9 @@
             
         }
         
+    } else {
+        
+         rightL.text = @"已取消";
     }
     
     
@@ -325,7 +328,10 @@
     [string2 setAttributes:firstAttributes1 range:NSMakeRange(5 + [[data objectForKey:@"first_pay"] length] + [[data objectForKey:@"per_return_money"] length] + 5,3)];
     
     self.ByStagesLabel.attributedText = string2;
-    
+   
+    if ([[data objectForKey:@"is_fenqi"] integerValue] == 0) {//未分期隐藏
+        self.ByStagesLabel.hidden = YES;
+    }
     
 //
     UILabel *timeL = [self.contentView viewWithTag:300];

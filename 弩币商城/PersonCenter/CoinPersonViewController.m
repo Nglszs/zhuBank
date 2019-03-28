@@ -20,6 +20,8 @@
 #import "CoinSelectAddressViewController.h"
 #import "CoinBrowseRecordViewController.h"
 #import "CoinMemberViewController.h"
+#import "CoinMemberBuyViewController.h"
+#import "CoinCertifyViewController.h"
 
 @interface CoinPersonViewController ()
 {
@@ -193,12 +195,45 @@
 
 
 - (void)ExamineLimit{
-    if (![Tool isLogin]){
-        VCToast(@"请先登录", 2);
-        return;
+    switch ([[ dataDic objectForKey:@"credit_url"] integerValue]) {
+        case 3:
+        {
+            CoinMemberBuyViewController *vc = [CoinMemberBuyViewController new];
+            vc.type =BRPayBuyMember;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 4:
+        {
+            CoinCertifyViewController *vc = [CoinCertifyViewController new];
+            vc.indexType = 1;
+            vc.isFenqi = NO;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 5:
+        {
+            CoinCertifyViewController *vc = [CoinCertifyViewController new];
+            vc.indexType = 2;
+            vc.isFenqi = NO;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 6:
+        {
+            CoinCertifyViewController *vc = [CoinCertifyViewController new];
+            vc.indexType = 3;
+            vc.isFenqi = NO;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        default:{
+            CoinLimitViewController * VC = [CoinLimitViewController new];
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+            break;
     }
-    CoinLimitViewController * VC = [CoinLimitViewController new];
-    [self.navigationController pushViewController:VC animated:YES];
+   
 }
 - (void)initDiviView{
     UIView *topV = [[UIView alloc] init];

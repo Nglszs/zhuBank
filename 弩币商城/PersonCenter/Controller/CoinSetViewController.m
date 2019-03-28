@@ -304,11 +304,23 @@
                 break;
             case 2:
             {
+                
+                if ([[dataDic objectNilForKey:@"identity"] integerValue] == 1) {
+                    
+                    VCToast(@"已身份验证,不能修改性别", 1);
+                    return;
+                }
                 [self.navigationController pushViewController:[CoinSetSexViewController new] animated:YES];
             }
                 break;
             case 3:
             {
+                
+                if ([[dataDic objectNilForKey:@"identity"] integerValue] == 1) {
+                    
+                    VCToast(@"已身份验证,不能修改生日", 1);
+                    return;
+                }
                 BCDatePickView *rev = [[BCDatePickView alloc] initWithFrame: CGRectMake(0, BCHeight, BCWidth, BCHeight) ];
                 [SHARE_APPLICATION.keyWindow addSubview:rev];
                 [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
@@ -373,11 +385,11 @@
                vc.phoneNum = [dataDic objectNilForKey:@"mobile"];
                 if ([[dataDic objectNilForKey:@"paypwd"] integerValue] == 0) {//未修改
                     
-                    vc.isSetPay = NO;
+                    vc.isSetPay = YES;
                     
                 } else {
                     
-                    vc.isSetPay = YES;
+                    vc.isSetPay = NO;
                 }
                 [self.navigationController pushViewController:vc animated:YES];
                 

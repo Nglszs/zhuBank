@@ -554,14 +554,16 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    
-    
-//     点击按钮
+    if (self.backScrollView == scrollView) {
+        //     点击按钮
         NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
-    
-    
+        
+        
         UIButton *btn = [self.headView viewWithTag:200 + index];
+        
+        [self clickTopButton:btn];
+    }
     
-    [self clickTopButton:btn];
+
 }
 @end

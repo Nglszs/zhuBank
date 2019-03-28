@@ -20,6 +20,7 @@
 		040B048422294EE20082D7B1 /* CoinCouponCanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B048322294EE20082D7B1 /* CoinCouponCanViewController.m */; };
 		040B048722294F760082D7B1 /* CoinCouponCanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 040B048622294F760082D7B1 /* CoinCouponCanTableViewCell.m */; };
 		040F1CF8222523F1009DD7FC /* BCCouponView.m in Sources */ = {isa = PBXBuildFile; fileRef = 040F1CF7222523F1009DD7FC /* BCCouponView.m */; };
+		041489BB224CCABD00E6F28B /* BCReturnMoneyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 041489BA224CCABD00E6F28B /* BCReturnMoneyView.m */; };
 		0417858B222CEA1500B8A234 /* CoinMyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858A222CEA1500B8A234 /* CoinMyOrderViewController.m */; };
 		0417858E222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */; };
 		0417858F222CF2E900B8A234 /* CoinMyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417858D222CEFDB00B8A234 /* CoinMyOrderTableViewCell.m */; };
@@ -185,6 +186,8 @@
 		040B048622294F760082D7B1 /* CoinCouponCanTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinCouponCanTableViewCell.m; sourceTree = "<group>"; };
 		040F1CF6222523F1009DD7FC /* BCCouponView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCCouponView.h; sourceTree = "<group>"; };
 		040F1CF7222523F1009DD7FC /* BCCouponView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCCouponView.m; sourceTree = "<group>"; };
+		041489B9224CCABD00E6F28B /* BCReturnMoneyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCReturnMoneyView.h; sourceTree = "<group>"; };
+		041489BA224CCABD00E6F28B /* BCReturnMoneyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCReturnMoneyView.m; sourceTree = "<group>"; };
 		04178589222CEA1500B8A234 /* CoinMyOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMyOrderViewController.h; sourceTree = "<group>"; };
 		0417858A222CEA1500B8A234 /* CoinMyOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinMyOrderViewController.m; sourceTree = "<group>"; };
 		0417858C222CEFDB00B8A234 /* CoinMyOrderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinMyOrderTableViewCell.h; sourceTree = "<group>"; };
@@ -919,6 +922,8 @@
 			children = (
 				0CF0FEE8222D0249001728F3 /* BorrowMoneyReasonView.h */,
 				0CF0FEE9222D0249001728F3 /* BorrowMoneyReasonView.m */,
+				041489B9224CCABD00E6F28B /* BCReturnMoneyView.h */,
+				041489BA224CCABD00E6F28B /* BCReturnMoneyView.m */,
 				0CC42A7B222D535C008B1181 /* RecommendCommodityCell.h */,
 				0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */,
 				044F025A222E440A000BAA9F /* CoinBrowseRecordTableViewCell.h */,
@@ -1252,6 +1257,7 @@
 				041A2B702223808700F6E4F7 /* NSArray+Common.m in Sources */,
 				040F1CF8222523F1009DD7FC /* BCCouponView.m in Sources */,
 				0C4291F62223D7D400254434 /* MCMainView.m in Sources */,
+				041489BB224CCABD00E6F28B /* BCReturnMoneyView.m in Sources */,
 				0C37C1B42228CB3C009001F4 /* BRStringPickerView.m in Sources */,
 				0C6D3ADB22295C1E00C6280F /* CoinRegisterView.m in Sources */,
 				0C7A0F2422486F9B00C25AC3 /* CoinMemberCouponingCell.m in Sources */,

@@ -19,4 +19,8 @@
  *  @return bool
  */
 - (BOOL)isMobileNumber:(NSString *)mobileNum;
+
+
+-(BOOL)isBankard:(NSString *)cardNumber;
+
 @end

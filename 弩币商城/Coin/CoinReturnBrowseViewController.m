@@ -7,7 +7,11 @@
 //
 
 #import "CoinReturnBrowseViewController.h"
+#import <sys/sysctl.h>
+#import "BCReturnMoneyView.h"
+#import <net/if.h>
 
+#import <net/if_dl.h>
 @interface CoinReturnBrowseViewController ()
 {
     NSDictionary *dataDic;
@@ -24,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"还款唐库银票";
+    self.navigationItem.title = @"还款帑库银票";
     [self initView];
     [self getData];
 }
@@ -38,7 +42,7 @@
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
-            self.CommodityNameLabel.text = [dataDic objectNilForKey:@"bank_name"];
+            self.CommodityNameLabel.text = [NSString stringWithFormat:@"%@(尾号%@)",[dataDic objectNilForKey:@"bank_name"],[dataDic objectNilForKey:@"bank_card"]];
             
             sizeL.text = [NSString stringWithFormat:@"该卡本次最多可还款%@元",[dataDic objectForKey:@"max_money"]];
             
@@ -183,7 +187,131 @@
         make.width.mas_equalTo(BCWidth - 30);
     }];
     
+    [backBtn1 addtargetBlock:^(UIButton *button) {
+       
+        [self returnReplayMoney];
+        
+    }];
    
 }
+
+
+- (void)returnReplayMoney {
+    
+   
+    
+    [KTooL HttpPostWithUrl:@"CashLoan/CashLoan/repay" parameters:@{@"loan_id":_ID,@"frms_mechine_id":[self getUUID],@"frms_mac_addr":[self macaddress]} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        
+        NSLog(@"===%@",responseObject);
+        
+        
+        if (BCStatus) {
+            
+            BCReturnMoneyView * view = [[BCReturnMoneyView alloc] initWithFrame:BCBound money:[dataDic objectForKey:@"repay_total"]];
+          
+            [self.view addSubview:view];
+            
+            NSDictionary *dic = [responseObject objectNilForKey:@"data"];
+            
+            [view.submitB addtargetBlock:^(UIButton *button) {
+                
+                if (view.passwordTF.text.length <= 0) {
+                    
+                    VCToast(@"验证码不能为空", 1);
+                    return ;
+                }
+                
+                [KTooL HttpPostWithUrl:@"CashLoan/bankcarconfirm" parameters:@{@"loan_id":_ID,@"ll_token":[dic objectNilForKey:@"ll_token"],@"no_order":[dic objectNilForKey:@"no_order"],@"verify_code":view.passwordTF.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                    
+                    NSLog(@"===%@",responseObject);
+                    
+                    
+                    if (BCStatus) {
+                        
+                        VCToast(@"还款成功", 1);
+                        [self.navigationController popViewControllerAnimated:YES];
+                        
+                    } else {
+                        
+                        
+                    }
+                    
+                } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                    
+                    NSLog(@"");
+                }];
+                
+            }];
+            
+        } else {
+            
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+        NSLog(@"");
+    }];
+    
+    
+}
+
+
+- (NSString *)getUUID{
+    
+    CFUUIDRef puuid = CFUUIDCreate(nil);
+    CFStringRef uuidString = CFUUIDCreateString(nil, puuid);
+    NSString *result = (NSString *)CFBridgingRelease(CFStringCreateCopy(NULL, uuidString));
+    NSMutableString *tmpResult = result.mutableCopy;
+    
+    NSRange range = [tmpResult rangeOfString:@"-"];
+    while (range.location != NSNotFound) {
+        [tmpResult deleteCharactersInRange:range];
+        range = [tmpResult rangeOfString:@"-"];
+    }
+    return tmpResult;
+    
+}
+#pragma mark -- 获取mac地址
+- (NSString *) macaddress{
+    int mib[6];
+    size_t len;
+    char *buf;
+    unsigned char *ptr;
+    struct if_msghdr *ifm;
+    struct sockaddr_dl*sdl;
+    mib[0] = CTL_NET;
+    mib[1] = AF_ROUTE;
+    mib[2] = 0;
+    mib[3] = AF_LINK;
+    mib[4] = NET_RT_IFLIST;
+    if ((mib[5] = if_nametoindex("en0")) == 0) {
+       
+        printf("Error: if_nametoindex error/n");
+        return NULL;
+        
+    }
+    if (sysctl(mib, 6, NULL, &len, NULL, 0) < 0) {
+        printf("Error: sysctl, take 1/n");
+        return NULL;}
+    if ((buf = malloc(len)) == NULL) {
+        printf("Could not allocate memory. error!/n");return NULL;}
+    if (sysctl(mib, 6, buf, &len, NULL, 0) < 0) {printf("Error: sysctl, take 2");
+        
+        return NULL;
+        
+    }
+    ifm = (struct if_msghdr *)buf;
+    sdl = (struct sockaddr_dl *)(ifm + 1);
+    ptr = (unsigned char *)LLADDR(sdl);
+    NSString *outstring = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)];//    NSString *outstring = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x", *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)];NSLog(@"outString:%@", outstring);free(buf);return [outstring uppercaseString];
+    
+    NSLog(@"outString:%@", outstring);
+    
+    free(buf);
+    
+    return [outstring uppercaseString];
+}
+
 
 @end
