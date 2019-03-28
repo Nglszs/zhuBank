@@ -15,6 +15,8 @@ typedef void(^BRPaySuccess)(BOOL isSuccess);
 
 - (instancetype)initWithFrame:(CGRect)frame money:(NSString *)money;
 @property (nonatomic,copy)BRPaySuccess success;
+
+@property (nonatomic,weak)UIViewController * vc;
 @end
 
 NS_ASSUME_NONNULL_END

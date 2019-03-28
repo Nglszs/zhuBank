@@ -15,6 +15,7 @@
 #import "CoinSearchViewController.h"
 #import "CoinClassLeftModel.h"
 #import "CoinSearchResultViewController.h"
+#import "CoinSearchViewController.h"
 @interface CoinClassfyViewController ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UISearchBarDelegate>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)UICollectionView * CollectionView;
@@ -214,8 +215,8 @@
         return;
     }
     CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
-    CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
-    vc.keyword = model2.name;
+    CoinSearchViewController * vc = [CoinSearchViewController new];
+   vc.keyword = model2.name;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

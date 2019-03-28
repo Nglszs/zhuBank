@@ -18,11 +18,9 @@ typedef NS_ENUM(NSUInteger, BRPayType) {
 @interface CoinMemberBuyViewController : CoinBaseViewController
 
 @property (nonatomic,assign)BRPayType type;
-
 @property (nonatomic,copy)NSString * Money;
 @property (nonatomic,copy)NSString * titleString;
 @property (nonatomic,copy)NSString * IdStr;// 分期还款的ID
-
 @property (nonatomic,copy)NSString * orderNum;// 订单号
 @property (nonatomic,copy)NSString * orderID;// 订单ID
 @property (nonatomic,strong)NSArray * DataArray;// 推荐数组

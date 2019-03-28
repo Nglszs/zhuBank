@@ -86,6 +86,9 @@
     if (![dataDict objectForKey:@"fenqi_info"]) {
         fenqi_info = [NSString stringWithFormat:@"%@*%@期",dataDict[@"per_money"],dataDict[@"period_num"]];
     }
+    if (BCStringIsEmpty(fenqi_info)) {
+        return;
+    }
     NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",fenqi_info] attributes:@{NSFontAttributeName: Regular(12),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
     NSString * s1 = fenqi_info;
     NSArray * arr = [s1 componentsSeparatedByString:@"*"];

@@ -94,7 +94,7 @@
     
     [KTooL HttpPostWithUrl:@"Order/my_order" parameters:@{@"user_id":[USER_DEFAULTS objectForKey:USER_ID],@"type":type,@"page":@(page)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
-        NSLog(@"===%@",responseObject);
+        NSLog(@"%@===%@",type,responseObject);
         
         
         if (BCStatus) {
@@ -511,7 +511,7 @@
         case 0:
             vc.type = BROrderNotPay;
             break;
-            
+        case 3:
         case 1:
             vc.type = BROrderNotDispatch;
             break;
@@ -519,8 +519,8 @@
         case 2:
             vc.type = BROrderFinsh;
             break;
-            
-        case 3:
+        
+        case 4:
              vc.type = BROrderNotEnable;
             break;
     }

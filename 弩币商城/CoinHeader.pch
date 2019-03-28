@@ -69,7 +69,7 @@
 #define TencentCaptchAppID @"2017255836"
 
 // 判断字符串是否为空
-#define BCStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length]< 1 ? YES : NO || [str isEqualToString:@"null"])
+#define BCStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length]< 1 ? YES : NO || [str isEqualToString:@"null"] || [str isEqualToString:@"<null>"])
 // 判断数组是否为空
 #define BCArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || [array count] == 0)
 // 判断字典是否为空

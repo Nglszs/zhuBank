@@ -8,7 +8,7 @@
 
 #import "CoinConfirmCommodityMessageCell.h"
 @interface CoinConfirmCommodityMessageCell()<UITextViewDelegate>
-@property (nonatomic,strong)UITextView * textView;
+
 @property (nonatomic,strong)UILabel * countLabel;
 @end
 @implementation CoinConfirmCommodityMessageCell

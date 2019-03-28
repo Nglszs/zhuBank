@@ -221,8 +221,7 @@ UIView * tempView =     [self HeaderView];
     return 0.01;
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return CGSizeMake((BCWidth - 1) / 2, 190);
+    return CGSizeMake((BCWidth - 1) / 2, 210);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

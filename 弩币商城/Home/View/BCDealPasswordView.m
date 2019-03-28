@@ -7,7 +7,7 @@
 //
 
 #import "BCDealPasswordView.h"
-
+#import "CoinChangePhoneViewController.h"
 @interface BCDealPasswordView()
 
 @property (nonatomic,strong)UITextField * passwordTF;
@@ -100,6 +100,11 @@
     UIButton * forget =  [UIButton buttonWithType:(UIButtonTypeCustom)];
     [forget setTitle:@"忘记密码？" forState:(UIControlStateNormal)];
     [forget setTitleColor:COLOR(242, 159, 88) forState:(UIControlStateNormal)];
+    [forget addtargetBlock:^(UIButton *button) {
+        CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
+        vc.isSetPay = YES;
+        [vc.navigationController pushViewController:vc animated:YES];
+    }];
     [TFView addSubview:forget];
     forget.titleLabel.font = Regular(13);
     [forget mas_makeConstraints:^(MASConstraintMaker *make) {

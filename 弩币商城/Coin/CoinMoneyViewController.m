@@ -12,6 +12,7 @@
 #import "CoinCooperationCompanyViewController.h"
 #import "CoinCertifyViewController.h"
 #import "CoinMemberBuyViewController.h"
+#import "CoinLoginViewController.h"
 @interface CoinMoneyViewController ()
 
 @property (nonatomic,strong)UILabel * tips1;
@@ -191,7 +192,9 @@
         
         if (type == 1) {
             // 去登录
-            VCToast(@"请先登录", 2);
+            CoinLoginViewController * vc = [CoinLoginViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+       
         } else if (type == 2) {
             // 不可点击
               VCToast(@"暂时无法使用", 2);

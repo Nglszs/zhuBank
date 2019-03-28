@@ -226,9 +226,9 @@
             
             if (status2 == 1) {
                 self.view2.hidden = NO;
-                [self.loansBankImage sd_setImageWithURL:[NSURL URLWithString:fu_bankcard[@"pic"]]];
-                self.loansBankNameLabel.text = fu_bankcard[@"bank_name"];
-                self.loansBankNumberLabel.text = fu_bankcard[@"bank_card"];
+                [self.loansBankImage sd_setImageWithURL:[NSURL URLWithString:ll_bankcard[@"pic"]]];
+                self.loansBankNameLabel.text = ll_bankcard[@"bank_name"];
+                self.loansBankNumberLabel.text = ll_bankcard[@"bank_card"];
                 
             }
         }
