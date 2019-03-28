@@ -81,9 +81,13 @@
    
     self.MoneyLabel.attributedText = string;
     
+    NSString * fenqi_info = dataDict[@"fenqi_info"];
     
-    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",dataDict[@"fenqi_info"]] attributes:@{NSFontAttributeName: Regular(12),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
-    NSString * s1 = dataDict[@"fenqi_info"];
+    if (![dataDict objectForKey:@"fenqi_info"]) {
+        fenqi_info = [NSString stringWithFormat:@"%@*%@期",dataDict[@"per_money"],dataDict[@"period_num"]];
+    }
+    NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",fenqi_info] attributes:@{NSFontAttributeName: Regular(12),NSForegroundColorAttributeName: [UIColor colorWithRed:251/255.0 green:82/255.0 blue:24/255.0 alpha:1.0]}];
+    NSString * s1 = fenqi_info;
     NSArray * arr = [s1 componentsSeparatedByString:@"*"];
     [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]} range:NSMakeRange(string2.length - [arr[1] length] - 1, [arr[1] length] + 1)];
     

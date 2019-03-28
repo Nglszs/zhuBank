@@ -232,7 +232,7 @@
     if (indexPath.section == 2 && indexPath.row == 1) {
         CoinConfirmCommoditListCell * cell = [tableView dequeueReusableCellWithIdentifier:@"invoice"];
         if (cell == nil) {
-            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"invoice" leftTitle:@"发票信息" leftTitleColor:COLOR(102, 102, 102) tagString:@"" rightStr:@"" rightStrColor:COLOR(153, 153, 153) isShowSelectImage:YES];
+            cell = [[CoinConfirmCommoditListCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"invoice" leftTitle:@"发票信息" leftTitleColor:COLOR(102, 102, 102) tagString:@"" rightStr:@"不开发票" rightStrColor:COLOR(153, 153, 153) isShowSelectImage:YES];
             cell.selectionStyle = 0;
          }
         if (self.DataDict) {
@@ -445,7 +445,6 @@
             [SVProgressHUD dismissWithDelay:2];
             return;
         }
-        self.q_fenqi = @"1";
         if ([self.q_fenqi intValue] == 1) {
             // 需要输入交易密码
             CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];

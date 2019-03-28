@@ -15,6 +15,7 @@
 
 @property (nonatomic,strong)UILabel * moneLabel;
 @property (nonatomic,strong)UILabel * stringLabel;
+@property (nonatomic,strong)UICollectionView * collectionView;
 @end
 
 @implementation CoinMemberSucceedViewController
@@ -23,6 +24,7 @@
     [super viewDidLoad];
     if (self.type == BRPaySuccessBuyMember) {
          self.title = @"购买会员卡成功";
+        [self request];
     }else if (self.type == BRPayPaymentSuccess){
         self.title = @"支付首付";
     }else if (self.type == BRPayAllMoneySuccess){
@@ -30,8 +32,6 @@
     }else if (self.type == BRPayRepaySuccess){
         self.title = @"还款状态";
     }
-   
-   
     [self SetNavTitleColor];
     [self initView];
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
@@ -42,6 +42,7 @@ UIView * tempView =     [self HeaderView];
     
     UICollectionViewFlowLayout * flow = [UICollectionViewFlowLayout new];
     UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:flow];
+    self.collectionView = collectionView;
     [self.view addSubview:collectionView];
     [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.equalTo(self.view);
@@ -178,7 +179,26 @@ UIView * tempView =     [self HeaderView];
         make.height.mas_equalTo(8);
         make.top.equalTo(lineView2.mas_bottom);
     }];
-    return LineView3;
+    
+    UIView * view2 = [UIView new];
+    view2.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:view2];
+    [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(LineView3.mas_bottom);
+        make.height.mas_equalTo(50);
+    }];
+    
+    UILabel * title = [[UILabel alloc] init];
+    title.text = @"热门推荐";
+    title.textColor = COLOR(51, 51, 51);
+    title.font = Regular(15);;
+    [view2 addSubview:title];
+    [title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(view2);
+        make.left.equalTo(view2).offset(LEFT_Margin);
+    }];
+    return view2;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -256,6 +276,16 @@ UIView * tempView =     [self HeaderView];
     }
 }
 
-
+- (void)request{
+    [KTooL HttpPostWithUrl:@"CashLoan/buy_vip_success" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.dataArray = responseObject[@"data"];
+            [self.collectionView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
 @end
 

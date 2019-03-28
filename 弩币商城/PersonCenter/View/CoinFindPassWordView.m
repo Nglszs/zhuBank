@@ -8,8 +8,7 @@
 
 #import "CoinFindPassWordView.h"
 
-@interface CoinFindPassWordView()
-
+@interface CoinFindPassWordView()<UITextFieldDelegate>
 @property (nonatomic,strong)UIButton * codeButton;
 @property (nonatomic,strong)NSTimer * countDownTimer;
 
@@ -118,6 +117,8 @@
     _countTextField.placeholder = @"请输入您的手机号码";
     
     _countTextField.font = Regular(15);
+    
+    [_countTextField addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
     self.PhoneTF = _countTextField;
     
     UIImageView *leftI = [[UIImageView alloc]initWithFrame:CGRectMake(12, 0, 18, 22)];
@@ -247,13 +248,13 @@
 - (void)clickCodeButton {
     [self endEditing:YES];
     
-    //    if (![self isMobileNumber:_phoneField.text]) {
-    //
-    //
-    //        VCToast(@"手机号码错误", 1);
-    //
-    //        return;
-    //    }
+        if (![self isMobileNumber:self.PhoneTF.text]) {
+    
+    
+            ViewToast(@"手机号码错误", 1);
+    
+            return;
+        }
     
     //    网络请求成功后调用下方代码
     
@@ -263,6 +264,8 @@
             [KTooL GetCodeWithMobile:self.PhoneTF.text action:2 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
                 if (isSucces) {
                       [weakSelf changeTimeState];
+                }else{
+                    ViewToast(@"该号码未注册", 2);
                 }
             }];
         }
@@ -387,5 +390,14 @@
     
 }
 
-
+-(void)textFieldTextChange:(UITextField *)textField{
+    if (textField.text.length > 11) {
+        textField.text = [textField.text substringToIndex:11];
+    }
+    if (textField.text.length == 11) {
+        if (![self isMobileNumber:textField.text]) {
+            ViewToast(@"请输入正确的手机号", 2);
+        }
+    }
+}
 @end

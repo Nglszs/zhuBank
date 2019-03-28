@@ -14,7 +14,7 @@ typedef void(^BRPaySuccess)(BOOL isSuccess);
 @interface BCDealPasswordView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame money:(NSString *)money;
-@property (nonatomic,assign)BRPaySuccess success;
+@property (nonatomic,copy)BRPaySuccess success;
 @end
 
 NS_ASSUME_NONNULL_END

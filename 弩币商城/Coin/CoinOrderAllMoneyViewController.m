@@ -212,8 +212,6 @@
         
     }];
     
-    
-    
 }
 - (void)alipayPay:(NSString *)orderString{
     

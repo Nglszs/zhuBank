@@ -21,8 +21,6 @@
     self.title = @"选择地址";
     [self initView];
     [self SetReturnButton];
-   
-    
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -83,18 +81,15 @@
 
 - (void)request{
     [KTooL HttpPostWithUrl:@"Order/select_address" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        
         if (BCStatus) {
             self.dataArray = responseObject[@"data"];
         }
         [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
     }];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSDictionary * dict = self.dataArray[indexPath.row];
+     NSDictionary * dict = self.dataArray[indexPath.row];
     if (self.address) {
         self.address(dict[@"address_id"], dict[@"consignee"], dict[@"mobile"], dict[@"address_area"],dict[@"address"]);
         [self.navigationController popViewControllerAnimated:YES];
@@ -105,6 +100,5 @@
     CoinChangeAddressViewController * vc = [[CoinChangeAddressViewController alloc] init];
     vc.address_id = self.dataArray[btn.tag - 1000][@"address_id"];
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 @end

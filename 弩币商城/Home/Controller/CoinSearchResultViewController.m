@@ -30,6 +30,7 @@
 
 @property (nonatomic,strong)UIImageView * PriceTopImage;
 @property (nonatomic,strong)UIImageView * PriceBtnImage;
+@property (nonatomic,strong)UIView * NoDataView;
 @end
 
 @implementation CoinSearchResultViewController
@@ -48,6 +49,7 @@
     [self initButton];
     [self initTableView];
     [self initSearchBar];
+    [self initNoDataView];
     self.SalesTop = 1;
     self.PriceTop = 0;
 }
@@ -231,19 +233,23 @@
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-     [self RequestKeyword:searchBar.text];
+    [self.DataArray removeAllObjects];
+    self.page = 1;
+    self.keyword = searchBar.text;
+    [self RequestKeyword:self.keyword];
     [searchBar resignFirstResponder];
 }
 
 - (void)RequestKeyword:(NSString *)keyword{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-    dict[@"keyword"] = self.keyword;
+    dict[@"keyword"] = keyword;
     dict[@"sort"] = self.SalesTop == 0? @"price" : @"sales_sum";
-    dict[@"way"] = self.SalesTop == 0 ? [NSString stringWithFormat:@"%ld",self.PriceTop] :[NSString stringWithFormat:@"%ld",self.SalesTop];
+    dict[@"way"] = self.SalesTop == 0 ? [NSString stringWithFormat:@"%ld",(long)self.PriceTop] :[NSString stringWithFormat:@"%ld",(long)self.SalesTop];
     dict[@"page"] = [NSString stringWithFormat:@"%d",self.page];
     [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Search/results" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [self.tableView.mj_header endRefreshing];
         if (BCStatus) {
+            
             NSArray * array = responseObject[@"data"][@"goods_list"];
             if (!BCArrayIsEmpty(array)) {
                 if (self.page == 1) {
@@ -252,23 +258,53 @@
                 NSArray * arr =  [NSArray yy_modelArrayWithClass:[CoinSearchResultModel class] json:array];
                 [self.DataArray addObjectsFromArray:arr];
                 [self.tableView reloadData];
+                 [self.tableView.mj_footer endRefreshing];
+                self.NoDataView.hidden = YES;
             }else{
-                [self.tableView.mj_footer resetNoMoreData];
+             [self.tableView.mj_footer endRefreshingWithNoMoreData];
+             
             }
         }else{
+           
+              [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            if (BCArrayIsEmpty(self.DataArray)) {
+                self.NoDataView.hidden = NO;
+            }
             
-              [self.tableView.mj_footer resetNoMoreData];
         }
-      
-        [self.tableView.mj_footer endRefreshing];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
+        
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }];
 
 }
 
+- (void)initNoDataView{
+    UIView * view = [UIView new];
+    view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.top.equalTo(self.tableView);
+    }];
+    UILabel * label = [UILabel new];
+    label.text = @"抱歉暂时没有相关结果，换个筛选条件试试吧";
+    label.numberOfLines = 0;
+    [view addSubview:label];
+    label.textAlignment = NSTextAlignmentCenter;
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(view);
+        make.top.equalTo(view).offset(50);
+        make.left.right.equalTo(view);
+        
+    }];
+    
+    view.hidden = YES;
+    self.NoDataView = view;
+    
+    
+}
 - (NSMutableArray *)DataArray{
     if (_DataArray == nil) {
         _DataArray = [NSMutableArray array];

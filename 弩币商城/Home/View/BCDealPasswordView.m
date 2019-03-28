@@ -136,6 +136,7 @@
     
 }
 - (void)submitButtonAction{
+    [self endEditing:YES];
     [KTooL HttpPostWithUrl:@"Order/check_paypwd" parameters:@{@"paypwd":self.passwordTF.text} loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             if (self.success) {

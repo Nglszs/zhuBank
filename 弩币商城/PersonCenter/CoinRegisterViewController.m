@@ -77,8 +77,8 @@
         VCToast(@"请输入正确的手机号", 2);
         return;
     }
-    if (self.RootView.PassWordTF1.text.length <= 6 || self.RootView.PassWordTF1.text.length > 12) {
-        VCToast(@"请输入6-12位登录密码", 2);
+    if (self.RootView.PassWordTF1.text.length < 6 || self.RootView.PassWordTF1.text.length > 16) {
+        VCToast(@"请输入6-16位登录密码", 2);
         return;
     }
     if (![self.RootView.PassWordTF1.text isEqualToString:self.RootView.PassWordTF2.text]) {
