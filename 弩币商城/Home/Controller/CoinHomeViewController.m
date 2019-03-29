@@ -71,12 +71,13 @@ static NSString *cellID = @"cell";
         WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
         view.isAdjust = YES;
         view.frame = self.view.bounds;
-        [self.view addSubview:view];
+        [self.tabBarController.view addSubview:view];
         [view.button addtargetBlock:^(UIButton *button) {
 
             if (![Tool isConnectionAvalible]) {
                
-                VCToast(@"网络断开连接,请检查网络", 1);
+                [self.tabBarController.view makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
+                
                 return ;
             }
             [view removeFromSuperview];
