@@ -90,7 +90,6 @@
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(SearchView);
         make.top.equalTo(SearchView.mas_bottom).offset(20);
-        
     }];
  
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStylePlain)];

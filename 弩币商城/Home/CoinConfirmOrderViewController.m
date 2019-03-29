@@ -359,6 +359,7 @@
                 [dict setObject:idString forKey:@"coupons_reduce_id"];
                  [self.DataDict setObject:dict forKey:@"coupons_info"];
                  [self upFootView:self.DataDict[@"order_info"]];
+                [self.tableView reloadData];
             };
             [self.view addSubview:view];
         }
