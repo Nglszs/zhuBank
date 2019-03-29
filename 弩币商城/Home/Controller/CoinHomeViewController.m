@@ -61,7 +61,7 @@ static NSString *cellID = @"cell";
     [self initNavView];
 
     
-    //为了第一次安装app出现的问题
+    //为了第一次安装app网络权限出现的问题
     if ([Tool isConnectionAvalible]) {
         
         [self getData];
@@ -69,6 +69,7 @@ static NSString *cellID = @"cell";
     } else {
         
         WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
+        view.isAdjust = YES;
         view.frame = self.view.bounds;
         [self.view addSubview:view];
         [view.button addtargetBlock:^(UIButton *button) {
@@ -81,12 +82,6 @@ static NSString *cellID = @"cell";
             [view removeFromSuperview];
             [self getData];
         }];
-        
-
-//
-//            [self getData];
-//        }];
-        
    
     }
    
@@ -763,10 +758,7 @@ static NSString *cellID = @"cell";
         
         _backScrollView.mj_header = header;
        
-//        [_backScrollView addTapGestureWithBlock:^{
-//
-//            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
-//        }];
+
         
     }
     
