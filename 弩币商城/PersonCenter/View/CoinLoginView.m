@@ -66,7 +66,7 @@
     
     self.UserNameTF = [UITextField new];
     [self addSubview:self.UserNameTF];
-    self.UserNameTF.placeholder = @"请输入用户名";
+    self.UserNameTF.placeholder = @"请输入手机号";
     [self.UserNameTF setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
     [self.UserNameTF setValue:[UIFont boldSystemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
     [self.UserNameTF mas_makeConstraints:^(MASConstraintMaker *make) {

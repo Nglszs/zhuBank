@@ -47,7 +47,7 @@
     
     self.ByStagesLabel = [[UILabel alloc] init];
  
-   
+    self.ByStagesLabel.hidden = ![Tool AuditState];
     [self.contentView addSubview:self.ByStagesLabel];
     [self.ByStagesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.CommodityImage);

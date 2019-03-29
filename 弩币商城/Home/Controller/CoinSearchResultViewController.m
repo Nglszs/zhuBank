@@ -232,6 +232,10 @@
     searchField.font = Regular(15);
 }
 
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    [searchBar resignFirstResponder];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [self.DataArray removeAllObjects];
     self.page = 1;

@@ -393,9 +393,9 @@ static NSString *cellID = @"cell";
         
         
         
-                //        分期
+                     //        分期
                         UILabel *moneyL1 = [[UILabel alloc] init];
-        
+           moneyL1.hidden = ![Tool AuditState];
                         moneyL1.text = @"¥";
                         moneyL1.textColor = COLOR(153, 153, 153);
                         moneyL1.font = Regular(8);
@@ -416,7 +416,7 @@ static NSString *cellID = @"cell";
         
                         UILabel *segLabel = [[UILabel alloc] init];
                         segLabel.tag = 400 ;
-        
+            segLabel.hidden = ![Tool AuditState];
                         segLabel.textColor = COLOR(153, 153, 153);
                         segLabel.font = Regular(12);
                         [cell.contentView addSubview:segLabel];

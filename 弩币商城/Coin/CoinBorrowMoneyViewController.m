@@ -55,10 +55,10 @@
     [self request];
 }
 - (void)goBuy:(UIButton *)btn{
-    if ([self.moneyTF.text intValue] < 500) {
-        VCToast(@"借款金额不能小于500", 2);
-        return;
-    }
+//    if ([self.moneyTF.text intValue] < 500) {
+//        VCToast(@"借款金额不能小于500", 2);
+//        return;
+//    }
     if ([self.dayLabel.text isEqualToString:@"请选择"]) {
         VCToast(@"请选择借款天数", 2);
         return;
@@ -122,7 +122,6 @@
     //匹配两位小数、整数
     NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0]))$"];
     return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] ? YES : NO;
-    return YES;
 }
 - (void)textFieldTextDidChange{
     if (self.moneyTF.text.length > 8) {

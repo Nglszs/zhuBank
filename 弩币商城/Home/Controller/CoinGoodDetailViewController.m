@@ -150,7 +150,7 @@
     titleL.textColor = COLOR(166, 166, 166);
     titleL.textAlignment = NSTextAlignmentRight;
     titleL.font = Regular(12);
- 
+    titleL.hidden = ![Tool AuditState];
     [self.backScrollView addSubview:titleL];
     [titleL addTapGestureWithBlock:^{
        

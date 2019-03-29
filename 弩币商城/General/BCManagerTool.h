@@ -197,4 +197,10 @@ typedef void(^ BCFailureBlock)  (NSString *errorResult);
 
 + (NSString *)getCurrentDeviceModel;
 
+/**
+ APP 审核状态
+
+ @return YES 通过，NO正在进行
+ */
+- (BOOL)AuditState;
 @end

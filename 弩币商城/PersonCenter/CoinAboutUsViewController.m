@@ -36,8 +36,10 @@
         make.width.mas_equalTo(SetX(129));
         make.height.mas_equalTo(SetY(61));
     }];
+     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+      NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     UILabel * versionsLabel = [UILabel new];
-    versionsLabel.text = @"当前版本： V 1.0.0";
+    versionsLabel.text = [NSString stringWithFormat:@"当前版本： V %@",app_Version];
     versionsLabel.font = Regular(10);
     versionsLabel.textColor = COLOR(108, 108, 108);
     [self.view addSubview:versionsLabel];
@@ -113,7 +115,7 @@
     CoinH5ViewController * vc = [CoinH5ViewController new];
  
     if (btn.tag == 1000) {
-        vc.title = @"关于我们";
+        vc.titleStr = @"关于我们";
         vc.url = self.tkgo_introduce;
     }else if (btn.tag == 1001){
         vc.url = self.register_agreement;

@@ -59,7 +59,11 @@
         NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
         BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
         workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        [arr replaceObjectAtIndex:3 withObject:workNav];
+        int count = 2;
+        if ([Tool AuditState]) {
+            count = 3;
+        }
+        [arr replaceObjectAtIndex:count withObject:workNav];
         [self.tabBarController setViewControllers:arr];
     }
    
@@ -163,6 +167,7 @@
     backBtn.tag = 2000;
     [backBtn setTitle:@"帑库金钻会员" forState:UIControlStateNormal];
     [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
+    backBtn.hidden = ![Tool AuditState];
     backBtn.titleLabel.font = Regular(13);
     backBtn.layer.cornerRadius = 12;
     backBtn.clipsToBounds = YES;
@@ -184,6 +189,7 @@
     UIButton *backBtn1 = [[UIButton alloc] init];
     backBtn1.titleLabel.font = Regular(13);
     [backBtn1 setTitle:@"查看额度" forState:UIControlStateNormal];
+    backBtn1.hidden = ![Tool AuditState];
     [backBtn1 setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
     backBtn1.backgroundColor = White;
     backBtn1.layer.cornerRadius = 12;
@@ -273,6 +279,8 @@
     for (int i = 0; i < 2; i++) {
         
         UIButton *backBtn= [[UIButton alloc] init];
+        backBtn.hidden = ![Tool AuditState];
+        
         backBtn.tag = 1000 + i;
         [backBtn addTarget:self action:@selector(goList:) forControlEvents:(UIControlEventTouchUpInside)];
         [backBtn setTitle:titleA[i] forState:UIControlStateNormal];
@@ -300,7 +308,7 @@
         titleL.tag = 10000 + i;
         titleL.textColor = COLOR(153, 153, 153);
         titleL.font = Regular(11);
-        [topV addSubview:titleL];
+        [backBtn addSubview:titleL];
         [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.bottom.mas_equalTo(-LEFT_Margin);
@@ -446,12 +454,16 @@
     UIView *topV = [[UIView alloc] init];
     topV.backgroundColor = White;
     [self.backScrollView addSubview:topV];
+    int count = 4;
+    if (![Tool AuditState]) {
+        count = 3;
+    }
     [topV mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.top.mas_equalTo(391);
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
-        make.height.mas_equalTo(56 * 4);
+        make.height.mas_equalTo(56 * count);
         make.bottom.equalTo(self.backScrollView).offset(-50);
         
     }];
@@ -462,8 +474,15 @@
     NSArray *imageA = @[@"地址1",@"银行卡",@"优惠券",@"关于我"];
     NSArray *titleA = @[@"地址管理",@"我的银行卡",@"我的优惠券",@"关于我们"];
     
+    if ([Tool AuditState]) {
+        imageA = @[@"地址1",@"银行卡",@"优惠券",@"关于我"];
+         titleA = @[@"地址管理",@"我的银行卡",@"我的优惠券",@"关于我们"];
+    }else{
+        imageA = @[@"地址1",@"优惠券",@"关于我"];
+        titleA = @[@"地址管理",@"我的优惠券",@"关于我们"];
+    }
     
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < imageA.count; i++) {
         
         
         
@@ -481,6 +500,13 @@
         
         UIButton *backBtn= [[UIButton alloc] init];
         backBtn.tag = 100 + i;
+       
+        if (![Tool AuditState]) {
+            if (i >= 1 ) {
+                backBtn.tag += 1;
+            }
+        }
+        
         [backBtn setTitle:titleA[i] forState:UIControlStateNormal];
         [backBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
         backBtn.titleLabel.font = Regular(13);
@@ -577,6 +603,7 @@
             
             UIButton *btn = [self.backScrollView viewWithTag:2000];
             NSString *isVip = [[dataDic objectForKey:@"buy_vip"] boolValue]?@"努库金钻会员":@"暂未成为会员";
+            btn.hidden = ![Tool AuditState];
             [btn setTitle:isVip forState:UIControlStateNormal];
             
             UILabel *titleL1 = [self.backScrollView viewWithTag:10001];

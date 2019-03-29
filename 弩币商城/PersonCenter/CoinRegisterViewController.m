@@ -114,7 +114,11 @@
             
             BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
             workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-            [arr replaceObjectAtIndex:3 withObject:workNav];
+            int count = 2;
+            if ([Tool AuditState]) {
+                count = 3;
+            }
+            [arr replaceObjectAtIndex:count withObject:workNav];
             [self.tabBarController setViewControllers:arr];
             
         } else {
