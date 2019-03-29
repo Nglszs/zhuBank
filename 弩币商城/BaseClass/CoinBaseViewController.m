@@ -73,7 +73,7 @@
 - (void)setCustomRightBar:(NSString *)rightTitle click:(void (^)(void))clickRight {
     
     UIButton *backBtn= [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setFrame:CGRectMake(0, 0,70, R(48))];
+    [backBtn setFrame:CGRectMake(0, 0,150, R(48))];
     backBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     backBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     

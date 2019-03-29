@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/PersonCenter/CoinChangePayCodeViewController.m"
-            timestampString = "575283342.826985"
+            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Coin/CoinReturnBrowseViewController.m"
+            timestampString = "575539746.2749881"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
+            landmarkName = "-returnReplayMoney"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

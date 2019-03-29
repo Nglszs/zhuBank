@@ -104,6 +104,7 @@
     
     UIScrollView *headView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
     headView.backgroundColor = White;
+    
     [self addSubview:headView];
     
     

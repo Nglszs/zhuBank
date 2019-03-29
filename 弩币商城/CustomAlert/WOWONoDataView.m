@@ -94,7 +94,7 @@
         y = imageView.bottom + 25;
         textLabel.top = y;
         detailTextLabel.top = y;
-        button.top = y;
+        button.top = y + 50;
     }
     
     

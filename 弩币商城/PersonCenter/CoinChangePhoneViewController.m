@@ -229,7 +229,7 @@
                     
                     CoinChangePayCodeViewController *vc = [[CoinChangePayCodeViewController alloc] init];
                   
-                    vc.isChangePay = _isSetPay;
+                    vc.isChangePay = !_isSetPay;
                     [self.navigationController pushViewController:vc animated:YES];
                     
                 } else {

@@ -81,6 +81,12 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        
+        if ( _messageCodeField.text.length <= 0) {
+            
+            VCToast(@"昵称不能为空", 1);
+            return ;
+        }
        
         [KTooL HttpPostWithUrl:@"UserCenter/reset_nickname" parameters:@{@"nickname":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
             

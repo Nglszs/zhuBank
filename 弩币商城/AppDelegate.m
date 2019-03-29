@@ -23,7 +23,11 @@
     //    根视图
     [self setProgameRootViewController];
    
-  
+//  键盘小时
+    [self openKeyBoardManager];
+    
+   
+    
     //    更新用户信息
     [self updateUserInfo];
     // 请求是否APP通过审核

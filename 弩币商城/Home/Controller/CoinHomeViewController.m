@@ -39,6 +39,9 @@ static NSString *cellID = @"cell";
      
     if (@available(iOS 11.0, *)) {
         UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }else {
+        
+        self.automaticallyAdjustsScrollViewInsets = NO;
     }
      
      [self.view addSubview:self.backScrollView];
@@ -58,26 +61,28 @@ static NSString *cellID = @"cell";
     [self initNavView];
 
     
-    //为了第一次安装app出现的问题
+    //为了第一次安装app网络权限出现的问题
     if ([Tool isConnectionAvalible]) {
         
         [self getData];
         
     } else {
         
-//        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
-//        [self.view addSubview:view];
-//        [view.button addtargetBlock:^(UIButton *button) {
+        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
+        view.isAdjust = YES;
+        view.frame = self.view.bounds;
+        [self.tabBarController.view addSubview:view];
+        [view.button addtargetBlock:^(UIButton *button) {
 
-//           
-//            [self getData];
-//        }];
-//        
-
-//
-//            [self getData];
-//        }];
-        
+            if (![Tool isConnectionAvalible]) {
+               
+                [self.tabBarController.view makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
+                
+                return ;
+            }
+            [view removeFromSuperview];
+            [self getData];
+        }];
    
     }
    
@@ -754,10 +759,7 @@ static NSString *cellID = @"cell";
         
         _backScrollView.mj_header = header;
        
-//        [_backScrollView addTapGestureWithBlock:^{
-//
-//            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
-//        }];
+
         
     }
     
@@ -768,7 +770,7 @@ static NSString *cellID = @"cell";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if ([scrollView isEqual: self.backScrollView]) {
         
-        NSLog(@"===%f",scrollView.contentOffset.y);
+       
        CGFloat alphaValue = MIN(1, scrollView.contentOffset.y/(BCNaviHeight * 2));
         
        

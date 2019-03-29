@@ -73,6 +73,7 @@
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有借款记录~" detailText:nil buttonTitle:nil];
                             [self.notPayTableView addSubview:view];
+                   self.notPayTableView.mj_footer.hidden = YES;;
                     return ;
                 }
                 [self.notPayTableView reloadData];
@@ -93,6 +94,7 @@
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有还款记录~" detailText:nil buttonTitle:nil];
                     [self.payTableView addSubview:view];
+                    self.payTableView.mj_footer.hidden = YES;
                     return ;
                 }
                 [self.payTableView reloadData];
@@ -186,7 +188,7 @@
         }
         
         
-        NSDictionary *dic = [notArr objectAtIndexCheck:indexPath.row];
+        NSDictionary *dic = [haveArr objectAtIndexCheck:indexPath.row];
         [cell setValueData:dic];
         
         [cell.segLabel addTapGestureWithBlock:^{
@@ -353,7 +355,7 @@
     
     
     if (!_payTableView) {
-        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - - BCNaviHeight) style:UITableViewStylePlain];
+        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
         _payTableView.delegate = self;
         _payTableView.dataSource = self;
         _payTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

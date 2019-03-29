@@ -23,7 +23,7 @@
 
     
 }
--(BOOL)isBankCard:(NSString *)cardNumber{
+-(BOOL)isBankard:(NSString *)cardNumber{
     
   if(cardNumber.length==0){
         

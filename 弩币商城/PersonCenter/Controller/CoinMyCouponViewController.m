@@ -169,10 +169,7 @@
     
 }
 
-- (void)refreshCell:(NSInteger)selectedIndex {
-    
-//    [self.getTableView reloadData];
-}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -262,7 +259,7 @@
         } else {
             
             
-            static NSString *ID = @"kpo31";
+            static NSString *ID = @"kpo3177";
             CoinExpressCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
             if (!cell) {
                 cell = [[CoinExpressCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
@@ -282,7 +279,7 @@
             return cell;
         }
     } else if (tableView == self.payTableView){//优惠券
-        static NSString *ID = @"kpo2";
+        static NSString *ID = @"kpo2888";
         CoinMyCouponTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID]; //根据indexPath准确地取出一行，而不是从cell重用队列中取出
         if (!cell) {
             cell = [[CoinMyCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
@@ -300,8 +297,15 @@
             vc.ID = [[[secondArr objectAtIndex:indexPath.row] objectForKey:@"cid"] stringValue];
             [self.navigationController pushViewController:vc animated:YES];
         }];
+
+        
         [cell setDataForCell:dic];
         
+        if ([[newSecondArr objectAtIndex:indexPath.row] boolValue]) {
+            cell.detailV.hidden = NO;
+        } else {
+            cell.detailV.hidden = YES;
+        }
         
         [cell.detailBtn addtargetBlock:^(UIButton *button) {
             
@@ -494,7 +498,7 @@
     
     
     if (!_getTableView) {
-        _getTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40 ) style:UITableViewStyleGrouped];
+        _getTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStyleGrouped];
         _getTableView.delegate = self;
         _getTableView.dataSource = self;
         _getTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -515,7 +519,7 @@
     
     
     if (!_payTableView) {
-        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
         _payTableView.delegate = self;
         _payTableView.dataSource = self;
         _payTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -536,7 +540,7 @@
     if (!_playTableView) {
         
         
-        _playTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40) style:UITableViewStylePlain];
+        _playTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
         _playTableView.delegate = self;
         _playTableView.dataSource = self;
         _playTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

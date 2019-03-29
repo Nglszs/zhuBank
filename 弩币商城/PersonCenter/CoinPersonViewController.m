@@ -74,6 +74,9 @@
    
     if (@available(iOS 11.0, *)) {
         UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        
+         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
     [self.view addSubview:self.backScrollView];
@@ -607,7 +610,14 @@
             [btn setTitle:isVip forState:UIControlStateNormal];
             
             UILabel *titleL1 = [self.backScrollView viewWithTag:10001];
-            titleL1.text = [NSString stringWithFormat:@"最近一笔%@还款",[dataDic objectNilForKey:@"repay_time"]];
+           
+            if (!BCStringIsEmpty([dataDic objectNilForKey:@"repay_time"])) {
+                titleL1.text = [NSString stringWithFormat:@"最近一笔%@还款",[dataDic objectNilForKey:@"repay_time"]];
+            } else {
+                
+                 titleL1.text = @"您当前还没有欠款";
+            }
+           
             
             [USER_DEFAULTS setBool:[[dataDic objectForKey:@"buy_vip"] boolValue] forKey:@"isvip"];
            

@@ -11,6 +11,7 @@
 @interface CoinBrowseStatusViewController ()
 {
     NSDictionary *dataDic;
+    UILabel *priceL;
 }
 @end
 
@@ -44,11 +45,44 @@
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
+            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"申请金额：¥%@",[dataDic objectNilForKey:@"amount"]]];
+            
+            NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+            [str setAttributes:firstAttributes range:NSMakeRange(0,5)];
+            priceL.attributedText = str;
+            
+            
+            
+            //            收款账户
+            
+            NSArray *moneyArr = @[[NSString stringWithFormat:@"%@(尾号%@)  %@",[dataDic objectNilForKey:@"bank_name"],[dataDic objectNilForKey:@"bank_card"],[dataDic objectNilForKey:@"name"]],[NSString stringWithFormat:@"%@天",[dataDic objectNilForKey:@"days"]],[NSString stringWithFormat:@"%@元",[dataDic objectNilForKey:@"repay_total"]]];
+            for (int i = 0; i < moneyArr.count; i ++) {
+                UILabel *rightL = [self.view viewWithTag:2000 + i];
+                rightL.text = moneyArr[i];
+            }
+            
+            
+//            立即借款都是未到账
+            
+              NSArray *arr = @[[dataDic objectNilForKey:@"apply_time"],[dataDic objectNilForKey:@"apply_time"]];
+            //                借款进度设置
+            for (int i = 0; i < 2; i ++) {
+                
+                UIButton *btn = [self.view viewWithTag:100 + i];
+                btn.backgroundColor = COLOR(252, 148, 37);
+                
+                UILabel *newTitle = [self.view viewWithTag:1000 + i];
+                newTitle.text = arr[i];
+                
+            }
+            
+            UIButton *btn = [self.view viewWithTag:200];
+            btn.backgroundColor = COLOR(252, 148, 37);
             
             
         } else {
             
-            
+            VCToast(@"借款失败", 1);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
@@ -66,20 +100,46 @@
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
-            if ([[dataDic objectForKey:@"satus"] integerValue] == 1) {
+            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"申请金额：¥%@",[dataDic objectNilForKey:@"amount"]]];
+            
+            NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+            [str setAttributes:firstAttributes range:NSMakeRange(0,5)];
+            priceL.attributedText = str;
+        
+            
+//            收款账户
+            
+            NSArray *moneyArr = @[[NSString stringWithFormat:@"%@(尾号%@)  %@",[dataDic objectNilForKey:@"bank_name"],[dataDic objectNilForKey:@"bank_card"],[dataDic objectNilForKey:@"name"]],[NSString stringWithFormat:@"%@天",[dataDic objectNilForKey:@"days"]],[NSString stringWithFormat:@"%@元",[dataDic objectNilForKey:@"repay_total"]]];
+            for (int i = 0; i < moneyArr.count; i ++) {
+                UILabel *rightL = [self.view viewWithTag:2000 + i];
+                rightL.text = moneyArr[i];
+            }
+           
+            
+//            到账时间
+            
+            NSArray *arr = @[[dataDic objectNilForKey:@"apply_time"],[dataDic objectNilForKey:@"apply_time"],[dataDic objectNilForKey:@"arrive_account_time"]];
+            
+            
+            
+            if ([[dataDic objectForKey:@"satus"] integerValue] == 1) {//未到账
                 
                 //                借款进度设置
                 for (int i = 0; i < 2; i ++) {
                     
                     UIButton *btn = [self.view viewWithTag:100 + i];
                     btn.backgroundColor = COLOR(252, 148, 37);
+                    
+                    UILabel *newTitle = [self.view viewWithTag:1000 + i];
+                    newTitle.text = arr[i];
+                    
                 }
                 
                 UIButton *btn = [self.view viewWithTag:200];
                 btn.backgroundColor = COLOR(252, 148, 37);
                 
                 
-            } else {
+            } else {//已到账
                 
                 
                 //                借款进度设置
@@ -87,6 +147,10 @@
                     
                     UIButton *btn = [self.view viewWithTag:100 + i];
                     btn.backgroundColor = COLOR(252, 148, 37);
+                    
+                    
+                    UILabel *newTitle = [self.view viewWithTag:1000 + i];
+                    newTitle.text = arr[i];
                     
                     if (i >=1 ) {
                         UIButton *btn = [self.view viewWithTag:200 + i];
@@ -127,7 +191,7 @@
     NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
     [str setAttributes:firstAttributes range:NSMakeRange(0,5)];
     
-    UILabel *priceL = [[UILabel alloc] init];
+    priceL = [[UILabel alloc] init];
     priceL.textAlignment = NSTextAlignmentCenter;
     priceL.textColor = COLOR(252, 148, 37);
     priceL.font = Regular(19);
@@ -220,8 +284,9 @@
         //        商品价格
         UILabel *moneyL = [[UILabel alloc] init];
         moneyL.numberOfLines = 0;
+        moneyL.tag = 1000+i;
         moneyL.textAlignment = NSTextAlignmentCenter;
-        moneyL.text = @"2019-02-02 12:12:12";
+//        moneyL.text = @"2019-02-02 12:12:12";
         moneyL.textColor = COLOR(153, 153, 153);
         moneyL.font = Regular(9);
         [self.view addSubview:moneyL];
@@ -272,6 +337,7 @@
         UILabel *rightL = [[UILabel alloc] init];
         rightL.text = @"工商银行(尾号1717)    刘*华";
         rightL.textColor = COLOR(153, 153, 153);
+        rightL.tag = 2000 + i;
         rightL.font = Regular(12);
         [self.view addSubview:rightL];
         [rightL mas_makeConstraints:^(MASConstraintMaker *make) {
