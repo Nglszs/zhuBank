@@ -21,8 +21,6 @@
     [KTooL HttpPostWithUrl:@"Order/select_coupons" parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:USER_ID],@"coupons_type":@(isUseMoney),@"goods_id":goodID,@"item_id":item_ID,@"num":@(goodNum)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
-        
-        
         if (BCStatus) {
             dataArr = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"coupons_info"];
             [self initView];

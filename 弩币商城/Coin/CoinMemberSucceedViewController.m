@@ -34,7 +34,11 @@
     }
     [self SetNavTitleColor];
     [self initView];
-    self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:(UIBarButtonItemStyleDone) target:self action:@selector(temp)];
+}
+
+- (void)temp{
+    
 }
 - (void)initView{
     
