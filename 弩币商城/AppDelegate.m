@@ -30,6 +30,7 @@
     
     //    更新用户信息
     [self updateUserInfo];
+   
     // 请求是否APP通过审核
     [self requestAuditState];
     

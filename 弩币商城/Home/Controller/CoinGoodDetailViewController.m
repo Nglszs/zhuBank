@@ -38,7 +38,12 @@
     [super viewDidLoad];
     
     
-   
+    if (@available(iOS 11.0, *)) {
+        UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }else {
+        
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     
  
    

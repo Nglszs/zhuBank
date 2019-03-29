@@ -222,7 +222,7 @@
 //
             
         } else {
-              VCToast(@"身份验证失败", 1);
+              VCToast([responseObject objectNilForKey:@"msg"], 1);
             
         }
         
