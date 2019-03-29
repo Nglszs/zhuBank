@@ -338,7 +338,7 @@
         }
        
         
-        BCCouponView *vv = [[BCCouponView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andUserID:_goodID];
+        BCCouponView *vv = [[BCCouponView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andUserID:_goodID withPrice:price];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             

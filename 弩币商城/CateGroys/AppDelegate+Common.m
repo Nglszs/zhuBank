@@ -80,12 +80,12 @@ static void *networkKey = &networkKey;
     
     if(status == NotReachable){
         
-//        self.isAvailableNet = NO;
-//        [self.window.rootViewController showErrorAlert:@"网络连接失败"];
+       
+        BCHUDAlert *alert = [[BCHUDAlert alloc] initWithHudType:0 content:@"网络连接失败" delayMiss:2];
         
     } else {
         
-//        self.isAvailableNet = YES;
+       
         
     }
     

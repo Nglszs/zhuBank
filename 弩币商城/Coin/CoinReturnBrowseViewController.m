@@ -202,7 +202,7 @@
     
    
     
-    [KTooL HttpPostWithUrl:@"CashLoan/repay" parameters:@{@"loan_id":_ID,@"frms_mechine_id":[self getUUID],@"frms_mac_addr":[self macaddress],@"frms_imei":@"",@"frms_sim_id":@""} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"CashLoan/repay" parameters:@{@"loan_id":_ID,@"frms_mechine_id":[self getUUID],@"frms_mac_addr":[self macaddress],@"frms_imei":@"",@"frms_sim_id":@""} loadString:@"正在获取银行短信验证码" success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         
@@ -232,7 +232,7 @@
                         
                         VCToast(@"还款成功", 1);
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                             [self.navigationController popViewControllerAnimated:YES];
+                             [self.navigationController popToRootViewControllerAnimated:YES];
                         });
                        
                         

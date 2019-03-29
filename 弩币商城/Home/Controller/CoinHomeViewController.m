@@ -68,14 +68,20 @@ static NSString *cellID = @"cell";
         
     } else {
         
-//        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
-//        [self.view addSubview:view];
-//        [view.button addtargetBlock:^(UIButton *button) {
+        WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"网络似乎出现了问题" detailText:nil buttonTitle:@"点击刷新"];
+        view.frame = self.view.bounds;
+        [self.view addSubview:view];
+        [view.button addtargetBlock:^(UIButton *button) {
 
-//           
-//            [self getData];
-//        }];
-//        
+            if (![Tool isConnectionAvalible]) {
+               
+                VCToast(@"网络断开连接,请检查网络", 1);
+                return ;
+            }
+            [view removeFromSuperview];
+            [self getData];
+        }];
+        
 
 //
 //            [self getData];
@@ -771,7 +777,7 @@ static NSString *cellID = @"cell";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if ([scrollView isEqual: self.backScrollView]) {
         
-        NSLog(@"===%f",scrollView.contentOffset.y);
+       
        CGFloat alphaValue = MIN(1, scrollView.contentOffset.y/(BCNaviHeight * 2));
         
        

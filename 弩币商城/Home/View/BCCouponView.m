@@ -10,12 +10,13 @@
 
 @implementation BCCouponView
 {
-    NSString *goodID;
+    NSString *goodID,*goodPrice;
     NSDictionary *dataDic;
     
 }
-- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID {
+- (instancetype)initWithFrame:(CGRect)frame andUserID:(NSString *)ID withPrice:(nonnull NSString *)price{
     goodID = ID;
+    goodPrice = price;
     return [self initWithFrame:frame];
 }
 
@@ -34,7 +35,7 @@
 #pragma mark 网络请求
 - (void)getData {
     
-    [KTooL HttpPostWithUrl:@"goods/coupons_page" parameters:@{@"goods_id":goodID,@"goods_price":@"3480"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"goods/coupons_page" parameters:@{@"goods_id":goodID,@"goods_price":goodPrice} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         if (BCStatus) {
@@ -56,10 +57,7 @@
 }
 - (void)initView {
     
-    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [self addGestureRecognizer:panGes];
-    
-    
+  
     
     //背景
     UIView *backView = [[UIView alloc]initWithFrame:BCBound];
@@ -68,8 +66,9 @@
     [self addSubview:backView];
     
     
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 , BCWidth, 440)];
+    UIScrollView *headView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440, BCWidth, 440 - 50)];
     headView.backgroundColor = White;
+    headView.alwaysBounceVertical = YES;
     [self addSubview:headView];
     
     
@@ -103,7 +102,7 @@
         
         NSDictionary *dic = [arr objectAtIndex:i];
         
-        if ([[dic objectForKey:@"coupons_type"] isEqualToString:@"运费抵用券"]) {
+        if ([[dic objectForKey:@"coupons_type"] isEqualToString:@"运费抵扣券"]) {
             
             imageV.image = BCImage(可用优惠券运费bj);
             
@@ -240,20 +239,18 @@
         }];
         
     }
+
     
+    headView.contentSize = CGSizeMake(BCWidth, arr.count *95  + 50);
 //    关闭按钮
     UIButton *backBtn1 = [[UIButton alloc] init];
+    backBtn1.frame = CGRectMake(0, BCHeight - 50, BCWidth, 50);
     backBtn1.titleLabel.font = Regular(16);
     [backBtn1 setTitle:@"关闭" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
     backBtn1.backgroundColor = Red;
-    [headView addSubview:backBtn1];
-    [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.mas_equalTo(0);
-    
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(BCWidth);
-    }];
+    [self addSubview:backBtn1];
+   
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         [self removeCommentCuView];

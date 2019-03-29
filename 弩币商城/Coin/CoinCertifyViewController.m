@@ -215,7 +215,7 @@
                 
                 if ([result isEqualToString:@"1"]) {
                      [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
-                }
+                } 
                
             };
             
@@ -228,7 +228,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
        
-//        VCToast(@"验证失败", 1);
+        VCToast(@"验证失败", 1);
     }];
 }
 
@@ -333,11 +333,11 @@
             
         } else {
             
-            
+            VCToast(@"获取绑卡信息失败", 1);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        
+        VCToast(@"获取绑卡信息失败", 1);
     }];
 }
 
@@ -648,11 +648,11 @@
             
         } else {
             
-            
+            VCToast(@"验证绑卡短信失败", 1);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        
+        VCToast(@"验证绑卡短信失败", 1);
     }];
 }
 
@@ -660,7 +660,7 @@
 - (void)clickCodeButton {
     
    
-   
+    [self.view endEditing:YES];
     
     if (cardNumF.text.length <= 0) {
         VCToast(@"卡号不能为空", 1);
@@ -702,6 +702,7 @@
         if (BCStatus) {
             
             llToken = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"ll_token"];
+            VCToast([responseObject objectNilForKey:@"msg"], 1);
             [self changeTimeState];
             
         } else {
@@ -759,8 +760,8 @@
     }];
     
     
-    [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
-    [_countDownTimer fire];
+//    [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
+//    [_countDownTimer fire];
     
 }
 
@@ -769,7 +770,7 @@
 - (void)TestISSuccess {
     
     
-    [KTooL HttpPostWithUrl:@"MaterialVerify/Credit" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"MaterialVerify/Credit" parameters:nil loadString:@"您的信用正在评估中,请稍后..." success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         
