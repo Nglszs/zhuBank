@@ -343,8 +343,13 @@
     divideView.backgroundColor = DIVI_COLOR;
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.top.mas_equalTo(264);
+        if ([Tool AuditState]) {
+            make.top.mas_equalTo(264);
+        } else {
+            
+             make.top.mas_equalTo(160);
+        }
+       
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
@@ -462,8 +467,13 @@
         count = 3;
     }
     [topV mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.top.mas_equalTo(391);
+        if ([Tool AuditState]) {
+           make.top.mas_equalTo(391);
+        } else {
+            
+            make.top.mas_equalTo(291);
+        }
+       
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(BCWidth);
         make.height.mas_equalTo(56 * count);

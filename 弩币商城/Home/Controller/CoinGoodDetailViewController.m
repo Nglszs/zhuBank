@@ -646,6 +646,7 @@
 }
 
 
+#pragma mark 购买商品
 - (void)GoBuy{
     
     if (![Tool isLogin]) {
@@ -757,6 +758,71 @@
         };
         
         
+        
+        
+    }else {
+        
+       
+        
+        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+        dict[@"q_fenqi"] = divideArr.count<=0?@"0":@"1";
+        dict[@"goods_id"] = _goodID;
+        dict[@"item_id"] = [sizeArr lastObject];
+        dict[@"num"] = [sizeArr firstObject];
+        
+        if (divideArr.count > 0) {
+            
+            if (!BCStringIsEmpty([divideArr lastObject])) {
+                NSCharacterSet * nonDigits =[[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+                int remainSecond =[[[divideArr lastObject] stringByTrimmingCharactersInSet:nonDigits] intValue];
+                dict[@"periods"] = [NSString stringWithFormat:@"%d",remainSecond];
+            }
+            
+            
+            dict[@"stages"]  = [divideArr firstObject];
+            if ([dict[@"stages"] isEqualToString:@"零首付"]) {
+                dict[@"stages"]  = @"0";
+            } else {
+                
+                NSString *newStr = [dict[@"stages"] substringToIndex:1];
+                dict[@"stages"]  = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+            }
+            
+        }
+        
+        
+        
+        [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            
+            if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
+                CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
+                VC.q_fenqi = divideArr.count<=0?@"0":@"1";
+                VC.goods_id = _goodID;
+                VC.num = [sizeArr firstObject];
+                VC.item_id = [sizeArr lastObject];
+                
+                if (divideArr.count > 0) {
+                    VC.periods = [divideArr lastObject];
+                    NSString *stage = [divideArr firstObject];
+                    if ([stage isEqualToString:@"零首付"]) {
+                        VC.stages = @"0";
+                    } else {
+                        
+                        NSString *newStr = [stage substringToIndex:1];
+                        VC.stages = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+                    }
+                    
+                }
+                [self.navigationController pushViewController:VC animated:YES];
+                
+                sizeArr = nil;
+                
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+        
+        //
         
         
     }

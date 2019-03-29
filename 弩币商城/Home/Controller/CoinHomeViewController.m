@@ -95,7 +95,13 @@ static NSString *cellID = @"cell";
     [loginBtn setTitle:@"" forState:UIControlStateNormal];
     [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
     [loginBtn addtargetBlock:^(UIButton *button) {
-        self.tabBarController.selectedIndex = 3;
+        if ([Tool AuditState]) {
+            self.tabBarController.selectedIndex = 3;
+        } else {
+            
+             self.tabBarController.selectedIndex = 2;
+        }
+       
     }];
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -210,7 +216,12 @@ static NSString *cellID = @"cell";
     if ([Tool isLogin]) {
         [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
         [loginBtn addtargetBlock:^(UIButton *button) {
-            self.tabBarController.selectedIndex = 3;
+            if ([Tool AuditState]) {
+                self.tabBarController.selectedIndex = 3;
+            } else {
+                
+                self.tabBarController.selectedIndex = 2;
+            }
         }];
     } else {
         

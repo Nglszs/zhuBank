@@ -16,7 +16,7 @@
     NSDictionary *dataDic;
     NSString *goodID;
     NSInteger shopNumber;//选择商品数量
-     CGFloat maxValue;//商品最大值
+     CGFloat max_Value;//商品最大值
     NSDictionary *paramS;//请求参数
     UIImageView *leftI;
     UILabel *moneyL;
@@ -29,7 +29,7 @@
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params{
     paramS = params;
     NSLog(@"+++%@",params);
-    
+    item_ID = @"";
     goodID = ID;
     return [self initWithFrame:frame];
 }
@@ -38,7 +38,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
-        maxValue = 99;
+        max_Value = 99;
        
         [self getData];
         
@@ -56,16 +56,6 @@
            
             dataDic = [responseObject objectNilForKey:@"data"];
            
-           
-         
-            
-           
-        
-            
-            
-            
-          
-            
             
              [self initView];
             
@@ -121,7 +111,7 @@
     
     NSDictionary *newDic1 = [dataDic objectNilForKey:@"fenqi_info"];
     
-     maxValue = [[newDic objectNilForKey:@"store_count"] floatValue];
+     max_Value = [[newDic objectNilForKey:@"store_count"] floatValue];
     leftI = [[UIImageView alloc] init];
     leftI.backgroundColor = ImageColor;
      [leftI sd_setImageWithURL:[NSURL URLWithString:[newDic objectNilForKey:@"original_img"]]];
@@ -462,6 +452,7 @@
         }
         if (self.backBlock ) {
 
+           
             self.backBlock(@[_countTextField.text,item_ID]);
         }
 
@@ -551,7 +542,7 @@
             
            
                 countL.text = [NSString stringWithFormat:@"剩余库存：%@",[newDic objectNilForKey:@"store_count"]];
-             maxValue = [[newDic objectNilForKey:@"store_count"] floatValue];
+             max_Value = [[newDic objectNilForKey:@"store_count"] floatValue];
             
              moneyL.text =  [NSString stringWithFormat:@"¥ %ld",[[newDic objectNilForKey:@"goods_price"] integerValue]];
             
@@ -618,6 +609,18 @@
     }
     
     
+    if ([string length] > 0)
+    {
+        unichar single = [string characterAtIndex:0];//当前输入的字符
+        if([textField.text length] == 0)
+        {
+            if (single == '0'){//首字母不能为0
+                
+                
+                return NO;
+            }
+        }
+    }
     
     //  只能输入数字
     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
@@ -646,10 +649,11 @@
 - (void)checkTextFieldNumberWithUpdate
 {
     NSString *minValueString = nil;
-    NSString *maxValueString = nil;
+    NSString *max_ValueString = nil;
     
+    max_Value = MAX(max_Value, 1);
     minValueString = [NSString stringWithFormat:@"%.f",1.0];
-    maxValueString = [NSString stringWithFormat:@"%.f",maxValue];
+    max_ValueString = [NSString stringWithFormat:@"%.f",max_Value];
     
     NSLog(@"]]]%f",[_countTextField.text floatValue]);
     if ( [_countTextField.text floatValue] < 0.00) {
@@ -664,7 +668,7 @@
         _countTextField.text = minValueString;
     }
     
-    [_countTextField.text floatValue] > maxValue ? _countTextField.text = maxValueString : nil;
+    [_countTextField.text floatValue] > max_Value ? _countTextField.text = max_ValueString : nil;
     
     
 }
@@ -684,11 +688,11 @@
         
     } else {//加
         
-        shopNumber = MIN(maxValue, ++number);
+        shopNumber = MIN(max_Value, ++number);
         _countTextField.text = [NSString stringWithFormat:@"%ld", shopNumber];
         
     }
-    if (shopNumber >= maxValue) {
+    if (shopNumber >= max_Value) {
         
         ViewToast(@"已超出商品最大值", 1);
         return;

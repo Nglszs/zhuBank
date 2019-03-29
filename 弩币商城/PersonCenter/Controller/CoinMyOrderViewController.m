@@ -744,6 +744,8 @@
                     [notArr removeAllObjects];
                     [self getData:@"WAITPAY"andPage:1];
                     
+                    [allArr removeAllObjects];
+                    [self getData:@""andPage:1];
                     
                 }else if (index == 2){
                     
