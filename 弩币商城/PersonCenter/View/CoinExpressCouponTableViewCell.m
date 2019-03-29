@@ -110,6 +110,7 @@
     UIButton *backBtn= [[UIButton alloc] init];
     
     [backBtn setTitle:@"详细信息" forState:UIControlStateNormal];
+    backBtn.hidden = ![Tool AuditState];
     [backBtn setTitleColor:COLOR(167, 167, 167) forState:UIControlStateNormal];
     backBtn.titleLabel.font = Regular11Font;
     backBtn.contentHorizontalAlignment = 1;

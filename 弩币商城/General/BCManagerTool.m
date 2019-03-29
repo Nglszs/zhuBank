@@ -519,6 +519,9 @@ static BCManagerTool *_instanceTool;
     if ([deviceModel isEqualToString:@"x86_64"])       return @"Simulator";
     return deviceModel;
 }
-
+- (BOOL)AuditState{
+    return YES;
+   return  [USER_DEFAULTS boolForKey:@"AuditState"];
+}
 
 @end

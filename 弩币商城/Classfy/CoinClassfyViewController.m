@@ -215,7 +215,7 @@
         return;
     }
     CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
-    CoinSearchViewController * vc = [CoinSearchViewController new];
+    CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
    vc.keyword = model2.name;
     [self.navigationController pushViewController:vc animated:YES];
 }

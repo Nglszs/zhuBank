@@ -39,7 +39,7 @@ static void *networkKey = &networkKey;
 
 - (void)setProgameRootViewController {
    
-    
+  
     
     self.window = [[UIWindow alloc] initWithFrame:BCBound];
     self.window.backgroundColor = ThemeColor;
@@ -103,6 +103,18 @@ static void *networkKey = &networkKey;
     
 }
 
+- (void)requestAuditState{
+    [KTooL HttpPostWithUrl:@"User/is_reviewed" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            BOOL AuditState = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"check"]] isEqualToString:@"1"];
+            [[NSUserDefaults standardUserDefaults] setBool:AuditState forKey:@"AuditState"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
 - (void)updateUserInfo {
     
     

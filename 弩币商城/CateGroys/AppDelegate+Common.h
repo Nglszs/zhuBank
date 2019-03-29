@@ -54,6 +54,11 @@
  集成友盟分享
  */
 - (void)initUMShare;
+
+/**
+ 检查APP是否通过审核
+ */
+- (void)requestAuditState;
 @end
 
 

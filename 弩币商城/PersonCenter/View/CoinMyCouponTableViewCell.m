@@ -122,8 +122,8 @@
     
 //  详细信息
     UIButton *backBtn= [[UIButton alloc] init];
-    
     [backBtn setTitle:@"详细信息" forState:UIControlStateNormal];
+    backBtn.hidden = ![Tool AuditState];
     [backBtn setTitleColor:COLOR(167, 167, 167) forState:UIControlStateNormal];
     backBtn.titleLabel.font = Regular11Font;
     backBtn.contentHorizontalAlignment = 1;
@@ -131,7 +131,6 @@
     [backView addSubview:backBtn];
     _detailBtn = backBtn;
   
-    
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.top.equalTo(timeL.mas_bottom).offset(5);
@@ -149,15 +148,12 @@
     
     [backView addSubview:lineImage];
     [lineImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.right.mas_equalTo(-82);
         make.centerY.equalTo(backView);
         make.width.mas_equalTo(1);
         make.height.mas_equalTo(58);
     }];
-    
-    
-    _activityBtn = [UIButton new];
+     _activityBtn = [UIButton new];
     [_activityBtn setTitleColor:COLOR(254, 100, 38) forState:UIControlStateNormal];
     [_activityBtn setTitle:@"立即使用" forState:UIControlStateNormal];
     [_activityBtn.titleLabel setFont:Regular(12)];
