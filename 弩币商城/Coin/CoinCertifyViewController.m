@@ -325,6 +325,7 @@
             [priceL addTapGestureWithBlock:^{
             
                 CoinH5ViewController *VC = [[CoinH5ViewController alloc] init];
+                VC.titleStr = @"银行代扣授权书";
                 VC.url = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"withhold"];
                 [self.navigationController pushViewController:VC animated:YES];
             }];
