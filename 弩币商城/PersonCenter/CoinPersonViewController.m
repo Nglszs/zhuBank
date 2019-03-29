@@ -22,6 +22,8 @@
 #import "CoinMemberViewController.h"
 #import "CoinMemberBuyViewController.h"
 #import "CoinCertifyViewController.h"
+#import "CoinLoginViewController.h"
+#import "BCNavigationViewController.h"
 
 @interface CoinPersonViewController ()
 {
@@ -47,6 +49,20 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if (![Tool isLogin]) {
+        CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
+        BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];
+        workNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[[UIImage imageNamed:@"我的 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"我的2 (1)"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [arr replaceObjectAtIndex:3 withObject:workNav];
+        [self.tabBarController setViewControllers:arr];
+    }
+   
 }
 
 - (void)viewDidLoad {
