@@ -24,6 +24,8 @@
     [self setProgameRootViewController];
    
   
+    [self openKeyBoardManager];
+    
     //    更新用户信息
     [self updateUserInfo];
    

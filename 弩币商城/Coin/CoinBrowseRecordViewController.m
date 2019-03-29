@@ -73,6 +73,7 @@
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有借款记录~" detailText:nil buttonTitle:nil];
                             [self.notPayTableView addSubview:view];
+                   self.notPayTableView.mj_footer.hidden = YES;;
                     return ;
                 }
                 [self.notPayTableView reloadData];
@@ -93,6 +94,7 @@
                     
                     WOWONoDataView *view = [[WOWONoDataView alloc] initWithImageName:@"order" text:@"您还没有还款记录~" detailText:nil buttonTitle:nil];
                     [self.payTableView addSubview:view];
+                    self.payTableView.mj_footer.hidden = YES;
                     return ;
                 }
                 [self.payTableView reloadData];

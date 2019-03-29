@@ -42,6 +42,8 @@
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
+            
+            [self.CommodityImage sd_setImageWithURL:[NSURL URLWithString:[dataDic objectNilForKey:@"pic"]]];
             self.CommodityNameLabel.text = [NSString stringWithFormat:@"%@(尾号%@)",[dataDic objectNilForKey:@"bank_name"],[dataDic objectNilForKey:@"bank_card"]];
             
             sizeL.text = [NSString stringWithFormat:@"该卡本次最多可还款%@元",[dataDic objectForKey:@"max_money"]];
@@ -81,7 +83,7 @@
     
     
     self.CommodityImage = [UIImageView new];
-    self.CommodityImage.backgroundColor = [UIColor grayColor];
+  
     [bottomV addSubview:self.CommodityImage];
     [self.CommodityImage mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -200,7 +202,7 @@
     
    
     
-    [KTooL HttpPostWithUrl:@"CashLoan/CashLoan/repay" parameters:@{@"loan_id":_ID,@"frms_mechine_id":[self getUUID],@"frms_mac_addr":[self macaddress]} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [KTooL HttpPostWithUrl:@"CashLoan/repay" parameters:@{@"loan_id":_ID,@"frms_mechine_id":[self getUUID],@"frms_mac_addr":[self macaddress],@"frms_imei":@"",@"frms_sim_id":@""} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         NSLog(@"===%@",responseObject);
         
@@ -229,11 +231,14 @@
                     if (BCStatus) {
                         
                         VCToast(@"还款成功", 1);
-                        [self.navigationController popViewControllerAnimated:YES];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                             [self.navigationController popViewControllerAnimated:YES];
+                        });
+                       
                         
                     } else {
                         
-                        
+                        VCToast(@"还款失败", 1);
                     }
                     
                 } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

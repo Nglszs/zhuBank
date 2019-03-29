@@ -165,6 +165,7 @@
     btn.selected = !btn.selected;
     if (btn.selected) {
         bottomV.hidden = NO;
+        [[bottomV subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
         for (int i = 0; i < bottomArr.count; i ++) {
             
@@ -240,7 +241,7 @@
     UILabel *timeL = [self.contentView viewWithTag:300];
     timeL.text =[NSString stringWithFormat: @"有效期%@",[data objectNilForKey:@"period"]];
     
-   
+    [bottomArr removeAllObjects];
     [bottomArr addObject:[data objectForKey:@"tips"]];
     NSArray *dataA = [data objectForKey:@"appoint_goods_name"];
     if (dataA.count > 0) {

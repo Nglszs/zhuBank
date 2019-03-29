@@ -660,6 +660,7 @@
 - (void)clickCodeButton {
     
    
+   
     
     if (cardNumF.text.length <= 0) {
         VCToast(@"卡号不能为空", 1);
@@ -705,6 +706,7 @@
             
         } else {
             
+            VCToast([responseObject objectNilForKey:@"data"], 1);
             
         }
         
