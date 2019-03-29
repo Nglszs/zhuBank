@@ -111,7 +111,8 @@ static void *networkKey = &networkKey;
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+       
+        NSLog(@"");
     }];
     
 }

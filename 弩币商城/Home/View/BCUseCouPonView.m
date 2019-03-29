@@ -57,8 +57,8 @@
 }
 - (void)initView {
     
-    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [self addGestureRecognizer:panGes];
+//    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+//    [self addGestureRecognizer:panGes];
     
     
     
@@ -69,10 +69,10 @@
     [self addSubview:backView];
     
     
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440 - BCNaviHeight, BCWidth, 440)];
+    UIScrollView *headView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  BCHeight - 440, BCWidth, 440 - 50)];
     headView.backgroundColor = White;
+    headView.alwaysBounceVertical = YES;
     [self addSubview:headView];
-    
     
     
     // 标题
@@ -286,19 +286,15 @@
     
     
     
+    headView.contentSize = CGSizeMake(BCWidth, dataArr.count *95  + 50);
     //    关闭按钮
     UIButton *backBtn1 = [[UIButton alloc] init];
+    backBtn1.frame = CGRectMake(0, BCHeight - 50, BCWidth, 50);
     backBtn1.titleLabel.font = Regular(16);
     [backBtn1 setTitle:@"关闭" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
     backBtn1.backgroundColor = Red;
-    [headView addSubview:backBtn1];
-    [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.mas_equalTo(0);
-        
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(BCWidth);
-    }];
+    [self addSubview:backBtn1];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         [self removeCommentCuView];

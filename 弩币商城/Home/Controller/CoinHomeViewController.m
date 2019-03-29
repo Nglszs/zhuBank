@@ -81,6 +81,7 @@ static NSString *cellID = @"cell";
                 return ;
             }
             [view removeFromSuperview];
+            
             [self getData];
         }];
    
