@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinConfirmCommodityMessageCell : UITableViewCell
-
+@property (nonatomic,strong)UITextView * textView;
 @end
 
 NS_ASSUME_NONNULL_END

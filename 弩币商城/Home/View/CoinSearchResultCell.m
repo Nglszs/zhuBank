@@ -28,7 +28,7 @@
     self.CommodityImage = [UIImageView new];
     [self.contentView addSubview:self.CommodityImage];
     [self.CommodityImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView).offset(10);
+        make.left.equalTo(self.contentView).offset(17);
         make.top.equalTo(self.contentView).offset(10);
         make.bottom.equalTo(self.contentView).offset(-10);
         make.width.equalTo(self.CommodityImage.mas_height);
@@ -62,7 +62,7 @@
     [self.contentView addSubview:self.CommodityPriceLabel];
     [self.CommodityPriceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.CommodityNameLabel);
-        make.bottom.equalTo(self.ByStagesLabel.mas_top).offset(-7);
+        make.bottom.equalTo(self.ByStagesLabel.mas_top).offset(-5);
     }];
 }
 - (void)awakeFromNib {

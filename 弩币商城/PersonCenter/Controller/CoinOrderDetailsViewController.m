@@ -80,6 +80,7 @@
     cell.textLabel.textColor = COLOR(102, 102, 102);
     cell.selectionStyle = 0;
     cell.detailTextLabel.text = [self detailTextLabelText:indexPath];
+    cell.detailTextLabel.numberOfLines = 0;
     return cell;
 }
 
@@ -510,8 +511,7 @@
 
 // 取消订单
 - (void)cancelOrder{
-    
-    [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+     [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             VCToast(@"取消订单成功", 2); dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
@@ -572,14 +572,16 @@
     }
     
     if (flag == 3) {
-        CoinPayMoneyOrderViewController  * vc = [CoinPayMoneyOrderViewController new];
-        vc.name = dict[@"data"][@"consignee"];
-        vc.address = dict[@"data"][@"address"];;
-        vc.orderNum = dict[@"data"][@"order_sn"];
-        vc.money = dict[@"data"][@"pay_amount"];
-        vc.order_id = dict[@"data"][@"order_id"];
-        vc.dataArray = dict[@"data"][@"hot_goods"];
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
+        VC.type = BRPayBuyCommodity;
+        VC.titleString = @"支付首付";
+        VC.orderNum =dict[@"data"][@"order_sn"];
+        VC.Money = dict[@"data"][@"pay_amount"];
+        VC.orderID = dict[@"data"][@"order_id"];
+        VC.DataArray = dict[@"data"][@"hot_goods"];
+        [self.navigationController pushViewController:VC animated:YES];
+        
     }
     
 }

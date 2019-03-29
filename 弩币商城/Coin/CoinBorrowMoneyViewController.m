@@ -55,8 +55,8 @@
     [self request];
 }
 - (void)goBuy:(UIButton *)btn{
-    if ([self.moneyTF.text intValue] == 0) {
-        VCToast(@"请输入合理借款金额", 2);
+    if ([self.moneyTF.text intValue] < 500) {
+        VCToast(@"借款金额不能小于500", 2);
         return;
     }
     if ([self.dayLabel.text isEqualToString:@"请选择"]) {
@@ -115,13 +115,19 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
-    if (textField.text.length > 8) {
-        return NO;
-    }
+  
+    NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    //匹配以0开头的数字
+    NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
+    //匹配两位小数、整数
+    NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0]))$"];
+    return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] ? YES : NO;
     return YES;
 }
 - (void)textFieldTextDidChange{
+    if (self.moneyTF.text.length > 8) {
+        self.moneyTF.text = [self.moneyTF.text substringToIndex:8];
+    }
      [self requestMoney];
     
 }
@@ -234,9 +240,7 @@
             [TF mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(BGView).offset(10);
                 make.top.bottom.equalTo(BGView);
-                
-                
-            }];
+               }];
             [BGView addTapGestureWithBlock:^{
                 [TF becomeFirstResponder];
             }];
@@ -291,7 +295,14 @@
         if (BCStatus) {
             self.dayArray = responseObject[@"data"][@"days"];
             self.reasonAyyay = responseObject[@"data"][@"use"];
-            self.moneyTF.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"money"]];
+            NSString * money  = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"money"]];
+            if (BCStringIsEmpty(money)) {
+                money = @"";
+            }
+            if ([money containsString:@"."]) {
+                money = [NSString stringWithFormat:@"%d",[money intValue]];
+            }
+            self.moneyTF.text = money;
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

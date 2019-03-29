@@ -10,6 +10,7 @@
 #import "CoinMemberSucceedViewController.h"
 #import "WXApi.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "CoinGoodDetailViewController.h"
 @interface CoinMemberBuyViewController ()
 @property (nonatomic,strong)UIButton * tempButton;
 @end
@@ -261,7 +262,35 @@
     [SVProgressHUD dismissWithDelay:2];
 }
 
+- (void)BackAction{
+    for (int i = 0; i < self.navigationController.viewControllers.count; i++) {
+        UIViewController * vc = self.navigationController.viewControllers[i];
+        if ([vc isKindOfClass:[CoinGoodDetailViewController class]]) {
+             [self.navigationController popToViewController:vc animated:YES];
+            return;
+        }
+    }
+      [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
+}
+
+
+
 @end

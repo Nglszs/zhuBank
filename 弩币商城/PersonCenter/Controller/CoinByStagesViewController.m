@@ -306,6 +306,9 @@
         _finishTableView.delegate = self;
         _finishTableView.dataSource = self;
        _finishTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _finishTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [self requestFinish];
+        }];
     }
     return _finishTableView;
 }
@@ -316,11 +319,15 @@
         _ProceedTableView.delegate = self;
         _ProceedTableView.dataSource = self;
          _ProceedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _ProceedTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [self requestProceed];
+        }];
     }
     return _ProceedTableView;
 }
 - (void)requestProceed{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self.ProceedTableView.mj_footer endRefreshing];
         if (BCStatus) {
             if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.ProceedDataArray = responseObject[@"data"];
@@ -338,6 +345,7 @@
 
 - (void)requestFinish{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"2"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self.finishTableView.mj_footer endRefreshing];
         if (BCStatus) {
         if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.finishDataArray = responseObject[@"data"];

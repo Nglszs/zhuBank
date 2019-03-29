@@ -14,7 +14,7 @@
 @interface CoinSearchViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong)UITextField * SearchTF;
-@property (nonatomic,copy)NSString * keyword;
+
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,copy)NSArray * dataArray;
 @end
@@ -81,7 +81,7 @@
         make.right.equalTo(btn.mas_left);
         make.centerY.equalTo(SearchView);
     }];
-    
+    self.SearchTF.text = self.keyword;
     UILabel * label = [UILabel new];
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"热门搜索" attributes:@{NSFontAttributeName: Regular(14),NSForegroundColorAttributeName: [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:1.0]}];
     
@@ -212,6 +212,7 @@
     return YES;
 }
 - (void)setKeyword:(NSString *)keyword{
+    _keyword = keyword;
     CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
     vc.keyword = keyword;
     [self.navigationController pushViewController:vc animated:YES];

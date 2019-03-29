@@ -11,6 +11,7 @@
 #import "CoinMemberSucceedViewController.h"
 #import "WXApi.h"
 #import "CoinOrderAllMoneyViewController.h"
+#import "CoinGoodDetailViewController.h"
 @interface CoinOrderAllMoneyViewController ()
 @property (nonatomic,strong)UIButton * tempButton;
 @property (nonatomic,strong)UILabel * orderNumberLabel;
@@ -253,6 +254,29 @@
 - (void)payError{
     VCToast(@"支付失败", 2);
     
+}
+- (void)BackAction{
+    UIViewController * vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 3];
+    if ([vc isKindOfClass:[CoinGoodDetailViewController class]]) {
+       [self.navigationController popToViewController:vc animated:YES];
+    }else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
 }
 
 

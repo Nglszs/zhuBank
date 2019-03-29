@@ -23,6 +23,7 @@
 #import "CoinChangePhoneViewController.h"
 #import "BCUseCouPonView.h"
 #import "BCDealPasswordView.h"
+
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSMutableDictionary * DataDict;
@@ -32,6 +33,7 @@
 
 @property (nonatomic,strong)UIButton * ConsentButton;
 @property (nonatomic,strong)UIView * tempView;
+@property (nonatomic,strong)UIButton * GoBuyButton;
 @end
 
 @implementation CoinConfirmOrderViewController
@@ -100,6 +102,7 @@
     
     NSString * title = [self.q_fenqi intValue] == 1 ? @"提交分期订单" :@"提交订单";
     UIButton * GoBuyButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    self.GoBuyButton = GoBuyButton;
     [GoBuyButton setBackgroundColor:COLOR(254, 70, 70) forState:(UIControlStateNormal)];
     [GoBuyButton setTitle:title forState:(UIControlStateNormal)];
     GoBuyButton.adjustsImageWhenHighlighted = NO;
@@ -449,6 +452,7 @@
             // 需要输入交易密码
             CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];
              BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:BCBound money:[self decimalNumberString:m]];
+            view.vc = self;
             MJWeakSelf;
             view.success = ^(BOOL isSuccess) {
                 [weakSelf ultimatelySubmitOrder];
@@ -457,9 +461,7 @@
          }else{
             [self ultimatelySubmitOrder];
         }
-        
-       
-    }
+     }
 }
 
 - (void)ultimatelySubmitOrder{
@@ -479,12 +481,22 @@
     
     dict[@"transfer_price"] = self.DataDict[@"order_info"][@"transfer_price"];
     
+    CoinConfirmCommodityMessageCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
+    NSString * str = cell.textView.text;
+    if ([str isEqualToString:@"选填"]) {
+        str = @"";
+    }
+    dict[@"user_note"] = str;
     NSDictionary * temp = self.DataDict[@"coupons_info"];
     [temp enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         [dict setObject:obj forKey:key];
     }];
     
+    
+    // 关闭用户交互
+    self.GoBuyButton.userInteractionEnabled = NO;
     [KTooL HttpPostWithUrl:@"Order/submit_order" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
+         self.GoBuyButton.userInteractionEnabled = YES;
         if (BCStatus) {
             [self goPay:responseObject];
         }else{
@@ -492,6 +504,7 @@
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        self.GoBuyButton.userInteractionEnabled = YES;
         VCToast(@"提交失败", 2);
     }];
     
@@ -582,15 +595,10 @@
         
     }
     if (status == -1) {
-        [SVProgressHUD showInfoWithStatus:@"请先购买会员卡"];
-        [SVProgressHUD dismissWithDelay:1];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+         CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
             VC.type  = BRPayBuyMember;
             [self.navigationController pushViewController:VC animated:YES];
-        });
-       
-    }
+     }
     if (status == -2) {
         msg = @"不符合分期条件";
       
