@@ -648,7 +648,7 @@
             
         } else {
             
-            VCToast(@"验证绑卡短信失败", 1);
+            VCToast([responseObject objectNilForKey:@"msg"], 1);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
