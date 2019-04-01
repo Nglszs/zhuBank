@@ -13,7 +13,7 @@
      UIView *divideV;//分期界面
     UILabel *notDivi;//不分期
      UIButton *selectedBtn,*diviBtn,*diviNumBtn;  //按钮单选逻辑
-    NSDictionary *dataDic;
+    NSDictionary *dataDic,*fenqiDic;
     NSString *goodID;
     NSString *stages,*numMonth;
     UILabel *leftL1;
@@ -310,7 +310,7 @@
         if (self.backBlock) {
             
             if (selectedBtn.tag == 101) {//选择分期
-                NSDictionary *dic = @{@"fenqi":leftL1.text,@"lixi":@[diviBtn.currentTitle,diviNumBtn.currentTitle],@"isfenqi":@"1"};
+                NSDictionary *dic = @{@"money":[fenqiDic objectNilForKey:@"per_money"],@"period":[fenqiDic objectNilForKey:@"period"],@"lixi":@[diviBtn.currentTitle,diviNumBtn.currentTitle],@"isfenqi":@"1"};
                 self.backBlock(dic);
 
             } else {
@@ -406,6 +406,7 @@
         if (BCStatus) {
           
             NSDictionary *dic = [[responseObject objectNilForKey:@"data"] objectNilForKey:@"fenqi_info"];
+            fenqiDic = dic;
               leftL1.text = [NSString stringWithFormat:@"￥%.2f*%@期",[[dic objectNilForKey:@"per_money"]floatValue],[dic objectNilForKey:@"period"]];
             
         } else {
