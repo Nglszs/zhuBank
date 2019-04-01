@@ -977,8 +977,10 @@
         
         
         //    默认是分期
-        
-        divideArr = @[@"零首付",[NSString stringWithFormat:@"%@",[newDic objectNilForKey:@"periods"]] ];
+        if ([Tool AuditState]) {
+            divideArr = @[@"零首付",[NSString stringWithFormat:@"%@",[newDic objectNilForKey:@"periods"]] ];
+        }
+       
         
     }
 
