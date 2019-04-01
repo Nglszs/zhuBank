@@ -173,7 +173,14 @@
             NSLog(@"]]]]%@",result);
             if ([[result objectForKey:@"isfenqi"]isEqualToString:@"1"]) {
                 UILabel *titleL = [self.backScrollView viewWithTag:500];
-                titleL.text = [NSString stringWithFormat:@"分期%@",[result objectNilForKey:@"fenqi"]];
+              
+                
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[result objectNilForKey:@"money"] floatValue],[result objectNilForKey:@"period"]]];
+                NSDictionary * firstAttributes = @{ NSForegroundColorAttributeName:COLOR(242,48,48)};
+                NSString *priceS = [NSString stringWithFormat:@"%.2f",[[result objectNilForKey:@"money"] floatValue]];
+                [str setAttributes:firstAttributes range:NSMakeRange(3,priceS.length + 1)];
+                titleL.attributedText = str;
+//
                 divideArr = [result objectNilForKey:@"lixi"];
             } else {
                  UILabel *titleL = [self.backScrollView viewWithTag:500];
@@ -185,9 +192,9 @@
     }];
     
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(BCWidth - 100 - 15);
+        make.left.mas_equalTo(BCWidth - 150 - 15);
         make.bottom.equalTo(priceL.mas_bottom);
-        make.width.mas_equalTo(100);
+        make.width.mas_equalTo(150);
         make.height.mas_equalTo(12);
         
     }];
@@ -491,14 +498,7 @@
         make.width.mas_equalTo(260);
     }];
     
-    UIImageView *rightImage2 = [[UIImageView alloc] init];
-    rightImage2.image = BCImage(Back---Icon-);
-    [easeView2 addSubview:rightImage2];
-    [rightImage2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.mas_equalTo(rightImage.mas_left);
-        make.centerY.equalTo(rightL1);
-    }];
+   
     
   //    分割线
     for (int i = 0; i < 2; i ++) {
@@ -700,6 +700,7 @@
                     int remainSecond =[[[divideArr lastObject] stringByTrimmingCharactersInSet:nonDigits] intValue];
                     dict[@"periods"] = [NSString stringWithFormat:@"%d",remainSecond];
                 }
+                
                 
                 
                                 dict[@"stages"]  = [divideArr firstObject];
@@ -961,10 +962,23 @@
     } else {
         
         NSDictionary *newDic = [dic objectNilForKey:@"fenqi_info"];
-        titleL.text =[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic objectNilForKey:@"per_money"] floatValue],[newDic objectNilForKey:@"periods"]];
         
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic objectNilForKey:@"per_money"] floatValue],[newDic objectNilForKey:@"periods"]]];
+        NSDictionary * firstAttributes = @{ NSForegroundColorAttributeName:COLOR(242,48,48)};
+        NSString *priceS = [NSString stringWithFormat:@"%.2f",[[newDic objectNilForKey:@"per_money"] floatValue]];
+        [str setAttributes:firstAttributes range:NSMakeRange(3,priceS.length + 1)];
+        titleL.attributedText = str;
+        
+        
+        //    默认是分期
+        if ([Tool AuditState]) {
+            divideArr = @[@"零首付",[NSString stringWithFormat:@"%@",[newDic objectNilForKey:@"periods"]] ];
+        }
+       
         
     }
+
+
     
 //    优惠券
     UIView *easeView = [self.backScrollView viewWithTag:600];

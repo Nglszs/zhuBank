@@ -90,23 +90,6 @@
     }];
     
     
-    if (dataArr.count <= 0) {
-     UILabel *notDivi = [[UILabel alloc] init];
-        notDivi.text = @"暂无可使用优惠券哦~";
-        notDivi.textColor = COLOR(102, 102, 102);
-        notDivi.font = [UIFont systemFontOfSize:17];
-        notDivi.textAlignment = NSTextAlignmentCenter;
-       
-        [headView addSubview:notDivi];
-        [notDivi mas_makeConstraints:^(MASConstraintMaker *make) {
-            
-            make.centerY.mas_equalTo(headView.mas_centerY);
-            make.width.mas_equalTo(BCWidth);
-            make.height.mas_equalTo(15);
-        }];
-        
-       
-    }
     
     
     //    优惠券
@@ -284,12 +267,29 @@
         
     }
     
+    if (dataArr.count <= 0) {
+        UILabel *notDivi = [[UILabel alloc] init];
+        notDivi.text = @"暂无可使用优惠券哦~";
+        notDivi.textColor = COLOR(102, 102, 102);
+        notDivi.font = [UIFont systemFontOfSize:17];
+        notDivi.textAlignment = NSTextAlignmentCenter;
+        
+        [headView addSubview:notDivi];
+        [notDivi mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.centerY.mas_equalTo(headView.mas_centerY);
+            make.width.mas_equalTo(BCWidth);
+            make.height.mas_equalTo(15);
+        }];
+        
+        
+    }
     
     
     headView.contentSize = CGSizeMake(BCWidth, dataArr.count *95  + 50);
     //    关闭按钮
     UIButton *backBtn1 = [[UIButton alloc] init];
-    backBtn1.frame = CGRectMake(0, BCHeight - 50, BCWidth, 50);
+    backBtn1.frame = CGRectMake(0, BCHeight - 50 - BCNaviHeight, BCWidth, 50);
     backBtn1.titleLabel.font = Regular(16);
     [backBtn1 setTitle:@"关闭" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];

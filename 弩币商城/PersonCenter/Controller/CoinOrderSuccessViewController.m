@@ -142,7 +142,7 @@
     
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥%@ x%@",_price,_num]];
     NSDictionary * firstAttributes = @{NSForegroundColorAttributeName: COLOR(153, 153, 153)};
-    [str setAttributes:firstAttributes range:NSMakeRange(str.length - _num.length - 1,_num.length)];
+    [str setAttributes:firstAttributes range:NSMakeRange(str.length - [NSString stringWithFormat:@"%@",_num].length - 1,[NSString stringWithFormat:@"%@",_num].length)];
     self.CommodityPriceLabel.attributedText = str;
     
     

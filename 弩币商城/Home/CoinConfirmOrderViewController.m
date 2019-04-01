@@ -372,7 +372,7 @@
         if (self.DataDict) {
             NSString * user_id = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
             //0是现金券，1是运费q券
-            BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:user_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
+            BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:_goods_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
             MJWeakSelf;
             view.backBlock = ^(id  _Nonnull result) {
                 NSString * idString = result[@"id"];

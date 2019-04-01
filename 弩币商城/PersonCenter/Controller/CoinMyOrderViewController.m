@@ -358,11 +358,11 @@
                         
                         if (BCStatus) {
                             CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
-                            VC.imageUrl = [dic objectForKey:@"original_img"];
-                            VC.name = [dic objectForKey:@"goods_name"];
-                            VC.size = [dic objectForKey:@"spec_key_name"];
-                            VC.price =[dic objectForKey:@"goods_price"];
-                            VC.num = [dic objectForKey:@"goods_num"];
+                            VC.imageUrl = [dic objectNilForKey:@"original_img"];
+                            VC.name = [dic objectNilForKey:@"goods_name"];
+                            VC.size = [dic objectNilForKey:@"spec_key_name"];
+                            VC.price =[dic objectNilForKey:@"goods_price"];
+                            VC.num = [dic objectNilForKey:@"goods_num"];
                             [self.navigationController pushViewController:VC animated:YES];
                             
                             //            刷新当前列表
@@ -528,11 +528,11 @@
                     
                     if (BCStatus) {
                         CoinOrderSuccessViewController *VC = [CoinOrderSuccessViewController new];
-                        VC.imageUrl = [dic objectForKey:@"original_img"];
-                        VC.name = [dic objectForKey:@"goods_name"];
-                        VC.size = [dic objectForKey:@"spec_key_name"];
-                        VC.price =[dic objectForKey:@"goods_price"];
-                        VC.num = [dic objectForKey:@"goods_num"];
+                        VC.imageUrl = [dic objectNilForKey:@"original_img"];
+                        VC.name = [dic objectNilForKey:@"goods_name"];
+                        VC.size = [dic objectNilForKey:@"spec_key_name"];
+                        VC.price =[dic objectNilForKey:@"goods_price"];
+                        VC.num = [dic objectNilForKey:@"goods_num"];
                         [self.navigationController pushViewController:VC animated:YES];
                         
                         //            刷新当前列表
@@ -679,35 +679,23 @@
     vc.resultData = ^(id  _Nonnull resultData) {
       
 //        刷新当前列表
-        NSInteger index = self.backScrollView.contentOffset.x / self.backScrollView.frame.size.width;
-        if (index== 0) {
-            [allArr removeAllObjects];
-            [self getData:@""andPage:1];
-            
-            
-        } else if (index == 1){
-            
-            [notArr removeAllObjects];
-            [self getData:@"WAITPAY"andPage:1];
-            
-            
-        }else if (index == 2){
-            
-            [aleratArr removeAllObjects];
-            [self getData:@"WAITSEND"andPage:1];
-            
-            
-        }else if (index == 3){
-            
-            [notEnableArr removeAllObjects];
-            [self getData:@"WAITRECEIVE"andPage:1];
-            
-            
-        }else {
-            
-            [finshArr removeAllObjects];
-            [self getData:@"FINISH"andPage:1];
-        }
+        [allArr removeAllObjects];
+        [self getData:@""andPage:1];
+        
+        [notArr removeAllObjects];
+        [self getData:@"WAITPAY"andPage:1];
+        
+        
+        [aleratArr removeAllObjects];
+        [self getData:@"WAITSEND"andPage:1];
+        
+        [notEnableArr removeAllObjects];
+        [self getData:@"WAITRECEIVE"andPage:1];
+        
+        
+        [finshArr removeAllObjects];
+        [self getData:@"FINISH"andPage:1];
+        
     };
 }
 
