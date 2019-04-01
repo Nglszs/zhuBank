@@ -195,9 +195,9 @@
     }];
     
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(BCWidth - 100 - 15);
+        make.left.mas_equalTo(BCWidth - 150 - 15);
         make.bottom.equalTo(priceL.mas_bottom);
-        make.width.mas_equalTo(100);
+        make.width.mas_equalTo(150);
         make.height.mas_equalTo(12);
         
     }];
