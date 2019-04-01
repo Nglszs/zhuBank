@@ -708,6 +708,7 @@
                 }
                 
                 
+                
                                 dict[@"stages"]  = [divideArr firstObject];
                                 if ([dict[@"stages"] isEqualToString:@"零首付"]) {
                                     dict[@"stages"]  = @"0";
@@ -970,7 +971,13 @@
         titleL.text =[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic objectNilForKey:@"per_money"] floatValue],[newDic objectNilForKey:@"periods"]];
         
         
+        //    默认是分期
+        
+        divideArr = @[@"零首付",[NSString stringWithFormat:@"%@",[newDic objectNilForKey:@"periods"]] ];
+        
     }
+
+
     
 //    优惠券
     UIView *easeView = [self.backScrollView viewWithTag:600];
