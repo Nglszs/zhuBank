@@ -55,6 +55,10 @@
     [self request];
 }
 - (void)goBuy:(UIButton *)btn{
+        if ([self.moneyTF.text intValue] == 0) {
+            VCToast(@"借款金额不能为0", 2);
+            return;
+        }
 //    if ([self.moneyTF.text intValue] < 500) {
 //        VCToast(@"借款金额不能小于500", 2);
 //        return;
@@ -90,10 +94,8 @@
                 CoinBrowseStatusViewController * VC = [CoinBrowseStatusViewController new];
                 VC.isBrowse = YES;
                 [self.navigationController pushViewController:VC animated:YES];
-            }else if (status == 0){
+            }else{
                 VCToast(BCMsg, 2);
-            }else if (status == 2){
-                VCToast(@"请先设置交易密码", 2);
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             
@@ -254,6 +256,7 @@
     NSInteger tag = btn.tag - 1000;
     // 借款用途
     if (tag == 2) {
+        [self.view endEditing:YES];
         //获取状态栏的rect
         CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
         //获取导航栏的rect
@@ -271,6 +274,7 @@
     }
     
     if (tag == 1) {
+        [self.view endEditing:YES];
         if (self.dayArray) {
             UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"借款天数" message:@"请选择借款天数" preferredStyle:(UIAlertControllerStyleAlert)];
             for (int i = 0; i < self.dayArray.count; i++) {
@@ -302,6 +306,8 @@
                 money = [NSString stringWithFormat:@"%d",[money intValue]];
             }
             self.moneyTF.text = money;
+        }else{
+            VCToast(BCMsg, 2);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

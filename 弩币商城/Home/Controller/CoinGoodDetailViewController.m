@@ -146,9 +146,7 @@
     }];
     
     
-    
 //    分期
-    
     UILabel *titleL = [[UILabel alloc] init];
     titleL.text = @"分期：￥1100*6期";
     titleL.tag = 500;
@@ -163,8 +161,7 @@
 
         
         //    点击打开分期
-        
-        BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPrice:price];
+         BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPrice:price];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -232,9 +229,6 @@
     nameLabel.numberOfLines = 2;
     [self.backScrollView addSubview:nameLabel];
    
-    
-   
-    
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(priceL.mas_bottom).offset(12);
         make.left.mas_equalTo(LEFT_Margin);

@@ -7,7 +7,7 @@
 //
 
 #import "CoinMemberDredgeCell.h"
-
+#import "CoinH5ViewController.h"
 @interface CoinMemberDredgeCell()
 @property (nonatomic,strong)UILabel * TimeLabel;
 
@@ -129,6 +129,48 @@
     }];
     btn.titleLabel.font = Regular(15);
     self.dredgeButton = btn;
+    
+    UILabel * agreementLabel = [UILabel new];
+    
+    
+        NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    
+        NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc] initWithString:@"会员服务协议" attributes:attribtDic];
+    agreementLabel.attributedText = attribtStr;
+    agreementLabel.userInteractionEnabled = YES;
+    [agreementLabel addTapGestureWithBlock:^{
+        if (self.service_agreement) {
+            CoinH5ViewController * vc = [CoinH5ViewController new];
+            vc.titleStr = @"会员服务协议";
+            vc.url = self.service_agreement;
+            [self.SelfVC.navigationController pushViewController:vc animated:YES];
+        }
+        
+    }];
+    [self.contentView addSubview:agreementLabel];
+    agreementLabel.textColor = [UIColor whiteColor];
+    agreementLabel.font = Regular(15);
+    [agreementLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(btn);
+        make.right.equalTo(backImage).offset(-20);
+        }];
+    
+    UIButton * agreementBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    agreementBtn.adjustsImageWhenHighlighted = NO;
+    [self.contentView addSubview:agreementBtn];
+    
+    agreementBtn.selected = YES;
+    [agreementBtn setBackgroundImage:BCImage(会员未选择) forState:(UIControlStateNormal)];
+    [agreementBtn setBackgroundImage:BCImage(会员选择) forState:(UIControlStateSelected)];
+    [agreementBtn addtargetBlock:^(UIButton *button) {
+        button.selected = !button.selected;
+    }];
+    [agreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(agreementLabel);
+        make.right.equalTo(agreementLabel.mas_left).offset(-5);
+        make.width.height.mas_equalTo(20);
+    }];
+    self.agreementBtn = agreementBtn;
     
 }
 - (void)awakeFromNib {

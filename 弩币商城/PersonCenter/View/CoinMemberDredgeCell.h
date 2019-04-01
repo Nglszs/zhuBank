@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong)UIButton * dredgeButton;
 
+@property (nonatomic,strong)UIButton * agreementBtn;
 @property (nonatomic,copy)NSString * end_time;
+@property (nonatomic,weak)UIViewController * SelfVC;
+@property (nonatomic,copy)NSString * service_agreement;
 @end
 
 NS_ASSUME_NONNULL_END

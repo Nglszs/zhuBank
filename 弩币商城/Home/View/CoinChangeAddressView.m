@@ -38,15 +38,17 @@
     self.PhoneNumberTF.keyboardType = UIKeyboardTypeNumberPad;
     [self SetTextFiled:self.NameTF leftString:@"收货人：" topSpace:(45 * 1) placeholder:nil];
     
-  
+    self.NameTF.delegate = self;
     [self SetTextFiled:self.PhoneNumberTF leftString:@"手机号码：" topSpace:(45 * 2) placeholder:nil];
     
-    
+    self.PhoneNumberTF.delegate = self;
     [self SetTextFiled:self.CityTF leftString:@"所在地区：" topSpace:(45 * 3) placeholder:nil];
     
     
     [self SetTextFiled:self.AddressTF leftString:@"详细地址：" topSpace:(45 * 4) placeholder:nil];
-    
+    [self.NameTF addTarget:self action:@selector(changedTextField:) forControlEvents:UIControlEventEditingChanged];
+    [self.PhoneNumberTF addTarget:self action:@selector(changedTextField:) forControlEvents:UIControlEventEditingChanged];
+
     
     UIView * lineView = [UIView new];
     lineView.backgroundColor = COLOR(181, 181, 181);
@@ -71,6 +73,20 @@
     }];
     affirmButton.adjustsImageWhenHighlighted = NO;
     
+}
+
+-(void)changedTextField:(UITextField *)textField
+{
+    int i = 0;
+    if (textField == self.NameTF) {
+        i = 4;
+    }
+    if (textField == self.PhoneNumberTF) {
+        i = 11;
+    }
+    if (textField.text.length > i) {
+        textField.text = [textField.text substringToIndex:i];
+    }
 }
 
 - (void)SetTextFiled:(UITextField *)textField leftString:(NSString *)leftString topSpace:(CGFloat)topSpace placeholder:(NSString *)placeholder{
@@ -136,7 +152,6 @@
      NSDictionary *dic = @{NSFontAttributeName: Regular(13)};
      CGRect rect = [string boundingRectWithSize:CGSizeMake(0, MAXFLOAT)/*计算宽度时要确定高度*/ options:NSStringDrawingUsesLineFragmentOrigin |  NSStringDrawingUsesFontLeading attributes:dic context:nil];
       return rect.size.width;
-    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -222,6 +237,10 @@
         ViewToast(@"请填写手机号码", 1);
         return;
     }
+    if ([self isMobileNumber:self.PhoneNumberTF.text]) {
+        ViewToast(@"请填写正确的手机号码", 1);
+        return;
+    }
     dict[@"province"] = self.province;// 省
     dict[@"city"] = self.city;//  市
     dict[@"district"] = self.district; //区
@@ -257,6 +276,10 @@
     }
     if (self.PhoneNumberTF.text.length == 0) {
         ViewToast(@"请填写手机号码", 1);
+        return;
+    }
+    if ([self isMobileNumber:self.PhoneNumberTF.text]) {
+        ViewToast(@"请填写正确的手机号码", 1);
         return;
     }
     dict[@"address_id"] = self.address_id;

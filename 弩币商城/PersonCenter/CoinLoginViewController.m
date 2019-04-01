@@ -35,10 +35,14 @@
         self.title = @"登录";
         return;
     }
-   
+   [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
 - (void)loadView{
     self.RootView = [[CoinLoginView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.view = self.RootView;
@@ -55,6 +59,10 @@
 }
 
 - (void)LoginButtonAction{
+    if (self.RootView.UserNameTF.text.length == 0) {
+        VCToast(@"请输入手机号", 2);
+        return;
+    }
     if (![self isMobileNumber:self.RootView.UserNameTF.text]) {
         VCToast(@"请输入正确的手机号", 2);
         return;
@@ -68,7 +76,7 @@
     dict[@"password"] = self.RootView.PasswordTF.text;
     dict[@"phone_type"] = [BCManagerTool getCurrentDeviceModel];
     dict[@"system_version"] =  [[UIDevice currentDevice] systemVersion];
-    [KTooL HttpPostWithUrl:@"User/login" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:@"User/login" parameters:dict loadString:@"正在登录" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             
             [NOTIFICATION_CENTER postNotificationName:Login_Success object:nil];
@@ -101,6 +109,7 @@
         
     }];
 }
+
 
 
 @end

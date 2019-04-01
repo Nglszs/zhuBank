@@ -247,11 +247,15 @@
 #pragma mark 点击验证码倒计时
 - (void)clickCodeButton {
     [self endEditing:YES];
-    
+    if (self.PhoneTF.text.length == 0) {
+        ViewToast(@"请输入手机号", 1);
+        
+        return;
+    }
         if (![self isMobileNumber:self.PhoneTF.text]) {
     
     
-            ViewToast(@"手机号码错误", 1);
+            ViewToast(@"请输入正确的手机号", 1);
     
             return;
         }

@@ -104,6 +104,14 @@
     label2.userInteractionEnabled = YES;
     self.userProtocol = label1;
     self.privacyProtocol = label2;
+    [self.PhoneNumberTF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    
+}
+- (void)textFieldChanged:(UITextField*)textField{
+    
+    if (textField.text.length > 11) {
+        textField.text = [textField.text substringToIndex:11];
+    }
     
 }
 
@@ -172,6 +180,10 @@
 
 - (void)GetCodeAction:(UIButton *)btn{
     [self endEditing:YES];
+    if (self.PhoneNumberTF.text.length == 0) {
+        ViewToast(@"请输入手机号", 2);
+        return;
+    }
     if (![self isPhoneNumber:self.PhoneNumberTF.text]) {
         ViewToast(@"请输入正确的手机号", 2);
         return;

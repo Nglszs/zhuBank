@@ -28,6 +28,15 @@
 }
 - (void)GoSetPassword{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+   
+    if (self.RootView.PhoneTF.text.length == 0) {
+        VCToast(@"请输入手机号", 2);
+        return;
+    }
+    if (![self isMobileNumber:self.RootView.PhoneTF.text]) {
+        VCToast(@"请输入正确的手机号", 2);
+        return;
+    }
     if (self.RootView.messageCodeField.text.length == 0) {
         VCToast(@"请输入验证码", 2);
         return;

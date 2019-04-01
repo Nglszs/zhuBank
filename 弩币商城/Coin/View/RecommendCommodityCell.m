@@ -43,7 +43,7 @@
     [self.contentView addSubview:self.titleLabel];
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.imageView).offset(8);
+        make.left.equalTo(self.imageView).offset(14);
         make.right.equalTo(self.contentView);
         make.top.equalTo(self.imageView.mas_bottom).offset(3);
     }];

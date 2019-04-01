@@ -14,6 +14,7 @@
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)UIButton * button;
 @property (nonatomic,strong)NSDictionary * DataDict;
+@property (nonatomic,strong)UIButton * agreementBtn;
 @end
 
 @implementation CoinMemberViewController
@@ -73,6 +74,10 @@
         if (cell == nil) {
             cell =  [[CoinMemberDredgeCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberDredgeCell"];
         }
+        cell.SelfVC = self;
+        if (self.DataDict) {
+            cell.service_agreement = self.DataDict[@"service_agreement"];
+        }
         if ([Tool isVip]) {
             if (self.DataDict) {
               cell.end_time = self.DataDict[@"end_time"];
@@ -80,6 +85,7 @@
             
         }
          [cell.dredgeButton addTarget:self action:@selector(dredgeVip) forControlEvents:(UIControlEventTouchUpInside)];
+        self.agreementBtn =  cell.agreementBtn;
         cell.selectionStyle = 0;
         return cell;
     }
@@ -214,7 +220,10 @@
 }
 
 - (void)dredgeVip{
-    
+    if (!self.agreementBtn.selected) {
+        VCToast(@"请先同意会员服务协议", 2);
+        return;
+    }
     CoinMemberBuyViewController * vc = [CoinMemberBuyViewController new];
     vc.type = BRPayBuyMember;
     

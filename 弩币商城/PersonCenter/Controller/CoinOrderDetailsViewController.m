@@ -15,6 +15,7 @@
 #import "CoinPayMoneyOrderViewController.h"
 #import "CoinH5ViewController.h"
 #import "CoinPayNotFristViewController.h"
+#import "CoinGoodDetailViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -53,18 +54,45 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"商品总额"]];
+    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额"]];
     if (section == 0) {
         return 1;
     }
     return [titles[section] count];
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         return 80;
     }
+    if (self.type == BROrderNotEnable) {
+        if (indexPath.section == 2 && indexPath.row == 3) {
+            if (!self.dataDict) {
+                return 40;
+            }
+            return [self widthOfString:self.dataDict[@"order_info"][@"user_note"]];
+        }
+    }else{
+        if (!self.dataDict) {
+            return 40;
+        }
+        if (indexPath.section == 1 && indexPath.row == 6) {
+        return [self widthOfString:self.dataDict[@"order_info"][@"user_note"]];;
+        }
+    }
     return 40;
 }
+
+- (CGFloat)widthOfString:(NSString *)string{
+    
+    NSDictionary *dic = @{NSFontAttributeName:Regular(13)};  //指定字号
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(BCWidth - 100, 0)/*计算宽度时要确定高度*/ options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
+    return rect.size.height + 15;
+    
+    
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         CoinConfirmCommodityOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinConfirmCommodityOrderCell" forIndexPath:indexPath];
@@ -73,7 +101,7 @@
         return cell;
     }
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"商品总额"]];
+    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额"]];
     cell.textLabel.text = titles[indexPath.section][indexPath.row];
     cell.textLabel.font = Regular(13);
     cell.detailTextLabel.font = Regular(13);
@@ -203,6 +231,8 @@
     if (section == 2 && self.type == BROrderFinsh) {
         return 40;
     }
+   
+    
     return 10;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
@@ -493,8 +523,6 @@
         make.height.mas_equalTo(8);
         make.top.equalTo(view.mas_bottom);
     }];
-    
-    
 }
 
 - (void)request{
@@ -511,18 +539,36 @@
 
 // 取消订单
 - (void)cancelOrder{
-     [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (BCStatus) {
-            VCToast(@"取消订单成功", 2); dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [self showSystemAlertTitle:@"提示" message:@"您确定要取消订单吗？" cancelTitle:@"再想想" confirmTitle:@"确定" cancel:nil confirm:^{
+       [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (BCStatus) {
+                VCToast(@"取消订单成功", 1);
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 
+                 for (int i = 0; i < self.navigationController.viewControllers.count; i++) {
+                     UIViewController * vc = self.navigationController.viewControllers[i];
+                     if ([vc isKindOfClass:[CoinGoodDetailViewController class]]) {
+                         if (self.resultData) {
+                             self.resultData(@"1");
+                         }
+                         [self.navigationController popToViewController:vc animated:YES];
+                         return;
+                     }
+                 }
+                 if (self.resultData) {
+                     self.resultData(@"1");
+                 }
                 [self.navigationController popViewControllerAnimated:YES];
-                self.resultData(@"1");
-            });
-        }else{
-            VCToast(@"取消订单失败", 2);
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+                });
+               
+            }else{
+                VCToast(BCMsg, 2);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            VCToast(@"取消失败", 2);
+        }];
     }];
+    
     
 }
 

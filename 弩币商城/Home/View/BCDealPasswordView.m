@@ -100,10 +100,11 @@
     UIButton * forget =  [UIButton buttonWithType:(UIButtonTypeCustom)];
     [forget setTitle:@"忘记密码？" forState:(UIControlStateNormal)];
     [forget setTitleColor:COLOR(242, 159, 88) forState:(UIControlStateNormal)];
+    WS(weakSelf);
     [forget addtargetBlock:^(UIButton *button) {
-        CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
-        vc.isSetPay = YES;
-        [vc.navigationController pushViewController:vc animated:YES];
+        CoinChangePhoneViewController * vc2 = [CoinChangePhoneViewController new];
+        vc2.isSetPay = YES;
+        [weakSelf.vc.navigationController pushViewController:vc2 animated:YES];
     }];
     [TFView addSubview:forget];
     forget.titleLabel.font = Regular(13);

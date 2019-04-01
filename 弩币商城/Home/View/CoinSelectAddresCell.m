@@ -43,7 +43,7 @@
     self.PhoneNumberLabel.text = @"电话：12345678";
     [self.contentView addSubview:self.PhoneNumberLabel];
     [self.PhoneNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.NameLabel.mas_right).offset(20);
+        make.left.equalTo(self.NameLabel.mas_right).offset(10);
         make.centerY.equalTo(self.NameLabel);
     }];
     
@@ -85,7 +85,12 @@
 
 - (void)setDataDict:(NSDictionary *)dataDict{
     _dataDict = dataDict;
-    self.NameLabel.text = dataDict[@"consignee"];
+    NSString * name = dataDict[@"consignee"];
+    if (name.length > 4) {
+        name = [name substringToIndex:4];
+        name = [NSString stringWithFormat:@"%@...",name];
+    }
+    self.NameLabel.text = name;
     self.PhoneNumberLabel.text = [NSString stringWithFormat:@"电话：%@",dataDict[@"mobile"]];
     self.AddressLabel.text = [NSString stringWithFormat:@"%@ %@",dataDict[@"address_area"],dataDict[@"address"]];
   

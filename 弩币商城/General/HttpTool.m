@@ -83,7 +83,7 @@ static HttpTool * tool;
         dict[key] = [NSString stringWithFormat:@"%@",obj];
     }];
     
-    NSLog(@"---】】】%@",dict);
+
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [SVProgressHUD dismiss];
        

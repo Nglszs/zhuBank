@@ -29,6 +29,12 @@
     self.title = @"注册";
     
 }
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.RootView.RegisterButton addtargetBlock:^(UIButton *button) {
@@ -73,6 +79,14 @@
     
 }
 - (void)request{
+    if (self.RootView.PhoneNumberTF.text.length == 0) {
+        VCToast(@"请输入手机号", 2);
+        return;
+    }
+    if (self.RootView.CodeTF.text.length == 0) {
+        VCToast(@"请输入验证码", 2);
+        return;
+    }
     if (![self isMobileNumber:self.RootView.PhoneNumberTF.text]) {
         VCToast(@"请输入正确的手机号", 2);
         return;
@@ -85,10 +99,7 @@
         VCToast(@"两次密码不一致", 2);
         return;
     }
-    if (self.RootView.CodeTF.text.length == 0) {
-        VCToast(@"请输入验证码", 2);
-        return;
-    }
+ 
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"verify_code"] = self.RootView.CodeTF.text;
     dict[@"password"] = self.RootView.PassWordTF1.text;
@@ -133,6 +144,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
 }
 
 @end

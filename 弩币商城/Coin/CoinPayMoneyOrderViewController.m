@@ -9,6 +9,11 @@
 #import "CoinPayMoneyOrderViewController.h"
 #import "CoinMemberBuyViewController.h"
 #import "CoinOrderDetailsViewController.h"
+
+@interface CoinPayMoneyOrderViewController ()
+@property (nonatomic,assign)BOOL isCancelOrder;
+
+@end
 @implementation CoinPayMoneyOrderViewController
 
 - (void)viewDidLoad {
@@ -18,7 +23,27 @@
     self.navigationItem.title = @"购买成功";
     self.view.backgroundColor = DIVI_COLOR;
     [self initView];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:(UIBarButtonItemStyleDone) target:self action:@selector(temp)];
     
+}
+
+- (void)temp{
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
 }
 
 - (void)initView {
@@ -125,11 +150,15 @@
         make.width.mas_equalTo(BCWidth - 80);
     }];
     
+    WS(weakSelf);
     [backBtn addtargetBlock:^(UIButton *button) {
         CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.resultData = ^(id  _Nonnull resultData) {
+            weakSelf.isCancelOrder = YES;
+        };
         vc.order_id = self.order_id;
-        vc.type = BROrderNotPay;
-        [self.navigationController pushViewController:vc animated:YES];
+        vc.type = weakSelf.isCancelOrder ? BROrderNotDispatch : BROrderNotPay;
+        [weakSelf.navigationController pushViewController:vc animated:YES];
     }];
     
 }

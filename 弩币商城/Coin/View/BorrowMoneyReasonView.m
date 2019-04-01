@@ -34,6 +34,7 @@
     for (NSDictionary * dict in data) {
         [array addObject:dict[@"use"]];
     }
+    [array addObject:@"无指定用途（根据监管规则，无指定用途不允许借款）"];
     for (int i = 0; i < array.count; i++) {
         UIView * view = [UIView new];
         view.backgroundColor = [UIColor whiteColor];
@@ -52,11 +53,10 @@
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(view);
         }];
-        MJWeakSelf;
+        
+        
         [btn addtargetBlock:^(UIButton *button) {
-            if (weakSelf.use) {
-                weakSelf.use(button.titleLabel.text);
-            }
+           
         }];
         btn.tag = 1000 + i;
         [btn addTarget:self action:@selector(Select:) forControlEvents:(UIControlEventTouchUpInside)];
@@ -110,7 +110,13 @@
    
 }
 - (void)Select:(UIButton *)btn{
-    
+    if ([btn.titleLabel.text containsString:@"无指定用途"]) {
+        return;
+    }
+    WS(weakSelf);
+    if (weakSelf.use) {
+        weakSelf.use(btn.titleLabel.text);
+    }
     [self close];
 }
 - (void)close{

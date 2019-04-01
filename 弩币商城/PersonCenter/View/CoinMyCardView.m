@@ -210,6 +210,7 @@
 }
 - (void)request{
     [KTooL HttpPostWithUrl:@"UserCenter/my_bank" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+
         if (BCStatus) {
             
             NSDictionary *  fu_bankcard = responseObject[@"data"][@"fu_bankcard"];

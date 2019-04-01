@@ -263,13 +263,7 @@
 }
 
 - (void)BackAction{
-    for (int i = 0; i < self.navigationController.viewControllers.count; i++) {
-        UIViewController * vc = self.navigationController.viewControllers[i];
-        if ([vc isKindOfClass:[CoinGoodDetailViewController class]]) {
-             [self.navigationController popToViewController:vc animated:YES];
-            return;
-        }
-    }
+ 
       [self.navigationController popViewControllerAnimated:YES];
 }
 

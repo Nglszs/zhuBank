@@ -11,7 +11,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinGoodDetailViewController : CoinBaseViewController
-
 @property (nonatomic, copy) NSString *goodID;//商品id
 @end
 

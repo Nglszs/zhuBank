@@ -36,7 +36,7 @@
     dict[@"mobile"] = self.mobile;
     dict[@"password"] = self.RootView.password1.text;
     dict[@"confirm_pwd"] = self.RootView.password2.text;
-    if (self.RootView.password1.text.length == 0) {
+    if (self.RootView.password1.text.length == 0 || self.RootView.password2.text.length == 0) {
         VCToast(@"请输入密码", 2);
         return;
     }
@@ -44,7 +44,7 @@
         VCToast(@"两次密码不一致", 2);
         return;
     }
-    [KTooL HttpPostWithUrl:@"User/set_login_pwd" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [KTooL HttpPostWithUrl:@"User/set_login_pwd" parameters:dict loadString:@"正在修改" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             [self.navigationController pushViewController:[CoinPassWordSucceedViewController new] animated:YES];
         }else{

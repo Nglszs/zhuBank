@@ -337,6 +337,7 @@
             [dict setObject:invoice_rise forKey:@"invoice_rise"];
             [weakSelf.DataDict setObject:dict forKey:@"invoice_info"];
             NSIndexPath * index = [NSIndexPath indexPathForRow:1 inSection:2];
+            
             [weakSelf.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:(UITableViewRowAnimationNone)];
             [weakSelf upFootView:self.DataDict[@"order_info"]];
         };
@@ -381,6 +382,7 @@
                 [dict setObject:money forKey:@"coupons_transfer"];
                 [dict setObject:idString forKey:@"coupons_transfer_id"];
                 [weakSelf.DataDict setObject:dict forKey:@"coupons_info"];
+                [self.tableView reloadData];
             };
             [self.view addSubview:view];
         }

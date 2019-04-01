@@ -9,6 +9,7 @@
 #import "CoinByStagesViewController.h"
 #import "CoinRepaymentPlanViewController.h"
 #import "WOWONoDataView.h"
+#import "CoinOrderDetailsViewController.h"
 @interface CoinByStagesViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -358,6 +359,23 @@
         
     }];
     
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row == 0) {
+        NSDictionary * dict;
+        if (tableView == self.ProceedTableView) {
+            dict = self.ProceedDataArray[indexPath.section];
+        }else{
+          dict = self.finishDataArray[indexPath.section];
+        }
+        
+        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+        vc.type = BROrderFinsh;
+        vc.order_id = dict[@"order_id"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
