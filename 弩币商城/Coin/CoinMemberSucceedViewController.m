@@ -31,6 +31,7 @@
         self.title = @"支付成功";
     }else if (self.type == BRPayRepaySuccess){
         self.title = @"还款状态";
+        [self requestRepaymentCommodity];
     }
     [self SetNavTitleColor];
     [self initView];
@@ -289,6 +290,18 @@ UIView * tempView =     [self HeaderView];
         
     }];
     
+}
+
+- (void)requestRepaymentCommodity{
+    [KTooL HttpPostWithUrl:@"get-hot-goods" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.dataArray = responseObject[@"data"];
+            [self.collectionView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
 }
 @end
 

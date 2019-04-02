@@ -122,8 +122,7 @@ static void *networkKey = &networkKey;
     
     if ([Tool isLogin]) {
         
-       
-        [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+       [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
             
             NSLog(@"===%@",responseObject);
             

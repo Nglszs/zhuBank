@@ -237,7 +237,7 @@
         ViewToast(@"请填写手机号码", 1);
         return;
     }
-    if ([self isMobileNumber:self.PhoneNumberTF.text]) {
+    if (![self isMobileNumber:self.PhoneNumberTF.text]) {
         ViewToast(@"请填写正确的手机号码", 1);
         return;
     }

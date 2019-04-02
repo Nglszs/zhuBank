@@ -26,6 +26,7 @@
     NSArray *divideArr;
     NSArray *sizeArr;
     NSString *price;//商品价格
+    NSString * phone;
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -76,6 +77,7 @@
     [self initBottomButton];
     
     [self getData];
+    [self requestPhone];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -624,6 +626,7 @@
     if (status == -7) {
         CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
         vc.isSetPay = YES;
+        vc.phoneNum = phone;
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (status == -8) {
@@ -636,6 +639,19 @@
         VCToast(msg, 2);
     }
     return NO;
+    
+}
+
+- (void)requestPhone{
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            phone = responseObject[@"data"][@"mobile"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
     
 }
 
