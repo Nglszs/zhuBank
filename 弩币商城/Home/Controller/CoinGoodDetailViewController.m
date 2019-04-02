@@ -426,7 +426,9 @@
         vv.backBlock = ^(id  _Nonnull result) {
             
             NSLog(@")))%@",result);
-            sizeArr = result;
+            sizeArr = [result objectForKey:@"arr"];
+             UILabel *sizeL = [self.backScrollView viewWithTag:700];
+            sizeL.text = [result objectForKey:@"size"];
         };
     }];
     
@@ -685,7 +687,9 @@
         vv.backBlock = ^(id  _Nonnull result) {
             
             NSLog(@")))%@",result);
-            sizeArr = result;
+            sizeArr = [result objectForKey:@"arr"];
+            UILabel *sizeL = [self.backScrollView viewWithTag:700];
+            sizeL.text = [result objectForKey:@"size"];
             
             NSMutableDictionary * dict = [NSMutableDictionary dictionary];
             dict[@"q_fenqi"] = divideArr.count<=0?@"0":@"1";

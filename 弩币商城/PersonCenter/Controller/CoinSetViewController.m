@@ -64,6 +64,7 @@
         [USER_DEFAULTS removeObjectForKey:USER_Token];
         [USER_DEFAULTS synchronize];
         
+        [NOTIFICATION_CENTER postNotificationName:Exit_login object:nil];
         CoinLoginViewController *workVC =  [[CoinLoginViewController alloc] init];
         NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
         BCNavigationViewController *workNav = [[BCNavigationViewController alloc] initWithRootViewController:workVC];

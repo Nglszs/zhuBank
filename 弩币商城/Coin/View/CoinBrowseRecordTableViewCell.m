@@ -9,6 +9,9 @@
 #import "CoinBrowseRecordTableViewCell.h"
 
 @implementation CoinBrowseRecordTableViewCell
+{
+    UIImageView *rightImage;
+}
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -69,7 +72,7 @@
         if (i == 0) {
             
             
-            UIImageView *rightImage = [[UIImageView alloc] init];
+            rightImage = [[UIImageView alloc] init];
             rightImage.image = BCImage(查看更多);
             [backV addSubview:rightImage];
             [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -110,6 +113,14 @@
     }];
 }
 - (void)setValueData:(NSDictionary *)data {
+    
+    
+    [rightImage addTapGestureWithBlock:^{
+        
+        CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+        vc.url =[data objectNilForKey:@"load_url"];
+        [self.getCurrentViewController.navigationController pushViewController:vc animated:YES];
+    }];
     
     NSArray *leftA = @[[data objectNilForKey:@"loan_agree_num"],
                        [data objectNilForKey:@"amount"],

@@ -9,6 +9,9 @@
 #import "CoinNotBrowseTableViewCell.h"
 
 @implementation CoinNotBrowseTableViewCell
+{
+    UIImageView *rightImage;
+}
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
     
@@ -70,7 +73,7 @@
         if (i == 0) {
             
             
-            UIImageView *rightImage = [[UIImageView alloc] init];
+            rightImage  = [[UIImageView alloc] init];
             rightImage.image = BCImage(查看更多);
             [backV addSubview:rightImage];
             [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -79,7 +82,7 @@
                 make.centerY.equalTo(leftL);
             }];
             
-            
+          
             
             [rightL mas_remakeConstraints:^(MASConstraintMaker *make) {
                 
@@ -150,6 +153,12 @@
         
     }
     
+    [rightImage addTapGestureWithBlock:^{
+       
+        CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+        vc.url =[data objectNilForKey:@"load_url"];
+        [self.getCurrentViewController.navigationController pushViewController:vc animated:YES];
+    }];
     NSArray *leftA = @[[data objectNilForKey:@"loan_agree_num"],
                        [data objectNilForKey:@"amount"],
                        [data objectNilForKey:@"interest"],[data objectNilForKey:@"rate"],@"¥0.00",[data objectNilForKey:@"days"],[data objectNilForKey:@"apply_date"],[data objectNilForKey:@"should_pay_date"],[data objectNilForKey:@"pay_type"],[data objectNilForKey:@"name"],[data objectNilForKey:@"bank_card"],[data objectNilForKey:@"repay_total"],status,[data objectNilForKey:@"overdue_pay"]];

@@ -427,7 +427,7 @@
                 }
 
     if (h < headView.height) {
-        h = headView.height + 15;
+        h = headView.height + 45;
     } else {
         
         h += 30;
@@ -453,7 +453,7 @@
         if (self.backBlock ) {
 
            
-            self.backBlock(@[_countTextField.text,item_ID]);
+            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle,selectedBtn.currentTitle]});
         }
 
         [self removeCommentCuView];

@@ -17,7 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+   
+    if (BCStringIsEmpty(self.url)) {
+        
+        VCToast(@"h5地址不能为空", 1);
+    }
+    
     [self SetReturnButton];
 self.commWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight-BCNaviHeight) ];
     self.title = self.titleStr;
