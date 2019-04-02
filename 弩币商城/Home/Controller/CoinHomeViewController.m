@@ -88,6 +88,8 @@ static NSString *cellID = @"cell";
     }
    
     [NOTIFICATION_CENTER addObserver:self selector:@selector(loginSuccess) name:Login_Success object:nil];
+    
+     [NOTIFICATION_CENTER addObserver:self selector:@selector(exitSuccess) name:Exit_login object:nil];
 
 }
 
@@ -102,6 +104,15 @@ static NSString *cellID = @"cell";
              self.tabBarController.selectedIndex = 2;
         }
        
+    }];
+}
+
+- (void)exitSuccess {
+    [loginBtn setImage:nil forState:UIControlStateNormal];
+    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    [loginBtn addtargetBlock:^(UIButton *button) {
+        CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 - (void)viewWillAppear:(BOOL)animated {

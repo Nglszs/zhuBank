@@ -24,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL isSetPay;
 
-@property (nonatomic, copy) NSString *phoneNum;//x交易密码时，手机号码传入
+@property (nonatomic, copy) NSString *phoneNum;//设置/修改交易密码时，手机号码传入
+
 @end
 
 NS_ASSUME_NONNULL_END

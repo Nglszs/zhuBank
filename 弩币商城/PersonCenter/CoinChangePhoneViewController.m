@@ -196,6 +196,28 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
+        if (_phoneField.text.length <= 0) {
+            
+            
+            VCToast(@"手机号码不能为空", 1);
+            
+            return;
+        }
+        
+        if (![Tool isMobileNumber:_phoneField.text]) {
+            VCToast(@"手机号码错误", 1);
+            return;
+        }
+        
+        
+        if (_messageCodeField.text.length <= 0) {
+           
+            VCToast(@"验证码不能为空", 1);
+            
+            return;
+        }
+        
+        
         if (_isChangePhone) {//修改手机号码
             [KTooL HttpPostWithUrl:@"UserCenter/reset_mobile" parameters:@{@"new_mobile":_phoneField.text,@"verify_code":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
                 
@@ -268,7 +290,7 @@
     }
     
     //    网络请求成功后调用下方代码
-    
+    [self.view endEditing:YES];
     MJWeakSelf;
     [BCManagerTool loadTencentCaptcha:self.view callback:^(NSString *Ticket, NSString *Randstr) {
         if (!BCStringIsEmpty(Ticket) && !BCStringIsEmpty(Randstr)) {

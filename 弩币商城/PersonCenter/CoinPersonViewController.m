@@ -161,7 +161,7 @@
         make.top.equalTo(headI.mas_top).offset(16);
         
         make.left.equalTo(headI.mas_right).offset(LEFT_Margin);
-        make.height.mas_equalTo(13);
+        make.height.mas_equalTo(15);
     }];
     
     
