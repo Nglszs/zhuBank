@@ -283,7 +283,17 @@ static HttpTool * tool;
     dict[@"Ticket"] = Ticket;
     dict[@"Randstr"] = Randstr;
     [KTooL HttpPostWithUrl:@"User/send_sms" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        success(BCStatus);
+        if (BCStatus) {
+            
+           success(BCStatus);
+            
+        } else {
+            
+            [[UIApplication sharedApplication].keyWindow makeToast:BCMsg duration:1 position:CSToastPositionCenter];
+            
+        }
+        
+       
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
