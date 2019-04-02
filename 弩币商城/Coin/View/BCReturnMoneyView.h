@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BCReturnMoneyView : UIView
+@interface BCReturnMoneyView : UIView<UITextFieldDelegate>
 @property (nonatomic,strong)UITextField * passwordTF;
 @property (nonatomic,copy)NSString * money;
 @property (nonatomic,strong) UIButton *submitB;

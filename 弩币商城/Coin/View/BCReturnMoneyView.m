@@ -97,6 +97,7 @@
     
     UITextField * passwordTF = [UITextField new];
     self.passwordTF = passwordTF;
+    passwordTF.delegate = self;
     passwordTF.placeholder = @"请输入支付短信验证码";
     passwordTF.font = Regular(13);
     passwordTF.secureTextEntry = YES;
@@ -124,5 +125,36 @@
     _submitB = submitButton;
 }
 
-
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (string.length <= 0) {
+        return YES;
+    }
+    
+    //禁止输入空格
+    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
+    
+    if (![string isEqualToString:tem]) {
+        return NO;
+    }
+    
+    
+    if (textField.text.length >= 6) {
+        return NO;
+    }
+   
+    
+    //  只能输入数字
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    NSString *filtered =
+    [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    
+    
+    
+    
+    return  [string isEqualToString:filtered];
+    
+    
+    
+}
 @end

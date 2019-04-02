@@ -33,7 +33,7 @@
     }];
     
     
-    NSArray *leftA = @[@"借款协议编号：",@"借款金额：",@"利+服务费：",@"综合月利率：",@"借款期限(天)：",@"到期还款日：",@"还款方式：",@"逾期费：",@"实际还款总金额：",@"还款账户名称：",@"还款账号："];
+    NSArray *leftA = @[@"借款协议编号：",@"借款金额：",@"利息+服务费：",@"综合月利率：",@"借款期限(天)：",@"到期还款日：",@"实际还款日：",@"还款方式：",@"逾期费：",@"实际还款总金额：",@"还款账户名称：",@"还款账号："];
     for (int i = 0; i < leftA.count; i ++) {
         
         
@@ -113,7 +113,7 @@
     
     NSArray *leftA = @[[data objectNilForKey:@"loan_agree_num"],
                        [data objectNilForKey:@"amount"],
-                       [data objectNilForKey:@"interest"],[data objectNilForKey:@"rate"],[data objectNilForKey:@"days"],[data objectNilForKey:@"apply_date"],[data objectNilForKey:@"should_pay_date"],[data objectNilForKey:@"pay_type"],[data objectNilForKey:@"overdue_pay"],[data objectNilForKey:@"repay_total"],[data objectNilForKey:@"name"],[data objectNilForKey:@"bank_card"]];
+                       [data objectNilForKey:@"interest"],[data objectNilForKey:@"rate"],[data objectNilForKey:@"days"],[data objectNilForKey:@"should_pay_date"],[data objectNilForKey:@"success_repay_date"],[data objectNilForKey:@"pay_type"],[data objectNilForKey:@"overdue_pay"],[data objectNilForKey:@"repay_total"],[data objectNilForKey:@"name"],[data objectNilForKey:@"bank_card"]];
     for (int i = 0; i < leftA.count; i ++) {
         
         

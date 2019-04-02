@@ -14,6 +14,7 @@
     UIButton *selectedBtn;
     NSString *goodID,*item_ID;
     NSArray *dataArr;//优惠券数组
+    NSString *ID,*money;
 }
 
 - (void)getData{
@@ -57,9 +58,7 @@
 }
 - (void)initView {
     
-//    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-//    [self addGestureRecognizer:panGes];
-    
+
     
     
     //背景
@@ -89,7 +88,14 @@
         make.width.mas_equalTo(BCWidth);
     }];
     
-    
+    //退出按钮
+    UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    [exitButton setTitle:@"取消选择" forState:UIControlStateNormal];
+    exitButton.titleLabel.font = Regular12Font;
+    exitButton.frame=CGRectMake(BCWidth - 65, 16, 50, 22);
+    [exitButton setTitleColor:COLOR(153, 153, 153) forState:UIControlStateNormal];
+    [headView addSubview:exitButton];
+    [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
     
     
     //    优惠券
@@ -101,9 +107,7 @@
         
         
         UIButton *backBtn= [[UIButton alloc] init];
-        
-        [backBtn setImage:BCImage(椭圆 2) forState:UIControlStateNormal];
-         [backBtn setImage:BCImage(组 2-2) forState:UIControlStateSelected];
+        backBtn.userInteractionEnabled = NO;
         [imageV addSubview:backBtn];
         
         [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,20 +133,17 @@
                 selectedBtn.selected = YES;
             }
             
-//            选择的优惠券
-            if (self.backBlock) {
-             
-                NSString *ID = [dic objectForKey:@"id"];
-                NSString *money  = [dic objectForKey:@"money"];
-                self.backBlock(@{@"id":ID,@"money":money});
-            }
-            
-            [self removeCommentCuView];
+//
+            ID = [dic objectForKey:@"id"];
+            money  = [dic objectForKey:@"money"];
+           
             
         }];
         
         if (isUseMoney == 0) {//如果是现金券
             
+            [backBtn setImage:BCImage(椭圆 2) forState:UIControlStateNormal];
+            [backBtn setImage:BCImage(组 2-2) forState:UIControlStateSelected];
             imageV.image = BCImage(可用优惠券商品bj);
             [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
                 
@@ -211,7 +212,8 @@
 //
             
         } else {
-            
+            [backBtn setImage:BCImage(椭圆 2-1) forState:UIControlStateNormal];
+            [backBtn setImage:BCImage(组 2-3) forState:UIControlStateSelected];
             imageV.image = BCImage(可用优惠券运费bj);
             
             [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -291,12 +293,22 @@
     UIButton *backBtn1 = [[UIButton alloc] init];
     backBtn1.frame = CGRectMake(0, BCHeight - 50 - BCNaviHeight, BCWidth, 50);
     backBtn1.titleLabel.font = Regular(16);
-    [backBtn1 setTitle:@"关闭" forState:UIControlStateNormal];
+    [backBtn1 setTitle:@"确定" forState:UIControlStateNormal];
     [backBtn1 setTitleColor:White forState:UIControlStateNormal];
     backBtn1.backgroundColor = Red;
     [self addSubview:backBtn1];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
+        
+//        选择的优惠券
+        if (self.backBlock&&ID) {
+            
+          
+              self.backBlock(@{@"id":ID,@"money":money});
+            
+          
+            
+        }
         [self removeCommentCuView];
     }];
     
