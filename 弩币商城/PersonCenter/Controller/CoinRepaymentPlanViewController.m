@@ -8,6 +8,7 @@
 
 #import "CoinRepaymentPlanViewController.h"
 #import "CoinMemberBuyViewController.h"
+#import "CoinRepaymentExplainView.h"
 @interface CoinRepaymentPlanViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -21,6 +22,7 @@
 
 @property (nonatomic,copy)NSArray *  waitingArray;// 还款中
 @property (nonatomic,copy)NSArray *  alreadyArray;// 已还款
+
 @end
 
 @implementation CoinRepaymentPlanViewController
@@ -28,13 +30,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"还款计划列表";
-    [self SetNavTitleColor];
-    [self SetReturnButton];
+ 
     [self.view addSubview:self.backScrollView];
     [self.backScrollView addSubview:self.finishTableView];
     [self.backScrollView addSubview:self.ProceedTableView];
     [self.view addSubview:self.headView];
+    [self setNavitemImage:@"疑问" type:(RightNavItem)];
   
+}
+- (void)RightItemAction{
+   CoinRepaymentExplainView * View  = [[CoinRepaymentExplainView alloc] initWithFrame: CGRectMake(0, 0, BCWidth, BCHeight)];
+    [[UIApplication sharedApplication].keyWindow addSubview:View];
+    
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -46,12 +53,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray * titlles = @[@"本期本金：",@"服务费：",@"本期应还：",@"最后还款日期：",@"状态："];
-    return titlles.count;
+   
+    return tableView == self.ProceedTableView ? 5 : 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray * titlles = @[@"本期本金：",@"服务费：",@"本期应还：",@"最后还款日期：",@"状态："];
+    NSArray * titlles = tableView == self.ProceedTableView ? @[@"本期本金：",@"服务费：",@"本期应还：",@"最后还款日期：",@"状态："] : @[@"还款日：",@"实际还款时间：",@"应还金额：",@"实还金额：",@"还款方式：",@"流水编号："];
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     cell.selectionStyle = 0;
     cell.textLabel.text = titlles[indexPath.row];
@@ -60,40 +67,72 @@
     
     cell.detailTextLabel.textColor = COLOR(102, 102, 102);
     cell.detailTextLabel.font = Regular(13);
-    NSDictionary * dict = tableView == self.ProceedTableView ? self.waitingArray[indexPath.section] : self.alreadyArray[indexPath.section];
-    
-    NSString * status = dict[@"status"];
-    if ([status intValue] == 1) {
-        status = @"正常未还";
-    }else if ([status intValue] == 2){
-        status = @"逾期未还";
-    }else if ([status intValue] == 3){
-        status = @"已还";
-    }
-    switch (indexPath.row) {
-        case 0:
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"amount"]];
-            break;
-            
-        case 1:
-cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
-            break;
-            
-        case 2:
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
-            
-            break;
-            
-        case 3:
-            cell.detailTextLabel.text = dict[@"exptime"];
-            
-            break;
-            
-        case 4:
-            cell.detailTextLabel.text = status;
-            break;
-    }
+    cell.detailTextLabel.text = [self detailTextLabelText:tableView Index:indexPath];
     return cell;
+}
+
+- (NSString *)detailTextLabelText:(UITableView *)tableView Index:(NSIndexPath *)index{
+    
+    if (tableView == self.ProceedTableView) {
+        NSDictionary * dict = self.waitingArray[index.section];
+        NSString * status = dict[@"status"];
+        if ([status intValue] == 1) {
+            status = @"正常未还";
+        }else if ([status intValue] == 2){
+            status = @"逾期未还";
+        }else if ([status intValue] == 3){
+            status = @"已还";
+        }
+        switch (index.row) {
+            case 0:
+                return [NSString stringWithFormat:@"￥%@",dict[@"amount"]];
+                break;
+                
+            case 1:
+                return [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
+                break;
+            case 2:
+                return [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
+                break;
+            case 3:
+          return  dict[@"exptime"];
+                break;
+                
+            case 4:
+                return status;
+                break;
+           
+        }
+    }
+    
+    if (tableView == self.finishTableView) {
+        NSDictionary * dict = self.waitingArray[index.section];
+        
+        switch (index.row) {
+            case 0:
+                return dict[@"exptime"]; // 还款日
+                break;
+                
+            case 1:
+                 return dict[@"repay_time"]; // 实际还款日
+                break;
+            case 2:
+                   return [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
+                break;
+            case 3:
+                   return [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
+                break;
+                
+            case 4:
+                return dict[@"pay_name"];// 还款方式
+                break;
+            case 5:
+                return dict[@"repay_order_num"];// 流水编号
+                break;
+                
+        }
+    }
+    return @"";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 35;
@@ -328,9 +367,7 @@ cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_a
 
 - (void)request{
     NSString * url = [NSString stringWithFormat:@"repay-plan/%@",self.order_id];
-    
     [KTooL HttpPostWithUrl:url parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        
         if (BCStatus) {
             self.waitingArray = responseObject[@"data"][@"waiting"];
              self.alreadyArray = responseObject[@"data"][@"already"];

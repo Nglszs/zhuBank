@@ -241,6 +241,7 @@
             [TF mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(BGView).offset(10);
                 make.top.bottom.equalTo(BGView);
+                make.width.mas_equalTo(120);
                }];
             [BGView addTapGestureWithBlock:^{
                 [TF becomeFirstResponder];

@@ -60,15 +60,25 @@
 }
 
 - (void)RightItemAction{
-    [KTooL HttpPostWithUrl:@"Order/delete_address" parameters:@{@"address_id": self.address_id} loadString:@"正在删除" success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (BCStatus) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }else{
-            VCToast(BCMsg, 2);
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    
+    [self showSystemAlertTitle:@"确定删除此地址吗？" message:nil cancelTitle:@"取消" confirmTitle:@"确定" cancel:nil confirm:^{
+        
+        [KTooL HttpPostWithUrl:@"Order/delete_address" parameters:@{@"address_id": self.address_id} loadString:@"正在删除" success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (BCStatus) {
+                VCToast(@"删除成功", 1);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                      [self.navigationController popViewControllerAnimated:YES];
+                });
+              
+            }else{
+                VCToast(BCMsg, 2);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
         
     }];
+   
 }
 
 @end

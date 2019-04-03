@@ -59,7 +59,7 @@
     }];
     
     self.ByStagesLabel = [UILabel new];
-  
+    self.ByStagesLabel.hidden = ![Tool AuditState];
     [self.contentView addSubview:self.ByStagesLabel];
     [self.ByStagesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.MoneyLabel.mas_bottom).offset(3);

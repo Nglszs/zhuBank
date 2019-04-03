@@ -50,12 +50,12 @@
     
     self.NoDataView2 = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无分期记录！" detailText:nil buttonTitle:@"去逛逛"];
     [self.finishTableView addSubview:self.NoDataView2];
-    
-    [self.NoDataView2.button addTarget:self action:@selector(goShopp) forControlEvents:(UIControlEventTouchUpInside)];
-    
-     [self.NoDataView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.NoDataView2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.finishTableView);
     }];
+    [self.NoDataView2.button addTarget:self action:@selector(goShopp) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    
 }
 
 - (void)goShopp{
@@ -328,7 +328,7 @@
 }
 - (void)requestProceed{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"1"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self.ProceedTableView.mj_footer endRefreshing];
+        [self.ProceedTableView.mj_header endRefreshing];
         if (BCStatus) {
             if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.ProceedDataArray = responseObject[@"data"];
@@ -338,7 +338,7 @@
         }
     
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+          [self.ProceedTableView.mj_header endRefreshing];
     }];
 
 }
@@ -346,7 +346,7 @@
 
 - (void)requestFinish{
     [KTooL HttpPostWithUrl:@"installments" parameters:@{@"repay_type":@"2"} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self.finishTableView.mj_footer endRefreshing];
+        [self.finishTableView.mj_header endRefreshing];
         if (BCStatus) {
         if (!BCArrayIsEmpty(responseObject[@"data"])) {
                 self.finishDataArray = responseObject[@"data"];
@@ -356,24 +356,29 @@
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self.finishTableView.mj_header endRefreshing];
     }];
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    NSDictionary * dict;
+    if (tableView == self.ProceedTableView) {
+        dict = self.ProceedDataArray[indexPath.section];
+    }else{
+        dict = self.finishDataArray[indexPath.section];
+    }
     if (indexPath.row == 0) {
-        NSDictionary * dict;
-        if (tableView == self.ProceedTableView) {
-            dict = self.ProceedDataArray[indexPath.section];
-        }else{
-          dict = self.finishDataArray[indexPath.section];
-        }
-        
-        CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
+         CoinOrderDetailsViewController * vc = [CoinOrderDetailsViewController new];
         vc.type = BROrderFinsh;
         vc.order_id = dict[@"order_id"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    if (indexPath.row == 1) {
+        CoinH5ViewController * vc = [CoinH5ViewController new];
+        vc.titleStr = @"借款协议";
+         vc.url = dict[@"url"];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

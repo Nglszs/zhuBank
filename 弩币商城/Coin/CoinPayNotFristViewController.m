@@ -23,10 +23,13 @@
     self.navigationItem.title = @"购买成功";
     self.view.backgroundColor = White;
     [self initView];
-    self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:(UIBarButtonItemStyleDone) target:self action:@selector(temp)];
     
 }
-
+- (void)temp{
+    
+    
+}
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {

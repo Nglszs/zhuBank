@@ -34,6 +34,7 @@
 @property (nonatomic,strong)UIButton * ConsentButton;
 @property (nonatomic,strong)UIView * tempView;
 @property (nonatomic,strong)UIButton * GoBuyButton;
+@property (nonatomic,copy)NSString * phone;
 @end
 
 @implementation CoinConfirmOrderViewController
@@ -49,6 +50,7 @@
     [self initFooterView];
     [self SetReturnButton];
     [self Request];
+    [self requestPhone];
 }
 - (void)initTableView{
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStyleGrouped)];
@@ -382,6 +384,7 @@
                 [dict setObject:money forKey:@"coupons_transfer"];
                 [dict setObject:idString forKey:@"coupons_transfer_id"];
                 [weakSelf.DataDict setObject:dict forKey:@"coupons_info"];
+                  [self upFootView:weakSelf.DataDict[@"order_info"]];
                 [self.tableView reloadData];
             };
             [self.view addSubview:view];
@@ -630,6 +633,7 @@
     if (status == -7) {
         CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
         vc.isSetPay = YES;
+        vc.phoneNum =  self.phone;
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (status == -8) {
@@ -675,5 +679,18 @@
     
     NSString *numberString = [NSString stringWithFormat:@"%f",str];
     return [NSString stringWithFormat:@"%@",[NSDecimalNumber decimalNumberWithString:numberString]];
+}
+
+- (void)requestPhone{
+    
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.phone = responseObject[@"data"][@"mobile"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+   
+    
 }
 @end
