@@ -18,6 +18,7 @@
     NSString *stages,*numMonth;
     UILabel *leftL1;
     NSString *price;
+    BOOL isFresh;
 }
 - (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPrice:(nonnull NSString *)pirce{
     price = pirce;
@@ -47,8 +48,11 @@
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
+           
+                
+                 [self initView];
             
-            [self initView];
+          
             
         } else {
             
@@ -116,7 +120,7 @@
     [exitButton setImage:[UIImage imageNamed:@"取消"] forState:UIControlStateNormal];
     exitButton.frame=CGRectMake(BCWidth - 37, 14, 22, 22);
     [headView addSubview:exitButton];
-    [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
+   
     
     NSArray *titleA = @[@"不分期",@"分期"];
     for (int i = 0; i < 2 ; i++) {
@@ -322,6 +326,28 @@
         [self removeCommentCuView];
     }];
     
+    [exitButton addtargetBlock:^(UIButton *button) {
+        
+       
+        NSArray *titleArr1 = [[dataDic objectForKey:@"list"] objectForKey:@"period_num"];
+        UIButton *btn = [self viewWithTag:200];
+          UIButton *btn1 = [self viewWithTag:300 + titleArr1.count-1];
+        [btn sendActionsForControlEvents:UIControlEventTouchUpInside];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [btn1 sendActionsForControlEvents:UIControlEventTouchUpInside];
+        });
+        
+       
+        if (self.backBlock) {
+           
+           NSArray *titleArr1 = [[dataDic objectForKey:@"list"] objectForKey:@"period_num"];
+            self.backBlock(@{@"cancel":@"1",@"lixi":@[@"零首付",[titleArr1 lastObject] ]});
+        }
+       
+        
+         [self removeCommentCuView];
+    }];
+    
 }
 
 
@@ -435,7 +461,7 @@
         [UIView animateWithDuration:.25 animations:^{
             self.top = BCHeight;
         } completion:^(BOOL finished) {
-            [self removeFromSuperview];
+//            [self removeFromSuperview];
         }];
         
         

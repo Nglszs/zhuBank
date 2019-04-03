@@ -95,7 +95,22 @@
     exitButton.frame=CGRectMake(BCWidth - 65, 16, 50, 22);
     [exitButton setTitleColor:COLOR(153, 153, 153) forState:UIControlStateNormal];
     [headView addSubview:exitButton];
-    [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
+    [exitButton addtargetBlock:^(UIButton *button) {
+        
+        
+        ID = @"";
+        money  = @"";
+//        选择的优惠券
+        if (self.backBlock) {
+            
+            
+            self.backBlock(@{@"id":ID,@"money":money});
+            
+            
+            
+        }
+        [self removeCommentCuView];
+    }];
     
     
     //    优惠券
