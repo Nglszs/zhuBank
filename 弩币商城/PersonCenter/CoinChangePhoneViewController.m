@@ -36,7 +36,14 @@
     
     UILabel *titleL = [[UILabel alloc] init];
     if (_isChangePhone) {
-          titleL.text = @"修改绑定手机号码";
+        
+        if (_isReset) {
+             titleL.text = @"绑定新手机号码";
+        } else {
+            
+              titleL.text = @"修改绑定手机号码";
+        }
+        
     } else {
         
         if (_isSetPay) {
@@ -72,9 +79,10 @@
     _phoneField = _countTextField;
     _countTextField.font = Regular(15);
    
-    if (!_isChangePhone) {//如果是交易密码，则吧手机号码直接传入
+    if (_phoneNum) {//如果是交易密码，则吧手机号码直接传入
         
         _countTextField.text = _phoneNum;
+        _countTextField.userInteractionEnabled = NO;
     } else {
         _countTextField.placeholder = @"请输入您的手机号码";
     }
@@ -218,7 +226,7 @@
         }
         
         
-        if (_isChangePhone) {//修改手机号码
+        if (_isChangePhone&& _isReset) {//修改新手机号码
             [KTooL HttpPostWithUrl:@"UserCenter/reset_mobile" parameters:@{@"new_mobile":_phoneField.text,@"verify_code":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
                 
                 NSLog(@"===%@",responseObject);
@@ -249,11 +257,19 @@
                 
                 if (BCStatus) {
                     
+                    if (_isChangePhone) {
+                        
+                        CoinChangePhoneViewController *vc = [[CoinChangePhoneViewController alloc] init];
+                        vc.isChangePhone = YES;
+                        vc.isReset = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                        
+                    }else {
                     CoinChangePayCodeViewController *vc = [[CoinChangePayCodeViewController alloc] init];
                   
                     vc.isChangePay = !_isSetPay;
                     [self.navigationController pushViewController:vc animated:YES];
-                    
+                    }
                 } else {
                     
                     VCToast([responseObject objectNilForKey:@"msg"], 1);
@@ -291,10 +307,17 @@
     
     //    网络请求成功后调用下方代码
     [self.view endEditing:YES];
+    NSInteger type;
+    if (_isReset) {
+        type = 1;
+    } else {
+        
+        type = 2;
+    }
     MJWeakSelf;
     [BCManagerTool loadTencentCaptcha:self.view callback:^(NSString *Ticket, NSString *Randstr) {
         if (!BCStringIsEmpty(Ticket) && !BCStringIsEmpty(Randstr)) {
-            [KTooL GetCodeWithMobile:self.phoneField.text action:2 Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
+            [KTooL GetCodeWithMobile:self.phoneField.text action:type Ticket:Ticket randstr:Randstr success:^(BOOL isSucces) {
                 if (isSucces) {
                     [weakSelf changeTimeState];
                 }
