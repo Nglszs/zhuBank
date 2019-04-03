@@ -51,8 +51,9 @@
     self.NoDataView2 = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无分期记录！" detailText:nil buttonTitle:@"去逛逛"];
     [self.finishTableView addSubview:self.NoDataView2];
     [self.NoDataView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.finishTableView);
+        make.edges.equalTo(self.NoDataView);
     }];
+   
     [self.NoDataView2.button addTarget:self action:@selector(goShopp) forControlEvents:(UIControlEventTouchUpInside)];
     
     
