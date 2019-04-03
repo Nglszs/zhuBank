@@ -49,6 +49,8 @@
             CoinUpdatePassWordViewController * vc = [CoinUpdatePassWordViewController new];
             vc.mobile = self.RootView.PhoneTF.text;
             [self.navigationController pushViewController:vc animated:YES];
+        }else{
+            VCToast(BCMsg, 2);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
