@@ -811,7 +811,7 @@
                     [self.navigationController pushViewController:VC animated:YES];
                     
                     sizeArr = nil;
-                    goodHistoryArr = nil;
+//                    goodHistoryArr = nil;
                 
                 }
                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -883,7 +883,7 @@
                 [self.navigationController pushViewController:VC animated:YES];
                 
                 sizeArr = nil;
-                
+//                goodHistoryArr = nil;
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             
