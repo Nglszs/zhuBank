@@ -238,6 +238,13 @@
                 [self.navigationController pushViewController:vc animated:YES];
             }];
             [cell setDataForCell:dic];
+            
+            if ([[newDataArr objectAtIndex:indexPath.row] boolValue]) {
+                cell.detailV.hidden = NO;
+            } else {
+                cell.detailV.hidden = YES;
+            }
+            
             [cell.detailBtn addtargetBlock:^(UIButton *button) {
                
                 button.selected = !button.selected;
@@ -498,7 +505,7 @@
     
     
     if (!_getTableView) {
-        _getTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStyleGrouped];
+        _getTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight - 40 - BCNaviHeight - 15) style:UITableViewStylePlain];
         _getTableView.delegate = self;
         _getTableView.dataSource = self;
         _getTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -519,7 +526,7 @@
     
     
     if (!_payTableView) {
-        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
+        _payTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth,0, BCWidth, BCHeight - 40 - BCNaviHeight- 15) style:UITableViewStylePlain];
         _payTableView.delegate = self;
         _payTableView.dataSource = self;
         _payTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -540,7 +547,7 @@
     if (!_playTableView) {
         
         
-        _playTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40 - BCNaviHeight) style:UITableViewStylePlain];
+        _playTableView = [[UITableView alloc] initWithFrame:CGRectMake(BCWidth * 2, 0, BCWidth, BCHeight - 40 - BCNaviHeight - 15) style:UITableViewStylePlain];
         _playTableView.delegate = self;
         _playTableView.dataSource = self;
         _playTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
