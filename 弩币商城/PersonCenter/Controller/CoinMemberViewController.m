@@ -94,6 +94,7 @@
         if (cell == nil) {
             cell = [[CoinMemberCouponingCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberCouponingCell1"];
         }
+         cell.SeleVC = self;
          cell.dataArray = self.DataDict[@"mall_coupons"];
         return cell;
     }
@@ -103,6 +104,7 @@
         if (cell == nil) {
             cell = [[CoinMemberCouponingCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberCouponingCell1"];
         }
+        cell.SeleVC = self;
         cell.dataArray = self.DataDict[@"month_coupons"];
         return cell;
     }
@@ -229,10 +231,8 @@
     
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 - (void)request{
     [KTooL HttpPostWithUrl:@"CashLoan/vip_card" parameters:nil loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"==========%@",responseObject);
         if (BCStatus) {
             self.DataDict = responseObject[@"data"];
             [self.tableView reloadData];

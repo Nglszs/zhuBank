@@ -122,6 +122,9 @@
             self.tagLabel.text = @" 已选1张 ";
         }
         
+    }else{
+        self.RightLabel.text = [NSString stringWithFormat:@"-￥0"];
+        self.tagLabel.text = @"";
     }
 }
 

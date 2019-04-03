@@ -74,11 +74,15 @@
         leftL.textColor = Gray_Color;
         leftL.font = Regular(13);
         [topV addSubview:leftL];
+        CGFloat width = 100;
+        if (i == 1) {
+            width = 70;
+        }
         [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.top.equalTo(titleL.mas_bottom).offset(20 + 36 * i);
             make.left.mas_equalTo(LEFT_Margin);
-            
+            make.width.mas_equalTo(width);
             
         }];
         
@@ -93,8 +97,12 @@
             
             make.right.mas_equalTo(-LEFT_Margin);
             make.top.mas_equalTo(leftL.mas_top);
+            make.left.greaterThanOrEqualTo(leftL.mas_right);
             
         }];
+        rightL.numberOfLines = 2;
+        
+        
         
     }
     

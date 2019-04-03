@@ -7,7 +7,9 @@
 //
 
 #import "CoinMemberCouponingCell.h"
-
+#import "CoinMemberBuyViewController.h"
+#import "CoinCouponCanViewController.h"
+#import "CoinClassfyViewController.h"
 @interface CoinMemberCouponingCell()
 @property (nonatomic,strong)UIScrollView * scrollView;
 
@@ -135,11 +137,12 @@
     btn.backgroundColor = COLOR(254, 254, 254);
     btn.layer.cornerRadius = 3;
     btn.clipsToBounds = YES;
+    btn.tag = index;
     [view addSubview:btn];
     int status = [dict[@"status"] intValue];
     NSString * btnStr = @"";
     if (status == 1) {
-        btnStr = @"未使用";
+        btnStr = @"立即使用";
     }else if (status == 2){
          btnStr = @"已使用";
     }else if (status == 3){
@@ -155,10 +158,31 @@
         make.width.mas_equalTo(48);
         make.height.mas_equalTo(14);
     }];
-    
+    [btn addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     return view;
 }
 
+- (void)buttonAction:(UIButton *)btn{
+    if (![Tool isVip]) {
+        // 去购买会员
+        CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+        VC.type = BRPayBuyMember;
+        [self.SeleVC.navigationController pushViewController:VC animated:YES];
+        return;
+    }
+    NSDictionary * dict = self.dataArray[btn.tag];
+    int coupons_type = [dict[@"coupons_type"] intValue];
+    if (coupons_type == 0) {
+        // 商品优惠券
+        CoinCouponCanViewController * vc = [CoinCouponCanViewController new];
+        vc.ID = dict[@"cid"];
+        [self.SeleVC.navigationController pushViewController:vc animated:YES];
+    }else{
+        // 运费优惠券
+        [self.SeleVC.navigationController pushViewController:[CoinClassfyViewController new] animated:YES];
+    }
+ 
+}
 
 - (UIView *)initDiscountCouponView:(NSDictionary *)dict index:(int)index{
     
@@ -190,11 +214,12 @@
     btn.backgroundColor = COLOR(255, 255, 255);
     btn.layer.cornerRadius = 3;
     btn.clipsToBounds = YES;
+    btn.tag = index;
     [view addSubview:btn];
     int status = [dict[@"status"] intValue];
     NSString * btnStr = @"";
     if (status == 1) {
-        btnStr = @"未使用";
+        btnStr = @"立即使用";
     }else if (status == 2){
         btnStr = @"已使用";
     }else if (status == 3){
@@ -210,7 +235,7 @@
         make.width.mas_equalTo(80);
         make.height.mas_equalTo(14);
     }];
-    
+      [btn addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     return view;
 }
 - (void)awakeFromNib {

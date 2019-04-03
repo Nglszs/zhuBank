@@ -78,6 +78,7 @@
     
    
 }
+
 - (void)initView {
     
 //    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];

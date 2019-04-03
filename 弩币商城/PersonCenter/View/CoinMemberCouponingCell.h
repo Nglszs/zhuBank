@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CoinMemberCouponingCell : UITableViewCell
 // 优惠券礼包
 @property (nonatomic,strong)NSArray * dataArray;
+@property (nonatomic,weak)UIViewController * SeleVC;
 @end
 
 NS_ASSUME_NONNULL_END

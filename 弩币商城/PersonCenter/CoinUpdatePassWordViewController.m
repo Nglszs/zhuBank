@@ -22,7 +22,6 @@
     [self SetReturnButton];
     [self.RootView.UpDateButton addtargetBlock:^(UIButton *button) {
         [self Request];
-        
     }];
 }
 

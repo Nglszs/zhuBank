@@ -58,7 +58,7 @@
     }];
     
     self.ByStagesLabel = [[UILabel alloc] init];
-    
+    self.ByStagesLabel.hidden = ![Tool AuditState];
     NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:@"￥1100.00*6期" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize: 14],NSForegroundColorAttributeName: [UIColor redColor]}];
     
     [string2 addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]} range:NSMakeRange(8, 3)];
