@@ -142,7 +142,7 @@
                 
                 if (BCStatus) {
                     
-                    VCToast(@"修改成功", 1);
+                    VCToast(@"设置成功", 1);
                     [NOTIFICATION_CENTER postNotificationName:Reresh_UserInfo object:nil];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         int index = (int)[[self.navigationController viewControllers]indexOfObject:self];

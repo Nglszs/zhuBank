@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) UITextField *countTextField;
 @property (nonatomic,copy)void(^backBlock)(id result);
-- (instancetype)initWithFrame:(CGRect)frame andGoodID:(NSString *)ID withPara:(NSDictionary *)params;
+- (instancetype)initWithFrame:(CGRect)frame andGoodID:(NSString *)ID withPara:(NSDictionary *)params buyNum:(NSInteger)num color:(NSInteger)colorTag size:(NSInteger)sizeTag;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -25,10 +25,13 @@
     NSMutableArray *titleArr;//颜色
     NSMutableArray *titleA;//内存
     NSString *item_ID;//传给提交订单
+    NSInteger buy_num,color_tag,size_tag;
 }
-- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params{
+- (instancetype)initWithFrame:(CGRect)frame andGoodID:(nonnull NSString *)ID withPara:(nonnull NSDictionary *)params buyNum:(NSInteger)num color:(NSInteger)colorTag size:(NSInteger)sizeTag{
     paramS = params;
-    NSLog(@"+++%@",params);
+    buy_num = num;
+    color_tag = colorTag;
+    size_tag = sizeTag;
     item_ID = @"";
     goodID = ID;
     return [self initWithFrame:frame];
@@ -80,9 +83,7 @@
 }
 - (void)initView {
     
-//    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-//    [self addGestureRecognizer:panGes];
-    
+
     
     
     //背景
@@ -104,7 +105,15 @@
     [exitButton setImage:[UIImage imageNamed:@"取消"] forState:UIControlStateNormal];
     exitButton.frame=CGRectMake(BCWidth - 37, 14, 22, 22);
     [headView addSubview:exitButton];
-    [exitButton addTarget:self action:@selector(removeCommentCuView) forControlEvents:UIControlEventTouchUpInside];
+    [exitButton addtargetBlock:^(UIButton *button) {
+        
+        if (self.backBlock ) {
+            
+            
+            self.backBlock(@{@"cancel":@"1"});
+        }
+        [self removeFromSuperview];
+    }];
     
     
     NSDictionary *newDic = [dataDic objectNilForKey:@"goods_info"];
@@ -205,7 +214,7 @@
     
     
     _countTextField = [[UITextField alloc] init];
-    shopNumber = 1;
+    shopNumber = buy_num?buy_num:1;
     _countTextField.keyboardType = UIKeyboardTypeNumberPad;
     _countTextField.delegate = self;
     _countTextField.textColor = COLOR(102, 102, 102);
@@ -313,7 +322,18 @@
         }
         w = activityBtn.frame.size.width + activityBtn.frame.origin.x;
        
-        if (i == 0) {
+        if (color_tag ) {
+            if (i == color_tag) {
+                activityBtn.selected = YES;
+                diviBtn = activityBtn;
+                if (titleA.count <= 0) {
+                    [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+                }
+            }
+           
+        } else {
+            
+            if(i == 0) {
             activityBtn.selected = YES;
             diviBtn = activityBtn;
             if (titleA.count <= 0) {
@@ -321,7 +341,7 @@
             }
             
         }
-        
+        }
     }
 
     
@@ -416,8 +436,17 @@
         }
         w1 = activityBtn.frame.size.width + activityBtn.frame.origin.x;
         
-        
-                    if (i == 0) {
+        if (size_tag ) {
+            
+            if (i == size_tag) {
+                activityBtn.selected = YES;
+                selectedBtn = activityBtn;
+                [activityBtn sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+           
+        }else{
+            
+            if (i == 0) {
         
                         activityBtn.selected = YES;
                         selectedBtn = activityBtn;
@@ -425,7 +454,7 @@
                     }
         
                 }
-
+    }
     if (h < headView.height) {
         h = headView.height + 45;
     } else {
@@ -453,7 +482,7 @@
         if (self.backBlock ) {
 
            
-            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle,selectedBtn.currentTitle]});
+            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle,selectedBtn.currentTitle],@"history":@[@(shopNumber),@(diviBtn.tag - 200),@(selectedBtn.tag - 100)]});
         }
 
         [self removeCommentCuView];

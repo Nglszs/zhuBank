@@ -425,6 +425,7 @@ static NSString *cellID = @"cell";
                         UILabel *moneyL1 = [[UILabel alloc] init];
            moneyL1.hidden = ![Tool AuditState];
                         moneyL1.text = @"¥";
+            moneyL1.tag = 500;
                         moneyL1.textColor = COLOR(153, 153, 153);
                         moneyL1.font = Regular(8);
                         [cell.contentView addSubview:moneyL1];
@@ -479,8 +480,14 @@ static NSString *cellID = @"cell";
     NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:[[_goodArray objectAtIndex:indexPath.row] objectForKey:@"fenqi_info"] attributes:firstAttributes1];
     
     fenqi.attributedText = str1;
-    
-    
+     UILabel *moneyL = [cell.contentView  viewWithTag:500];
+    if (str1.length <= 0) {
+        
+       
+        moneyL.hidden = YES;
+    } else {
+        moneyL.hidden = NO;
+    }
   
    
     

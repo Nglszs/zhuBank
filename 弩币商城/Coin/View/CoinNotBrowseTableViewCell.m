@@ -94,10 +94,7 @@
             }];
         }
         
-        if (i == leftA.count - 2 || i==leftA.count - 1) {
-            
-            rightL.textColor = COLOR(255, 0, 0);
-        }
+      
         
     }
     
@@ -168,7 +165,25 @@
         UILabel *rightL = [self.contentView viewWithTag:100 + i];
        
         rightL.text = [NSString stringWithFormat:@"%@",leftA[i]];
+       
         
+        if ( i==leftA.count - 1) {//逾期费
+            
+            if ([[data objectNilForKey:@"overdue_pay"] floatValue]>0) {
+                rightL.textColor = COLOR(255, 0, 0);
+            }
+            
+            
+        }
+        
+        if ( i==leftA.count - 2) {//状态
+            
+            if ([status isEqualToString:@"逾期未还"]) {
+                rightL.textColor = COLOR(255, 0, 0);
+            }
+            
+            
+        }
     }
     
 }

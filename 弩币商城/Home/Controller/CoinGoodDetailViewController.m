@@ -27,6 +27,9 @@
     NSArray *sizeArr;
     NSString *price;//商品价格
     NSString * phone;
+    BCDivideView *diviV;
+    NSArray *goodHistoryArr;
+  
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -78,6 +81,10 @@
     
     [self getData];
     [self requestPhone];
+    
+    
+  
+   
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -99,7 +106,10 @@
     
     
 }
-
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [diviV removeFromSuperview];
+}
 
 - (void)initView {
     
@@ -163,16 +173,33 @@
 
         
         //    点击打开分期
-         BCDivideView *vv = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPrice:price];
-        [self.view addSubview:vv];
+        
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
-            vv.top = 0;
+           diviV.top = 0;
         }];
         
-        vv.backBlock = ^(id  _Nonnull result) {
+        diviV.backBlock = ^(id  _Nonnull result) {
           
             NSLog(@"]]]]%@",result);
+            
+            if ([result objectNilForKey:@"cancel"]) {//点击取消按钮
+                
+                 NSDictionary *dic = [dataDic objectNilForKey:@"goods_info"];
+                  UILabel *titleL = [self.backScrollView viewWithTag:500];
+                
+                NSDictionary *newDic = [dic objectNilForKey:@"fenqi_info"];
+                
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"分期 ¥%.2f*%@期",[[newDic objectNilForKey:@"per_money"] floatValue],[newDic objectNilForKey:@"periods"]]];
+                NSDictionary * firstAttributes = @{ NSForegroundColorAttributeName:COLOR(242,48,48)};
+                NSString *priceS = [NSString stringWithFormat:@"%.2f",[[newDic objectNilForKey:@"per_money"] floatValue]];
+                [str setAttributes:firstAttributes range:NSMakeRange(3,priceS.length + 1)];
+                titleL.attributedText = str;
+                
+                
+                 divideArr = [result objectNilForKey:@"lixi"];
+                
+            }else{
             if ([[result objectForKey:@"isfenqi"]isEqualToString:@"1"]) {
                 UILabel *titleL = [self.backScrollView viewWithTag:500];
               
@@ -189,7 +216,7 @@
                 titleL.text = @"不分期";
                 divideArr = nil;
             }
-            
+            }
         };
     }];
     
@@ -418,7 +445,7 @@
              dic = @{@"q_fenqi":@"1",@"shou_pay":stage,@"period":[divideArr lastObject]};
             
         }
-        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic];
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic buyNum:[[goodHistoryArr objectAtIndexCheck:0] integerValue] color:[[goodHistoryArr objectAtIndexCheck:1] integerValue] size:[[goodHistoryArr objectAtIndexCheck:2] integerValue]];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -427,10 +454,23 @@
         
         vv.backBlock = ^(id  _Nonnull result) {
             
-            NSLog(@")))%@",result);
+              NSLog(@")))%@",result);
+            if ([result objectNilForKey:@"cancel"]) {
+              
+                 UILabel *sizeL = [self.backScrollView viewWithTag:700];
+                 NSDictionary *dic1 = [dataDic objectNilForKey:@"spec_info"];
+                   sizeL.text = [dic1 objectNilForKey:@"spec_param"];
+                sizeArr = nil;
+                goodHistoryArr = nil;
+            } else {
+            
+          
             sizeArr = [result objectForKey:@"arr"];
              UILabel *sizeL = [self.backScrollView viewWithTag:700];
             sizeL.text = [result objectForKey:@"size"];
+            goodHistoryArr = [result objectForKey:@"history"];
+                
+            }
         };
     }];
     
@@ -693,7 +733,7 @@
             
         }
         
-        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic];
+        BCGoodView *vv = [[BCGoodView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPara:dic buyNum:[[goodHistoryArr objectAtIndexCheck:0] integerValue] color:[[goodHistoryArr objectAtIndexCheck:1] integerValue] size:[[goodHistoryArr objectAtIndexCheck:2] integerValue]];
         [self.view addSubview:vv];
         [UIView animateWithDuration:.25 animations:^{//评论页从底部显示动画
             
@@ -703,6 +743,17 @@
         vv.backBlock = ^(id  _Nonnull result) {
             
             NSLog(@")))%@",result);
+            
+            if ([result objectNilForKey:@"cancel"]) {
+                
+                UILabel *sizeL = [self.backScrollView viewWithTag:700];
+                NSDictionary *dic1 = [dataDic objectNilForKey:@"spec_info"];
+                sizeL.text = [dic1 objectNilForKey:@"spec_param"];
+                sizeArr = nil;
+                goodHistoryArr = nil;
+                
+            } else {
+            
             sizeArr = [result objectForKey:@"arr"];
             UILabel *sizeL = [self.backScrollView viewWithTag:700];
             sizeL.text = [result objectForKey:@"size"];
@@ -760,6 +811,7 @@
                     [self.navigationController pushViewController:VC animated:YES];
                     
                     sizeArr = nil;
+                    goodHistoryArr = nil;
                 
                 }
                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -769,7 +821,7 @@
                 //
                 
             
-       
+            }
         };
         
         
@@ -1063,6 +1115,11 @@
         
         tmpHeight = imgH + tmpHeight;
     }
+    
+    
+//    分期view
+    diviV = [[BCDivideView alloc] initWithFrame:CGRectMake(0, BCHeight, BCWidth, BCHeight) andGoodID:_goodID withPrice:price];
+    [self.view addSubview:diviV];
    
 }
 #pragma mark 懒加载加载需要的视图
