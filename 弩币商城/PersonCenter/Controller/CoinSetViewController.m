@@ -367,6 +367,7 @@
                 
                 CoinChangePhoneViewController *vc = [[CoinChangePhoneViewController alloc] init];
                 vc.isChangePhone = YES;
+                 vc.phoneNum = [dataDic objectNilForKey:@"mobile"];
                  [self.navigationController pushViewController:vc animated:YES];
             }
                 break;

@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, assign) BOOL isChangePhone;
 
+@property (nonatomic, assign) BOOL isReset;
 
 /**
  yes是设置交易密码，no是修改
