@@ -9,6 +9,7 @@
 #import "CoinChangeSuccessViewController.h"
 #import "CoinLoginViewController.h"
 #import "BCNavigationViewController.h"
+#import "CoinSetViewController.h"
 
 @interface CoinChangeSuccessViewController ()
 
@@ -69,6 +70,7 @@
         leftL.text = [NSString stringWithFormat:@"操作成功，等待时间：%ds",time];
         if (time == 0) {
             [timer invalidate];
+            
         }
         
     }];
@@ -113,11 +115,17 @@
     } else {
         
         int index = (int)[[self.navigationController viewControllers]indexOfObject:self];
-        if (index>2) {
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index-2)] animated:YES];
-        }else
-        {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        
+        CoinSetViewController *homeVC = [[CoinSetViewController alloc] init];
+        UIViewController *target = nil;
+        for (UIViewController * controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[homeVC class]]) {
+                target = controller;
+            }
+        }
+        if (target) {
+            [self.navigationController popToViewController:target animated:YES];
         }
        
         
