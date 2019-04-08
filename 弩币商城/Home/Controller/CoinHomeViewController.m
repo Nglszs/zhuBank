@@ -283,7 +283,6 @@ static NSString *cellID = @"cell";
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     // 每一行cell之间的间距
 
-
         flowLayout.itemSize = CGSizeMake((BCWidth - 40)/2 , 160);// 该行代码就算不写,item也会有默认尺寸
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 212, BCWidth, 160) collectionViewLayout:flowLayout];
     collectionView.backgroundColor = White;
@@ -294,9 +293,6 @@ static NSString *cellID = @"cell";
     [self.backScrollView addSubview:collectionView];
      collectionView.showsHorizontalScrollIndicator = NO;
     [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:cellID];
-
-    
-    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -305,24 +301,14 @@ static NSString *cellID = @"cell";
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    
-    
-    
-    
     return UIEdgeInsetsMake(0, 15, 0, 15);
-    
-    
-    
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    
-    
-    return 10;
+     return 10;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UICollectionViewCell *cell =  [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+     UICollectionViewCell *cell =  [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
     
     UIImageView *imageV = [cell.contentView viewWithTag:100];
     if (!imageV) {
@@ -643,7 +629,6 @@ static NSString *cellID = @"cell";
 #pragma mark 糖库银票
 
 - (void)initThridView {
-    
     UIImageView *divideView = [[UIImageView alloc] init];
     divideView.backgroundColor = DIVI_COLOR;
     [self.backScrollView addSubview:divideView];
@@ -752,14 +737,9 @@ static NSString *cellID = @"cell";
            
             [self getData];
         }];
-        
-        
-        _backScrollView.mj_header = header;
-       
-
+           _backScrollView.mj_header = header;
         
     }
-    
     
     return _backScrollView;
 }
@@ -839,5 +819,4 @@ static NSString *cellID = @"cell";
     }
     
 }
-
 @end

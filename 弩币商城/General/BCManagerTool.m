@@ -531,19 +531,19 @@ static BCManagerTool *_instanceTool;
     NSLog(@"\n%@",proxies);
     
     NSDictionary *settings = proxies[0];
-    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyHostNameKey]);
-    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyPortNumberKey]);
-    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyTypeKey]);
+//    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyHostNameKey]);
+//    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyPortNumberKey]);
+//    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyTypeKey]);
     
     if ([[settings objectForKey:(NSString *)kCFProxyTypeKey] isEqualToString:@"kCFProxyTypeNone"] || BCStringIsEmpty([settings objectForKey:(NSString *)kCFProxyHostNameKey]))
     {
-        NSLog(@"没设置代理");
+//        NSLog(@"没设置代理");
         return NO;
     }
     else
     {
         
-        NSLog(@"设置了代理");
+//        NSLog(@"设置了代理");
         return YES;
     }
     

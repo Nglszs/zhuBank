@@ -72,42 +72,36 @@
         
     }];
     
-    
-    NSArray *leftA = @[@"收货人姓名：",@"收货地址：",@"支付方式：",@"订单号："];
+    NSArray * leftA = @[@"收货人姓名：",@"收货地址：",@"支付方式：",@"订单号："];
     NSArray *rightA = @[_name,_address,@"分期购",_orderNum];
     for (int i = 0; i < leftA.count; i ++) {
-        
-        
         UILabel *leftL = [[UILabel alloc] init];
         leftL.text = leftA[i];
         leftL.textColor = Gray_Color;
         leftL.font = Regular(13);
         [topV addSubview:leftL];
+        leftL.adjustsFontSizeToFitWidth = YES;
         [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
-            
             make.top.equalTo(titleL.mas_bottom).offset(20 + 36 * i);
             make.left.mas_equalTo(LEFT_Margin);
-          
-            
+            make.width.mas_equalTo(80);
         }];
-        
-        
         
         UILabel *rightL = [[UILabel alloc] init];
         rightL.text = rightA[i];
+        rightL.numberOfLines = 2;
         rightL.textColor = COLOR(153, 153, 153);
         rightL.font = Regular(13);
         [topV addSubview:rightL];
+        rightL.textAlignment = NSTextAlignmentRight;
         [rightL mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.right.mas_equalTo(-LEFT_Margin);
             make.top.mas_equalTo(leftL.mas_top);
-          
+            make.left.equalTo(leftL.mas_right);
         }];
         
     }
-    
-    
     
 //    支付和订单按钮
     UIButton *backBtn1 = [[UIButton alloc] init];
@@ -125,8 +119,7 @@
     }];
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
-       
-          CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
+        CoinMemberBuyViewController *VC = [[CoinMemberBuyViewController alloc] init];
         VC.type = BRPayBuyCommodity;
         VC.titleString = @"支付首付";
         VC.orderNum =self->_orderNum;
@@ -160,6 +153,5 @@
         vc.type = weakSelf.isCancelOrder ? BROrderNotDispatch : BROrderNotPay;
         [weakSelf.navigationController pushViewController:vc animated:YES];
     }];
-    
 }
 @end

@@ -28,7 +28,6 @@
 		04178595222D02DE00B8A234 /* WOWONoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04178593222D02DE00B8A234 /* WOWONoDataView.m */; };
 		041A2B0722237A3700F6E4F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B0622237A3700F6E4F7 /* AppDelegate.m */; };
 		041A2B0D22237A3700F6E4F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0B22237A3700F6E4F7 /* Main.storyboard */; };
-		041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B0E22237A3900F6E4F7 /* Assets.xcassets */; };
 		041A2B1222237A3900F6E4F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */; };
 		041A2B1522237A3900F6E4F7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B1422237A3900F6E4F7 /* main.m */; };
 		041A2B1F22237A3900F6E4F7 /* ____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 041A2B1E22237A3900F6E4F7 /* ____Tests.m */; };
@@ -121,6 +120,7 @@
 		0CC1C6CD2230AB1700924D98 /* TCWebCodesSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC1C6CC2230AB1700924D98 /* TCWebCodesSDK.framework */; };
 		0CC1C6D12230E33C00924D98 /* CoinClassLeftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC1C6D02230E33C00924D98 /* CoinClassLeftModel.m */; };
 		0CC1C6D52230FE4F00924D98 /* CoinSearchResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */; };
+		0CC37EE0225B34F8003A0CDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CC37EDF225B34F8003A0CDC /* Assets.xcassets */; };
 		0CC42A7D222D535C008B1181 /* RecommendCommodityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */; };
 		0CCAF74822266E1E006F1791 /* CoinConfirmCommodityOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF74722266E1E006F1791 /* CoinConfirmCommodityOrderCell.m */; };
 		0CCAF74B22267D3F006F1791 /* CoinConfirmCommodityDistributionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAF74A22267D3F006F1791 /* CoinConfirmCommodityDistributionCell.m */; };
@@ -201,7 +201,6 @@
 		041A2B0522237A3700F6E4F7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		041A2B0622237A3700F6E4F7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		041A2B0C22237A3700F6E4F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		041A2B0E22237A3900F6E4F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		041A2B1122237A3900F6E4F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		041A2B1322237A3900F6E4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		041A2B1422237A3900F6E4F7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -390,6 +389,7 @@
 		0CC1C6D02230E33C00924D98 /* CoinClassLeftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinClassLeftModel.m; sourceTree = "<group>"; };
 		0CC1C6D32230FE4F00924D98 /* CoinSearchResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinSearchResultModel.h; sourceTree = "<group>"; };
 		0CC1C6D42230FE4F00924D98 /* CoinSearchResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoinSearchResultModel.m; sourceTree = "<group>"; };
+		0CC37EDF225B34F8003A0CDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CC42A7B222D535C008B1181 /* RecommendCommodityCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecommendCommodityCell.h; sourceTree = "<group>"; };
 		0CC42A7C222D535C008B1181 /* RecommendCommodityCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendCommodityCell.m; sourceTree = "<group>"; };
 		0CCAF74622266E1E006F1791 /* CoinConfirmCommodityOrderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoinConfirmCommodityOrderCell.h; sourceTree = "<group>"; };
@@ -584,12 +584,12 @@
 				041A2B4A2223805E00F6E4F7 /* CateGroys */,
 				0C37C1932228C955009001F4 /* Vender */,
 				041A2B0B22237A3700F6E4F7 /* Main.storyboard */,
-				041A2B0E22237A3900F6E4F7 /* Assets.xcassets */,
 				041A2B1022237A3900F6E4F7 /* LaunchScreen.storyboard */,
 				041A2B1322237A3900F6E4F7 /* Info.plist */,
 				041A2B3722237D6200F6E4F7 /* CoinHeader.pch */,
 				0408EF7C224B1738001B33BA /* fosafer_pri.pfx */,
 				041A2B1422237A3900F6E4F7 /* main.m */,
+				0CC37EDF225B34F8003A0CDC /* Assets.xcassets */,
 			);
 			path = "弩币商城";
 			sourceTree = "<group>";
@@ -1073,8 +1073,8 @@
 				0408EF7D224B1C0A001B33BA /* fosafer_pri.pfx in Resources */,
 				0C37C1B92228CB3C009001F4 /* BRPickerView.bundle in Resources */,
 				041A2B1222237A3900F6E4F7 /* LaunchScreen.storyboard in Resources */,
-				041A2B0F22237A3900F6E4F7 /* Assets.xcassets in Resources */,
 				041A2B0D22237A3700F6E4F7 /* Main.storyboard in Resources */,
+				0CC37EE0225B34F8003A0CDC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

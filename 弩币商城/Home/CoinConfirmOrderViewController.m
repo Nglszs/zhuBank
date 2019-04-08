@@ -275,14 +275,16 @@
                 if (coupons_info) {
                     cell.coupons_transfer = coupons_info[@"coupons_reduce"];
                     cell.coupons_reduce_id = coupons_info[@"coupons_reduce_id"];
+                    cell.coupons_transfer_num = coupons_info[@"coupons_transfer_num"];
                 }
                 
                 
                 break;
             case 1:
                 if (coupons_info) {
-                    cell.coupons_transfer = coupons_info[@"coupons_transfer"];
+                    cell.coupons_reduce = coupons_info[@"coupons_transfer"];
                     cell.coupons_reduce_id = coupons_info[@"coupons_transfer_id"];
+                    cell.coupons_reduce_num = coupons_info[@"coupons_reduce_num"];
                 }
                 break;
             case 2:
@@ -488,7 +490,7 @@
     dict[@"invoice_content"] = self.DataDict[@"invoice_info"][@"invoice_content"];
     
     dict[@"transfer_price"] = self.DataDict[@"order_info"][@"transfer_price"];
-    
+    dict[@"stages"] = self.DataDict[@"order_info"][@"stages"];
     CoinConfirmCommodityMessageCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
     NSString * str = cell.textView.text;
     if ([str isEqualToString:@"选填"]) {
@@ -576,8 +578,6 @@
         int remainSecond =[[self.periods stringByTrimmingCharactersInSet:nonDigits] intValue];
         dict[@"periods"] = [NSString stringWithFormat:@"%d",remainSecond];
     }
-   
-    
     dict[@"stages"] = self.stages;
   
     [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {

@@ -660,14 +660,7 @@
     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     NSString *filtered =
     [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
-    
-    
-    
-    
-    return  [string isEqualToString:filtered];
-    
-    
-    
+     return  [string isEqualToString:filtered];
 }
 
 

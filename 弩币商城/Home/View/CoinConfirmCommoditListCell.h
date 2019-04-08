@@ -27,8 +27,13 @@
 
 @property (nonatomic,copy)NSString * coupons_reduce;// 满减券减的钱数
 @property (nonatomic,copy)NSString * coupons_reduce_id;//满减券id
+@property (nonatomic,copy)NSString * coupons_reduce_num;// 满减数目
+
 @property (nonatomic,copy)NSString * coupons_transfer;// 运费券减的钱数
-@property (nonatomic,copy)NSString * coupons_transfer_id;
+@property (nonatomic,copy)NSString * coupons_transfer_id;// 运费券ID
+@property (nonatomic,copy)NSString * coupons_transfer_num;// 运费券数目
+
+
 
 @end
 

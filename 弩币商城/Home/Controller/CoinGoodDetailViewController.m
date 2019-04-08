@@ -4,7 +4,6 @@
 //
 //  Created by Jack on 2019/2/26.
 //  Copyright © 2019年 詹姆斯. All rights reserved.
-//
 
 #import "CoinGoodDetailViewController.h"
 #import "CarouselView.h"
@@ -930,10 +929,7 @@
 #pragma mark 网络请求
 - (void)getData {
     
-    [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-
-        
-        NSLog(@"===%@",responseObject);
+    [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:@"正在加载" success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (BCStatus) {
             dataDic = [responseObject objectNilForKey:@"data"];
             [self refreshView];
@@ -1206,13 +1202,10 @@
     paragraphStyle.firstLineHeadIndent = indent * 3;
     NSDictionary *attributeDic = @{NSParagraphStyleAttributeName : paragraphStyle};
     NSAttributedString *attrText = [[NSAttributedString alloc] initWithString:text attributes:attributeDic];
-    
     return attrText;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
-    
     
     //     点击按钮
     NSInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
