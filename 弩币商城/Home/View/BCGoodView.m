@@ -266,27 +266,30 @@
     titleA = [NSMutableArray arrayWithCapacity:1];//内存
 
     NSArray *sepDic = [dataDic objectNilForKey:@"spec_info"];
-    for (NSDictionary *dic in sepDic) {
-        if ([[dic objectNilForKey:@"name"] isEqualToString:@"颜色"]) {
-            [titleArr addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
-        }
-
-        if ([[dic objectNilForKey:@"name"]isEqualToString:@"版本"]) {
-
-             [titleA addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
-        }
-
-    }
-    
+//    for (NSDictionary *dic in sepDic) {
+//        if ([[dic objectNilForKey:@"name"] isEqualToString:@"颜色"]) {
+//            [titleArr addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
+//        }
+//
+//        if ([[dic objectNilForKey:@"name"]isEqualToString:@"版本"]) {
+//
+//             [titleA addObjectsFromArray:[dic objectNilForKey:@"spec_detail"]];
+//        }
+//
+//    }
+//
    
     //      颜色
-    
+    NSDictionary *colorDic = [sepDic objectAtIndexCheck:0];
+     [titleArr addObjectsFromArray:[colorDic objectNilForKey:@"spec_detail"]];
    
+     NSDictionary *sizeDic = [sepDic objectAtIndexCheck:1];
+     [titleA addObjectsFromArray:[sizeDic objectNilForKey:@"spec_detail"]];
     
     UILabel *leftL2 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, 165, 30, 13)];
     leftL2.textColor = TITLE_COLOR;
     leftL2.font = Regular(13);
-    leftL2.text = @"颜色";
+    leftL2.text = [colorDic objectNilForKey:@"name"];
     [headView addSubview:leftL2];
     if (titleArr.count <= 0) {//如果没有颜色
         leftL2.height = 0;
@@ -352,52 +355,52 @@
 
   
 
-    if (titleArr.count > 0) {//如果有颜色的话
-        
-        //    版本
-        UILabel *leftL3 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, h + 45, 30, 13)];
-        leftL3.textColor = TITLE_COLOR;
-        leftL3.font = Regular(13);
-        leftL3.text = @"版本";
-        [headView addSubview:leftL3];
-        
-        NSArray *titleArr1 = @[@"公开版"];
-        
-        for (int i = 0; i < titleArr1.count ; i++) {
-            UIButton *activityBtn = [UIButton new];
-            [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
-            [activityBtn setTitleColor:White forState:UIControlStateSelected];
-            [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
-            [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
-            [activityBtn setTitle:titleArr1[i] forState:UIControlStateNormal];
-            [activityBtn.titleLabel setFont:Regular(12)];
-            
-            activityBtn.layer.borderWidth = 1;
-            activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
-            activityBtn.tag = 300 + i;
-            activityBtn.layer.cornerRadius = 4;
-            activityBtn.clipsToBounds = YES;
-            [headView addSubview:activityBtn];
-            activityBtn.frame = CGRectMake(LEFT_Margin, leftL3.bottom + 15, 50, 23);
-            [activityBtn addTarget:self action:@selector(clickDiviNum:) forControlEvents:UIControlEventTouchUpInside];
-            
-            
-            if (i == 0) {
-                activityBtn.selected = YES;
-                diviNumBtn = activityBtn;
-            }
-            
-        }
-        
-        h += 110;
-    }
-    
-
+//    if (titleArr.count > 0) {//如果有颜色的话
+//
+//        //    版本
+//        UILabel *leftL3 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, h + 45, 30, 13)];
+//        leftL3.textColor = TITLE_COLOR;
+//        leftL3.font = Regular(13);
+//        leftL3.text = @"版本";
+//        [headView addSubview:leftL3];
+//
+//        NSArray *titleArr1 = @[@"公开版"];
+//
+//        for (int i = 0; i < titleArr1.count ; i++) {
+//            UIButton *activityBtn = [UIButton new];
+//            [activityBtn setTitleColor:COLOR(102, 102, 102) forState:UIControlStateNormal];
+//            [activityBtn setTitleColor:White forState:UIControlStateSelected];
+//            [activityBtn setBackgroundColor:White forState:UIControlStateNormal];
+//            [activityBtn setBackgroundColor:COLOR(254, 0, 0) forState:UIControlStateSelected];
+//            [activityBtn setTitle:titleArr1[i] forState:UIControlStateNormal];
+//            [activityBtn.titleLabel setFont:Regular(12)];
+//
+//            activityBtn.layer.borderWidth = 1;
+//            activityBtn.layer.borderColor = COLOR(170, 170, 170).CGColor;
+//            activityBtn.tag = 300 + i;
+//            activityBtn.layer.cornerRadius = 4;
+//            activityBtn.clipsToBounds = YES;
+//            [headView addSubview:activityBtn];
+//            activityBtn.frame = CGRectMake(LEFT_Margin, leftL3.bottom + 15, 50, 23);
+//            [activityBtn addTarget:self action:@selector(clickDiviNum:) forControlEvents:UIControlEventTouchUpInside];
+//
+//
+//            if (i == 0) {
+//                activityBtn.selected = YES;
+//                diviNumBtn = activityBtn;
+//            }
+//
+//        }
+//
+//        h += 110;
+//    }
+//
+    h += 40;
 //         内存
         UILabel *leftL4 = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_Margin, h , 30, 13)];
         leftL4.textColor = TITLE_COLOR;
         leftL4.font = Regular(13);
-        leftL4.text = @"内存";
+        leftL4.text = [sizeDic objectNilForKey:@"name"];
         [headView addSubview:leftL4];
     if (titleA.count <= 0) {//如果内存没有的话
         
@@ -482,8 +485,9 @@
         }
         if (self.backBlock ) {
 
-           
-            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle,selectedBtn.currentTitle],@"history":@[@(shopNumber),@(diviBtn.tag - 200),@(selectedBtn.tag - 100)]});
+         
+            
+            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle.length>0?diviBtn.currentTitle:@"",selectedBtn.currentTitle.length>0?selectedBtn.currentTitle:@""],@"history":@[@(shopNumber),@(diviBtn.tag - 200),@(selectedBtn.tag - 100)]});
         }
 
         [self removeCommentCuView];
