@@ -101,9 +101,27 @@
     [self.PasswordTF setValue:COLOR(153, 153, 153) forKeyPath:@"_placeholderLabel.textColor"];
     [self.PasswordTF setValue:[UIFont boldSystemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
     self.PasswordTF.secureTextEntry = YES;
+    self.PasswordTF.delegate = self;
     [self.PasswordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.UserNameTF);
-        make.centerY.equalTo(PasswordLogoImageView);
+        make.left.equalTo(self.UserNameTF);
+        make.right.equalTo(self.UserNameTF).offset(-50);
+         make.centerY.equalTo(PasswordLogoImageView);
+    }];
+    
+    UIButton * showPW = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [showPW setBackgroundImage:BCImage(闭眼) forState:(UIControlStateNormal)];
+    [showPW setBackgroundImage:BCImage(睁眼) forState:(UIControlStateSelected)];
+    showPW.adjustsImageWhenHighlighted = NO;
+    [self addSubview:showPW];
+    [showPW addtargetBlock:^(UIButton *button) {
+        button.selected = !button.selected;
+        self.PasswordTF.secureTextEntry = !button.selected;
+    }];
+    self.PasswordTF.delegate = self;
+    
+    [showPW mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.PasswordTF);
+        make.left.equalTo(self.PasswordTF.mas_right).offset(20);
     }];
     
     self.LoginButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -155,14 +173,22 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-      NSString * string2 = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    
     if (textField == self.UserNameTF) {
+        NSString * string2 = [NSString stringWithFormat:@"%@%@",textField.text,string];
         if (string2.length == 11 && ![self isMobileNumber:string2]) {
             ViewToast(@"请输入正确的手机号", 2);
         }
         if (string2.length > 11) {
             return NO;
         }
+        NSString * s1 = @"1234567890";
+        return [s1 rangeOfString:string].location != NSNotFound;
+    }
+    
+    if (textField == self.PasswordTF) {
+        NSString * s1 = @"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        return [s1 rangeOfString:string].location != NSNotFound;
     }
   return YES;
 }

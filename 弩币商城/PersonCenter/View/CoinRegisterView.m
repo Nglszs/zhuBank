@@ -7,7 +7,7 @@
 //
 
 #import "CoinRegisterView.h"
-@interface CoinRegisterView()
+@interface CoinRegisterView()<UITextFieldDelegate>
 @property (nonatomic,strong)UIImageView * BackgroundImageView;
 @property (nonatomic,strong)UIImageView * LogoImageView;
 @property (nonatomic,strong)NSTimer * countDownTimer;
@@ -42,6 +42,7 @@
         make.width.height.mas_equalTo(SetX(68));
     }];
     self.PhoneNumberTF = [UITextField new];
+    self.PhoneNumberTF.delegate = self;
     self.PhoneNumberTF.keyboardType = UIKeyboardTypeNumberPad;
     [self SetTextField:self.PhoneNumberTF leftImage:@"手机" placeholdeStr:@"请输入手机号" belowLineY:SetY(278)];
     self.CodeTF = [UITextField new];
@@ -51,10 +52,12 @@
     
     self.PassWordTF1 = [UITextField new];
     self.PassWordTF1.secureTextEntry = YES;
+    self.PassWordTF1.delegate = self;
     [self SetTextField:self.PassWordTF1 leftImage:@"密码" placeholdeStr:@"请输入6-16位登录密码" belowLineY:SetY(379)];
     
     self.PassWordTF2 = [UITextField new];
     self.PassWordTF2.secureTextEntry = YES;
+    self.PassWordTF2.delegate = self;
     [self SetTextField:self.PassWordTF2 leftImage:@"密码" placeholdeStr:@"确认密码" belowLineY:SetY(430)];
     
     self.RegisterButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -250,5 +253,22 @@
     [[NSRunLoop currentRunLoop]addTimer:_countDownTimer forMode:NSRunLoopCommonModes];
     [_countDownTimer fire];
     
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if (textField == self.PhoneNumberTF) {
+        //  只能输入数字
+        NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+        NSString *filtered =
+        [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+        return  [string isEqualToString:filtered];
+    }
+    
+    
+    if (textField == self.PassWordTF1 || textField == self.PassWordTF2) {
+        NSString * s1 = @"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        return [s1 rangeOfString:string].location != NSNotFound;
+    }
+    return YES;
+   
 }
 @end

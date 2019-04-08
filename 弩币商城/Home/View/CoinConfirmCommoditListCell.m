@@ -127,17 +127,44 @@
         self.tagLabel.text = @"";
     }
 }
+- (void)setCoupons_transfer_num:(NSString *)coupons_transfer_num{
+    coupons_transfer_num = [NSString stringWithFormat:@"%@",coupons_transfer_num];
+    _coupons_transfer_num = coupons_transfer_num;
+    
+    if (!BCStringIsEmpty(coupons_transfer_num)) {
+        if (BCStringIsEmpty(self.coupons_transfer) || [self.coupons_transfer isEqualToString:@"0"]) {
+               self.tagLabel.text = [NSString stringWithFormat:@" 共%@张 ",coupons_transfer_num];
+        }
+        
+    }
+    
+}
 
 - (void)setCoupons_reduce:(NSString *)coupons_reduce{
-    _coupons_reduce = coupons_reduce;
+    _coupons_reduce = [NSString stringWithFormat:@"%@",coupons_reduce];
+    coupons_reduce = [NSString stringWithFormat:@"%@",coupons_reduce];
     if (!BCStringIsEmpty(coupons_reduce)) {
         self.RightLabel.text = [NSString stringWithFormat:@"-￥%@",coupons_reduce];
         if (![coupons_reduce isEqualToString:@"0"]) {
             self.tagLabel.text = @" 已选1张 ";
         }
+    }else{
+        self.RightLabel.text = [NSString stringWithFormat:@"-￥0"];
+        self.tagLabel.text = @"";
     }
 }
 
 
-
+- (void)setCoupons_reduce_num:(NSString *)coupons_reduce_num{
+    coupons_reduce_num = [NSString stringWithFormat:@"%@",coupons_reduce_num];
+    _coupons_reduce_num = coupons_reduce_num;
+    if (!BCStringIsEmpty(coupons_reduce_num)) {
+        
+        if (BCStringIsEmpty(self.coupons_reduce) || [self.coupons_reduce isEqualToString:@"0"]) {
+            self.tagLabel.text = [NSString stringWithFormat:@" 共%@张 ",coupons_reduce_num];
+        }
+    }
+    
+    
+}
 @end

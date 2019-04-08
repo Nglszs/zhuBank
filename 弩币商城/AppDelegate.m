@@ -19,14 +19,11 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
     //    根视图
     [self setProgameRootViewController];
    
-//  键盘小时
+    //  键盘小时
     [self openKeyBoardManager];
-    
-   
     
     //    更新用户信息
     [self updateUserInfo];
@@ -35,7 +32,6 @@
     [self requestAuditState];
     
     // NOTE: 调用支付结果开始支付
-    
     [WXApi registerApp:@"wx3007c71783deadc3"];
     [Bugly startWithAppId:@"02599bb342"];
     return YES;

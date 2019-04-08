@@ -43,6 +43,10 @@
 }
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
+    for (UIView * view in self.scrollView.subviews) {
+        [view removeFromSuperview];
+    }
+    
     self.scrollView.contentSize = CGSizeMake(dataArray.count * (105 + 10) + 40, 0);
     for (int i = 0; i < dataArray.count; i++) {
         CGFloat left = 20 + (105 + 10) * i;
@@ -186,6 +190,7 @@
 
 - (UIView *)initDiscountCouponView:(NSDictionary *)dict index:(int)index{
     
+  
     UIView * view = [UIView new];
     [self.scrollView addSubview:view];
     
@@ -220,10 +225,13 @@
     NSString * btnStr = @"";
     if (status == 1) {
         btnStr = @"立即使用";
+        btn.userInteractionEnabled = YES;
     }else if (status == 2){
         btnStr = @"已使用";
+         btn.userInteractionEnabled = NO;
     }else if (status == 3){
         btnStr = @"已过期";
+         btn.userInteractionEnabled = NO;
     }
     [btn setTitle:btnStr forState:(UIControlStateNormal)];
     [btn setTitleColor:COLOR(0, 0, 0) forState:(UIControlStateNormal)];
@@ -235,7 +243,7 @@
         make.width.mas_equalTo(80);
         make.height.mas_equalTo(14);
     }];
-      [btn addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
+    [btn addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     return view;
 }
 - (void)awakeFromNib {
