@@ -196,22 +196,22 @@
             NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
             cell.type = 1;
             [cell setDataForCell:dic];
-            [cell.detailBtn addtargetBlock:^(UIButton *button) {
-                
-                button.selected = !button.selected;
-                if (button.selected) {
-                    
-                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
-                    cell.detailV.hidden = NO;
-                    
-                } else {
-                    
-                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
-                    cell.detailV.hidden = YES;
-                }
-                
-                [self.getTableView reloadData];
-            }];
+//            [cell.detailBtn addtargetBlock:^(UIButton *button) {
+//
+//                button.selected = !button.selected;
+//                if (button.selected) {
+//
+//                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
+//                    cell.detailV.hidden = NO;
+//
+//                } else {
+//
+//                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
+//                    cell.detailV.hidden = YES;
+//                }
+//
+//                [self.getTableView reloadData];
+//            }];
             
             
             return cell;
@@ -254,22 +254,22 @@
                 cell.detailV.hidden = YES;
             }
             
-            [cell.detailBtn addtargetBlock:^(UIButton *button) {
-                
-                button.selected = !button.selected;
-                if (button.selected) {
-                    
-                    [newSecondArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
-                    cell.detailV.hidden = NO;
-                    
-                } else {
-                    
-                    [newSecondArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
-                    cell.detailV.hidden = YES;
-                }
-                
-                [self.payTableView reloadData];
-            }];
+//            [cell.detailBtn addtargetBlock:^(UIButton *button) {
+//                
+//                button.selected = !button.selected;
+//                if (button.selected) {
+//                    
+//                    [newSecondArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
+//                    cell.detailV.hidden = NO;
+//                    
+//                } else {
+//                    
+//                    [newSecondArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
+//                    cell.detailV.hidden = YES;
+//                }
+//                
+//                [self.payTableView reloadData];
+//            }];
             return cell;
         } else {
             
