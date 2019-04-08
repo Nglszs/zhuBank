@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"帑库金钻会员卡";
+    self.title = @"糖库金钻会员卡";
     [self initView];
     [self request];
 }
@@ -62,7 +62,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 1) {
-        return 7;
+        return 6;
     }
     return 1;
 }
@@ -111,7 +111,7 @@
     
     NSArray * titles = @[@"特权一",@"",@"特权二",@"",@"特权三",@"特权四",@"特权五"];
     NSArray * imageStr = @[@"特权一 拷贝",@"",@"特权2 拷贝",@"",@"特权3 拷贝",@"特权4 拷贝",@"特权5 拷贝"];
-    NSArray * detailes = @[@"",@"",@"每月均可享福利大礼包",@"",@"帑库银票现金分期资格",@"3C商品分期特权",@"会员期内享受一次免费体检体验（限定一人）"];
+    NSArray * detailes = @[@"",@"",@"每月均可享福利大礼包",@"",@"糖库银票现金分期资格",@"3C商品分期特权",@"会员期内享受一次免费体检体验（限定一人）"];
     if (indexPath.section == 1) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
         if (cell == nil) {
@@ -126,7 +126,7 @@
         cell.detailTextLabel.textColor = COLOR(51, 51, 51);
         cell.detailTextLabel.font = Regular(11);
         if (indexPath.row == 0 && self.DataDict) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"享受价值%@元帑库商城会员礼包",self.DataDict[@"mall_money"]];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"享受价值%@元糖库商城会员礼包",self.DataDict[@"mall_money"]];
         }
         return cell;
     }
@@ -205,7 +205,7 @@
     UILabel * label = [UILabel new];
     label.textColor = COLOR(153, 153, 153);
     label.font = Regular(10);
-    label.text = @"1、备注：通过帑库银票借款用户需成为会员方可借款，若因征信等原因无法借款，会员费用不退款，可继续用于商城优惠购物。\n2、借款提示：请确认用户自身信誉良好且满足借款条件，否则因个人原因无法完成借款的，平台会员不退还相关费用。";
+    label.text = @"1、备注：通过糖库银票借款用户需成为会员方可借款，若因征信等原因无法借款，会员费用不退款，可继续用于商城优惠购物。\n2、借款提示：请确认用户自身信誉良好且满足借款条件，否则因个人原因无法完成借款的，平台会员不退还相关费用。";
     label.numberOfLines = 0;
     
     [view addSubview:label];

@@ -132,7 +132,7 @@
     [ConsentButton setBackgroundImage:BCImage(未选中) forState:(UIControlStateNormal)];
     self.ConsentButton = ConsentButton;
     [ConsentButton setBackgroundImage:BCImage(选中) forState:(UIControlStateSelected)];
-    ConsentButton.selected = YES;
+    ConsentButton.selected = NO;
     ConsentButton.adjustsImageWhenHighlighted = NO;
     [ConsentButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(MoneyLabel);
@@ -350,9 +350,10 @@
     // 优惠券
     if (indexPath.section == 3 && indexPath.row == 0) {
         if (self.DataDict) {
-            NSString * user_id = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+          
             //0是现金券，1是运费q券
             BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:_goods_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
+            view.selectID = self.DataDict[@"coupons_info"][@"coupons_reduce_id"];
             view.backBlock = ^(id  _Nonnull result) {
                 NSString * idString = result[@"id"];
                 NSString * money = result[@"money"];
@@ -372,9 +373,9 @@
      // 运费抵扣券
     if (indexPath.section == 3 && indexPath.row == 1) {
         if (self.DataDict) {
-            NSString * user_id = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
             //0是现金券，1是运费q券
             BCUseCouPonView * view = [[BCUseCouPonView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) andUserID:_goods_id withMoney:indexPath.row withItemID:self.item_id endNum:[self.num integerValue]];
+            view.selectID = self.DataDict[@"coupons_info"][@"coupons_transfer_id"];
             MJWeakSelf;
             view.backBlock = ^(id  _Nonnull result) {
                 NSString * idString = result[@"id"];
@@ -443,7 +444,7 @@
     if (self.DataDict) {
         // 判断同意协议
         if (!self.ConsentButton.selected) {
-            [SVProgressHUD showInfoWithStatus:@"请同意相关协议"];
+            [SVProgressHUD showInfoWithStatus:@"请同意委托服务协议、借款协议、以及重要提示"];
             [SVProgressHUD dismissWithDelay:2];
             return;
         }
@@ -458,6 +459,7 @@
             // 需要输入交易密码
             CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];
              BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:BCBound money:[self decimalNumberString:m]];
+            view.phone = self.phone;
             view.vc = self;
             MJWeakSelf;
             view.success = ^(BOOL isSuccess) {

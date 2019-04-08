@@ -390,7 +390,7 @@
         
     } else {
         
-       useStr = @"帑库银票借款";
+       useStr = @"糖库银票借款";
     }
     
     NSArray *titleA = @[@"绑卡用途：",@"银行卡号：",@"银行卡预留手机号：",@"手机短信验证码："];
@@ -707,7 +707,7 @@
             
         } else {
             
-            VCToast([responseObject objectNilForKey:@"data"], 1);
+            VCToast([responseObject objectNilForKey:@"msg"], 1);
             
         }
         
@@ -899,7 +899,7 @@
         leftL.text = @"恭喜您信用认证通过，您获得";
         
         
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"帑库银票借款额度：¥%@",[dataDic objectNilForKey:@"cash_credit_limit"] ]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"糖库银票借款额度：¥%@",[dataDic objectNilForKey:@"cash_credit_limit"] ]];
         NSDictionary * firstAttributes = @{NSForegroundColorAttributeName:COLOR(255, 0, 0)};
         [str setAttributes:firstAttributes range:NSMakeRange(9,str.length - 9)];
         

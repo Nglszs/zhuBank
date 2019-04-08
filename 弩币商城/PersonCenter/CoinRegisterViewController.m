@@ -115,10 +115,7 @@
             [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",user_id] forKey:USER_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            if (![self.navigationController.viewControllers[0] isKindOfClass:[CoinLoginViewController class]]) {
-                [self.navigationController popViewControllerAnimated:YES];
-                return;
-            }
+          
             
             CoinPersonViewController *workVC =  [[CoinPersonViewController alloc] init];
             NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[self.tabBarController viewControllers]];
@@ -131,6 +128,13 @@
             }
             [arr replaceObjectAtIndex:count withObject:workNav];
             [self.tabBarController setViewControllers:arr];
+            
+            if (![self.navigationController.viewControllers[0] isKindOfClass:[CoinLoginViewController class]]) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
+            
             
         } else {
             VCToast([responseObject objectForKey:@"msg"], 1);

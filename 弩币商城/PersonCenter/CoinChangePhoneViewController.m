@@ -403,13 +403,7 @@
     NSString *filtered =
     [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     
-    
-    
-    
     return  [string isEqualToString:filtered];
-    
-    
-    
 }
 
 @end

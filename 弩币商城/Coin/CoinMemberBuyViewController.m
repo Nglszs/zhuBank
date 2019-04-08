@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (self.type == BRPayBuyMember) {
-        self.title = @"购买帑库金钻会员卡";
+        self.title = @"购买糖库金钻会员卡";
     }else if (self.type == BRPayRepayment){
         self.title = @"还款";
     }else if (self.type == BRPayBuyCommodity){

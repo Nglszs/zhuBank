@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
-    self.title = @"帑库银票";
+    self.title = @"糖库银票";
     [self SetNavTitleColor];
    
 }

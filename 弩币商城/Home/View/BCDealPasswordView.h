@@ -17,6 +17,7 @@ typedef void(^BRPaySuccess)(BOOL isSuccess);
 @property (nonatomic,copy)BRPaySuccess success;
 
 @property (nonatomic,weak)UIViewController * vc;
+@property (nonatomic,copy)NSString * phone;
 @end
 
 NS_ASSUME_NONNULL_END

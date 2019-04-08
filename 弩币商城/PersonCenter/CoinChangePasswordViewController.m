@@ -25,8 +25,6 @@
 }
 
 - (void)initView {
-   
-    
     UILabel *titleL = [[UILabel alloc] init];
     titleL.text = @"修改登录密码";
     titleL.textColor = TITLE_COLOR;

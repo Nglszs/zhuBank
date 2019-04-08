@@ -88,40 +88,28 @@ static NSString *cellID = @"cell";
     }
    
     [NOTIFICATION_CENTER addObserver:self selector:@selector(loginSuccess) name:Login_Success object:nil];
-    
-     [NOTIFICATION_CENTER addObserver:self selector:@selector(exitSuccess) name:Exit_login object:nil];
-
+    [NOTIFICATION_CENTER addObserver:self selector:@selector(exitSuccess) name:Exit_login object:nil];
 }
 
 - (void)loginSuccess{
     [loginBtn setTitle:@"" forState:UIControlStateNormal];
     [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
-    [loginBtn addtargetBlock:^(UIButton *button) {
-        if ([Tool AuditState]) {
-            self.tabBarController.selectedIndex = 3;
-        } else {
-            
-             self.tabBarController.selectedIndex = 2;
-        }
-       
-    }];
 }
 
 - (void)exitSuccess {
     [loginBtn setImage:nil forState:UIControlStateNormal];
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-    [loginBtn addtargetBlock:^(UIButton *button) {
-        CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
-    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
    
         [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    
+    if ([Tool isLogin]) {
+          [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
+    }else{
+        [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    }
     
     
 }
@@ -143,7 +131,7 @@ static NSString *cellID = @"cell";
     [self upDateVersion];
 }
 #pragma mark 网络请求
-- (void)getData {
+- (void)getData{
     
     [KTooL HttpPostWithUrl:@"Index/homepage" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
@@ -172,7 +160,7 @@ static NSString *cellID = @"cell";
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        VCToast(error.description, 1);
+        VCToast(@"当前无网络连接，请检查网络", 1);
     }];
     
 }
@@ -219,32 +207,12 @@ static NSString *cellID = @"cell";
    
     [loginBtn setTitleColor:White forState:UIControlStateNormal];
     loginBtn.titleLabel.font = Regular(15);
-    
-    
-        [_navView addSubview:loginBtn];
-    
-    
-    if ([Tool isLogin]) {
-        [loginBtn setImage:[UIImage imageNamed:@"我的 (1)"] forState:UIControlStateNormal];
-        [loginBtn addtargetBlock:^(UIButton *button) {
-            if ([Tool AuditState]) {
-                self.tabBarController.selectedIndex = 3;
-            } else {
-                
-                self.tabBarController.selectedIndex = 2;
-            }
-        }];
-    } else {
-        
-         [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-        [loginBtn addtargetBlock:^(UIButton *button) {
-            CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:YES];
-        }];
-    }
-    
-    
+    [loginBtn addTarget:self action:@selector(loginBtnAction:) forControlEvents:(UIControlEventTouchUpInside)];
+       [_navView addSubview:loginBtn];
 }
+
+
+
 - (void)initView {
     
     
@@ -672,7 +640,7 @@ static NSString *cellID = @"cell";
 }
 
 
-#pragma mark 努库银票
+#pragma mark 糖库银票
 
 - (void)initThridView {
     
@@ -690,7 +658,7 @@ static NSString *cellID = @"cell";
     
     //    头部标题
     UILabel *leftL = [[UILabel alloc] init];
-    leftL.text = @"帑库银票";
+    leftL.text = @"糖库银票";
     leftL.textColor = TITLE_COLOR;
     leftL.font = Regular(15);
     [self.backScrollView addSubview:leftL];
@@ -707,7 +675,6 @@ static NSString *cellID = @"cell";
     moneyImageV.image = BCImage(帑库银票);
     [self.backScrollView addSubview:moneyImageV];
     [moneyImageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.equalTo(leftL.mas_bottom).offset(5);
         make.left.mas_equalTo(LEFT_Margin);
         make.width.mas_equalTo(BCWidth - 30);
@@ -854,6 +821,22 @@ static NSString *cellID = @"cell";
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         
     }];
+    
+}
+#pragma mark  登录按钮点击事件
+- (void)loginBtnAction:(UIButton *)btn{
+    if ([Tool isLogin]) {
+        if ([Tool AuditState]) {
+            self.tabBarController.selectedIndex = 3;
+        } else {
+            
+            self.tabBarController.selectedIndex = 2;
+        }
+        
+    }else{
+        CoinLoginViewController *VC = [[CoinLoginViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }
     
 }
 

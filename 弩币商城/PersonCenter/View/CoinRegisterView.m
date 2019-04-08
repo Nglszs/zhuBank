@@ -241,7 +241,7 @@
             [weakSelf.countDownTimer invalidate];
             weakSelf.countDownTimer = nil;
              [weakSelf.GetCodeButton setTitle:@"重新发送" forState:UIControlStateNormal];
-         
+           _GetCodeButton.userInteractionEnabled = YES;
         }
         
     }];

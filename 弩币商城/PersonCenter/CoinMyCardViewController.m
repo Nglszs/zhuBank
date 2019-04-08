@@ -44,7 +44,7 @@
 //        status 1：需要去购买会员；2：需要先身份认证；3：去绑卡
         int status = [responseObject[@"status"] intValue];
         if (status == 1) {
-            UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"您需要先购买会员" message:@"绑卡前需要购买努库金钻会员" preferredStyle:(UIAlertControllerStyleAlert)];
+            UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"您需要先购买会员" message:@"绑卡前需要购买糖库金钻会员" preferredStyle:(UIAlertControllerStyleAlert)];
             UIAlertAction * a1 = [UIAlertAction actionWithTitle:@"去购买" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
                 CoinMemberBuyViewController * vc = [CoinMemberBuyViewController new];
                 vc.type = BRPayBuyMember;

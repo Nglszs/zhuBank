@@ -47,7 +47,7 @@
         make.centerX.equalTo(self.view);
         make.top.equalTo(LogoImage.mas_bottom).offset(10);
     }];
-    NSArray * array = @[@"帑库商城介绍",@"用户注册协议",@"隐私保护政策"];
+    NSArray * array = @[@"糖库商城介绍",@"用户注册协议",@"隐私保护政策"];
     for (int i = 0; i < array.count; i++) {
         UIButton * btn = [UIButton buttonWithType:(UIButtonTypeCustom)];
         btn.adjustsImageWhenHighlighted = NO;
@@ -102,7 +102,7 @@
     
     UILabel * CopyrightLabel = [UILabel new];
     CopyrightLabel.textColor = COLOR(108, 108, 108);    CopyrightLabel.font = Regular(10);
-    CopyrightLabel.text = @" CopyRight©2018-2019 江苏住银所互联网科技有限公司 版权所有";
+    CopyrightLabel.text = @" CopyRight©2018-2019 江苏无锡帑库电子商务有限公司 版权所有";
     CopyrightLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:CopyrightLabel];
     [CopyrightLabel mas_makeConstraints:^(MASConstraintMaker *make) {

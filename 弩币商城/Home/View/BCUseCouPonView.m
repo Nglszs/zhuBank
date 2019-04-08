@@ -96,8 +96,6 @@
     [exitButton setTitleColor:COLOR(153, 153, 153) forState:UIControlStateNormal];
     [headView addSubview:exitButton];
     [exitButton addtargetBlock:^(UIButton *button) {
-        
-        
         ID = @"";
         money  = @"";
 //        选择的优惠券
@@ -109,7 +107,8 @@
             
             
         }
-        [self removeCommentCuView];
+//        [self removeCommentCuView];
+        selectedBtn.selected = NO;
     }];
     
     

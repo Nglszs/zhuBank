@@ -16,7 +16,7 @@
 #import "CoinChangePhoneViewController.h"
 #import "CoinMemberBuyViewController.h"
 #import "CoinCertifyViewController.h"
-
+#import "CoinLoginViewController.h"
 @interface CoinGoodDetailViewController ()<UIScrollViewDelegate>
 {
     UIImageView *backImageView;//滑竿
@@ -623,63 +623,58 @@
 
 - (BOOL)disposeStatus:(int)status{
     //status:1成功 0:未登录 -1:请先购买会员卡 -2:不符合分期条件 -3:会员卡到期 -4:请先验证身份信息 -5:请先绑卡 -6:请先评估您的信用/您的信用评分已过期,请重新评估 -7:请先设置交易密码 -8:库存不足 -9:剩余额度不足,请调整首付比例
-    NSString  * msg;
+   
+    UIViewController * PushVC;
     if (status == 1) {
         return YES;
     }
     if (status == 0) {
-        
+        PushVC = [CoinLoginViewController new];
     }
-    if (status == -1) {
-        [SVProgressHUD showInfoWithStatus:@"请先购买会员卡"];
-        [SVProgressHUD dismissWithDelay:1];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (status == -1 || status == -3) {
+        
             CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
             VC.type  = BRPayBuyMember;
-            [self.navigationController pushViewController:VC animated:YES];
-        });
+        PushVC = VC;
+      
         
     }
     if (status == -2) {
-        msg = @"不符合分期条件";
+      
         
     }
     if (status == -3) {
-        msg = @"会员卡到期";
+       
     }
     if (status == -4) {
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 1;
         vc.isFenqi = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+        PushVC = vc;
     }
     if (status == -5) {
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 2;
         vc.isFenqi = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+        PushVC = vc;
     }
     if (status == -6) {
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 3;
         vc.isFenqi = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+        PushVC = vc;
     }
     if (status == -7) {
         CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
         vc.isSetPay = YES;
         vc.phoneNum = phone;
-        [self.navigationController pushViewController:vc animated:YES];
+        PushVC = vc;
     }
-    if (status == -8) {
-        msg = @"库存不足";
-    }
-    if (status == -9) {
-        msg = @"剩余额度不足,请调整首付比例";
-    }
-    if (msg) {
-        VCToast(msg, 2);
-    }
+        if (PushVC) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController pushViewController:PushVC animated:YES];
+            });
+        }
     return NO;
     
 }
@@ -704,22 +699,19 @@
     if (![Tool isLogin]) {
         
         VCToast(@"请先登录", 1);
-        [self.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             [self.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
+        });
+       
         return;
     }
     
-    
-    
-    
-    if (sizeArr.count <= 0) {//如果规则页没选过则购买的时候弹出来
+   if (sizeArr.count <= 0) {//如果规则页没选过则购买的时候弹出来
         
         NSDictionary *dic;
         if (divideArr.count <= 0) {//如果没选择分期
             dic = @{@"q_fenqi":@"0",@"shou_pay":@"0",@"period":@"0"};
         } else {//如果选择了分期
-            
-            
-            
             
             NSString *stage = [divideArr firstObject];
             if ([stage isEqualToString:@"零首付"]) {
@@ -771,24 +763,21 @@
                     int remainSecond =[[[divideArr lastObject] stringByTrimmingCharactersInSet:nonDigits] intValue];
                     dict[@"periods"] = [NSString stringWithFormat:@"%d",remainSecond];
                 }
+          dict[@"stages"]  = [divideArr firstObject];
+        if ([dict[@"stages"] isEqualToString:@"零首付"]) {
+            dict[@"stages"]  = @"0";
+            } else {
+               NSString *newStr = [dict[@"stages"] substringToIndex:1];
+            dict[@"stages"]  = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
+            }
                 
-                
-                
-                                dict[@"stages"]  = [divideArr firstObject];
-                                if ([dict[@"stages"] isEqualToString:@"零首付"]) {
-                                    dict[@"stages"]  = @"0";
-                                } else {
-                
-                                    NSString *newStr = [dict[@"stages"] substringToIndex:1];
-                                   dict[@"stages"]  = [NSString stringWithFormat:@"%.1f",[newStr floatValue]/10];
-                                }
-                
-                            }
+            }
             
-            
-            
-            [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+          [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 
+                if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
+                    VCToast(BCMsg, 1);
+                }
                 if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
                     CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
                     VC.q_fenqi = divideArr.count<=0?@"0":@"1";
@@ -860,7 +849,10 @@
         
         
         [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            
+            if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
+                
+                VCToast(BCMsg, 1);
+            }
             if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
                 CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
                 VC.q_fenqi = divideArr.count<=0?@"0":@"1";
@@ -1097,7 +1089,6 @@
             
             continue;
         }
-        NSLog(@"======11");
         CGFloat imgHeight = img.size.height;
         CGFloat imgWidth = img.size.width;
         
@@ -1126,14 +1117,9 @@
 - (UIView *)headView {
     if (!_headView) {
         
-        
-        
         _headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , BCWidth , BCNaviHeight)];
       
         _headView.backgroundColor = ThemeColor;
-        
-       
-        
         
         
         NSArray *titleArr1 = @[@"商品",@"详情"];
@@ -1235,6 +1221,5 @@
     [self clickTopButton:btn];
     
 }
-
 
 @end

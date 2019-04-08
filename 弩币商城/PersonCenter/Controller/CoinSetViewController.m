@@ -39,9 +39,7 @@
    
     leftArr = @[@"头像",@"昵称",@"性别",@"生日",@"手机",@"修改登录密码",@"交易密码",@"收货地址"];
     [self.view addSubview:self.playTableview];
-    
-    NSLog(@"%@--%@",[USER_DEFAULTS objectForKey:USER_ID],
-          [USER_DEFAULTS objectForKey:USER_Token]);
+ 
     
 //    退出登录
     UIButton *backBtn1 = [[UIButton alloc] init];
@@ -81,16 +79,19 @@
         
     }];
     
-    [self getData];
+   
     
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     [self getData];
 }
 
 #pragma mark 获取个人信息
 - (void)getData {
     
     [KTooL HttpPostWithUrl:@"UserCenter/setting" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        
-        NSLog(@"===%@",responseObject);
+    
        
         
         if (BCStatus) {
@@ -101,7 +102,7 @@
             
         } else {
             
-            
+            VCToast(BCMsg, 2);
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

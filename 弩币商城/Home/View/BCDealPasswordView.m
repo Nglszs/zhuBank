@@ -101,9 +101,11 @@
     [forget setTitle:@"忘记密码？" forState:(UIControlStateNormal)];
     [forget setTitleColor:COLOR(242, 159, 88) forState:(UIControlStateNormal)];
     WS(weakSelf);
+   
     [forget addtargetBlock:^(UIButton *button) {
         CoinChangePhoneViewController * vc2 = [CoinChangePhoneViewController new];
         vc2.isSetPay = YES;
+        vc2.phoneNum = weakSelf.phone;
         [weakSelf.vc.navigationController pushViewController:vc2 animated:YES];
     }];
     [TFView addSubview:forget];

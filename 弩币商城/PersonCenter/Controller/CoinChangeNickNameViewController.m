@@ -89,11 +89,7 @@
         }
        
         [KTooL HttpPostWithUrl:@"UserCenter/reset_nickname" parameters:@{@"nickname":_messageCodeField.text} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-            
-            NSLog(@"===%@",responseObject);
-            
-            
-            if (BCStatus) {
+              if (BCStatus) {
                 
                 VCToast(@"修改成功", 1);
                 [self.view endEditing:YES];
@@ -103,7 +99,7 @@
                 });
                 
             } else {
-                
+                VCToast(BCMsg, 2);
                 
             }
             
