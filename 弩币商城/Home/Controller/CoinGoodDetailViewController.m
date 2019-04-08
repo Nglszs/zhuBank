@@ -476,7 +476,7 @@
     
     
     UILabel *rightL = [[UILabel alloc] init];
-    rightL.text = @"樱粉金 8G+128G 全网通";
+    
     rightL.textColor = COLOR(103, 103, 103);
     rightL.font = Regular(13);
     rightL.tag = 700;
