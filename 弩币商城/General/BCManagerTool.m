@@ -524,4 +524,28 @@ static BCManagerTool *_instanceTool;
    return  [USER_DEFAULTS boolForKey:@"AuditState"];
 }
 
+// 判断网络代理
+- (BOOL)checkProxySetting {
+    NSDictionary *proxySettings = (__bridge NSDictionary *)(CFNetworkCopySystemProxySettings());
+    NSArray *proxies = (__bridge NSArray *)(CFNetworkCopyProxiesForURL((__bridge CFURLRef _Nonnull)([NSURL URLWithString:@"https://www.baidu.com"]), (__bridge CFDictionaryRef _Nonnull)(proxySettings)));
+    NSLog(@"\n%@",proxies);
+    
+    NSDictionary *settings = proxies[0];
+    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyHostNameKey]);
+    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyPortNumberKey]);
+    NSLog(@"%@",[settings objectForKey:(NSString *)kCFProxyTypeKey]);
+    
+    if ([[settings objectForKey:(NSString *)kCFProxyTypeKey] isEqualToString:@"kCFProxyTypeNone"] || BCStringIsEmpty([settings objectForKey:(NSString *)kCFProxyHostNameKey]))
+    {
+        NSLog(@"没设置代理");
+        return NO;
+    }
+    else
+    {
+        
+        NSLog(@"设置了代理");
+        return YES;
+    }
+    
+}
 @end

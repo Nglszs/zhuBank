@@ -203,4 +203,6 @@ typedef void(^ BCFailureBlock)  (NSString *errorResult);
  @return YES 通过，NO正在进行
  */
 - (BOOL)AuditState;
+// 判断网络代理
+- (BOOL)checkProxySetting;
 @end

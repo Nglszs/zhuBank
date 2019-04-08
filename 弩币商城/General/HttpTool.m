@@ -83,6 +83,10 @@ static HttpTool * tool;
         dict[key] = [NSString stringWithFormat:@"%@",obj];
     }];
     
+    if ([Tool checkProxySetting]) {
+        [SVProgressHUD showErrorWithStatus:@"检测到网络代理，请关闭"];
+        return;
+    }
 
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [SVProgressHUD dismiss];

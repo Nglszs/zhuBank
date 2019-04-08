@@ -680,8 +680,7 @@
 }
 
 - (void)requestPhone{
-    
-    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+     [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             phone = responseObject[@"data"][@"mobile"];
         }
