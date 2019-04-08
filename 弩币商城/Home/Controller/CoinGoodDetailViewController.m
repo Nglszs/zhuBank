@@ -773,11 +773,13 @@
             }
             
           [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                
+              
+              NSLog(@"11111=====");
+              
                 if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
                     VCToast(BCMsg, 1);
                 }
-                if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
+                if ([responseObject[@"status"] intValue] == 1) {
                     CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
                     VC.q_fenqi = divideArr.count<=0?@"0":@"1";
                     VC.goods_id = _goodID;
@@ -848,11 +850,12 @@
         
         
         [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            
             if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
                 
                 VCToast(BCMsg, 1);
             }
-            if ([self disposeStatus:[responseObject[@"status"] intValue]]) {
+            if ([responseObject[@"status"] intValue]) {
                 CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
                 VC.q_fenqi = divideArr.count<=0?@"0":@"1";
                 VC.goods_id = _goodID;
