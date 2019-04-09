@@ -90,10 +90,11 @@
         return cell;
     }
      if (indexPath.section == 1 && indexPath.row == 1) {
-        CoinMemberCouponingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinMemberCouponingCell1"];
+          CoinMemberCouponingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CoinMemberCouponingCell1"];
         if (cell == nil) {
             cell = [[CoinMemberCouponingCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"CoinMemberCouponingCell1"];
         }
+         cell.agreementBtn = self.agreementBtn;
          cell.SeleVC = self;
          cell.dataArray = self.DataDict[@"mall_coupons"];
         return cell;
@@ -106,6 +107,7 @@
         }
         cell.SeleVC = self;
         cell.dataArray = self.DataDict[@"month_coupons"];
+        cell.agreementBtn = self.agreementBtn;
         return cell;
     }
     
@@ -249,6 +251,45 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         VCToast(@"加载失败", 2);
     }];
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 1 && indexPath.row == 4) {
+        // 特权3
+        if ([Tool isVip]) {
+            self.tabBarController.selectedIndex = 2;
+             [self.navigationController popToRootViewControllerAnimated:YES];
+        }else{
+            // 去开通
+            if (!self.agreementBtn.selected) {
+                VCToast(@"请先同意会员服务协议", 2);
+                return;
+            }
+            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+            VC.type = BRPayBuyMember;
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+    }
+    if (indexPath.section == 1 && indexPath.row == 5) {
+        // 特权4
+        if ([Tool isVip]) {
+            self.tabBarController.selectedIndex = 1;
+             [self.navigationController popToRootViewControllerAnimated:YES];
+        }else{
+            // 去开通
+            if (!self.agreementBtn.selected) {
+                VCToast(@"请先同意会员服务协议", 2);
+                return;
+            }
+            
+            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+            VC.type = BRPayBuyMember;
+            [self.navigationController pushViewController:VC animated:YES];
+         }
+        
+    }
+    
     
 }
 @end

@@ -4,17 +4,12 @@
 //
 //  Created by 暴瑞瑞 on 2019/2/26.
 //  Copyright © 2019年 詹姆斯. All rights reserved.
-//
-
 #import "CoinSearchViewController.h"
 #import "CoinSearchResultViewController.h"
 #import <TCWebCodesSDK/TCWebCodesBridge.h>
 #import "HttpTool.h"
-
 @interface CoinSearchViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
-
 @property (nonatomic,strong)UITextField * SearchTF;
-
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,copy)NSArray * dataArray;
 @end
@@ -29,9 +24,7 @@
     [self initView];
     [self SetReturnButton];
     [self Request];
-    
 }
-    
 
 
 // 布局
