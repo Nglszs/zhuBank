@@ -152,6 +152,7 @@ static HttpTool * tool;
 }
 
 - (void)GoLogin{
+    [NOTIFICATION_CENTER postNotificationName:Exit_login object:nil];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_ID];
      [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_Token];
     
