@@ -487,7 +487,7 @@
 
          
             
-            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle.length>0?diviBtn.currentTitle:@"",selectedBtn.currentTitle.length>0?selectedBtn.currentTitle:@""],@"history":@[@(shopNumber),@(diviBtn.tag - 200),@(selectedBtn.tag - 100)]});
+            self.backBlock(@{@"arr":@[_countTextField.text,item_ID],@"size":[NSString stringWithFormat:@"%@ %@",diviBtn.currentTitle.length>0?diviBtn.currentTitle:@"",selectedBtn.currentTitle.length>0?selectedBtn.currentTitle:@""],@"history":@[@(shopNumber),@(diviBtn.tag - 200),@(selectedBtn.tag - 100)],@"price":moneyL.text});
         }
 
         [self removeCommentCuView];

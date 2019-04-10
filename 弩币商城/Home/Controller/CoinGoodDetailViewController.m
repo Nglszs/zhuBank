@@ -102,12 +102,10 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
+    if (![self.navigationController.viewControllers containsObject:self]) {
+        [diviV removeFromSuperview];
+    }
     
-    
-}
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
-    [diviV removeFromSuperview];
 }
 
 - (void)initView {
@@ -461,6 +459,31 @@
                    sizeL.text = [dic1 objectNilForKey:@"spec_param"];
                 sizeArr = nil;
                 goodHistoryArr = nil;
+                
+                
+                UILabel *priceL = [self.backScrollView viewWithTag:200];
+                NSDictionary *dic2 = [dataDic objectNilForKey:@"goods_info"];
+                NSDictionary *dic11 = [dataDic objectNilForKey:@"spec_info"];
+                
+                
+                
+                if (BCStringIsEmpty([dic11 objectNilForKey:@"spec_price"])) {//先判断有没有规格价，有则显示，无则显示shop价格
+                    
+                    price = [dic2 objectNilForKey:@"shop_price"];
+                    
+                } else {
+                    
+                    price = [dic11 objectNilForKey:@"spec_price"];
+                    
+                }
+                
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥ %ld",[price integerValue]]];
+                NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+                [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
+                
+                priceL.attributedText = str;
+                
+                
             } else {
             
           
@@ -468,7 +491,13 @@
              UILabel *sizeL = [self.backScrollView viewWithTag:700];
             sizeL.text = [result objectForKey:@"size"];
             goodHistoryArr = [result objectForKey:@"history"];
+              
                 
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[result objectForKey:@"price"]];
+                NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+                [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
+                UILabel *priceL = [self.backScrollView viewWithTag:200];
+                priceL.attributedText = str;
             }
         };
     }];
@@ -742,12 +771,43 @@
                 sizeArr = nil;
                 goodHistoryArr = nil;
                 
+                
+                UILabel *priceL = [self.backScrollView viewWithTag:200];
+                NSDictionary *dic2 = [dataDic objectNilForKey:@"goods_info"];
+                NSDictionary *dic11 = [dataDic objectNilForKey:@"spec_info"];
+                
+                
+                
+                if (BCStringIsEmpty([dic11 objectNilForKey:@"spec_price"])) {//先判断有没有规格价，有则显示，无则显示shop价格
+                    
+                    price = [dic2 objectNilForKey:@"shop_price"];
+                    
+                } else {
+                    
+                    price = [dic11 objectNilForKey:@"spec_price"];
+                    
+                }
+                
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥ %ld",[price integerValue]]];
+                NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+                [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
+                
+                priceL.attributedText = str;
+                
+                
+                
             } else {
             
             sizeArr = [result objectForKey:@"arr"];
             UILabel *sizeL = [self.backScrollView viewWithTag:700];
             sizeL.text = [result objectForKey:@"size"];
             
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[result objectForKey:@"price"]];
+                NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular14Font};
+                [str setAttributes:firstAttributes range:NSMakeRange(0,1)];
+                UILabel *priceL = [self.backScrollView viewWithTag:200];
+                priceL.attributedText = str;
+                
             NSMutableDictionary * dict = [NSMutableDictionary dictionary];
             dict[@"q_fenqi"] = divideArr.count<=0?@"0":@"1";
             dict[@"goods_id"] = _goodID;
@@ -931,6 +991,7 @@
     
     [KTooL HttpPostWithUrl:@"Goods/goodsinfo" parameters:@{@"goods_id":_goodID} loadString:@"正在加载" success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (BCStatus) {
+            NSLog(@"==%@",responseObject);
             dataDic = [responseObject objectNilForKey:@"data"];
             [self refreshView];
             
@@ -958,12 +1019,12 @@
 //    商品信息
     NSDictionary *dic = [dataDic objectNilForKey:@"goods_info"];
     UILabel *nameLabel = [self.backScrollView viewWithTag:100];
-    nameLabel.attributedText = [self setLabelIndent:14*2 text:[dic objectNilForKey:@"goods_name"]];
+    nameLabel.attributedText = [self setLabelIndent:14*2 text:[NSString stringWithFormat:@"%@，%@",[dic objectNilForKey:@"goods_name"],[dic objectNilForKey:@"goods_remark"]]];
     
 //    价格
     
     UILabel *priceL = [self.backScrollView viewWithTag:200];
-    
+   
      NSDictionary *dic1 = [dataDic objectNilForKey:@"spec_info"];
     
     

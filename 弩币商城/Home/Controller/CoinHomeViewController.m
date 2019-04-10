@@ -53,9 +53,14 @@ static NSString *cellID = @"cell";
     
     [self initSecondView];
     
-    [self initThridView];
+  
     
-    [self initFourView];
+    if ([Tool AuditState]) {
+        [self initThridView];
+        
+        [self initFourView];
+    }
+   
     
     
     [self initNavView];
@@ -178,6 +183,10 @@ static NSString *cellID = @"cell";
     UIButton *topBtn = [[UIButton alloc] initWithFrame:CGRectMake(LEFT_Margin, BCNaviHeight - 40, BCWidth - 60 - LEFT_Margin, 30)];
     topBtn.backgroundColor = White;
     topBtn.layer.cornerRadius = 10;
+    [topBtn setTitle:@"请输入您要搜索的商品" forState:UIControlStateNormal];
+    topBtn.titleLabel.font = Regular14Font;
+    topBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    [topBtn setTitleColor:Gray_Color forState:UIControlStateNormal];
     topBtn.clipsToBounds = YES;
     [_navView addSubview:topBtn];
 //    跳转到搜索界面
@@ -654,7 +663,7 @@ static NSString *cellID = @"cell";
     
     
     UIImageView *moneyImageV = [[UIImageView alloc] init];
-    moneyImageV.image = BCImage(帑库银票);
+    moneyImageV.image = BCImage(帑库银票 拷贝 2);
     [self.backScrollView addSubview:moneyImageV];
     [moneyImageV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(leftL.mas_bottom).offset(5);
