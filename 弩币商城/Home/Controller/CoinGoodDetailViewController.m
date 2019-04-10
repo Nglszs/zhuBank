@@ -102,12 +102,10 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
+    if (![self.navigationController.viewControllers containsObject:self]) {
+        [diviV removeFromSuperview];
+    }
     
-    
-}
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
-    [diviV removeFromSuperview];
 }
 
 - (void)initView {
