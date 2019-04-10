@@ -451,11 +451,10 @@ static NSString *cellID = @"cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-      //        跳转商品详情界面
+      //跳转商品详情界面
     CoinGoodDetailViewController *vc = [[CoinGoodDetailViewController alloc] init];
     vc.goodID = [[_goodArray objectAtIndex:indexPath.row] objectForKey:@"goods_id"];
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 #pragma  mark 严选专区
 

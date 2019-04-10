@@ -167,7 +167,11 @@
 }
 
 - (void)buttonAction:(UIButton *)btn{
-    if (![Tool isVip]) {
+     if (![Tool isVip]) {
+        if (!self.agreementBtn.selected) {
+            ViewToast(@"请先同意会员服务协议", 2);
+            return;
+        }
         // 去购买会员
         CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
         VC.type = BRPayBuyMember;
