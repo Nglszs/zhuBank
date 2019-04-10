@@ -23,6 +23,7 @@
 #import "CoinChangePhoneViewController.h"
 #import "BCUseCouPonView.h"
 #import "BCDealPasswordView.h"
+#import "CoinChangeAddressViewController.h"
 
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
@@ -217,6 +218,7 @@
         if (self.DataDict) {
             cell.dataDict = self.DataDict[@"address_info"];
         }
+        [cell.AddButton addTarget:self action:@selector(AddAddressAction:) forControlEvents:(UIControlEventTouchUpInside)];
         cell.selectionStyle =0;
         return cell;
     }
@@ -444,12 +446,7 @@
 
 - (void)submitOrder{
     if (self.DataDict) {
-        // 判断同意协议
-        if (!self.ConsentButton.selected) {
-            [SVProgressHUD showInfoWithStatus:@"请同意委托服务协议、借款协议、以及重要提示"];
-            [SVProgressHUD dismissWithDelay:2];
-            return;
-        }
+      
         // 判断选择收货地址
         NSString * idS = [NSString stringWithFormat:@"%@",self.DataDict[@"address_info"][@"address_id"]];
         if (BCStringIsEmpty(idS)) {
@@ -458,6 +455,12 @@
             return;
         }
         if ([self.q_fenqi intValue] == 1) {
+            // 判断同意协议
+            if (!self.ConsentButton.selected) {
+                [SVProgressHUD showInfoWithStatus:@"请同意委托服务协议、借款协议、以及重要提示"];
+                [SVProgressHUD dismissWithDelay:2];
+                return;
+            }
             // 需要输入交易密码
             CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];
              BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:BCBound money:[self decimalNumberString:m]];
@@ -694,5 +697,10 @@
     }];
    
     
+}
+#pragma mark   添加收货地址
+- (void)AddAddressAction:(UIButton *)btn{
+     CoinSelectAddressViewController * vc = [CoinSelectAddressViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 @end

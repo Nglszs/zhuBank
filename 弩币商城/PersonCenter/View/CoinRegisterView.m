@@ -255,6 +255,9 @@
     
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if (BCStringIsEmpty(string)) {
+        return YES;
+    }
     if (textField == self.PhoneNumberTF) {
         //  只能输入数字
         NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];

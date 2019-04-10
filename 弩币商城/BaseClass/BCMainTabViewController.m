@@ -48,7 +48,7 @@
     
     CoinMoneyViewController *bussVC = [[CoinMoneyViewController alloc] init];
     BCNavigationViewController *bussNav = [[BCNavigationViewController alloc] initWithRootViewController:bussVC];
-    bussNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"糖库银票" image:[[UIImage imageNamed:@"帑库银票未选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"帑库银票选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    bussNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"糖库借呗" image:[[UIImage imageNamed:@"帑库银票未选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:@"帑库银票选中状态"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
    
     NSString * token = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];

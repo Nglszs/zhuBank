@@ -632,17 +632,15 @@ static NSString *cellID = @"cell";
     divideView.backgroundColor = DIVI_COLOR;
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.mas_equalTo(665);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
-        
-    }];
+     }];
     
     //    头部标题
     UILabel *leftL = [[UILabel alloc] init];
-    leftL.text = @"糖库银票";
+    leftL.text = @"糖库借呗";
     leftL.textColor = TITLE_COLOR;
     leftL.font = Regular(15);
     [self.backScrollView addSubview:leftL];
@@ -717,9 +715,7 @@ static NSString *cellID = @"cell";
         CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
         vc.url = self->huluUrl;
         [self.navigationController pushViewController:vc animated:YES];
-        
-    }];
-    
+     }];
 }
 #pragma mark 懒加载
 - (UIScrollView *)backScrollView {

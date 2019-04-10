@@ -162,6 +162,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == self.CityTF) {
+        [self endEditing:YES];
         [BRAddressPickerView showAddressPickerWithShowType:(BRAddressPickerModeArea) dataSource:self.CityArray defaultSelected:nil isAutoSelect:nil themeColor:nil resultBlock:^(BRProvinceModel *province, BRCityModel *city, BRAreaModel *area) {
             
             self.CityTF.text = [NSString stringWithFormat:@"%@ %@ %@",province.name,city.name,area.name];

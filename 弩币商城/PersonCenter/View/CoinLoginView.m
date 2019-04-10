@@ -173,7 +173,9 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
+    if (BCStringIsEmpty(string)) {
+        return YES;
+    }
     if (textField == self.UserNameTF) {
         NSString * string2 = [NSString stringWithFormat:@"%@%@",textField.text,string];
         if (string2.length == 11 && ![self isMobileNumber:string2]) {
@@ -185,6 +187,7 @@
         NSString * s1 = @"1234567890";
         return [s1 rangeOfString:string].location != NSNotFound;
     }
+    
     
     if (textField == self.PasswordTF) {
         NSString * s1 = @"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";

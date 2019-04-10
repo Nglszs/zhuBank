@@ -39,8 +39,13 @@
     [super viewDidLoad];
     [self initView];
     [self SetReturnButton];
-    [self RequestKeyword:self.keyword];
+    
     self.page = 1;
+    if (!BCStringIsEmpty(self.classifyID)) {
+        [self requestClassify];
+    }else{
+       [self RequestKeyword:self.keyword];
+    }
 }
 
 // 初始化视图
@@ -145,7 +150,13 @@
     self.SalesTop =  btn.selected ? 1 : 2;
     self.PriceTop = 0;
     btn.selected = !btn.selected;
-    [self RequestKeyword:self.keyword];
+    
+    if (!BCStringIsEmpty(self.classifyID)) {
+        [self requestClassify];
+    }else{
+        [self RequestKeyword:self.keyword];
+    }
+    
     
 }
 - (void)PriceButtonAction:(UIButton *)btn{
@@ -153,7 +164,11 @@
     self.SalesTop = 0;
     
     btn.selected = !btn.selected;
-    [self RequestKeyword:self.keyword];
+    if (!BCStringIsEmpty(self.classifyID)) {
+        [self requestClassify];
+    }else{
+        [self RequestKeyword:self.keyword];
+    }
 }
 
 // 初始化tableView
@@ -162,13 +177,23 @@
     tabView.delegate = self;
     tabView.dataSource = self;
     tabView.tableFooterView = [UIView new];
+    MJWeakSelf;
     tabView.mj_footer =  [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        self.page++;
-        [self RequestKeyword:self.keyword];
+        weakSelf.page++;
+        if (!BCStringIsEmpty(self.classifyID)) {
+            [weakSelf requestClassify];
+        }else{
+             [self RequestKeyword:self.keyword];
+        }
+       
     }];
     tabView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         self.page = 1;
-        [self RequestKeyword:self.keyword];
+        if (!BCStringIsEmpty(self.classifyID)) {
+            [weakSelf requestClassify];
+        }else{
+            [self RequestKeyword:self.keyword];
+        }
     }];
     self.tableView = tabView;
     [self.view addSubview:tabView];
@@ -251,32 +276,7 @@
     dict[@"way"] = self.SalesTop == 0 ? [NSString stringWithFormat:@"%ld",(long)self.PriceTop] :[NSString stringWithFormat:@"%ld",(long)self.SalesTop];
     dict[@"page"] = [NSString stringWithFormat:@"%d",self.page];
     [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Search/results" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self.tableView.mj_header endRefreshing];
-        if (BCStatus) {
-            
-            NSArray * array = responseObject[@"data"][@"goods_list"];
-            if (!BCArrayIsEmpty(array)) {
-                if (self.page == 1) {
-                    [self.DataArray removeAllObjects];
-                }
-                NSArray * arr =  [NSArray yy_modelArrayWithClass:[CoinSearchResultModel class] json:array];
-                [self.DataArray addObjectsFromArray:arr];
-                [self.tableView reloadData];
-                 [self.tableView.mj_footer endRefreshing];
-                self.NoDataView.hidden = YES;
-            }else{
-             [self.tableView.mj_footer endRefreshingWithNoMoreData];
-             
-            }
-        }else{
-           
-              [self.tableView.mj_footer endRefreshingWithNoMoreData];
-            if (BCArrayIsEmpty(self.DataArray)) {
-                self.NoDataView.hidden = NO;
-            }
-            
-        }
-        
+        [self disposeresponseObject:responseObject];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -339,5 +339,50 @@
         self.PriceBtnImage.image = BCImage(下拷贝2);
         self.PriceTopImage.image = BCImage(上拷贝);
     }
+}
+
+- (void)requestClassify{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    dict[@"id"] = self.classifyID;
+    dict[@"sort"] = self.SalesTop == 0? @"price" : @"sales_sum";
+    dict[@"way"] = self.SalesTop == 0 ? [NSString stringWithFormat:@"%ld",(long)self.PriceTop] :[NSString stringWithFormat:@"%ld",(long)self.SalesTop];
+    dict[@"page"] = [NSString stringWithFormat:@"%d",self.page];
+    [KTooL HttpPostWithUrl:@"Goods/goodslist" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self disposeresponseObject:responseObject];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }];
+
+    
+}
+
+- (void)disposeresponseObject:(id)responseObject{
+    [self.tableView.mj_header endRefreshing];
+    if (BCStatus) {
+        
+        NSArray * array = responseObject[@"data"][@"goods_list"];
+        if (!BCArrayIsEmpty(array)) {
+            if (self.page == 1) {
+                [self.DataArray removeAllObjects];
+            }
+            NSArray * arr =  [NSArray yy_modelArrayWithClass:[CoinSearchResultModel class] json:array];
+            [self.DataArray addObjectsFromArray:arr];
+            [self.tableView reloadData];
+            [self.tableView.mj_footer endRefreshing];
+            self.NoDataView.hidden = YES;
+        }else{
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }
+    }else{
+        
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        if (BCArrayIsEmpty(self.DataArray)) {
+            self.NoDataView.hidden = NO;
+        }
+        
+    }
+   
 }
 @end

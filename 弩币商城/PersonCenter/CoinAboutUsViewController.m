@@ -101,7 +101,8 @@
     }];
     
     UILabel * CopyrightLabel = [UILabel new];
-    CopyrightLabel.textColor = COLOR(108, 108, 108);    CopyrightLabel.font = Regular(10);
+    CopyrightLabel.textColor = COLOR(108, 108, 108);
+    CopyrightLabel.font = Regular(10);
     CopyrightLabel.text = @" CopyRight©2018-2019 江苏无锡帑库电子商务有限公司 版权所有";
     CopyrightLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:CopyrightLabel];

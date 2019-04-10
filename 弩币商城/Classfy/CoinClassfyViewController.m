@@ -217,6 +217,7 @@
     CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
     CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
    vc.keyword = model2.name;
+    vc.classifyID = model2.typeId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

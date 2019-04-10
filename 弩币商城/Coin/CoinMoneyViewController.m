@@ -24,6 +24,8 @@
 
 // 1:去登录;2:不可点击不跳转;3:去购买会员;4:去审核身份;5:去绑卡;6:去信用认证;7:去借款
 @property (nonatomic,copy)NSString * url;
+
+@property (nonatomic,strong)UILabel * footLabel;
 @end
 
 @implementation CoinMoneyViewController
@@ -31,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
-    self.title = @"糖库银票";
+    self.title = @"糖库借呗";
     [self SetNavTitleColor];
    
 }
@@ -147,7 +149,15 @@
     self.navigationItem.rightBarButtonItem.tintColor = COLOR(255, 126, 0);
     
     [btn addTarget:self action:@selector(btnAction:) forControlEvents:(UIControlEventTouchUpInside)];
-    
+    self.footLabel = [UILabel new];
+    self.footLabel.textColor = COLOR(108, 108, 108);
+    self.footLabel.text = @"XXX";
+    self.footLabel.font = Regular(10);
+    [self.view addSubview:self.footLabel];
+    [self.footLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-20);
+    }];
 }
 
 - (void)request{

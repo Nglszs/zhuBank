@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"糖库银票";
+    self.title = @"糖库借呗";
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self initView];

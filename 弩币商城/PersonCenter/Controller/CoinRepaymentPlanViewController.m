@@ -97,17 +97,14 @@
             case 3:
           return  dict[@"exptime"];
                 break;
-                
             case 4:
                 return status;
                 break;
            
         }
     }
-    
     if (tableView == self.finishTableView) {
-        NSDictionary * dict = self.waitingArray[index.section];
-        
+        NSDictionary * dict = self.alreadyArray[index.section];
         switch (index.row) {
             case 0:
                 return dict[@"exptime"]; // 还款日
