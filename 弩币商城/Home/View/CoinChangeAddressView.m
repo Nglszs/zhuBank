@@ -79,7 +79,7 @@
 {
     int i = 0;
     if (textField == self.NameTF) {
-        i = 4;
+        i = 1000000;
     }
     if (textField == self.PhoneNumberTF) {
         i = 11;
@@ -251,6 +251,8 @@
     [KTooL HttpPostWithUrl:@"Order/new_address_submit" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             ViewToast(@"添加成功", 2);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAddressSuccess" object:nil];
         }else{
             ViewToast(BCMsg, 2);
         }

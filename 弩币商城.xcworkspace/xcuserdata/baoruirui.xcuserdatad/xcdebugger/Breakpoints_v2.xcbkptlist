@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/Home/View/CoinChangeAddressView.m"
-            timestampString = "576581350.037003"
+            filePath = "&#x5f29;&#x5e01;&#x5546;&#x57ce;/PersonCenter/Controller/CoinRepaymentPlanViewController.m"
+            timestampString = "576667368.677304"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "252"
-            endingLineNumber = "252"
-            landmarkName = "-AddAddress:"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

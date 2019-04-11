@@ -12,6 +12,8 @@
 
 @property (nonatomic,strong)UITextField * passwordTF;
 @property (nonatomic,copy)NSString * money;
+@property (nonatomic,strong)UILabel * titleLabel;
+@property (nonatomic,strong)UIButton * submitButton;
 @end
 @implementation BCDealPasswordView
 - (instancetype)initWithFrame:(CGRect)frame money:(NSString *)money{
@@ -20,6 +22,7 @@
     if (self) {
         self.money = money;
         [self initView];
+        [self requestPhone];
     }
     return self;
 }
@@ -66,6 +69,8 @@
     }];
     UILabel * label = [[UILabel alloc] init];
     label.text = @"订单金额";
+    self.titleLabel = label;
+    
     label.textColor = COLOR(155, 156, 157);
     label.font = Regular(13);
     [view addSubview:label];
@@ -128,6 +133,7 @@
     }];
     
     UIButton * submitButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    self.submitButton = submitButton;
     [submitButton setTitle:@"确认付款" forState:(UIControlStateNormal)];
     submitButton.backgroundColor = COLOR(241, 156, 56);
     submitButton.layer.cornerRadius = 5;
@@ -144,18 +150,34 @@
     
 }
 - (void)submitButtonAction{
+    if (BCStringIsEmpty(self.passwordTF.text)) {
+        ViewToast(@"请输入交易密码", 2);
+        return;
+    }
     [self endEditing:YES];
-    [KTooL HttpPostWithUrl:@"Order/check_paypwd" parameters:@{@"paypwd":self.passwordTF.text} loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
+    [self removeFromSuperview];
+    if (self.Password) {
+        self.Password(self.passwordTF.text);
+    }
+}
+
+- (void)setIsBorrowMoney:(BOOL)isBorrowMoney{
+    _isBorrowMoney = isBorrowMoney;
+    if (isBorrowMoney) {
+        self.titleLabel.text = @"借款金额";
+        [self.submitButton setTitle:@"确认借款" forState:(UIControlStateNormal)];
+    }
+}
+
+- (void)requestPhone{
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
-            if (self.success) {
-                self.success(YES);
-            }
-        }else{
-            ViewToast(BCMsg, 2);
+            self.phone = responseObject[@"data"][@"mobile"];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        ViewToast(@"支付失败", 2);
+        
     }];
+    
 }
 
 @end

@@ -25,7 +25,6 @@
     CGFloat oldY;
     UICollectionView *myCollectionView;//3c
 }
-
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @property (nonatomic, strong) UIView *navView;//导航栏
 @property (nonatomic, strong) NSMutableArray *goodArray;//商品数据
@@ -50,23 +49,13 @@ static NSString *cellID = @"cell";
     _goodArray = [NSMutableArray arrayWithCapacity:1];
     
     [self initView];
-    
     [self initSecondView];
-    
-  
-    
-    if ([Tool AuditState]) {
+      if ([Tool AuditState]) {
         [self initThridView];
-        
         [self initFourView];
     }
-   
-    
-    
-    [self initNavView];
-
-    
-    //为了第一次安装app网络权限出现的问题
+   [self initNavView];
+   //为了第一次安装app网络权限出现的问题
     if ([Tool isConnectionAvalible]) {
         
         [self getData];
@@ -91,7 +80,6 @@ static NSString *cellID = @"cell";
         }];
    
     }
-   
     [NOTIFICATION_CENTER addObserver:self selector:@selector(loginSuccess) name:Login_Success object:nil];
     [NOTIFICATION_CENTER addObserver:self selector:@selector(exitSuccess) name:Exit_login object:nil];
 }
@@ -191,8 +179,7 @@ static NSString *cellID = @"cell";
     [_navView addSubview:topBtn];
 //    跳转到搜索界面
     [topBtn addtargetBlock:^(UIButton *button) {
-       
-        [self.navigationController pushViewController:[CoinSearchViewController new] animated:YES];
+       [self.navigationController pushViewController:[CoinSearchViewController new] animated:YES];
     }];
     
     

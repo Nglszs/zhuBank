@@ -81,11 +81,11 @@
     self.AddButton.layer.borderColor = COLOR(175, 175, 175).CGColor;
     self.AddButton.layer.cornerRadius = 10;
     self.AddButton.clipsToBounds = YES;
+    self.AddButton.hidden = YES;
     [self.AddButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.contentView);
     }];
     self.AddButton.titleLabel.font = Regular(15);
-    self.AddButton.hidden = NO;
 }
 
 - (void)awakeFromNib {
@@ -106,8 +106,11 @@
         self.AddressLabel.text = [NSString stringWithFormat:@"%@ %@",dataDict[@"address_area"],dataDict[@"address"]];
         
     }
-    if (BCStringIsEmpty(dataDict[@"address_id"])) {
+    NSString * address = [NSString stringWithFormat:@"%@",dataDict[@"address_id"]];
+    if (BCStringIsEmpty(address)) {
         self.AddButton.hidden = NO;
+    }else{
+        self.AddButton.hidden = YES;
     }
 }
 @end

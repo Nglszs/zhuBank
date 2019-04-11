@@ -75,8 +75,19 @@
      UIView*titleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,BCWidth-100,30)];
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, BCWidth - 100, 30)];
     
-    self.searchBar.placeholder = @"iPhone XS Max";
+    self.searchBar.placeholder = @"请输入您搜索的商品";
     
+    UIImageView * img = [[UIImageView alloc] init];
+    img.image = BCImage(搜索框logo);
+    img.contentMode = UIViewContentModeScaleAspectFit;
+    img.frame = CGRectMake(BCWidth - 100 - 40, 5, 20, 20);
+    [self.searchBar addSubview:img];
+    
+//    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.searchBar);
+//        make.width.height.mas_equalTo(10);
+//
+//    }];
     self.searchBar.layer.cornerRadius = 15;
     
     self.searchBar.layer.masksToBounds = YES;

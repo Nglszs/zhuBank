@@ -9,7 +9,8 @@
 #import "CoinBorrowMoneyViewController.h"
 #import "BorrowMoneyReasonView.h"
 #import "CoinBrowseStatusViewController.h"
-
+#import "CoinChangePhoneViewController.h"
+#import "BCDealPasswordView.h"
 @interface CoinBorrowMoneyViewController ()<UITextFieldDelegate>
 @property (nonatomic,strong)NSArray * dayArray;
 @property (nonatomic,strong)NSArray * reasonAyyay;
@@ -17,6 +18,7 @@
 @property (nonatomic,strong)UILabel * dayLabel;
 @property (nonatomic,strong)UILabel * reasonLabel;
 @property (nonatomic,strong)UILabel * MoneyLabel;
+@property (nonatomic,copy)NSString * phone;
 @end
 
 @implementation CoinBorrowMoneyViewController
@@ -24,9 +26,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"糖库借呗";
-    [self SetNavTitleColor];
-    [self SetReturnButton];
     [self initView];
+    [self requestPhone];
+    [self request];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChange) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -52,10 +54,10 @@
         
     }];
     [footButton addTarget:self action:@selector(goBuy:) forControlEvents:(UIControlEventTouchUpInside)];
-    [self request];
+    
 }
 - (void)goBuy:(UIButton *)btn{
-        if ([self.moneyTF.text intValue] == 0) {
+     if ([self.moneyTF.text intValue] == 0) {
             VCToast(@"借款金额不能为0", 2);
             return;
         }
@@ -71,24 +73,46 @@
         VCToast(@"请选择借款用途", 2);
         return;
     }
-    UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"交易密码" message:@"请输入交易密码" preferredStyle:(UIAlertControllerStyleAlert)];
- __block   UITextField * TF;
-    [aler addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"请输入交易密码";
-        textField.secureTextEntry = YES;
-        TF = textField;
-    }];
-    UIAlertAction * a1 = [UIAlertAction actionWithTitle:@"确认" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+  // 先判断有没有设置交易密码
+    NSMutableDictionary * dict2 = [NSMutableDictionary dictionary];
+    dict2[@"amount"] = self.moneyTF.text;
+    dict2[@"days"] = self.dayLabel.text;
+    dict2[@"use"] = self.reasonLabel.text;
+    dict2[@"repay_amount"] = [self.MoneyLabel.text substringFromIndex:1];
+    [KTooL HttpPostWithUrl:@"CashLoan/loan" parameters:dict2 loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        int status = [responseObject[@"status"] intValue];
+        if (status == 0) {
+            VCToast(@"借款失败", 2);
+        }else if (status == 1){
+            [self inputPassword];
+        }else if (status == 2){
+            // 设置交易密码
+            [self showSystemAlertTitle:@"您还没有设置交易密码" message:@"请先设置交易密码" cancelTitle:@"取消" confirmTitle:@"去设置" cancel:nil confirm:^{
+                CoinChangePhoneViewController * vc = [CoinChangePhoneViewController new];
+                vc.isSetPay = YES;
+                vc.phoneNum =  self.phone;
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
+    }];
+}
+
+- (void)inputPassword{
+     BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, BCHeight) money:self.moneyTF.text];
+    view.vc = self;
+    view.isBorrowMoney = YES;
+    [self.view addSubview:view];
+    view.Password = ^(NSString * _Nonnull Password) {
         
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
         dict[@"amount"] = self.moneyTF.text;
         dict[@"days"] = self.dayLabel.text;
         dict[@"use"] = self.reasonLabel.text;
         dict[@"repay_amount"] = [self.MoneyLabel.text substringFromIndex:1];
-        dict[@"password"] = TF.text;
+        dict[@"password"] = Password;
         [KTooL HttpPostWithUrl:@"CashLoan/confirm_loan" parameters:dict loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
-            
             int status = [responseObject[@"status"] intValue];
             if (status == 1) {
                 CoinBrowseStatusViewController * VC = [CoinBrowseStatusViewController new];
@@ -101,20 +125,8 @@
             
         }];
         
-    }];
-    UIAlertAction * a2 = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [aler addAction:a1];
-    [aler addAction:a2];
-    [self presentViewController:aler animated:YES completion:^{
-        
-    }];
-    
-  
-//    [self.navigationController pushViewController:[CoinBrowseStatusViewController new] animated:YES];
-    
-}
+    };
+};
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
   
@@ -318,5 +330,17 @@
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)requestPhone{
+    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.phone = responseObject[@"data"][@"mobile"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+    
 }
 @end

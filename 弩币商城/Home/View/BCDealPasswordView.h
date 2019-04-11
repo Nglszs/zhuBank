@@ -10,14 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^BRPaySuccess)(BOOL isSuccess);
+typedef void(^BRPayPassword)(NSString * Password);
+
 @interface BCDealPasswordView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame money:(NSString *)money;
-@property (nonatomic,copy)BRPaySuccess success;
+@property (nonatomic,copy)BRPayPassword Password;
 
 @property (nonatomic,weak)UIViewController * vc;
 @property (nonatomic,copy)NSString * phone;
+
+@property (nonatomic,assign)BOOL isBorrowMoney;// 是否是糖库借呗
 @end
 
 NS_ASSUME_NONNULL_END
