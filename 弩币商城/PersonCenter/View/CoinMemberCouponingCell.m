@@ -147,10 +147,13 @@
     NSString * btnStr = @"";
     if (status == 1) {
         btnStr = @"立即使用";
+         btn.userInteractionEnabled = YES;
     }else if (status == 2){
          btnStr = @"已使用";
+        btn.userInteractionEnabled = NO;
     }else if (status == 3){
          btnStr = @"已过期";
+         btn.userInteractionEnabled = NO;
     }
     [btn setTitle:btnStr forState:(UIControlStateNormal)];
     [btn setTitleColor:COLOR(251, 172, 125) forState:(UIControlStateNormal)];
@@ -169,7 +172,7 @@
 - (void)buttonAction:(UIButton *)btn{
      if (![Tool isVip]) {
         if (!self.agreementBtn.selected) {
-            ViewToast(@"请先同意会员服务协议", 2);
+            [self.SeleVC performSelector:@selector(showSelectAgreement) withObject:nil];
             return;
         }
         // 去购买会员

@@ -22,11 +22,8 @@
 
 @property (nonatomic,copy)NSArray *  waitingArray;// 还款中
 @property (nonatomic,copy)NSArray *  alreadyArray;// 已还款
-
 @property (nonatomic,strong)WOWONoDataView * NoDataView;
 @property (nonatomic,strong)WOWONoDataView * NoDataView2;
-
-
 @end
 
 @implementation CoinRepaymentPlanViewController
@@ -79,11 +76,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
    
-    return tableView == self.ProceedTableView ? 5 : 6;
+    return tableView == self.ProceedTableView ? 4 : 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray * titlles = tableView == self.ProceedTableView ? @[@"本期本金：",@"服务费：",@"本期应还：",@"最后还款日期：",@"状态："] : @[@"还款日：",@"实际还款时间：",@"应还金额：",@"实还金额：",@"还款方式：",@"流水编号："];
+    NSArray * titlles = tableView == self.ProceedTableView ? @[@"本期本金：",@"本期应还：",@"最后还款日期：",@"状态："] : @[@"还款日：",@"实际还款时间：",@"应还金额：",@"实还金额：",@"还款方式：",@"流水编号："];
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     cell.selectionStyle = 0;
     cell.textLabel.text = titlles[indexPath.row];
@@ -112,17 +109,13 @@
             case 0:
                 return [NSString stringWithFormat:@"￥%@",dict[@"amount"]];
                 break;
-                
-            case 1:
-                return [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
-                break;
-            case 2:
+             case 1:
                 return [NSString stringWithFormat:@"￥%@",dict[@"repay_money"]];
                 break;
-            case 3:
+            case 2:
           return  dict[@"exptime"];
                 break;
-            case 4:
+            case 3:
                 return status;
                 break;
            
@@ -392,7 +385,15 @@
     [KTooL HttpPostWithUrl:url parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             self.waitingArray = responseObject[@"data"][@"waiting"];
-             self.alreadyArray = responseObject[@"data"][@"already"];
+           self.alreadyArray = responseObject[@"data"][@"already"];
+            if (!BCArrayIsEmpty(self.waitingArray)) {
+                self.NoDataView.hidden = YES;
+            }
+            
+            if (!BCArrayIsEmpty(self.alreadyArray)) {
+                self.NoDataView2.hidden = YES;
+            }
+            
             [self.finishTableView reloadData];
             [self.ProceedTableView reloadData];
         }

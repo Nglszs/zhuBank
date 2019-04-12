@@ -223,6 +223,7 @@
     return view;
 }
 
+#pragma mark   开通会员
 - (void)dredgeVip{
     if (!self.agreementBtn.selected) {
         VCToast(@"请先同意会员服务协议", 2);
@@ -230,7 +231,6 @@
     }
     CoinMemberBuyViewController * vc = [CoinMemberBuyViewController new];
     vc.type = BRPayBuyMember;
-    
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)request{
@@ -291,5 +291,11 @@
     }
     
     
+}
+
+// 展示未勾选协议
+- (void)showSelectAgreement{
+    
+     VCToast(@"请先同意会员服务协议", 2);
 }
 @end

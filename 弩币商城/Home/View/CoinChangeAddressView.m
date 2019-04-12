@@ -281,7 +281,7 @@
         ViewToast(@"请填写手机号码", 1);
         return;
     }
-    if ([self isMobileNumber:self.PhoneNumberTF.text]) {
+    if (![self isMobileNumber:self.PhoneNumberTF.text]) {
         ViewToast(@"请填写正确的手机号码", 1);
         return;
     }
@@ -296,6 +296,8 @@
         isSucceed(BCStatus);
         if (!BCStatus) {
             ViewToast(responseObject[@"msg"], 2);
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAddressSuccess" object:nil];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         isSucceed(NO);
@@ -304,11 +306,9 @@
 }
 
 - (void)requestAddress{
-   
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"address_id"] = self.address_id;
-
-    [KTooL HttpPostWithUrl:@"Order/edit_address" parameters:dict loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
+  [KTooL HttpPostWithUrl:@"Order/edit_address" parameters:dict loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
             NSDictionary * dict = responseObject[@"data"];
             if (!BCDictIsEmpty(dict)) {

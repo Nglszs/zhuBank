@@ -67,6 +67,7 @@
         
         [KTooL HttpPostWithUrl:@"Order/delete_address" parameters:@{@"address_id": self.address_id} loadString:@"正在删除" success:^(NSURLSessionDataTask *task, id responseObject) {
             if (BCStatus) {
+                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAddressSuccess" object:nil];
                 VCToast(@"删除成功", 1);
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                       [self.navigationController popViewControllerAnimated:YES];

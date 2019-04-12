@@ -169,7 +169,6 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
-    
 }
 
 - (void)upDataUI:(NSDictionary *)dict{
@@ -201,9 +200,7 @@
 
 - (void)btnAction:(UIButton *)btn{
   if (self.url) {
-        
         NSInteger type = [self.url integerValue];
-        
         if (type == 1) {
             // 去登录
             CoinLoginViewController * vc = [CoinLoginViewController new];
@@ -246,7 +243,7 @@
         [self.navigationController pushViewController:vc animated:YES];
             
         }
-       
+      
         
     }
 }

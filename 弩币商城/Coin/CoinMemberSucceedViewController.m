@@ -291,7 +291,6 @@ UIView * tempView =     [self HeaderView];
     }];
     
 }
-
 - (void)requestRepaymentCommodity{
     [KTooL HttpPostWithUrl:@"get-hot-goods" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {

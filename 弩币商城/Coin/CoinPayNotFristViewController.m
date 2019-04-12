@@ -125,6 +125,7 @@
     
     [backBtn1 addtargetBlock:^(UIButton *button) {
         
+        self.tabBarController.selectedIndex = 0;
         [self.navigationController popToRootViewControllerAnimated:YES];
        
     }];

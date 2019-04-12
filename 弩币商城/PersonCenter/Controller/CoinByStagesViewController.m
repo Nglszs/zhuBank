@@ -69,12 +69,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-     NSArray * titlles = @[@"查看订单详情:",@"分期购服务协议编号:",@"借款金额：",@"服务费：",@"年化利率：",@"借款期限(月)：",@"出账日期：",@"借款截止日期：",@"还款方式：",@"还款账户名称：",@"还款账号：",@"剩余未还本金："];
+     NSArray * titlles = @[@"查看订单详情:",@"分期购服务协议编号:",@"借款金额：",@"借款期限(月)：",@"出账日期：",@"借款截止日期：",@"还款方式：",@"还款账户名称：",@"还款账号：",@"剩余未还本金："];
     return titlles.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray * titlles = @[@"查看订单详情:",@"分期购服务协议编号:",@"借款金额：",@"服务费：",@"年化利率：",@"借款期限(月)：",@"出账日期：",@"借款截止日期：",@"还款方式：",@"还款账户名称：",@"还款账号：",@"剩余未还本金："];
+    NSArray * titlles = @[@"查看订单详情:",@"分期购服务协议编号:",@"借款金额：",@"借款期限(月)：",@"出账日期：",@"借款截止日期：",@"还款方式：",@"还款账户名称：",@"还款账号：",@"剩余未还本金："];
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     cell.selectionStyle = 0;
     cell.textLabel.text = titlles[indexPath.row];
@@ -96,32 +96,27 @@
         case 2:
                   cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"fenqi_amount"]];
             break;
+        
         case 3:
-                  cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"service_amount"]];
-            break;
-        case 4:
-                  cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",dict[@"percent"]];
-            break;
-        case 5:
                   cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",dict[@"period"]];
             break;
-        case 6:
+        case 4:
                   cell.detailTextLabel.text = dict[@"pay_time"];            break;
-        case 7:
+        case 5:
                   cell.detailTextLabel.text = dict[@"repay_end_time"];
             break;
             
-        case 8:
+        case 6:
             cell.detailTextLabel.text = dict[@"type"];
             break;
-        case 9:
+        case 7:
             cell.detailTextLabel.text = dict[@"username"];
             break;
             
-        case 10:
+        case 8:
             cell.detailTextLabel.text = dict[@"bank_card"];
             break;
-        case 11:
+        case 9:
             cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%@",dict[@"remaining"]];
             break;
     }
