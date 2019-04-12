@@ -228,7 +228,7 @@
     
     
 //    商品标题
-    NSArray *titleA = @[@"正品",@"自营"];
+    NSArray *titleA = @[@"二手",@"自营"];
     for (int i = 0; i < 2 ; i++) {
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(254, 36, 72) forState:UIControlStateNormal];
@@ -725,10 +725,10 @@
     
     if (![Tool isLogin]) {
         
-        VCToast(@"请先登录", 1);
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+        
              [self.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
-        });
+        
        
         return;
     }
