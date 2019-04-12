@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CoinChangeAddressViewController : CoinBaseViewController
 
 @property (nonatomic,copy)NSString * address_id;
+// 是否从确认订单进来的
+@property (nonatomic,assign)BOOL isAffirmOrder;
 @end
 
 NS_ASSUME_NONNULL_END

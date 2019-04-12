@@ -71,6 +71,21 @@
         make.left.right.bottom.equalTo(self.contentView);
         make.height.mas_offset(3);
     }];
+    
+    self.AddButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [self.AddButton setTitle:@"  +添加地址  " forState:(UIControlStateNormal)];
+    [self.AddButton setTitleColor:COLOR(175, 175, 175) forState:(UIControlStateNormal)];
+    [self.contentView addSubview:self.AddButton];
+    
+    self.AddButton.layer.borderWidth = 1;
+    self.AddButton.layer.borderColor = COLOR(175, 175, 175).CGColor;
+    self.AddButton.layer.cornerRadius = 10;
+    self.AddButton.clipsToBounds = YES;
+    self.AddButton.hidden = YES;
+    [self.AddButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.contentView);
+    }];
+    self.AddButton.titleLabel.font = Regular(15);
 }
 
 - (void)awakeFromNib {
@@ -90,6 +105,12 @@
         self.NameLabel.text = [NSString stringWithFormat:@"%@  %@",dataDict[@"consignee"],dataDict[@"mobile"]];
         self.AddressLabel.text = [NSString stringWithFormat:@"%@ %@",dataDict[@"address_area"],dataDict[@"address"]];
         
+    }
+    NSString * address = [NSString stringWithFormat:@"%@",dataDict[@"address_id"]];
+    if (BCStringIsEmpty(address)) {
+        self.AddButton.hidden = NO;
+    }else{
+        self.AddButton.hidden = YES;
     }
 }
 @end

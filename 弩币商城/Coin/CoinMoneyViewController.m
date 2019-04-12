@@ -21,9 +21,9 @@
 @property (nonatomic,strong)NSString * details;
 @property (nonatomic,strong)NSString * load_url;
 @property (nonatomic,strong)NSDictionary * join_org;
-
 // 1:去登录;2:不可点击不跳转;3:去购买会员;4:去审核身份;5:去绑卡;6:去信用认证;7:去借款
 @property (nonatomic,copy)NSString * url;
+@property (nonatomic,strong)UILabel * footLabel;
 @end
 
 @implementation CoinMoneyViewController
@@ -31,9 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
-    self.title = @"糖库银票";
+    self.title = @"糖库借呗";
     [self SetNavTitleColor];
-   
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -147,12 +146,23 @@
     self.navigationItem.rightBarButtonItem.tintColor = COLOR(255, 126, 0);
     
     [btn addTarget:self action:@selector(btnAction:) forControlEvents:(UIControlEventTouchUpInside)];
-    
+    self.footLabel = [UILabel new];
+    self.footLabel.textColor = COLOR(108, 108, 108);
+    self.footLabel.font = Regular(12);
+    [self.view addSubview:self.footLabel];
+    self.footLabel.textAlignment = NSTextAlignmentCenter;
+    self.footLabel.adjustsFontSizeToFitWidth = YES;
+    [self.footLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-20);
+        make.left.right.equalTo(self.view);
+    }];
 }
 
 - (void)request{
     NSString * str = self.url ? nil : @"正在加载";
     [KTooL HttpPostWithUrl:@"CashLoan/index" parameters:nil loadString:str success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"---%@",responseObject);
         if (BCStatus) {
             [self upDataUI:responseObject[@"data"]];
         }
@@ -163,18 +173,23 @@
 }
 
 - (void)upDataUI:(NSDictionary *)dict{
-    self.tips1 = dict[@"tips1"];
+    self.tips1.text = dict[@"tips1"];
     [self.tips2Button setTitle:dict[@"tips2"] forState:(UIControlStateNormal)];
     
     NSMutableAttributedString *string2 = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",dict[@"amount"]] attributes:@{NSFontAttributeName: Regular(15),NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     
+    if ([dict[@"amount"] intValue] == 0) {
+        self.tips2Button.backgroundColor = [UIColor grayColor];
+    }else{
+         self.tips2Button.backgroundColor = COLOR(255, 0, 0);
+    }
     [string2 addAttributes:@{NSFontAttributeName: Regular(24)} range:NSMakeRange(1, string2.length - 1)];
-    
-    self.MoneyLabel.attributedText = string2;
+     self.MoneyLabel.attributedText = string2;
     self.load_url = dict[@"load_url"];
     self.details = dict[@"details"];
     self.url =  dict[@"url"];
     self.join_org = dict[@"join_org"];
+    self.footLabel.text = [NSString stringWithFormat:@"资金由%@提供",dict[@"join_org"][@"name"]];
 }
 
 - (void)RightItemAction{
@@ -185,8 +200,7 @@
 }
 
 - (void)btnAction:(UIButton *)btn{
-
-    if (self.url) {
+  if (self.url) {
         
         NSInteger type = [self.url integerValue];
         
@@ -200,9 +214,12 @@
               VCToast(@"暂时无法使用", 2);
         }else if (type == 3) {
             // 去购买会员
-            CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
-            VC.type  = BRPayBuyMember;
-            [self.navigationController pushViewController:VC animated:YES];
+            [self showSystemAlertTitle:@"您还没有购买会员" message:@"请先购买会员" cancelTitle:@"取消" confirmTitle:@"去购买" cancel:nil confirm:^{
+                CoinMemberBuyViewController * VC = [CoinMemberBuyViewController new];
+                VC.type  = BRPayBuyMember;
+                [self.navigationController pushViewController:VC animated:YES];
+            }];
+           
             
         }else if (type == 4) {
             // 去审核身份
@@ -231,11 +248,7 @@
         }
        
         
-        
     }
-    
-    
-    
 }
 
 @end

@@ -30,7 +30,7 @@
     [self SetNavTitleColor];
     [self SetReturnButton];
     [self request];
-    
+    self.type = BROrderFinsh;
 }
 
 - (void)initView{
@@ -54,7 +54,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额"]];
+    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额",@"优惠券"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额",@"优惠券"]];
     if (section == 0) {
         return 1;
     }
@@ -101,7 +101,7 @@
         return cell;
     }
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额"]];
+    NSArray * titles = self.type == BROrderNotEnable? @[@[],@[@"支付方式",@"配送信息"],@[@"发票类型",@"发票抬头",@"纳税人识别号",@"买家留言"],@[@"下单时间",@"商品总价",@"运费",@"实付金额",@"优惠券"]] : @[@[],@[@"订单编号",@"下单时间",@"收货地址",@"收货人",@"支付方式",@"配送方式",@"买家留言"],@[@"商品总价",@"运费",@"实付金额",@"优惠券"]];
     cell.textLabel.text = titles[indexPath.section][indexPath.row];
     cell.textLabel.font = Regular(13);
     cell.detailTextLabel.font = Regular(13);
@@ -155,6 +155,9 @@
             case 2:
                   str = [NSString stringWithFormat:@"￥%@",dict[@"order_amount"]];
                 break;
+                case 3:
+                 str = [NSString stringWithFormat:@"-￥%@",dict[@"coupon_price"]];
+                break;
             
         }
     }
@@ -202,6 +205,10 @@
                     break;
                 case 3:
                       str = [NSString stringWithFormat:@"￥%@",dict[@"order_amount"]];
+                    break;
+                    
+                case 4:
+                    str = [NSString stringWithFormat:@"-￥%@",dict[@"coupon_price"]];
                     break;
             }
         }
@@ -527,8 +534,25 @@
 
 - (void)request{
     [KTooL HttpPostWithUrl:@"Order/order_detail" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
         if (BCStatus) {
+            //0 代付款  1 待发货 2 已完成 3 已取消 4 待收货
+            int check_status = [responseObject[@"data"][@"order_info"][@"check_status"]  intValue];
+           switch (check_status) {
+                case 0:
+                     self.type = BROrderNotPay;
+                    break;
+                case 3:
+                case 1:
+                    self.type = BROrderNotDispatch;
+                    break;
+               case 2:
+                    self.type = BROrderFinsh;
+                    break;
+                case 4:
+                     self.type = BROrderNotEnable;
+                    break;
+               
+            }
             self.dataDict = responseObject[@"data"];
             [self.tableView reloadData];
         }

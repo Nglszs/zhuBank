@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"还款糖库银票";
+    self.navigationItem.title = @"还款糖库借呗";
     [self initView];
     [self getData];
 }

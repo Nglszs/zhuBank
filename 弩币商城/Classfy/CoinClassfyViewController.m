@@ -75,8 +75,19 @@
      UIView*titleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,BCWidth-100,30)];
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, BCWidth - 100, 30)];
     
-    self.searchBar.placeholder = @"iPhone XS Max";
+    self.searchBar.placeholder = @"请输入您搜索的商品";
     
+    UIImageView * img = [[UIImageView alloc] init];
+    img.image = BCImage(搜索框logo);
+    img.contentMode = UIViewContentModeScaleAspectFit;
+    img.frame = CGRectMake(BCWidth - 100 - 40, 5, 20, 20);
+    [self.searchBar addSubview:img];
+    
+//    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.searchBar);
+//        make.width.height.mas_equalTo(10);
+//
+//    }];
     self.searchBar.layer.cornerRadius = 15;
     
     self.searchBar.layer.masksToBounds = YES;
@@ -217,6 +228,7 @@
     CoinClassItemModel * model2 = model.sub_menu[indexPath.row];
     CoinSearchResultViewController * vc = [CoinSearchResultViewController new];
    vc.keyword = model2.name;
+    vc.classifyID = model2.typeId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

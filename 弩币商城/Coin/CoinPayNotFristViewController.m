@@ -117,7 +117,7 @@
    
     [topV addSubview:backBtn1];
     [backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(BCWidth/2);
         make.top.mas_equalTo(188);
         make.height.mas_equalTo(45);
         make.width.mas_equalTo(BCWidth/2);
@@ -136,7 +136,7 @@
   
     [topV addSubview:backBtn];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(BCWidth/2);
+        make.left.mas_equalTo(0);
         make.top.mas_equalTo(188);
         make.height.mas_equalTo(45);
         make.width.mas_equalTo(BCWidth/2);
@@ -147,6 +147,8 @@
         vc.type = BROrderNotEnable;
         [self.navigationController pushViewController:vc animated:YES];
     }];
+    
+    
     
 //    分割线
     

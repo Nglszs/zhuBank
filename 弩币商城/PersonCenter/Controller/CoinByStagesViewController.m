@@ -40,6 +40,7 @@
     [self.backScrollView addSubview:self.ProceedTableView];
     [self requestFinish];
     [self requestProceed];
+ 
     self.NoDataView = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无分期记录！" detailText:nil buttonTitle:@"去逛逛"];
      [self.view addSubview:self.NoDataView];
     [self.NoDataView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -20,12 +20,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.address_id = [NSString stringWithFormat:@"%@",self.address_id];
-    self.title = @"编辑/新建地址";
-    [self SetNavTitleColor];
-    [self.RootView.affirmButton addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
-    self.RootView.address_id = self.address_id;
+    if (self.address_id) {
+       self.address_id = [NSString stringWithFormat:@"%@",self.address_id];
+        self.RootView.address_id = self.address_id;
+    }
     
+    self.title = @"编辑/新建地址";
+   
+    [self.RootView.affirmButton addTarget:self action:@selector(buttonAction:) forControlEvents:(UIControlEventTouchUpInside)];
     if (!BCStringIsEmpty(self.address_id)) {
         [self setNavitemImage:@"删除" type:(RightNavItem)];
     }

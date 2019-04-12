@@ -81,7 +81,7 @@
     
     
     UILabel * RepaymentLabel = [UILabel new];
-    RepaymentLabel.text = @"糖库银票用于收款、还款的储蓄卡";
+    RepaymentLabel.text = @"糖库借呗用于收款、还款的储蓄卡";
     RepaymentLabel.font = Regular(14);
     RepaymentLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     [self.scrollView addSubview:RepaymentLabel];

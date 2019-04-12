@@ -23,6 +23,10 @@
 @property (nonatomic,copy)NSArray *  waitingArray;// 还款中
 @property (nonatomic,copy)NSArray *  alreadyArray;// 已还款
 
+@property (nonatomic,strong)WOWONoDataView * NoDataView;
+@property (nonatomic,strong)WOWONoDataView * NoDataView2;
+
+
 @end
 
 @implementation CoinRepaymentPlanViewController
@@ -36,7 +40,28 @@
     [self.backScrollView addSubview:self.ProceedTableView];
     [self.view addSubview:self.headView];
     [self setNavitemImage:@"疑问" type:(RightNavItem)];
+    
+    self.NoDataView = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无还款计划！" detailText:nil buttonTitle:@"去逛逛"];
+    [self.view addSubview:self.NoDataView];
+    [self.NoDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.ProceedTableView);
+    }];
+    
+    [self.NoDataView.button addTarget:self action:@selector(goShopp) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.NoDataView2 = [[WOWONoDataView alloc] initWithImageName:@"暂无记录" text:@"暂无还款计划！" detailText:nil buttonTitle:@"去逛逛"];
+    [self.finishTableView addSubview:self.NoDataView2];
+    [self.NoDataView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.NoDataView);
+    }];
+    
+    [self.NoDataView2.button addTarget:self action:@selector(goShopp) forControlEvents:(UIControlEventTouchUpInside)];
+    
   
+}
+- (void)goShopp{
+    self.tabBarController.selectedIndex = 1;
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 - (void)RightItemAction{
    CoinRepaymentExplainView * View  = [[CoinRepaymentExplainView alloc] initWithFrame: CGRectMake(0, 0, BCWidth, BCHeight)];
@@ -97,17 +122,14 @@
             case 3:
           return  dict[@"exptime"];
                 break;
-                
             case 4:
                 return status;
                 break;
            
         }
     }
-    
     if (tableView == self.finishTableView) {
-        NSDictionary * dict = self.waitingArray[index.section];
-        
+        NSDictionary * dict = self.alreadyArray[index.section];
         switch (index.row) {
             case 0:
                 return dict[@"exptime"]; // 还款日

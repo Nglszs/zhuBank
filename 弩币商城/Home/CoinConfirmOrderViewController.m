@@ -23,6 +23,7 @@
 #import "CoinChangePhoneViewController.h"
 #import "BCUseCouPonView.h"
 #import "BCDealPasswordView.h"
+#import "CoinChangeAddressViewController.h"
 
 @interface CoinConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
@@ -50,7 +51,8 @@
     [self initFooterView];
     [self SetReturnButton];
     [self Request];
-    [self requestPhone];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(Request) name:@"UserAddressSuccess" object:nil];
 }
 - (void)initTableView{
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:(UITableViewStyleGrouped)];
@@ -217,6 +219,7 @@
         if (self.DataDict) {
             cell.dataDict = self.DataDict[@"address_info"];
         }
+        [cell.AddButton addTarget:self action:@selector(AddAddressAction:) forControlEvents:(UIControlEventTouchUpInside)];
         cell.selectionStyle =0;
         return cell;
     }
@@ -443,13 +446,8 @@
 }
 
 - (void)submitOrder{
+   
     if (self.DataDict) {
-        // 判断同意协议
-        if (!self.ConsentButton.selected) {
-            [SVProgressHUD showInfoWithStatus:@"请同意委托服务协议、借款协议、以及重要提示"];
-            [SVProgressHUD dismissWithDelay:2];
-            return;
-        }
         // 判断选择收货地址
         NSString * idS = [NSString stringWithFormat:@"%@",self.DataDict[@"address_info"][@"address_id"]];
         if (BCStringIsEmpty(idS)) {
@@ -457,15 +455,22 @@
             [SVProgressHUD dismissWithDelay:2];
             return;
         }
+        
         if ([self.q_fenqi intValue] == 1) {
+            // 判断同意协议
+            if (!self.ConsentButton.selected) {
+                [SVProgressHUD showInfoWithStatus:@"请同意委托服务协议、借款协议、以及重要提示"];
+                [SVProgressHUD dismissWithDelay:2];
+                return;
+            }
             // 需要输入交易密码
             CGFloat m = [self.DataDict[@"order_info"][@"total_price_goods"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_reduce"] floatValue] - [self.DataDict[@"coupons_info"][@"coupons_transfer"] floatValue] + [self.DataDict[@"order_info"][@"transfer_price"] floatValue];
              BCDealPasswordView * view = [[BCDealPasswordView alloc] initWithFrame:BCBound money:[self decimalNumberString:m]];
-            view.phone = self.phone;
+            
             view.vc = self;
             MJWeakSelf;
-            view.success = ^(BOOL isSuccess) {
-                [weakSelf ultimatelySubmitOrder];
+            view.Password = ^(NSString * _Nonnull Password) {
+                [weakSelf verificationPassword:Password];
             };
             [self.view addSubview:view];
          }else{
@@ -474,7 +479,26 @@
      }
 }
 
+#pragma mark  验证支付密码
+- (void)verificationPassword:(NSString *)password{
+    self.GoBuyButton.userInteractionEnabled = NO;
+    [KTooL HttpPostWithUrl:@"Order/check_paypwd" parameters:@{@"paypwd":password} loadString:@"正在提交" success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            
+            [self ultimatelySubmitOrder];
+        }else{
+          self.GoBuyButton.userInteractionEnabled = YES;
+            VCToast(BCMsg, 2);
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        VCToast(@"支付失败", 2);
+        self.GoBuyButton.userInteractionEnabled = YES;
+    }];
+}
+
+#pragma mark  最终的提交订单
 - (void)ultimatelySubmitOrder{
+    
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"address_id"] = self.DataDict[@"address_info"][@"address_id"];
     dict[@"goods_id"] = self.DataDict[@"goods_info"][@"goods_id"];
@@ -683,16 +707,26 @@
     return [NSString stringWithFormat:@"%@",[NSDecimalNumber decimalNumberWithString:numberString]];
 }
 
-- (void)requestPhone{
+
+#pragma mark   添加收货地址
+- (void)AddAddressAction:(UIButton *)btn{
+    CoinSelectAddressViewController * vc = [CoinSelectAddressViewController new];
+    WS(weakSelf);
+    vc.address = ^(NSString *addressID, NSString *name, NSString *phone, NSString *address_area, NSString *address) {
+        // 修改数据源刷新数据
+        NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:self.DataDict[@"address_info"]];
+        [dict setValue:addressID forKey:@"address_id"];
+        [dict setValue:address forKey:@"address"];
+        [dict setValue:address_area forKey:@"address_area"];
+        [dict setValue:name forKey:@"consignee"];
+        [dict setValue:phone forKey:@"mobile"];
+        [weakSelf.DataDict setValue:dict forKey:@"address_info"];
+        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:(UITableViewRowAnimationNone)];
+    };
     
-    [KTooL HttpPostWithUrl:@"UserCenter/index" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (BCStatus) {
-            self.phone = responseObject[@"data"][@"mobile"];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-    }];
-   
-    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
