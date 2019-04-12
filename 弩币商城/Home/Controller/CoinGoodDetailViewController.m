@@ -228,7 +228,7 @@
     
     
 //    商品标题
-    NSArray *titleA = @[@"正品",@"自营"];
+    NSArray *titleA = @[@"二手",@"自营"];
     for (int i = 0; i < 2 ; i++) {
         UIButton *activityBtn = [UIButton new];
         [activityBtn setTitleColor:COLOR(254, 36, 72) forState:UIControlStateNormal];

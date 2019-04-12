@@ -615,7 +615,7 @@
             titleL.text = [dataDic objectNilForKey:@"nickname"];
             
             UIButton *btn = [self.backScrollView viewWithTag:2000];
-            NSString *isVip = [[dataDic objectForKey:@"buy_vip"] boolValue]?@"糖库金钻会员":@"暂未成为会员";
+            NSString *isVip = [[dataDic objectForKey:@"buy_vip"] boolValue]?@"糖库金钻会员":@"去开通糖库金钻会员";
             btn.hidden = ![Tool AuditState];
             [btn setTitle:isVip forState:UIControlStateNormal];
             
