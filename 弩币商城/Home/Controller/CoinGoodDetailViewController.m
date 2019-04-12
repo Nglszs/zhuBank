@@ -725,10 +725,10 @@
     
     if (![Tool isLogin]) {
         
-        VCToast(@"请先登录", 1);
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+        
              [self.navigationController pushViewController:[CoinLoginViewController new] animated:YES];
-        });
+        
        
         return;
     }
