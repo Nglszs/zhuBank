@@ -182,7 +182,7 @@
         make.top.equalTo(titleL.mas_bottom).offset(12);
         make.left.mas_equalTo(titleL.mas_left);
         make.height.mas_equalTo(25);
-        make.width.mas_equalTo(90);
+        make.width.mas_equalTo(120);
     }];
     [backBtn addTarget:self action:@selector(GoMember) forControlEvents:(UIControlEventTouchUpInside)];
     
