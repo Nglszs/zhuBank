@@ -11,6 +11,7 @@
 @implementation CoinBrowseRecordTableViewCell
 {
     UIImageView *rightImage;
+    UILabel * loadL;
 }
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -82,7 +83,7 @@
             }];
             
             
-            
+             loadL = rightL;
             [rightL mas_remakeConstraints:^(MASConstraintMaker *make) {
                 
                 
@@ -117,6 +118,12 @@
     
     [rightImage addTapGestureWithBlock:^{
         
+        CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
+        vc.url =[data objectNilForKey:@"load_url"];
+        [self.getCurrentViewController.navigationController pushViewController:vc animated:YES];
+    }];
+    
+    [loadL addTapGestureWithBlock:^{
         CoinH5ViewController *vc = [[CoinH5ViewController alloc] init];
         vc.url =[data objectNilForKey:@"load_url"];
         [self.getCurrentViewController.navigationController pushViewController:vc animated:YES];
