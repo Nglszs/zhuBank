@@ -633,22 +633,18 @@ static NSString *cellID = @"cell";
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
      }];
-    
-    //    头部标题
+    //   头部标题
     UILabel *leftL = [[UILabel alloc] init];
     leftL.text = @"糖库借呗";
     leftL.textColor = TITLE_COLOR;
     leftL.font = Regular(15);
     [self.backScrollView addSubview:leftL];
     [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.mas_equalTo(divideView.mas_bottom);
         make.left.mas_equalTo(LEFT_Margin);
         make.height.mas_equalTo(40);
         
     }];
-    
-    
     UIImageView *moneyImageV = [[UIImageView alloc] init];
     moneyImageV.image = BCImage(帑库银票 拷贝 2);
     [self.backScrollView addSubview:moneyImageV];
@@ -667,18 +663,15 @@ static NSString *cellID = @"cell";
 }
 
 - (void)initFourView {
-    
-    UIImageView *divideView = [[UIImageView alloc] init];
+     UIImageView *divideView = [[UIImageView alloc] init];
     divideView.backgroundColor = DIVI_COLOR;
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.mas_equalTo(835);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
-        
-    }];
+     }];
     
     //    头部标题
     UILabel *leftL = [[UILabel alloc] init];
@@ -687,7 +680,6 @@ static NSString *cellID = @"cell";
     leftL.font = Regular(15);
     [self.backScrollView addSubview:leftL];
     [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.mas_equalTo(divideView.mas_bottom);
         make.left.mas_equalTo(LEFT_Margin);
         make.height.mas_equalTo(40);

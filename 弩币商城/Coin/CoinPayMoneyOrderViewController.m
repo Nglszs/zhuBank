@@ -73,7 +73,7 @@
     }];
     
     NSArray * leftA = @[@"收货人姓名：",@"收货地址：",@"支付方式：",@"订单号："];
-    NSArray *rightA = @[_name,_address,@"分期购",_orderNum];
+    NSArray *rightA = @[_name,_address,@"首付 + 分期购",_orderNum];
     for (int i = 0; i < leftA.count; i ++) {
         UILabel *leftL = [[UILabel alloc] init];
         leftL.text = leftA[i];

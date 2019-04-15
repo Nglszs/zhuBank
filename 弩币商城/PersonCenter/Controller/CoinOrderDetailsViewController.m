@@ -16,6 +16,7 @@
 #import "CoinH5ViewController.h"
 #import "CoinPayNotFristViewController.h"
 #import "CoinGoodDetailViewController.h"
+#import "CoinOrderSuccessViewController.h"
 @interface CoinOrderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 @property (nonatomic,strong)NSDictionary * dataDict;
@@ -561,7 +562,7 @@
     }];
 }
 
-// 取消订单
+#pragma mark  取消订单
 - (void)cancelOrder{
     [self showSystemAlertTitle:@"提示" message:@"您确定要取消订单吗？" cancelTitle:@"再想想" confirmTitle:@"确定" cancel:nil confirm:^{
        [KTooL HttpPostWithUrl:@"Order/cancel_order" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -597,7 +598,7 @@
 }
 
 
-// 立即付款
+#pragma mark 立即付款
 - (void)goPay{
     if (self.dataDict) {
         [KTooL HttpPostWithUrl:@"Order/get_order_info" parameters:@{@"order_id" : self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -657,21 +658,34 @@
 }
 
 
-// 确认收货
+#pragma mark 确认收货
 - (void)order_confirm{
-    
-    [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (BCStatus) {
-            [SVProgressHUD showSuccessWithStatus:@"成功"];
-            self.type = BROrderFinsh;
-            [self.tableView reloadData];
-            if (self.resultData) {
-                self.resultData(@"1");
+     [self showSystemAlertTitle:@"提示" message:@"是否收到该订单商品?" cancelTitle:@"未收货" confirmTitle:@"已收货" cancel:nil confirm:^{
+        [KTooL HttpPostWithUrl:@"Order/order_confirm" parameters:@{@"order_id":self.order_id} loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (BCStatus) {
+                [self request];
+                CoinOrderSuccessViewController * vc = [CoinOrderSuccessViewController new];
+                NSDictionary * goods_info = self.dataDict[@"goods_info"];
+                vc.imageUrl = goods_info[@"original_img"];
+                vc.name = goods_info[@"goods_name"];
+                vc.size = goods_info[@"spec_key_name"];
+                vc.price = goods_info[@"goods_price"];
+                vc.num = goods_info[@"goods_num"];
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                 if (self.resultData) {
+                    self.resultData(@"1");
+                }
             }
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
         
+      
     }];
+    
+    
+    
 }
 
 // 联系客服
