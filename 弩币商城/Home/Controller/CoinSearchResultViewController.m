@@ -55,7 +55,7 @@
     [self initTableView];
     [self initSearchBar];
     [self initNoDataView];
-    self.SalesTop = 1;
+    self.SalesTop = 2;
     self.PriceTop = 0;
 }
 
@@ -160,7 +160,7 @@
     
 }
 - (void)PriceButtonAction:(UIButton *)btn{
-    self.PriceTop =  btn.selected ? 1 : 2;
+    self.PriceTop =  btn.selected ? 2 : 1;
     self.SalesTop = 0;
     
     btn.selected = !btn.selected;
@@ -320,7 +320,6 @@
     _SalesTop = SalesTop;
     if (SalesTop != 0) {
         self.PriceTop = 0;
-        
         self.SalesTopImage.image = SalesTop == 1 ? BCImage(上拷贝2) :  BCImage(上拷贝) ;
         self.SalesBtnImage.image = SalesTop == 2? BCImage(下拷贝3) :  BCImage(下拷贝2) ;
     }else{
@@ -328,7 +327,6 @@
         self.SalesTopImage.image = BCImage(上拷贝);
     }
 }
-
 - (void)setPriceTop:(NSInteger)PriceTop{
     _PriceTop = PriceTop;
     if (PriceTop != 0) {

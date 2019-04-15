@@ -15,7 +15,6 @@
 @end
 
 @implementation CoinSearchViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"搜索";
@@ -105,8 +104,8 @@
     }else{
         self.tableView.hidden = YES;
     }
-   
 }
+
 - (void)request:(NSString *)keyword{
     [KTooL HttpPostWithUrl:@"Search/association_list" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {
@@ -114,9 +113,8 @@
             [self.tableView reloadData];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+
     }];
-    
 }
 
 - (void)SetLabel:(NSArray<NSString *>*)titles{
