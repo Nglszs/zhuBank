@@ -577,6 +577,11 @@
         make.height.mas_equalTo(10);
     }];
     
+    if (!_isFenqi) {//如果是贷款
+        
+        priceL.hidden = YES;
+        exitButton.hidden = YES;
+    }
     
     UIButton *backBtn1 = [[UIButton alloc] init];
     backBtn1.titleLabel.font = Regular(18);
@@ -619,7 +624,7 @@
     }
     
     UIButton *seleBtn = [self.backScrollView viewWithTag:3000];
-    if (!seleBtn.selected) {
+    if (!seleBtn.selected&&_isFenqi) {
         VCToast(@"请选中左下角的协议", 1);
         
         return;
@@ -739,7 +744,7 @@
         time --;
         
         
-        [weakSelf.codeButton setTitle:[NSString stringWithFormat:@"%.2ld秒后重试", seconds] forState:UIControlStateNormal];
+        [weakSelf.codeButton setTitle:[NSString stringWithFormat:@"%.2ld秒后重试", (long)seconds] forState:UIControlStateNormal];
         
         
         if (time == 0) {
