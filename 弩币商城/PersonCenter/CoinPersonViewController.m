@@ -36,7 +36,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-     [self.backScrollView.mj_header beginRefreshing];
+    
+    if ([Tool isConnectionAvalible]) {
+         [self.backScrollView.mj_header beginRefreshing];
+    } else {
+        
+        VCToast(@"网络断开连接,请检查网络", 1);
+    }
+    
      [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     
@@ -182,7 +189,7 @@
         make.top.equalTo(titleL.mas_bottom).offset(12);
         make.left.mas_equalTo(titleL.mas_left);
         make.height.mas_equalTo(25);
-        make.width.mas_equalTo(120);
+        make.width.mas_equalTo(140);
     }];
     [backBtn addTarget:self action:@selector(GoMember) forControlEvents:(UIControlEventTouchUpInside)];
     

@@ -81,7 +81,7 @@ static void *networkKey = &networkKey;
     if(status == NotReachable){
         
        
-        BCHUDAlert *alert = [[BCHUDAlert alloc] initWithHudType:0 content:@"网络连接失败" delayMiss:2];
+     [SHARE_APPLICATION.keyWindow makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
         
     } else {
         
