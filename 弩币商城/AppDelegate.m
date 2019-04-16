@@ -31,6 +31,9 @@
     // 请求是否APP通过审核
     [self requestAuditState];
     
+    
+    [self startNetWorkObserver];
+    
     // NOTE: 调用支付结果开始支付
     [WXApi registerApp:@"wx3007c71783deadc3"];
     [Bugly startWithAppId:@"02599bb342"];
