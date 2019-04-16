@@ -640,7 +640,7 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        
+         [_backScrollView.mj_header endRefreshing];
     }];
 }
 #pragma mark 懒加载

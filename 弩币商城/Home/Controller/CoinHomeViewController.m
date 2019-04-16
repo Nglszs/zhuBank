@@ -153,6 +153,7 @@ static NSString *cellID = @"cell";
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+         [self.backScrollView.mj_header endRefreshing];
         VCToast(@"当前无网络连接，请检查网络", 1);
     }];
     

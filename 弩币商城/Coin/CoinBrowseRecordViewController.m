@@ -110,7 +110,8 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        
+          [self.payTableView.mj_footer endRefreshingWithNoMoreData];
+        [self.payTableView.mj_header endRefreshing];
     }];
 
 }

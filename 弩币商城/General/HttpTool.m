@@ -90,16 +90,6 @@ static HttpTool * tool;
 
     [self.manager POST:urlString parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [SVProgressHUD dismiss];
-       
-
-//        if (!BCStatus) {
-//            NSString * msg = responseObject[@"msg"];
-//            if ([responseObject objectForKey:@"error"]) {
-//                msg = [responseObject objectForKey:@"error"];
-//            }
-//            [SVProgressHUD showErrorWithStatus:msg];
-//            [SVProgressHUD dismissWithDelay:2];
-//        }
         
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"8"]) {
             //您的账号已在别处登录
@@ -117,6 +107,8 @@ static HttpTool * tool;
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
          [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"网络断开链接，请检查网络"];
+        [SVProgressHUD dismissWithDelay:2];
         failure(task,error);
     }];
     

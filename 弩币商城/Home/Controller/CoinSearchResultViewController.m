@@ -12,7 +12,6 @@
 #import "HttpTool.h"
 #import "CoinGoodDetailViewController.h"
 #import <MJRefresh/MJRefresh.h>
-
 @interface CoinSearchResultViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 @property (nonatomic,strong)UISearchBar * searchBar;
 @property (nonatomic,strong)NSMutableArray * DataArray;
@@ -278,7 +277,7 @@
     [[HttpTool sharedHttpTool] HttpPostWithUrl:@"Search/results" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [self disposeresponseObject:responseObject];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }];
 
@@ -348,17 +347,15 @@
     [KTooL HttpPostWithUrl:@"Goods/goodslist" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [self disposeresponseObject:responseObject];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        [self.tableView.mj_header endRefreshing];
     }];
 
-    
 }
 
 - (void)disposeresponseObject:(id)responseObject{
     [self.tableView.mj_header endRefreshing];
     if (BCStatus) {
-        
         NSArray * array = responseObject[@"data"][@"goods_list"];
         if (!BCArrayIsEmpty(array)) {
             if (self.page == 1) {
@@ -371,16 +368,12 @@
             self.NoDataView.hidden = YES;
         }else{
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
-            
         }
     }else{
-        
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+         [self.tableView.mj_footer endRefreshingWithNoMoreData];
         if (BCArrayIsEmpty(self.DataArray)) {
             self.NoDataView.hidden = NO;
         }
-        
     }
-   
 }
 @end

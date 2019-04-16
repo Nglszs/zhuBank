@@ -120,24 +120,19 @@
 - (void)SetLabel:(NSArray<NSString *>*)titles{
     CGFloat x = 15; //每行x轴的初始位置
     CGFloat y = 110; //间隙+label的高度
-    
     for (int i = 0; i < titles.count; i++) {
-        
         UILabel *label = [self labelWithTitle:titles[i]];
         CGFloat width = label.frame.size.width + 30;
-        
-        if (x + width + 15 > BCWidth) {
+       if (x + width + 15 > BCWidth) {
             y += 40;//换行
             x = 15; //15位置开始，即x的初始位置
         }
-        
         label.frame = CGRectMake(x, y, width, 30);
         [self.view addSubview:label];
         x += width + 10;//宽度+间隙
     }
     
 }
-
 - (UILabel *)labelWithTitle:(NSString *)title{
     
     UILabel *label = [[UILabel alloc] init];
