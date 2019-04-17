@@ -4,7 +4,6 @@
 //
 //  Created by Jack on 2019/2/25.
 //  Copyright © 2019年 詹姆斯. All rights reserved.
-//
 
 #import "CoinHomeViewController.h"
 #import "CarouselView.h"
@@ -32,7 +31,6 @@
 
 @implementation CoinHomeViewController
 static NSString *cellID = @"cell";
-
 - (void)viewDidLoad {
     [super viewDidLoad];
      
@@ -125,8 +123,7 @@ static NSString *cellID = @"cell";
 }
 #pragma mark 网络请求
 - (void)getData{
-    
-    [KTooL HttpPostWithUrl:@"Index/homepage" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+   [KTooL HttpPostWithUrl:@"Index/homepage" parameters:nil loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         [self.backScrollView.mj_header endRefreshing];
         
@@ -377,6 +374,7 @@ static NSString *cellID = @"cell";
            moneyL1.hidden = ![Tool AuditState];
                         moneyL1.text = @"¥";
             moneyL1.tag = 500;
+      
                         moneyL1.textColor = COLOR(153, 153, 153);
                         moneyL1.font = Regular(8);
                         [cell.contentView addSubview:moneyL1];
@@ -440,7 +438,7 @@ static NSString *cellID = @"cell";
         moneyL.hidden = NO;
     }
   
-   
+    moneyL.hidden = ![Tool AuditState];
     
     
     
@@ -585,6 +583,7 @@ static NSString *cellID = @"cell";
         UILabel *moneyL = [[UILabel alloc] init];
         
         moneyL.text = @"¥";
+        
         moneyL.textColor = COLOR(251, 82, 24);
         moneyL.font = Regular(10);
         [self.backScrollView addSubview:moneyL];
@@ -594,8 +593,6 @@ static NSString *cellID = @"cell";
             make.top.equalTo(titleL.mas_bottom).offset(5);
             make.height.mas_equalTo(10);
         }];
-        
-        
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"5399起"];
         NSDictionary * firstAttributes = @{ NSFontAttributeName:Regular12Font};
         [str setAttributes:firstAttributes range:NSMakeRange(str.length - 1,1)];

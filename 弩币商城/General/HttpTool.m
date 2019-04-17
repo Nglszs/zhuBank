@@ -107,8 +107,7 @@ static HttpTool * tool;
         success(task,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
          [SVProgressHUD dismiss];
-        [SVProgressHUD showErrorWithStatus:@"网络断开链接，请检查网络"];
-        [SVProgressHUD dismissWithDelay:2];
+        [SHARE_APPLICATION.keyWindow makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
         failure(task,error);
     }];
     

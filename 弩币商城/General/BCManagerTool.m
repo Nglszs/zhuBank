@@ -4,7 +4,6 @@
 //
 //  Created by Jack on 2018/12/11.
 //  Copyright © 2018年 Jack. All rights reserved.
-//
 
 #import "BCManagerTool.h"
 #import "Reachability.h"
@@ -15,18 +14,13 @@
 static NSString *boundaryStr = @"--";
 static BCManagerTool *_instanceTool;
 
-+ (instancetype)defaultManagerTool {
-    
++ (instancetype)defaultManagerTool{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instanceTool = [[self alloc] init];
-        
     });
-    
     return _instanceTool;
-    
 }
-
 
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
     
@@ -520,7 +514,6 @@ static BCManagerTool *_instanceTool;
     return deviceModel;
 }
 - (BOOL)AuditState{
-    return YES;
    return  [USER_DEFAULTS boolForKey:@"AuditState"];
 }
 
@@ -542,10 +535,8 @@ static BCManagerTool *_instanceTool;
     }
     else
     {
-        
 //        NSLog(@"设置了代理");
         return YES;
     }
-    
 }
 @end

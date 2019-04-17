@@ -39,8 +39,6 @@ static void *networkKey = &networkKey;
 
 - (void)setProgameRootViewController {
    
-  
-    
     self.window = [[UIWindow alloc] initWithFrame:BCBound];
     self.window.backgroundColor = ThemeColor;
     BCMainTabViewController *mainViewController = [[BCMainTabViewController alloc] init];
@@ -105,8 +103,16 @@ static void *networkKey = &networkKey;
 
 - (void)requestAuditState{
     [KTooL HttpPostWithUrl:@"User/is_reviewed" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (BCStatus) {
+        
+         if (BCStatus) {
             BOOL AuditState = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"check"]] isEqualToString:@"1"];
+            
+            if (AuditState  != [Tool AuditState]) {
+                [[NSUserDefaults standardUserDefaults] setBool:AuditState forKey:@"AuditState"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self setProgameRootViewController];
+            }
+           
             [[NSUserDefaults standardUserDefaults] setBool:AuditState forKey:@"AuditState"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
