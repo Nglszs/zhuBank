@@ -563,10 +563,8 @@
     rightL1.font = Regular(13);
     [easeView2 addSubview:rightL1];
     [rightL1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.mas_equalTo(TOP_Margin);
+         make.left.mas_equalTo(TOP_Margin);
         make.top.mas_equalTo(9);
-
         make.width.mas_equalTo(260);
     }];
     

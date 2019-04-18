@@ -104,9 +104,6 @@
 
 #endif
 
-
-
-
 //----------------------------- Toast弹窗 ------------------------//
 #define VCToast(msg,seconds) [self.view makeToast:msg duration:seconds position:CSToastPositionCenter]
 
