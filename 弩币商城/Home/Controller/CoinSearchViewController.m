@@ -190,7 +190,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
-    
     self.keyword = textField.text;
     return YES;
 }
