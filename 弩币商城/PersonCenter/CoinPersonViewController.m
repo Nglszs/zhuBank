@@ -280,7 +280,15 @@
         }
         case 10:{
             
-            VCToast(@"身份认证审核失败", 1);
+            VCToast(@"身份认证审核失败", .5);
+            
+            CoinCertifyViewController *vc = [CoinCertifyViewController new];
+            vc.indexType = 1;
+            vc.isFenqi = NO;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [self.navigationController pushViewController:vc animated:YES];
+            });
+           
         }
         default:
             break;
