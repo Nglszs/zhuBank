@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) NSInteger indexType;
 
 @property (nonatomic, assign) BOOL isFenqi;//是否分期需要还是贷款需要认证
+
+
+@property (nonatomic, copy) NSString *IDCard;//身份证
+
+@property (nonatomic, copy) NSString *IDName;//姓名
 @end
 
 NS_ASSUME_NONNULL_END
