@@ -264,10 +264,12 @@
             CoinLimitViewController * VC = [CoinLimitViewController new];
             [self.navigationController pushViewController:VC animated:YES];
         }
+            break;
         case 8:{
             
             VCToast(@"身份认证待审核", 1);
         }
+            break;
         case 9:{
             
             CoinCertifyViewController *vc = [CoinCertifyViewController new];
