@@ -693,12 +693,9 @@
     if (self.dataDict) {
         NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.dataDict[@"goods_info"][@"customer_mobile"]];
         UIWebView * callWebview = [[UIWebView alloc] init];[callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];[self.view addSubview:callWebview];
-     }
-
-    
+    }
     
 }
-
 //查看物流
 - (void)ExamineLogistics{
     if (self.dataDict) {
@@ -708,8 +705,5 @@
         VC.url = url;
         [self.navigationController pushViewController:VC animated:YES];
     }
-    
-    
-    
 }
 @end

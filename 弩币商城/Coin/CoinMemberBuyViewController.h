@@ -16,7 +16,6 @@ typedef NS_ENUM(NSUInteger, BRPayType) {
     BRPayBuyCommodity// 购买商品支付首付
 };
 @interface CoinMemberBuyViewController : CoinBaseViewController
-
 @property (nonatomic,assign)BRPayType type;
 @property (nonatomic,copy)NSString * Money;
 @property (nonatomic,copy)NSString * titleString;

@@ -24,6 +24,8 @@
 // 1:去登录;2:不可点击不跳转;3:去购买会员;4:去审核身份;5:去绑卡;6:去信用认证;7:去借款
 @property (nonatomic,copy)NSString * url;
 @property (nonatomic,strong)UILabel * footLabel;
+
+@property (nonatomic,copy)NSString * msg;
 @end
 
 @implementation CoinMoneyViewController
@@ -164,6 +166,7 @@
     [KTooL HttpPostWithUrl:@"CashLoan/index" parameters:nil loadString:str success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"---%@",responseObject);
         if (BCStatus) {
+            self.msg = BCMsg;
             [self upDataUI:responseObject[@"data"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -189,6 +192,7 @@
     self.url =  dict[@"url"];
     self.join_org = dict[@"join_org"];
     self.footLabel.text = [NSString stringWithFormat:@"资金由%@提供",dict[@"join_org"][@"name"]];
+    
 }
 
 - (void)RightItemAction{
@@ -242,6 +246,14 @@
             CoinBorrowMoneyViewController * vc = [[CoinBorrowMoneyViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
             
+        }else if (type == 8){
+            //身份验证待审核
+            VCToast(self.msg, 2);
+        }else if (type == 9){
+            // 身份验证审核通过去人脸识别
+            
+        }else if (type == 10){
+            VCToast(self.msg, 2);
         }
       
         

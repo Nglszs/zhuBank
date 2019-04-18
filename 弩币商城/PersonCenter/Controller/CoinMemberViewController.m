@@ -77,6 +77,7 @@
         cell.SelfVC = self;
         if (self.DataDict) {
             cell.service_agreement = self.DataDict[@"service_agreement"];
+            cell.vip_money = self.DataDict[@"vip_money"];
         }
         if ([Tool isVip]) {
             if (self.DataDict) {

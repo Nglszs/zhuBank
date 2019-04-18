@@ -12,6 +12,7 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import "CoinGoodDetailViewController.h"
 @interface CoinMemberBuyViewController ()
+@property (nonatomic,strong)UILabel * moneyLabel;
 @property (nonatomic,strong)UIButton * tempButton;
 @end
 
@@ -21,6 +22,7 @@
     [super viewDidLoad];
     if (self.type == BRPayBuyMember) {
         self.title = @"购买糖库金钻会员卡";
+        [self requestVip_money];
     }else if (self.type == BRPayRepayment){
         self.title = @"还款";
     }else if (self.type == BRPayBuyCommodity){
@@ -35,10 +37,13 @@
 
 - (void)initView{
     UILabel * MoneyLabel = [[UILabel alloc] init];
-    if (!self.Money) {
-        self.Money = @"299";
+    self.moneyLabel = MoneyLabel;
+    if (self.type == BRPayBuyMember) {
+        
+    }else{
+        MoneyLabel.text = [NSString stringWithFormat:@"￥%@",self.Money];
     }
-    MoneyLabel.text = [NSString stringWithFormat:@"￥%@",self.Money];
+   
     MoneyLabel.textColor = COLOR(255, 87, 103);
     MoneyLabel.font = Regular(24);
     [self.view addSubview:MoneyLabel];
@@ -168,6 +173,7 @@
 }
 
 - (void)pay{
+    
      NSString * gateway = self.tempButton.tag == 0 ? @"wechat" : @"alipay";
     NSMutableDictionary * dict =[NSMutableDictionary dictionary];
     NSString * url = @"";
@@ -258,8 +264,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)payError{
-    [SVProgressHUD showErrorWithStatus:@"支付失败"];
-    [SVProgressHUD dismissWithDelay:2];
+    VCToast(@"支付失败", 2);
 }
 
 - (void)BackAction{
@@ -285,6 +290,15 @@
     }
 }
 
-
+- (void)requestVip_money{
+    [KTooL HttpPostWithUrl:@"CashLoan/vip_card" parameters:nil loadString:@"正在加载" success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (BCStatus) {
+            self.moneyLabel.text = [NSString stringWithFormat:@"￥ %@",responseObject[@"data"][@"vip_money"]];
+            self.Money = responseObject[@"data"][@"vip_money"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
 
 @end

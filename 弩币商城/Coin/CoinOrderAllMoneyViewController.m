@@ -253,7 +253,6 @@
 }
 - (void)payError{
     VCToast(@"支付失败", 2);
-    
 }
 - (void)BackAction{
     UIViewController * vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 3];

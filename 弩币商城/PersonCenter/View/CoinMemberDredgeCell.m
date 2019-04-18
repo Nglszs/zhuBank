@@ -10,6 +10,7 @@
 #import "CoinH5ViewController.h"
 @interface CoinMemberDredgeCell()
 @property (nonatomic,strong)UILabel * TimeLabel;
+@property (nonatomic,strong)UILabel * MoneyLabel;
 
 @end
 @implementation CoinMemberDredgeCell
@@ -107,7 +108,8 @@
     UILabel * label4 = [[UILabel alloc] init];
     label4.textColor = COLOR(255, 255, 255);
     label4.font = Regular(15);
-    label4.text = @"￥299.00（有效期一年）";
+    
+    self.MoneyLabel = label4;
     [self.contentView addSubview:label4];
     [label4 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(label2);
@@ -189,5 +191,10 @@
     
     self.TimeLabel.text = [NSString stringWithFormat:@"将于%@到期",end_time];
     
+}
+
+- (void)setVip_money:(NSString *)vip_money{
+    _vip_money = vip_money;
+    self.MoneyLabel.text = [NSString stringWithFormat:@"￥%@（有效期一年）",vip_money];
 }
 @end
