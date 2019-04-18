@@ -41,7 +41,7 @@
     [KTooL HttpPostWithUrl:@"UserCenter/add_bankcard" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];
         
-//        status 1：需要去购买会员；2：需要先身份认证；3：去绑卡
+//        status 1：需要去购买会员；2：需要先身份认证；3：去绑卡   4 身份认证审核中  5 身份认证成功，去人脸识别（name idcard） 6 身份认证失败
         int status = [responseObject[@"status"] intValue];
         if (status == 1) {
             UIAlertController * aler = [UIAlertController alertControllerWithTitle:@"您需要先购买会员" message:@"绑卡前需要购买糖库金钻会员" preferredStyle:(UIAlertControllerStyleAlert)];
@@ -86,6 +86,23 @@
                 vc.isFenqi = YES;
             }
             [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+        if (status == 4) {
+
+            VCToast(BCMsg, 2);
+        }
+        if (status == 5) {
+//5 身份认证成功，去人脸识别（name idcard）
+            CoinCertifyViewController * vc = [CoinCertifyViewController new];
+            vc.indexType = 4;
+            vc.IDName = responseObject[@"data"][@"name"];
+            vc.IDCard = responseObject[@"data"][@"idcard"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        if (status == 6) {
+
+            VCToast(BCMsg, 2);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
