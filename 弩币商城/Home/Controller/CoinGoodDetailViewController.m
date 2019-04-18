@@ -701,6 +701,8 @@
     
     
     if (status==-11) {
+        
+        
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 1;
         vc.isFenqi = YES;
