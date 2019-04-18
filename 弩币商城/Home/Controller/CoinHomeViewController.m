@@ -23,6 +23,7 @@
     UIButton *loginBtn;
     CGFloat oldY;
     UICollectionView *myCollectionView;//3c
+    CarouselView *view;
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @property (nonatomic, strong) UIView *navView;//导航栏
@@ -133,12 +134,26 @@ static NSString *cellID = @"cell";
             [_goodArray addObjectsFromArray:[[responseObject objectNilForKey:@"data"] objectForKey:@"goods_list"]];
             
             NSArray *arr = [[responseObject objectNilForKey:@"data"] objectForKey:@"banner_list"];
-           
+            NSMutableArray *banaArr = [NSMutableArray arrayWithCapacity:1];
             if (arr.count > 0 && !BCArrayIsEmpty(arr)) {
                 
                 banaUrl = [[arr firstObject] objectForKey:@"ad_link"];
+                
+                for (NSDictionary *dic in arr) {
+                    
+                    [banaArr addObject:[dic objectNilForKey:@"ad_code"]];
+                }
 
             }
+            
+            //    轮播图
+            if (!view) {
+               view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:banaArr andClickEnable:YES];
+                view.delegete = self;
+                [self.backScrollView addSubview:view];
+            }
+           
+            
             
             huluUrl = [[responseObject objectNilForKey:@"data"] objectForKey:@"hulu_receive_url"];
             
@@ -210,12 +225,7 @@ static NSString *cellID = @"cell";
 - (void)initView {
     
     
-//    轮播图
-  
-    CarouselView *view = [[CarouselView alloc] initWithFrame:CGRectMake(0, 0, BCWidth, 170) displayImages:@[@"首页banner"] andClickEnable:YES];
-    view.delegete = self;
-    [self.backScrollView addSubview:view];
-    
+
     
     
     
@@ -225,7 +235,7 @@ static NSString *cellID = @"cell";
     [self.backScrollView addSubview:divideView];
     [divideView mas_makeConstraints:^(MASConstraintMaker *make) {
        
-        make.top.mas_equalTo(view.mas_bottom);
+        make.top.mas_equalTo(170);
         make.left.mas_equalTo(0);
         make.height.mas_equalTo(TOP_Margin);
         make.width.mas_equalTo(BCWidth);
