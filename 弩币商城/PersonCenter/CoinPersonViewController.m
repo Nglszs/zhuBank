@@ -280,7 +280,9 @@
         }
         case 10:{
             
-            VCToast(@"您所上传的身份信息有误，请重新上传", .5);
+
+            VCToast(@"上传的身份信息有误，请重新上传", .5);
+
             
             CoinCertifyViewController *vc = [CoinCertifyViewController new];
             vc.indexType = 1;
