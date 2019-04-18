@@ -101,7 +101,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
         if (status == 6) {
-           VCToast(@"身份认证审核失败", 1);
+           VCToast(@"您所上传的身份信息有误，请重新上传", 1);
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 CoinCertifyViewController * vc = [CoinCertifyViewController new];
                 vc.indexType = 1;

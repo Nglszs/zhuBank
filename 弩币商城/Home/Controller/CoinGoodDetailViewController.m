@@ -849,7 +849,7 @@
             
           [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
               
-              NSLog(@"11111=====");
+              NSLog(@"%@",responseObject);
               
               orderDict = [responseObject objectForKey:@"data"];
                 if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
