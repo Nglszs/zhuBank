@@ -53,14 +53,29 @@
     [self initThirdView];
    
     
-    if (_indexType == 2) {//直接去银行卡界面
+    if (_indexType == 2) {//人脸识别
+        
+        FOSAuthController *VC =  [FOSAuthController new];
+        VC.params = @{@"name":nameF.text,@"cardNo":numberF.text};
+        [self.navigationController pushViewController:VC animated:YES];
+        VC.backBlock = ^(id  _Nonnull result) {//成功之后跳转
+            
+            if ([result isEqualToString:@"1"]) {
+                [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+            }
+            
+        };
+
+    }
+    
+    if (_indexType == 3) {//直接去银行卡界面
         
        [self.backScrollView setContentOffset:CGPointMake(BCWidth * _indexType, 0) animated:NO];
         
           [self getBindCard];
     }
     
-    if (_indexType == 3) {
+    if (_indexType == 4) {
         [self TestISSuccess];
     }
    
@@ -162,6 +177,22 @@
         make.width.mas_equalTo(160);
         
     }];
+    UILabel *leftL = [[UILabel alloc] init];
+    leftL.text = @"请上传身份证正面";
+    leftL.textColor = TITLE_COLOR;
+    leftL.textAlignment = NSTextAlignmentCenter;
+    leftL.font = Regular(12);
+    [backV addSubview:leftL];
+    [leftL mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.mas_equalTo(_fImage.mas_bottom);
+        make.left.mas_equalTo(LEFT_Margin);
+        make.height.mas_equalTo(20);
+         make.width.mas_equalTo(160);
+        
+    }];
+    
+    
     
     [_fImage addTapGestureWithBlock:^{
        
@@ -184,6 +215,23 @@
         make.width.mas_equalTo(160);
         
     }];
+    
+    
+    UILabel *leftL1 = [[UILabel alloc] init];
+    leftL1.text = @"请上传身份证反面";
+    leftL1.textColor = TITLE_COLOR;
+    leftL1.textAlignment = NSTextAlignmentCenter;
+    leftL1.font = Regular(12);
+    [backV addSubview:leftL1];
+    [leftL1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.mas_equalTo(_sImage.mas_bottom);
+        make.left.mas_equalTo(_sImage.mas_left);
+        make.height.mas_equalTo(20);
+        make.width.mas_equalTo(160);
+        
+    }];
+    
     [_sImage addTapGestureWithBlock:^{
        
         photoType = 1;
@@ -262,35 +310,107 @@
         return;
     }
     
-    [KTooL HttpPostWithUrl:@"MaterialVerify/identity_verify" parameters:@{@"name":nameF.text,@"idcard":numberF.text,@"address":addressF.text,@"reg_from":@"3"} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        
-        NSLog(@"===%@",responseObject);
-        
-        
-        if (BCStatus) {
-            
-            FOSAuthController *VC =  [FOSAuthController new];
-            VC.params = @{@"name":nameF.text,@"cardNo":numberF.text};
-            [self.navigationController pushViewController:VC animated:YES];
-            VC.backBlock = ^(id  _Nonnull result) {//成功之后跳转
-                
-                if ([result isEqualToString:@"1"]) {
-                     [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
-                } 
-               
-            };
-            
-//
-            
-        } else {
-              VCToast([responseObject objectNilForKey:@"msg"], 1);
-            
+    
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer.timeoutInterval = 20;
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
+
+        NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary:@{@"name":nameF.text,@"idcard":numberF.text,@"address":addressF.text,@"reg_from":@"3"}];
+        // 公共参数
+        NSString * user_id  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+        if (!BCStringIsEmpty(user_id)) {
+            dict[@"user_id"] = user_id;
         }
-        
-    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-       
-        VCToast(@"验证失败", 1);
-    }];
+
+        NSString * token  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];
+        if (!BCStringIsEmpty(token)) {
+            dict[@"token"] = token;
+        }
+        dict[@"reg_from"] = @"3";
+        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        dict[@"version"] = app_Version;
+        dict[@"device"] = [self getUUID];
+        NSString *url = [NSString stringWithFormat:@"%@%@",BCBaseUrl,@"MaterialVerify/identity_verify"];
+
+    NSLog(@"]]]]%@",dict);
+        [manager POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+
+
+            NSData*imageData=UIImageJPEGRepresentation(_fImage.image,.2);
+            NSDateFormatter*formatter=[[NSDateFormatter alloc]init];
+            formatter.dateFormat=@"yyyyMMddHHmmss";
+            NSString*str = [formatter stringFromDate:[NSDate date]];
+            NSString*fileName = [NSString stringWithFormat:@"%@.jpg", str];
+
+
+            [formData appendPartWithFileData:imageData name:@"bank_pic1" fileName:fileName mimeType:@"image/jpeg"];
+
+
+            NSData*imageData1=UIImageJPEGRepresentation(_sImage.image,.2);
+            NSDateFormatter*formatter1=[[NSDateFormatter alloc]init];
+            formatter1.dateFormat=@"yyyyMMddHHmm-ss";
+            NSString*str1 = [formatter stringFromDate:[NSDate date]];
+            NSString*fileName1 = [NSString stringWithFormat:@"%@.jpg", str1];
+
+
+            [formData appendPartWithFileData:imageData1 name:@"bank_pic2" fileName:fileName1 mimeType:@"image/jpeg"];
+
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+
+
+            [SVProgressHUD showWithStatus:@"正在上传"];
+
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+
+            NSLog(@"===%@",responseObject);
+            [SVProgressHUD dismiss];
+            if ([[responseObject objectNilForKey:@"status"] integerValue] == 1) {
+               
+                VCToast(@"上传身份认证成功,请等待审核", 1);
+
+            } else {
+
+
+                VCToast([responseObject objectForKey:@"msg"], 1);
+            }
+
+
+//
+
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [SVProgressHUD dismiss];
+            VCToast(@"上传失败", 1);
+        }];
+//    [KTooL HttpPostWithUrl:@"MaterialVerify/identity_verify" parameters:@{@"name":nameF.text,@"idcard":numberF.text,@"address":addressF.text,@"reg_from":@"3",@"bank_pic1":UIImageJPEGRepresentation(_fImage.image,.2),@"bank_pic2":UIImageJPEGRepresentation(_sImage.image,.2)} loadString:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+//
+//        NSLog(@"===%@",responseObject);
+//
+//
+//        if (BCStatus) {
+//
+//            FOSAuthController *VC =  [FOSAuthController new];
+//            VC.params = @{@"name":nameF.text,@"cardNo":numberF.text};
+//            [self.navigationController pushViewController:VC animated:YES];
+//            VC.backBlock = ^(id  _Nonnull result) {//成功之后跳转
+//
+//                if ([result isEqualToString:@"1"]) {
+//                     [self.backScrollView setContentOffset:CGPointMake(BCWidth, 0) animated:YES];
+//                }
+//
+//            };
+//
+////
+//
+//        } else {
+//              VCToast([responseObject objectNilForKey:@"msg"], 1);
+//
+//        }
+//
+//    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+//
+//        VCToast(@"验证失败", 1);
+//    }];
 }
 
 - (void)initSecondView {
@@ -1181,6 +1301,7 @@
 #pragma mark 上传头像
 - (void)cameraFromUIImagePickerController:(NSUInteger)type {
     
+    [self.view endEditing:YES];
     
     _imagePicker = [[UIImagePickerController alloc] init];
     _imagePicker.navigationBar.translucent = NO;//解决调起相册 中的照片被导航栏遮挡
@@ -1234,53 +1355,8 @@
     }
     
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer.timeoutInterval = 20;
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
-    
-    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-    // 公共参数
-    NSString * user_id  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
-    if (!BCStringIsEmpty(user_id)) {
-        dict[@"user_id"] = user_id;
-    }
-    
-    NSString * token  = [[NSUserDefaults standardUserDefaults] objectForKey:USER_Token];
-    if (!BCStringIsEmpty(token)) {
-        dict[@"token"] = token;
-    }
-    dict[@"reg_from"] = @"3";
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-    dict[@"version"] = app_Version;
-    dict[@"device"] = [self getUUID];
-    NSString *url = [NSString stringWithFormat:@"%@%@",BCBaseUrl,@"UserCenter/reset_head_pic"];
-    
-    [manager POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-        
-        NSData*imageData=UIImageJPEGRepresentation(newImage,.2);
-        NSDateFormatter*formatter=[[NSDateFormatter alloc]init];
-        formatter.dateFormat=@"yyyyMMddHHmmss";
-        NSString*str = [formatter stringFromDate:[NSDate date]];
-        NSString*fileName = [NSString stringWithFormat:@"%@.jpg", str];
-        
-        
-        [formData appendPartWithFileData:imageData name:@"head_pic" fileName:fileName mimeType:@"image/jpeg"];
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-        
-        [SVProgressHUD showInfoWithStatus:@"正在上传"];
-       
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [SVProgressHUD dismiss];
-        VCToast(@"上传成功", 1);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [SVProgressHUD dismiss];
-        VCToast(@"上传失败", 1);
-    }];
-    
+
+//
     //    imageName = [[self getNowTimeTimestamp]stringByAppendingPathExtension:@"jpg"];
     //
     //    NSString *filePath =[kPathTemp stringByAppendingPathComponent:

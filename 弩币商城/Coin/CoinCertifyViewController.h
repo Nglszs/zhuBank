@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CoinCertifyViewController : CoinBaseViewController
 
-// 1, 是身份验证  2是绑定银行卡  3 是信用分评估
+// 1, 是身份验证 2是人脸识别 3是绑定银行卡  4 是信用分评估
 @property(nonatomic, assign) NSInteger indexType;
 
 @property (nonatomic, assign) BOOL isFenqi;//是否分期需要还是贷款需要认证
