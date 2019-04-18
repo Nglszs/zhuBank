@@ -721,10 +721,7 @@ static NSString *cellID = @"cell";
            _backScrollView.mj_header = header;
         
         
-        [_backScrollView addTapGestureWithBlock:^{
-           
-            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
-        }];
+       
     }
     
     return _backScrollView;

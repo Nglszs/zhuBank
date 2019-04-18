@@ -56,7 +56,7 @@
     if (_indexType == 2) {//人脸识别
         
         FOSAuthController *VC =  [FOSAuthController new];
-        VC.params = @{@"name":nameF.text,@"cardNo":numberF.text};
+        VC.params = @{@"name":_IDName,@"cardNo":_IDCard};
         [self.navigationController pushViewController:VC animated:YES];
         VC.backBlock = ^(id  _Nonnull result) {//成功之后跳转
             
