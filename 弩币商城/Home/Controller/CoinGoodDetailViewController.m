@@ -28,7 +28,7 @@
     NSString * phone;
     BCDivideView *diviV;
     NSArray *goodHistoryArr;
-  
+    NSDictionary *orderDict;
 }
 @property (nonatomic, strong) UIScrollView *backScrollView;//底部scrollview
 @property (nonatomic, strong) UIView *headView;//头部标签
@@ -698,6 +698,22 @@
         vc.phoneNum = phone;
         PushVC = vc;
     }
+    
+    
+    if (-11) {
+        CoinCertifyViewController * vc = [CoinCertifyViewController new];
+        vc.indexType = 1;
+        vc.isFenqi = YES;
+        PushVC = vc;
+    }
+    if (-12) {
+        CoinCertifyViewController * vc = [CoinCertifyViewController new];
+        vc.indexType = 4;
+        vc.IDName = orderDict[@"name"];
+        vc.IDCard = orderDict[@"idcard"];
+        vc.isFenqi = YES;
+        PushVC = vc;
+    }
         if (PushVC) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController pushViewController:PushVC animated:YES];
@@ -835,7 +851,9 @@
               
               NSLog(@"11111=====");
               
+              orderDict = [responseObject objectForKey:@"data"];
                 if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
+                    
                     VCToast(BCMsg, 1);
                 }
                 if ([responseObject[@"status"] intValue] == 1) {
@@ -909,7 +927,7 @@
         
         
         [KTooL HttpPostWithUrl:@"Order/confirm_order" parameters:dict loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            
+             orderDict = [responseObject objectForKey:@"data"];
             if (![self disposeStatus:[responseObject[@"status"] intValue]]) {
                 
                 VCToast(BCMsg, 1);
