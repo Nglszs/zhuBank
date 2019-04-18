@@ -278,6 +278,10 @@
             vc.IDName = [dataDic objectForKey:@"name"];
             [self.navigationController pushViewController:vc animated:YES];
         }
+        case 10:{
+            
+            VCToast(@"身份认证审核失败", 1);
+        }
         default:
             break;
     }
