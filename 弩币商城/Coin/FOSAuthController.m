@@ -322,7 +322,9 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                      
-                                                [weakSelf.navigationController popViewControllerAnimated:YES];
+                                                
+                                                int index = (int)[[self.navigationController viewControllers]indexOfObject:self];
+                                                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index -2)] animated:YES];
                                             }]];
     if (type == 1) {
         [alert addAction:[UIAlertAction actionWithTitle:@"再试一次" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
