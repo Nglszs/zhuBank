@@ -271,7 +271,6 @@
         }
             break;
         case 9:{
-            
             CoinCertifyViewController *vc = [CoinCertifyViewController new];
             vc.indexType = 4;
             vc.isFenqi = NO;
@@ -626,8 +625,7 @@
         
         NSLog(@"===%@",responseObject);
         [_backScrollView.mj_header endRefreshing];
-        
-        if (BCStatus) {
+         if (BCStatus) {
             
             dataDic = [responseObject objectNilForKey:@"data"];
             
