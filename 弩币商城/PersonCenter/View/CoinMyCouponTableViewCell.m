@@ -149,7 +149,7 @@
     [backView addSubview:lineImage];
     [lineImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-82);
-        make.centerY.equalTo(backView);
+        make.top.mas_equalTo(21);
         make.width.mas_equalTo(1);
         make.height.mas_equalTo(58);
     }];
@@ -237,6 +237,7 @@
             make.left.mas_equalTo(90);
             make.top.mas_equalTo(15 * i);
             make.height.mas_equalTo(10);
+            make.width.mas_equalTo(BCWidth - 120);
         }];
         
         if (i == 0) {

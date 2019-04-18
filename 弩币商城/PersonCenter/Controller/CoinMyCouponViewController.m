@@ -191,7 +191,14 @@
             
         } else {
             
-            return 115;
+            if ([[newDataArr objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+                return 115;
+            } else {
+                NSDictionary *dic = [dataArr objectAtIndex:indexPath.row];
+                
+                return [CoinExpressCouponTableViewCell getCellHeight:dic];
+                
+            }
         }
         
         
@@ -208,7 +215,15 @@
     }else {
         
         
-        return 115;
+        if ([[newThirdArr objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            return 115;
+        } else {
+            NSDictionary *dic = [thirdArr objectAtIndex:indexPath.row];
+            
+            return [CoinExpressCouponTableViewCell getCellHeight:dic];
+            
+        }
+        
     }
     
     
@@ -283,6 +298,30 @@
                 [self.navigationController pushViewController:rentVC animated:YES];
             }];
             [cell setDataForCell:dic];
+            
+            if ([[newDataArr objectAtIndex:indexPath.row] boolValue]) {
+                cell.detailV.hidden = NO;
+            } else {
+                cell.detailV.hidden = YES;
+            }
+            
+            [cell.detailBtn addtargetBlock:^(UIButton *button) {
+                
+                button.selected = !button.selected;
+                if (button.selected) {
+                    
+                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
+                    cell.detailV.hidden = NO;
+                    
+                } else {
+                    
+                    [newDataArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
+                    cell.detailV.hidden = YES;
+                }
+                
+                [self.getTableView reloadData];
+            }];
+            
             return cell;
         }
     } else if (tableView == self.payTableView){//优惠券
@@ -352,6 +391,32 @@
             [self.navigationController pushViewController:rentVC animated:YES];
         }];
         [cell setDataForCell:dic];
+        
+        
+        
+        if ([[newThirdArr objectAtIndex:indexPath.row] boolValue]) {
+            cell.detailV.hidden = NO;
+        } else {
+            cell.detailV.hidden = YES;
+        }
+        
+        [cell.detailBtn addtargetBlock:^(UIButton *button) {
+            
+            button.selected = !button.selected;
+            if (button.selected) {
+                
+                [newThirdArr replaceObjectAtIndex:indexPath.row withObject:@"1"];
+                cell.detailV.hidden = NO;
+                
+            } else {
+                
+                [newThirdArr replaceObjectAtIndex:indexPath.row withObject:@"0"];
+                cell.detailV.hidden = YES;
+            }
+            
+            [self.playTableView reloadData];
+        }];
+        
         
         return cell;
     }

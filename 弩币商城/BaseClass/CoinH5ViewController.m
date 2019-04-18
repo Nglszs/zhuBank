@@ -21,6 +21,15 @@
     if (BCStringIsEmpty(self.url)) {
         
         VCToast(@"h5地址不能为空", 1);
+        
+        return;
+    }
+    
+    if (![self.url hasPrefix:@"http"]&&![self.url hasPrefix:@"https"]) {
+        
+        VCToast(@"h5地址错误", 1);
+        
+        return;
     }
     
     [self SetReturnButton];

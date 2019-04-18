@@ -116,7 +116,8 @@
     backBtn.contentHorizontalAlignment = 1;
     [backBtn setImage:BCImage(圆角矩形 7 拷贝) forState:UIControlStateNormal];
     [backView addSubview:backBtn];
-    [backBtn addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
+     _detailBtn = backBtn;
+//    [backBtn addTarget:self action:@selector(clickButton:) forControlEvents:UIControlEventTouchUpInside];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.top.equalTo(timeL.mas_bottom).offset(5);
@@ -136,7 +137,7 @@
     [lineImage mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.right.mas_equalTo(-82);
-        make.centerY.equalTo(backView);
+        make.top.mas_equalTo(21);
         make.width.mas_equalTo(1);
         make.height.mas_equalTo(58);
     }];
@@ -180,6 +181,7 @@
                 make.left.mas_equalTo(90);
                 make.top.mas_equalTo(15 * i );
                 make.height.mas_equalTo(10);
+                make.width.mas_equalTo(BCWidth - 120);
             }];
             
             if (i == 0) {
@@ -242,26 +244,88 @@
     UILabel *timeL = [self.contentView viewWithTag:300];
     timeL.text =[NSString stringWithFormat: @"有效期%@",[data objectNilForKey:@"period"]];
     
+//    [bottomArr removeAllObjects];
+//    [bottomArr addObject:[data objectForKey:@"tips"]];
+//    NSArray *dataA = [data objectForKey:@"appoint_goods_name"];
+//    if (dataA.count > 0) {
+//        [bottomArr addObjectsFromArray:dataA];
+//    }
+//
+//    bottomV = [[UIView alloc] init];
+//    [backView addSubview:bottomV];
+//    [bottomV mas_makeConstraints:^(MASConstraintMaker *make) {
+//
+//        make.left.mas_equalTo(0);
+//        make.top.mas_equalTo(80);
+//        make.height.mas_equalTo(15 * (bottomArr.count - 1));
+//        make.width.mas_equalTo(BCWidth);
+//
+//    }];
+    
+    
     [bottomArr removeAllObjects];
     [bottomArr addObject:[data objectForKey:@"tips"]];
     NSArray *dataA = [data objectForKey:@"appoint_goods_name"];
     if (dataA.count > 0) {
         [bottomArr addObjectsFromArray:dataA];
     }
-   
-    bottomV = [[UIView alloc] init];
-    [backView addSubview:bottomV];
-    [bottomV mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    if (!bottomV) {
+        bottomV = [[UIView alloc] init];
+        [backView addSubview:bottomV];
+        _detailV = bottomV;
+        [bottomV mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.left.mas_equalTo(0);
+            make.top.mas_equalTo(85);
+            make.height.mas_equalTo(15 * (bottomArr.count - 1));
+            make.width.mas_equalTo(BCWidth);
+            
+        }];
+        bottomV.hidden = YES;
+    }
+    
+    
+    [[bottomV subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    for (int i = 0; i < bottomArr.count; i ++) {
         
-        make.left.mas_equalTo(0);
-        make.top.mas_equalTo(80);
-        make.height.mas_equalTo(15 * (bottomArr.count - 1));
-        make.width.mas_equalTo(BCWidth);
+        UILabel *moneyL1 = [[UILabel alloc] init];
         
-    }];
+        moneyL1.textColor = COLOR(167, 167, 167);
+        moneyL1.font = Regular(11);
+        [bottomV addSubview:moneyL1];
+        [moneyL1 mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.left.mas_equalTo(90);
+            make.top.mas_equalTo(15 * i);
+            make.height.mas_equalTo(10);
+            make.width.mas_equalTo(BCWidth - 120);
+        }];
+        
+        if (i == 0) {
+            moneyL1.text = [bottomArr objectAtIndex:i];
+        } else {
+            
+            moneyL1.text = [NSString stringWithFormat:@"限分期购买%@使用",[[bottomArr objectAtIndex:i] objectForKey:@"good_name"]];
+        }
+        
+    }
+    
+    
     
     NSLog(@"===%@]]",[data objectForKey:@"tips"]);
     
+}
+
++ (CGFloat)getCellHeight:(NSDictionary *)data {
+    NSMutableArray *bottomArr = [NSMutableArray arrayWithCapacity:1];
+    [bottomArr addObject:[data objectForKey:@"tips"]];
+    NSArray *dataA = [data objectForKey:@"appoint_goods_name"];
+    if (dataA.count > 0) {
+        [bottomArr addObjectsFromArray:dataA];
+    }
+    return 115 + bottomArr.count*15;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
