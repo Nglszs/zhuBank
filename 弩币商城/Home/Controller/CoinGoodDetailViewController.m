@@ -932,7 +932,7 @@
                 
                 VCToast(BCMsg, 1);
             }
-            if ([responseObject[@"status"] intValue]) {
+            if ([responseObject[@"status"] intValue]==1) {
                 CoinConfirmOrderViewController * VC = [CoinConfirmOrderViewController new];
                 VC.q_fenqi = divideArr.count<=0?@"0":@"1";
                 VC.goods_id = _goodID;
