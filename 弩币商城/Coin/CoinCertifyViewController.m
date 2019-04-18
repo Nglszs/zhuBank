@@ -53,7 +53,7 @@
     [self initThirdView];
    
     
-    if (_indexType == 2) {//人脸识别
+    if (_indexType == 4) {//人脸识别
         
         FOSAuthController *VC =  [FOSAuthController new];
         VC.params = @{@"name":_IDName,@"cardNo":_IDCard};
@@ -68,14 +68,14 @@
 
     }
     
-    if (_indexType == 3) {//直接去银行卡界面
+    if (_indexType == 2) {//直接去银行卡界面
         
        [self.backScrollView setContentOffset:CGPointMake(BCWidth * _indexType, 0) animated:NO];
         
           [self getBindCard];
     }
     
-    if (_indexType == 4) {
+    if (_indexType == 3) {
         [self TestISSuccess];
     }
    
