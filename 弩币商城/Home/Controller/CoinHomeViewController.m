@@ -332,7 +332,7 @@ static NSString *cellID = @"cell";
                         [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
         
                             make.top.equalTo(imageV.mas_bottom).offset(3);
-                            make.left.equalTo(imageV.mas_left).offset(8);
+                            make.width.mas_equalTo((BCWidth - 40)/2 ); make.left.equalTo(imageV.mas_left).offset(8);
                             make.height.mas_equalTo(12);
         
                         }];
@@ -488,8 +488,8 @@ static NSString *cellID = @"cell";
         }];
         
         [backV addTapGestureWithBlock:^{
-            
-            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
+            self.tabBarController.selectedIndex = 1;
+//            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
         }];
         
         
@@ -551,8 +551,8 @@ static NSString *cellID = @"cell";
         imageV.image =[UIImage imageNamed:[NSString stringWithFormat:@"%@",imageArr1[i]]];
         [self.backScrollView addSubview:imageV];
         [imageV addTapGestureWithBlock:^{
-           
-            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
+           self.tabBarController.selectedIndex = 1;
+//            [self.navigationController pushViewController:[CoinNotDevelopViewController new] animated:YES];
         }];
         [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
             
@@ -720,6 +720,11 @@ static NSString *cellID = @"cell";
         }];
            _backScrollView.mj_header = header;
         
+        
+        [_backScrollView addTapGestureWithBlock:^{
+           
+            [self.navigationController pushViewController:[CoinCertifyViewController new] animated:YES];
+        }];
     }
     
     return _backScrollView;
