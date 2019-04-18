@@ -700,13 +700,13 @@
     }
     
     
-    if (-11) {
+    if (status==-11) {
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 1;
         vc.isFenqi = YES;
         PushVC = vc;
     }
-    if (-12) {
+    if (status==-12) {
         CoinCertifyViewController * vc = [CoinCertifyViewController new];
         vc.indexType = 4;
         vc.IDName = orderDict[@"name"];
