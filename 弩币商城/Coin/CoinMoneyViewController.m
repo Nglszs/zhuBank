@@ -26,6 +26,7 @@
 @property (nonatomic,strong)UILabel * footLabel;
 
 @property (nonatomic,copy)NSString * msg;
+@property (nonatomic,strong)NSDictionary * dataDict;
 @end
 
 @implementation CoinMoneyViewController
@@ -167,6 +168,7 @@
         NSLog(@"---%@",responseObject);
         if (BCStatus) {
             self.msg = BCMsg;
+            self.dataDict = responseObject[@"data"];
             [self upDataUI:responseObject[@"data"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -251,6 +253,11 @@
             VCToast(self.msg, 2);
         }else if (type == 9){
             // 身份验证审核通过去人脸识别
+          CoinCertifyViewController * vc = [CoinCertifyViewController new];
+            vc.indexType = 4;
+            vc.IDName= self.dataDict[@"name"];
+            vc.IDCard = self.dataDict[@"idcard"];
+            [self.navigationController pushViewController:vc animated:YES];
             
         }else if (type == 10){
             VCToast(self.msg, 2);
