@@ -259,10 +259,25 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
-        default:{
+            
+        case 7:{
             CoinLimitViewController * VC = [CoinLimitViewController new];
             [self.navigationController pushViewController:VC animated:YES];
         }
+        case 8:{
+            
+            VCToast(@"身份认证待审核", 1);
+        }
+        case 9:{
+            
+            CoinCertifyViewController *vc = [CoinCertifyViewController new];
+            vc.indexType = 4;
+            vc.isFenqi = NO;
+            vc.IDCard = [dataDic objectForKey:@"idcard"];
+            vc.IDName = [dataDic objectForKey:@"name"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        default:
             break;
     }
    
