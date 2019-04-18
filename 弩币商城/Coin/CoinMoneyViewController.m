@@ -250,7 +250,7 @@
             
         }else if (type == 8){
             //身份验证待审核
-            VCToast(self.msg, 2);
+            VCToast(@"身份验证待审核", 2);
         }else if (type == 9){
             // 身份验证审核通过去人脸识别
           CoinCertifyViewController * vc = [CoinCertifyViewController new];
@@ -260,7 +260,12 @@
             [self.navigationController pushViewController:vc animated:YES];
             
         }else if (type == 10){
-            VCToast(self.msg, 2);
+            VCToast(@"身份验证资料审核失败", 1);
+           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                CoinCertifyViewController * vc = [CoinCertifyViewController new];
+                vc.indexType = 1;
+                [self.navigationController pushViewController:vc animated:YES];
+            });
         }
       
         

@@ -90,7 +90,7 @@
         
         if (status == 4) {
 
-            VCToast(BCMsg, 2);
+            VCToast(@"身份认证待审核", 2);
         }
         if (status == 5) {
 //5 身份认证成功，去人脸识别（name idcard）
@@ -101,8 +101,13 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
         if (status == 6) {
-
-            VCToast(BCMsg, 2);
+           VCToast(@"身份认证审核失败", 1);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                CoinCertifyViewController * vc = [CoinCertifyViewController new];
+                vc.indexType = 1;
+                [self.navigationController pushViewController:vc animated:YES];
+            });
+            
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
