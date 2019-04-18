@@ -134,16 +134,14 @@
     
 }
 - (UILabel *)labelWithTitle:(NSString *)title{
-    
     UILabel *label = [[UILabel alloc] init];
-     label.font = [UIFont systemFontOfSize:12];
+    label.font = [UIFont systemFontOfSize:12];
     label.text = title;
     [label sizeToFit];
     label.backgroundColor = [UIColor colorWithRed:237/255.0 green:237/255.0 blue:237/255.0 alpha:1.0];
     label.layer.cornerRadius = 13;
     label.clipsToBounds = YES;
     label.userInteractionEnabled = YES;
-   
     label.textColor = COLOR(136, 136, 136);
     label.userInteractionEnabled = YES;
     label.textAlignment = NSTextAlignmentCenter;

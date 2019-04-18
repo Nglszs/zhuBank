@@ -77,7 +77,7 @@ UIView * tempView =     [self HeaderView];
     }];
     
     UILabel * MoneyLabel = [UILabel new];
-    MoneyLabel.text = @"¥299.00 ";
+    MoneyLabel.text = [NSString stringWithFormat:@"￥ %@",self.Money];
     MoneyLabel.textColor = COLOR(51, 51, 51);
     MoneyLabel.font = Regular(15);
     [self.view addSubview:MoneyLabel];
@@ -280,6 +280,7 @@ UIView * tempView =     [self HeaderView];
     }
 }
 
+// 热门推荐
 - (void)request{
     [KTooL HttpPostWithUrl:@"CashLoan/buy_vip_success" parameters:nil loadString:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (BCStatus) {

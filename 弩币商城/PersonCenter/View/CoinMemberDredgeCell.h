@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)NSString * end_time;
 @property (nonatomic,weak)UIViewController * SelfVC;
 @property (nonatomic,copy)NSString * service_agreement;
+@property (nonatomic,copy)NSString * vip_money;
 @end
 
 NS_ASSUME_NONNULL_END
