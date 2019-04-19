@@ -61,10 +61,10 @@
             VCToast(@"借款金额不能为0", 2);
             return;
         }
-//    if ([self.moneyTF.text intValue] < 500) {
-//        VCToast(@"借款金额不能小于500", 2);
-//        return;
-//    }
+    if ([self.moneyTF.text intValue] < 500) {
+        VCToast(@"借款金额不能小于500", 2);
+        return;
+    }
     if ([self.dayLabel.text isEqualToString:@"请选择"]) {
         VCToast(@"请选择借款天数", 2);
         return;
