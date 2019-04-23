@@ -442,16 +442,11 @@ static NSString *cellID = @"cell";
      UILabel *moneyL = [cell.contentView  viewWithTag:500];
     if (str1.length <= 0) {
         
-       
         moneyL.hidden = YES;
     } else {
         moneyL.hidden = NO;
     }
-  
     moneyL.hidden = ![Tool AuditState];
-    
-    
-    
     return cell;
 }
 

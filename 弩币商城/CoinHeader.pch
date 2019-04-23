@@ -126,7 +126,6 @@
 #define SetY(y) y / 667.0 *  [UIScreen mainScreen].bounds.size.height
 
 
-
 // 网络框架
 
 #define KTooL [HttpTool sharedHttpTool]

@@ -68,7 +68,7 @@
         make.right.equalTo(self.view).offset(-12);
     }];
     [self.CollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerView"];
-    
+  self.CollectionView.showsVerticalScrollIndicator = NO;
 }
 
 - (void)initSearchBar{

@@ -53,37 +53,26 @@ static void *networkKey = &networkKey;
 #pragma mark 网络监听
 
 - (void)startNetWorkObserver {
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(BCNetworkStateChange:) name:kReachabilityChangedNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(BCNetworkStateChange:) name:kReachabilityChangedNotification object:nil];
     
     // 获得Reachability对象
     self.networkAbility = [Reachability reachabilityForInternetConnection];
     // 开始监控网络
-    
-    
     
     [self.networkAbility startNotifier];
 
 }
 
 -(void)BCNetworkStateChange:(NSNotification *)note {
-    
-    
-    Reachability *currReach = [note object];
+     Reachability *currReach = [note object];
     
     //对连接改变做出响应处理动作
     NetworkStatus status = [currReach currentReachabilityStatus];
     //如果没有连接到网络就弹出提醒实况
     
     if(status == NotReachable){
-        
-       
-     [SHARE_APPLICATION.keyWindow makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
-        
+      [SHARE_APPLICATION.keyWindow makeToast:@"网络断开连接,请检查网络" duration:1 position:CSToastPositionCenter];
     } else {
-        
-       
         
     }
     
